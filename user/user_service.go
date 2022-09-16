@@ -18,6 +18,9 @@ type UserInternal struct {
 	Authorities []string
 }
 
+//The server struct is an abstraction of the server.
+//It allows attaching service methods to the server.
+
 type server struct {
 	userMap map[string]*UserInternal
 }

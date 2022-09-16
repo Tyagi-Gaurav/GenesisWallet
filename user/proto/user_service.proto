@@ -54,12 +54,12 @@ message LoginGrpcRequestDTO {
     string password = 2;
 }
 
-service FetchUserById {
-  rpc fetchUsersById(FetchUserDetailsByIdGrpcRequestDTO) returns (UserDetailsGrpcResponseDTO);
+service User {
+  rpc FetchUsersById(FetchUserDetailsByIdGrpcRequestDTO) returns (UserDetailsGrpcResponseDTO) {}
 
-  rpc fetchUsersByName(FetchUserDetailsByNameGrpcRequestDTO) returns (UserDetailsGrpcResponseDTO);
+  rpc FetchUsersByName(FetchUserDetailsByNameGrpcRequestDTO) returns (UserDetailsGrpcResponseDTO) {}
 
-  rpc addUser(UserGrpcRequestDTO) returns (UserID);
+  rpc AddUser(UserGrpcRequestDTO) returns (UserID) {}
   
-  rpc loginWithPassword(LoginGrpcRequestDTO) returns (LoginGrpcResponseDTO);
+  rpc LoginWithPassword(LoginGrpcRequestDTO) returns (LoginGrpcResponseDTO) {}
 }
