@@ -16,15 +16,16 @@ vendor:
 	$(GOCMD) mod vendor
 
 build:
-#	cd comm-schema; go mod vendor; mkdir -p out/bin ; GO111MODULE=on $(GOCMD) build -mod vendor -o out/bin/comm_schema $(COMM_SCHEMA)
 	cd user; go mod vendor; mkdir -p out/bin ; GO111MODULE=on $(GOCMD) build -mod vendor -o out/bin/$(BINARY_NAME) $(USERS)
 
 user_app:
 	go get github.com/google/uuid
 	go get google.golang.org/protobuf/reflect/protoreflect
 	go get google.golang.org/protobuf/runtime/protoimpl
-	$(GOCMD) build -o out/$(BINARY_NAME) user/user_service.go user/user_service.pb.go
+	$(GOCMD) build user/user_service.go user/user_service.pb.go
 
 clean:
 	-rm -f out/*
-	-rmdir out 2>null 
+	-rmdir out
+
+all: clean protogen user_app
