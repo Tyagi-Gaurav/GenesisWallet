@@ -28,22 +28,28 @@ message UserDetailsGrpcResponseDTO {
   string homeCountry = 9;
 }
 
-message User {
+message UserGrpcRequestDTO {
     string id = 1;
     string firstname = 2;
     string lastname = 3;
+    string username = 4;
+	  string password = 5;
+	  string dateOfBirth = 6;
+	  Gender gender = 7;
+	  string homeCountry = 8;
+	  repeated string authorities = 9;
 }
 
 message UserID {
     string value = 1;
 }
 
-message LoginResponse {
+message LoginGrpcResponseDTO {
     string userid = 1;
     string token = 2;
 }
 
-message Credentials {
+message LoginGrpcRequestDTO {
     string username = 1;
     string password = 2;
 }
@@ -53,7 +59,7 @@ service FetchUserById {
 
   rpc fetchUsersByName(FetchUserDetailsByNameGrpcRequestDTO) returns (UserDetailsGrpcResponseDTO);
 
-  rpc AddUser(User) returns (UserID);
+  rpc addUser(UserGrpcRequestDTO) returns (UserID);
   
-  rpc LoginWithPassword(Credentials) returns (LoginResponse);
+  rpc loginWithPassword(LoginGrpcRequestDTO) returns (LoginGrpcResponseDTO);
 }

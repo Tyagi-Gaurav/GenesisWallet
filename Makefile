@@ -22,6 +22,8 @@ user_app:
 	go get github.com/google/uuid
 	go get google.golang.org/protobuf/reflect/protoreflect
 	go get google.golang.org/protobuf/runtime/protoimpl
+	go get google.golang.org/grpc/codes
+	go get google.golang.org/grpc/status
 	$(GOCMD) build user/user_service.go user/user_service.pb.go
 
 clean:
