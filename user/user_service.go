@@ -1,10 +1,14 @@
 package user
 
 import (
+	context "context"
+
 	"github.com/google/uuid"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
+
+var userMap map[string]*UserInternal = make(map[string]*UserInternal)
 
 type UserInternal struct {
 	Id          uuid.UUID
@@ -18,23 +22,18 @@ type UserInternal struct {
 	Authorities []string
 }
 
-//The server struct is an abstraction of the server.
-//It allows attaching service methods to the server.
-
-type server struct {
-	userMap map[string]*UserInternal
+type Server struct {
+	UnimplementedUserServer
 }
 
-func (s *server) AddUser(req *UserGrpcRequestDTO) (UserID, error) {
+func (s *Server) AddUser(ctx context.Context, req *UserGrpcRequestDTO) (*UserID, error) {
 	userId, err := uuid.NewUUID()
 
 	if err != nil {
-		return UserID{}, status.Errorf(codes.Internal, "Error while generating Product ID: %v", err)
+		return &UserID{}, status.Errorf(codes.Internal, "Error while generating Product ID: %v", err)
 	}
 
-	if s.userMap == nil {
-		s.userMap = make(map[string]*UserInternal)
-	}
+	userMap = make(map[string]*UserInternal)
 
 	ui := &UserInternal{
 		Id:          userId,
@@ -45,13 +44,13 @@ func (s *server) AddUser(req *UserGrpcRequestDTO) (UserID, error) {
 		DateOfBirth: req.GetDateOfBirth(),
 	}
 
-	s.userMap[ui.Username] = ui
+	userMap[ui.Id.String()] = ui
 
-	return UserID{Value: userId.String()}, nil
+	return &UserID{Value: userId.String()}, nil
 }
 
-func (s *server) GetUser(userID *FetchUserDetailsByIdGrpcRequestDTO) (*UserDetailsGrpcResponseDTO, error) {
-	data, exists := s.userMap[userID.GetId()]
+func (s *Server) FetchUsersById(ctx context.Context, userID *FetchUserDetailsByIdGrpcRequestDTO) (*UserDetailsGrpcResponseDTO, error) {
+	data, exists := userMap[userID.GetId()]
 
 	if exists {
 		return &UserDetailsGrpcResponseDTO{

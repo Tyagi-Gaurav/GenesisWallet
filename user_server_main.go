@@ -1,11 +1,9 @@
 package main
 
 import (
-	"context"
 	"log"
 	"net"
 
-	"github.com/google/uuid"
 	user "github.com/wallet/user"
 	"google.golang.org/grpc"
 )
@@ -16,14 +14,15 @@ const (
 
 //TODO Read port using flags
 
-type server struct {
-	user.UnimplementedUserServer
-}
+// type server struct {
+// 	user.UnimplementedUserServer
+// }
 
-func (s *server) AddUser(ctx context.Context, usr *user.UserGrpcRequestDTO) (*user.UserID, error) {
-	log.Printf("Received: %v", usr.GetFirstname())
-	return &user.UserID{Value: uuid.New().String()}, nil
-}
+// func (s *server) AddUser(ctx context.Context, usr *user.UserGrpcRequestDTO) (*user.UserID, error) {
+// 	log.Printf("Received: %v", usr.GetFirstname())
+// 	user.AddUser()
+// 	return &user.UserID{Value: uuid.New().String()}, nil
+// }
 
 func main() {
 	lis, err := net.Listen("tcp", port)
@@ -33,7 +32,7 @@ func main() {
 	}
 
 	s := grpc.NewServer()
-	user.RegisterUserServer(s, &server{})
+	user.RegisterUserServer(s, &user.Server{})
 
 	log.Printf("Server listening at %v", lis.Addr())
 	if err := s.Serve(lis); err != nil {
