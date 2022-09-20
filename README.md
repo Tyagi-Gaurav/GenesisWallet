@@ -44,6 +44,11 @@
 		* Verify client of a service can communicate with the service
 	* Service component testing
 * API Gateway
+	* Authentication
+	* Loggin
+	* Versioning
+	* Throttling
+	* Load balancing
 * Resilience
 	* Circuit Breaker
 	* BulkHead
