@@ -12,8 +12,9 @@ RUN go get github.com/google/uuid && \
 	go get golang.org/x/net/http2/hpack && \
 	go get github.com/wallet/user
 
-RUN go build user_service.go user_service_grpc.pb.go user_service.pb.go
-RUN go build -o out/user_main main/user_server_main.go
+RUN go build user_service.go user_service_grpc.pb.go user_service.pb.go && \
+    go build -o out/user_main main/user_server_main.go && \
+    go build -o out/user_client client/user_client.go
 
 FROM golang:1.18-alpine
 

@@ -17,6 +17,7 @@ services:
       context: api-gateway
     ports:
       - "8080:8080"
+      - "443:443"
     networks:
       - overlay
 
