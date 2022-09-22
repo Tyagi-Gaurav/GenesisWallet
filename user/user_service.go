@@ -2,6 +2,7 @@ package user
 
 import (
 	context "context"
+	"log"
 
 	"github.com/google/uuid"
 	"google.golang.org/grpc/codes"
@@ -28,6 +29,7 @@ type Server struct {
 }
 
 func (s *Server) AddUser(ctx context.Context, req *UserGrpcRequestDTO) (*UserID, error) {
+	log.Println("Inside AddUser")
 	userId, err := uuid.NewUUID()
 
 	if err != nil {
@@ -50,6 +52,7 @@ func (s *Server) AddUser(ctx context.Context, req *UserGrpcRequestDTO) (*UserID,
 }
 
 func (s *Server) FetchUsersById(ctx context.Context, userID *FetchUserDetailsByIdGrpcRequestDTO) (*UserDetailsGrpcResponseDTO, error) {
+	log.Println("Inside FetchUsersById")
 	data, exists := userMapByUserId[userID.GetId()]
 
 	if exists {
@@ -66,6 +69,7 @@ func (s *Server) FetchUsersById(ctx context.Context, userID *FetchUserDetailsByI
 }
 
 func (s *Server) FetchUsersByName(ctx context.Context, userID *FetchUserDetailsByNameGrpcRequestDTO) (*UserDetailsGrpcResponseDTO, error) {
+	log.Println("Inside FetchUsersByName")
 	data, exists := userMapByUserName[userID.GetName()]
 
 	if exists {
@@ -82,6 +86,7 @@ func (s *Server) FetchUsersByName(ctx context.Context, userID *FetchUserDetailsB
 }
 
 func (s *Server) LoginWithPassword(ctx context.Context, in *LoginGrpcRequestDTO) (*LoginGrpcResponseDTO, error) {
+	log.Println("Inside LoginWithPassword")
 	data, exists := userMapByUserName[in.GetUsername()]
 
 	if exists {

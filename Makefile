@@ -19,7 +19,11 @@ clean:
 	-rm -f out/*
 	-rmdir out
 
-all: clean protogen user_image api_gateway
+all: clean protogen 
+
+all_images: all user_image api_gateway
+
+all_compose: all compose 
 
 user_image:
 	docker build -f user/Dockerfile ./user
@@ -32,3 +36,17 @@ compose:
 
 compose-down:
 	docker-compose down --rmi all
+
+help:
+	@echo ''
+	@echo 'Available targets:'
+	@echo ''
+	@echo '  microservices		Prints a List of available services (JSON)'
+	@echo '  omd-service		Prints the default service name for the repository'
+	@echo ''
+	@echo "Available Microservices:"
+	@echo ''
+	@for microservice in $(MICROSERVICES); do \
+		echo "  - $${microservice}"; \
+	done;
+	@echo ''

@@ -38,7 +38,7 @@ func NewUserClient(cc grpc.ClientConnInterface) UserClient {
 
 func (c *userClient) FetchUsersById(ctx context.Context, in *FetchUserDetailsByIdGrpcRequestDTO, opts ...grpc.CallOption) (*UserDetailsGrpcResponseDTO, error) {
 	out := new(UserDetailsGrpcResponseDTO)
-	err := c.cc.Invoke(ctx, "/User/FetchUsersById", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/user.User/FetchUsersById", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func (c *userClient) FetchUsersById(ctx context.Context, in *FetchUserDetailsByI
 
 func (c *userClient) FetchUsersByName(ctx context.Context, in *FetchUserDetailsByNameGrpcRequestDTO, opts ...grpc.CallOption) (*UserDetailsGrpcResponseDTO, error) {
 	out := new(UserDetailsGrpcResponseDTO)
-	err := c.cc.Invoke(ctx, "/User/FetchUsersByName", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/user.User/FetchUsersByName", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +56,7 @@ func (c *userClient) FetchUsersByName(ctx context.Context, in *FetchUserDetailsB
 
 func (c *userClient) AddUser(ctx context.Context, in *UserGrpcRequestDTO, opts ...grpc.CallOption) (*UserID, error) {
 	out := new(UserID)
-	err := c.cc.Invoke(ctx, "/User/AddUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/user.User/AddUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +65,7 @@ func (c *userClient) AddUser(ctx context.Context, in *UserGrpcRequestDTO, opts .
 
 func (c *userClient) LoginWithPassword(ctx context.Context, in *LoginGrpcRequestDTO, opts ...grpc.CallOption) (*LoginGrpcResponseDTO, error) {
 	out := new(LoginGrpcResponseDTO)
-	err := c.cc.Invoke(ctx, "/User/LoginWithPassword", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/user.User/LoginWithPassword", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -122,7 +122,7 @@ func _User_FetchUsersById_Handler(srv interface{}, ctx context.Context, dec func
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/User/FetchUsersById",
+		FullMethod: "/user.User/FetchUsersById",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServer).FetchUsersById(ctx, req.(*FetchUserDetailsByIdGrpcRequestDTO))
@@ -140,7 +140,7 @@ func _User_FetchUsersByName_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/User/FetchUsersByName",
+		FullMethod: "/user.User/FetchUsersByName",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServer).FetchUsersByName(ctx, req.(*FetchUserDetailsByNameGrpcRequestDTO))
@@ -158,7 +158,7 @@ func _User_AddUser_Handler(srv interface{}, ctx context.Context, dec func(interf
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/User/AddUser",
+		FullMethod: "/user.User/AddUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServer).AddUser(ctx, req.(*UserGrpcRequestDTO))
@@ -176,7 +176,7 @@ func _User_LoginWithPassword_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/User/LoginWithPassword",
+		FullMethod: "/user.User/LoginWithPassword",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServer).LoginWithPassword(ctx, req.(*LoginGrpcRequestDTO))
@@ -188,7 +188,7 @@ func _User_LoginWithPassword_Handler(srv interface{}, ctx context.Context, dec f
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var User_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "User",
+	ServiceName: "user.User",
 	HandlerType: (*UserServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

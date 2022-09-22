@@ -21,4 +21,7 @@ FROM golang:1.18-alpine
 WORKDIR /build
 COPY --from=builder /src/out/user_main .
 
+ENV GRPC_GO_LOG_SEVERITY_LEVEL=info 
+ENV GRPC_GO_LOG_VERBOSITY_LEVEL=99
+
 CMD ["/build/user_main"]

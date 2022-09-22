@@ -9,14 +9,11 @@ import (
 )
 
 const (
-	port = ":50051"
+	port                        = ":50051"
+	serverMaxReceiveMessageSize = 1024 * 1024 * 1024 * 2
 )
 
 //TODO Read port using flags
-
-// type server struct {
-// 	user.UnimplementedUserServer
-// }
 
 // func (s *server) AddUser(ctx context.Context, usr *user.UserGrpcRequestDTO) (*user.UserID, error) {
 // 	log.Printf("Received: %v", usr.GetFirstname())
@@ -31,11 +28,13 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	s := grpc.NewServer()
+	s := grpc.NewServer(grpc.MaxRecvMsgSize(serverMaxReceiveMessageSize))
 	user.RegisterUserServer(s, &user.Server{})
 
 	log.Printf("Server listening at %v", lis.Addr())
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
+	} else {
+		log.Println("Got request.")
 	}
 }

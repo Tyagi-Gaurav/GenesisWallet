@@ -3,11 +3,10 @@ package main
 import (
 	"bytes"
 	"crypto/tls"
-	"crypto/x509"
 	"encoding/json"
-	"io/ioutil"
 	"log"
 	"net/http"
+	"strconv"
 	"testing"
 
 	"github.com/google/uuid"
@@ -49,16 +48,17 @@ func (userReq *TestUserGrpcRequestDTO) MarshalJSON() ([]byte, error) {
 }
 
 func TestAddUser(t *testing.T) {
-	caCert, err := ioutil.ReadFile("wallet.crt")
-	if err != nil {
-		log.Fatalf("Reading server certificate: %s", err)
-	}
-	caCertPool := x509.NewCertPool()
-	caCertPool.AppendCertsFromPEM(caCert)
+	// caCert, err := ioutil.ReadFile("wallet.crt")
+	// if err != nil {
+	// 	log.Fatalf("Reading server certificate: %s", err)
+	// }
+	//caCertPool := x509.NewCertPool()
+	//caCertPool.AppendCertsFromPEM(caCert)
 
 	// Create TLS configuration with the certificate of the server
 	tlsConfig := &tls.Config{
-		RootCAs: caCertPool,
+		//RootCAs: caCertPool,
+		InsecureSkipVerify: true,
 	}
 	tr := &http2.Transport{
 		TLSClientConfig: tlsConfig,
@@ -82,9 +82,16 @@ func TestAddUser(t *testing.T) {
 	req.Header.Set("Content-Type", "application/grpc")
 	req.Header.Set("TE", "trailers") //???
 	req.Close = true
-	_, err = client.Do(req)
+	resp, err := client.Do(req)
 
 	if err != nil {
 		t.Error("Got error from POST: ", err)
+	}
+	grpc_status_code := resp.Header.Get("Grpc-Status")
+
+	log.Printf("Response: %v", resp)
+
+	if n, err := strconv.Atoi(grpc_status_code); err == nil && n > 0 {
+		t.Error("Test Failed. Non-zero grpc status code, ", n)
 	}
 }
