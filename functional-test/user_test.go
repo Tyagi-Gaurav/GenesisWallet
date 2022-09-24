@@ -4,28 +4,28 @@ import (
 	"bytes"
 	"crypto/tls"
 	"encoding/json"
+	"io"
 	"log"
 	"net/http"
-	"strconv"
 	"testing"
-
-	"github.com/google/uuid"
-	"golang.org/x/net/http2"
 )
 
-type TestUserGrpcRequestDTO struct {
-	id          string
-	firstname   string
-	lastname    string
-	username    string
-	password    string
-	dateOfBirth string
-	//Gender      string
-	homeCountry string
-	authorities []string
+type TestUserAddRequestDTO struct {
+	Firstname   string   `json:"firstName"`
+	Lastname    string   `json:"lastName"`
+	Username    string   `json:"userName"`
+	Password    string   `json:"password"`
+	DateOfBirth string   `json:"dateOfBirth"`
+	Gender      string   `json:"gender"`
+	HomeCountry string   `json:"homeCountry"`
+	Authorities []string `json:"authorities"`
 }
 
-func (userReq *TestUserGrpcRequestDTO) MarshalJSON() ([]byte, error) {
+type TestUserAddResponse struct {
+	UserId string `json:"userId"`
+}
+
+func (userReq *TestUserAddRequestDTO) MarshalJSON() ([]byte, error) {
 	return json.Marshal(struct {
 		Id          string   `json:"id"`
 		Firstname   string   `json:"firstname"`
@@ -36,62 +36,58 @@ func (userReq *TestUserGrpcRequestDTO) MarshalJSON() ([]byte, error) {
 		HomeCountry string   `json:"homeCountry"`
 		Authorities []string `json:"authorities"`
 	}{
-		Id:          userReq.id,
-		Firstname:   userReq.firstname,
-		Lastname:    userReq.lastname,
-		Username:    userReq.username,
-		Password:    userReq.password,
-		DateOfBirth: userReq.dateOfBirth,
-		HomeCountry: userReq.homeCountry,
-		Authorities: userReq.authorities,
+		Firstname:   userReq.Firstname,
+		Lastname:    userReq.Lastname,
+		Username:    userReq.Username,
+		Password:    userReq.Password,
+		DateOfBirth: userReq.DateOfBirth,
+		HomeCountry: userReq.HomeCountry,
+		Authorities: userReq.Authorities,
 	})
 }
 
 func TestAddUser(t *testing.T) {
-	// caCert, err := ioutil.ReadFile("wallet.crt")
-	// if err != nil {
-	// 	log.Fatalf("Reading server certificate: %s", err)
-	// }
-	//caCertPool := x509.NewCertPool()
-	//caCertPool.AppendCertsFromPEM(caCert)
-
 	// Create TLS configuration with the certificate of the server
 	tlsConfig := &tls.Config{
 		//RootCAs: caCertPool,
 		InsecureSkipVerify: true,
 	}
-	tr := &http2.Transport{
+	tr := &http.Transport{
 		TLSClientConfig: tlsConfig,
 	}
-	request := &TestUserGrpcRequestDTO{
-		id:          uuid.New().String(),
-		firstname:   "TestFirstName",
-		lastname:    "TestLastName",
-		username:    "myUser",
-		password:    "myPassword",
-		dateOfBirth: "dateOfBirth",
-		homeCountry: "home",
-		authorities: []string{"a", "b"},
+	request := &TestUserAddRequestDTO{
+		Firstname:   "TestFirstName",
+		Lastname:    "TestLastName",
+		Username:    "myUser",
+		Password:    "myPassword",
+		DateOfBirth: "dateOfBirth",
+		HomeCountry: "home",
+		Authorities: []string{"a", "b"},
 	}
 
-	m, _ := json.Marshal(request)
+	m, _ := request.MarshalJSON()
 	buf := bytes.NewBuffer(m)
 	client := &http.Client{Transport: tr}
-	endpoint := "https://localhost/user.User/AddUser"
+	endpoint := "https://localhost/user/AddUser"
 	req, _ := http.NewRequest("POST", endpoint, buf)
-	req.Header.Set("Content-Type", "application/grpc")
-	req.Header.Set("TE", "trailers") //???
+	req.Header.Set("Content-Type", "application/json")
 	req.Close = true
 	resp, err := client.Do(req)
 
 	if err != nil {
 		t.Error("Got error from POST: ", err)
 	}
-	grpc_status_code := resp.Header.Get("Grpc-Status")
+	defer resp.Body.Close()
 
-	log.Printf("Response: %v", resp)
-
-	if n, err := strconv.Atoi(grpc_status_code); err == nil && n > 0 {
-		t.Error("Test Failed. Non-zero grpc status code, ", n)
+	if resp.StatusCode != http.StatusOK {
+		t.Error("Got non-ok response code from POST: ", resp.StatusCode)
 	}
+
+	bodyBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	bodyString := string(bodyBytes)
+
+	log.Println(bodyString)
 }

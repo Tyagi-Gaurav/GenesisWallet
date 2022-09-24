@@ -10,5 +10,8 @@ require (
 
 require (
 	github.com/golang/protobuf v1.5.2 // indirect
+	github.com/wallet/utils v0.0.0-00010101000000-000000000000 // indirect
 	google.golang.org/genproto v0.0.0-20200526211855-cb27e3aa2013 // indirect
 )
+
+replace github.com/wallet/utils => ../utils

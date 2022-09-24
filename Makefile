@@ -2,11 +2,12 @@
 #$(@F) - Returns only the file portion of the value
 #- at the beginning of a line ignores errors.
 
-.PHONY: protogen
+.PHONY: protogen api-gateway user
 
 USERS := $(shell find user -type f -name '*.go')
 GOCMD := go
 BINARY_NAME := users_app
+MICROSERVICES:= user api-gateway
 
 protogen:
 	protoc --go-grpc_out=./user --go_out=./user ./user/proto/user_service.proto
@@ -19,16 +20,12 @@ clean:
 	-rm -f out/*
 	-rmdir out
 
-all: clean protogen 
+pre-process: clean protogen 
 
-all_images: all user_image api_gateway
+user: pre-process
+	docker build -f user/Dockerfile .
 
-all_compose: all compose 
-
-user_image:
-	docker build -f user/Dockerfile ./user
-
-api_gateway:
+api-gateway:
 	docker build -f api-gateway/Dockerfile ./api-gateway
 
 compose:
@@ -41,8 +38,11 @@ help:
 	@echo ''
 	@echo 'Available targets:'
 	@echo ''
-	@echo '  microservices		Prints a List of available services (JSON)'
-	@echo '  omd-service		Prints the default service name for the repository'
+	@echo ' clean			Cleans all generated outputs'
+	@echo ' protogen		Generates protobuf using all grpc proto files'
+	@echo ' pre-process		clean and protogen'
+	@echo ' user			Compiles user service with its image'
+	@echo ' api-gateway		Compiles user service with its image'
 	@echo ''
 	@echo "Available Microservices:"
 	@echo ''

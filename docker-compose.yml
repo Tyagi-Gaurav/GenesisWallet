@@ -3,7 +3,8 @@ services:
   user-app:
     container_name: local.user-app
     build:
-      context: user
+      context: .
+      dockerfile: ./user/Dockerfile
     ports:
       - "50051:50051"
     networks:
