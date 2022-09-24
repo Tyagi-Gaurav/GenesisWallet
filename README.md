@@ -1,6 +1,6 @@
 # GenesisWallet
 
-# Features Needed
+# Functional Features
 * User Authorization
     * MFA
         * SMS
@@ -20,3 +20,37 @@
 * Blockchain based transactions
 * Payment Gateways
     * Buy or Sell currencies
+
+# Non-Functional Features
+* Security
+* Service Discovery
+	* Self registration
+	* Deployment environment provided service registry
+* Observability
+	* HealthCheck API
+	* Ready
+	* Status
+	* Log Aggregation
+	* Distributed Tracing
+		* Asign each request a unique ID
+	* Exception Tracking
+		* Report exceptions to an exception tracking service, which deduplicates exceptions, alerts developers, tracks resolutions.
+	* Application Metrics 
+	* Audit Logging
+* Testing
+	* Consumer-driven contract testing
+		* Service meets expectations of clients
+	* Consumer-side contract test
+		* Verify client of a service can communicate with the service
+	* Service component testing
+* API Gateway
+	* Authentication
+	* Loggin
+	* Versioning
+	* Throttling
+	* Load balancing
+* Resilience
+	* Circuit Breaker
+	* BulkHead
+	* Timeouts
+

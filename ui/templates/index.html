@@ -4,6 +4,30 @@
     <meta charset="UTF-8">
     <title>Wallet</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        $(function() {
+
+            $("#Login").click(function() {
+                let loginData = {
+                    'userName' : $('#user_name').val(),
+                    'password' : $('#password').val()
+                }
+
+                $.ajax({
+                    url: '/login',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(loginData),
+                    success: function(response) {
+                        console.info(response)
+                    },
+                    error: function(response) {
+                        console.error(response)
+                    }
+                })
+            })
+        })
+    </script>
 </head>
 <body>
 
