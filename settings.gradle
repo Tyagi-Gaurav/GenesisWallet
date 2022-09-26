@@ -1,0 +1,5 @@
+rootProject.name = 'GenesisWallet'
+include 'functionalTest'
+include 'api-gateway'
+include 'user'
+
