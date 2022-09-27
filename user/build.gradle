@@ -1,0 +1,11 @@
+plugins {
+    id "org.springframework.boot" version "2.7.4"
+}
+
+bootJar {
+    mainClass = 'com.gw.user.Application'
+}
+
+dependencies {
+    project(":grpc-schema")
+}

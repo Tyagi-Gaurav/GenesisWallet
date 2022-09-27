@@ -27,6 +27,15 @@ subprojects {
         imports {
             mavenBom("org.springframework.boot:spring-boot-dependencies:2.7.4")
         }
+
+        dependencies {
+            dependency "org.junit.jupiter:junit-jupiter-api:5.9.1"
+            dependency "org.junit.jupiter:junit-jupiter-engine:5.9.1"
+        }
+    }
+
+    test {
+        useJUnitPlatform()
     }
 }
 
