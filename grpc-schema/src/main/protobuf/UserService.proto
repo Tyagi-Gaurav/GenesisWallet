@@ -1,5 +1,5 @@
 syntax = "proto3";
-package com.gt.scr.movie.grpc;
+package com.gw.user.grpc;
 
 import "google/protobuf/empty.proto";
 

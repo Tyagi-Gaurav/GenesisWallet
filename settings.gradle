@@ -3,4 +3,5 @@ include 'functionalTest'
 include 'api-gateway'
 include 'user'
 include 'grpc-schema'
+include 'common'
 

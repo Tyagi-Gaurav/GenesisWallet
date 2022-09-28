@@ -7,10 +7,6 @@ buildscript {
     }
 }
 
-plugins {
-    id "io.spring.dependency-management" version "1.0.14.RELEASE"
-}
-
 subprojects {
     repositories {
         mavenCentral()
@@ -23,15 +19,17 @@ subprojects {
 
     group 'genesis.wallets'
 
-    dependencyManagement {
-        imports {
-            mavenBom("org.springframework.boot:spring-boot-dependencies:2.7.4")
-        }
+    dependencies {
+        implementation(platform("org.springframework.boot:spring-boot-dependencies:2.7.4"))
+        implementation "org.apache.commons:commons-lang3:3.12.0"
+        implementation "org.springframework:spring-core:5.3.22"
 
-        dependencies {
-            dependency "org.junit.jupiter:junit-jupiter-api:5.9.1"
-            dependency "org.junit.jupiter:junit-jupiter-engine:5.9.1"
-        }
+        testImplementation "com.github.tomakehurst:wiremock-jre8:2.33.2"
+        testImplementation "org.springframework.cloud:spring-cloud-contract-wiremock:3.1.4"
+        testImplementation "org.springframework:spring-test:5.3.22"
+        testImplementation "org.junit.jupiter:junit-jupiter-api:5.9.1"
+        testImplementation "org.junit.jupiter:junit-jupiter-params:5.9.1"
+        testImplementation "org.junit.jupiter:junit-jupiter-engine:5.9.1"
     }
 
     test {
