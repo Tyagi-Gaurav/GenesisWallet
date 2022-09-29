@@ -24,35 +24,42 @@
 # Non-Functional Features
 * Security
 * Service Discovery
-	* Self registration
-	* Deployment environment provided service registry
+    * Self registration
+    * Deployment environment provided service registry
 * Observability
-	* HealthCheck API
-	* Ready
-	* Status
-	* Log Aggregation
-	* Distributed Tracing
-		* Asign each request a unique ID
-	* Exception Tracking
-		* Report exceptions to an exception tracking service, which deduplicates exceptions, alerts developers, tracks resolutions.
-	* Application Metrics 
-	* Audit Logging
+    * HealthCheck API
+    * Ready
+    * Status
+    * Log Aggregation
+    * Distributed Tracing
+        * Asign each request a unique ID
+    * Exception Tracking
+        * Report exceptions to an exception tracking service, which deduplicates exceptions, alerts developers, tracks resolutions.
+    * Application Metrics 
+    * Audit Logging
 * Testing
-	* Consumer-driven contract testing
-		* Service meets expectations of clients
-	* Consumer-side contract test
-		* Verify client of a service can communicate with the service
-	* Service component testing
+    * Consumer-driven contract testing
+        * Service meets expectations of clients
+    * Consumer-side contract test
+        * Verify client of a service can communicate with the service
+    * Service component testing
 * API Gateway
-	* Authentication
-	* Loggin
-	* Versioning
-	* Throttling
-	* Load balancing
+    * Authentication
+    * Loggin
+    * Versioning
+    * Throttling
+    * Load balancing
 * Resilience
-	* Circuit Breaker
-	* BulkHead
-	* Timeouts
+    * Circuit Breaker
+    * BulkHead
+    * Timeouts
+    * Rate Limiting on Client
+* Documentation
+  * Swagger for APIs
+  * Information dashboard for application
+    * Current Version in prod
+    * HealthCheck panel
+    * Availability parameters 
 
 # All Diagrams
 https://app.diagrams.net/#G16jsKiOVyKhlBEANwm2DxsQpYRsK9gUgp
