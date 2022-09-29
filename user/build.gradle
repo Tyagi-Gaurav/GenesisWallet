@@ -28,8 +28,6 @@ dependencies {
         exclude group: "ch.qos.logback"
     }
 
-    implementation "org.springframework.boot:spring-boot-starter-security"
-    implementation "org.springframework.boot:spring-boot-starter-webflux"
     implementation "mysql:mysql-connector-java:8.0.30"
     implementation "com.mchange:c3p0:0.9.5.5"
     implementation "io.jsonwebtoken:jjwt-api:0.11.5"

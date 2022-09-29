@@ -13,7 +13,7 @@ import static java.lang.annotation.ElementType.FIELD;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = AlphanumericValidator.class)
 public @interface AlphaNumeric {
-    String message() default "{com.gt.scr.movie.constraints.AlphaNumeric.message}";
+    String message() default "{com.gw.common.constraints.AlphaNumeric.message}";
 
     Class<?>[] groups() default { };
 

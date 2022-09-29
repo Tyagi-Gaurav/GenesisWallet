@@ -1,7 +1,7 @@
-package com.gt.user;
+package com.gw.user;
 
-import com.gt.user.function.UserCreate;
-import com.gw.user.service.domain.AccountCreateRequestDTO;
+import com.gw.user.function.UserCreate;
+import com.gw.user.resource.domain.AccountCreateRequestDTO;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import javax.sql.DataSource;

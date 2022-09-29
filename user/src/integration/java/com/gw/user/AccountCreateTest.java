@@ -1,12 +1,13 @@
-package com.gt.user;
+package com.gw.user;
 
-import com.gt.user.utils.AccountCreateRequestBuilder;
-import com.gw.user.Application;
-import com.gw.user.service.domain.AccountCreateRequestDTO;
+import com.gw.user.utils.AccountCreateRequestBuilder;
+import com.gw.user.resource.domain.AccountCreateRequestDTO;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebFlux;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,7 +26,7 @@ import javax.sql.DataSource;
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(initializers = Initializer.class)
 @AutoConfigureWebFlux
-@ActiveProfiles("MovieReadTest")
+@ActiveProfiles("AccountCreateTest")
 @AutoConfigureWireMock(port = 0)
 @TestPropertySource(properties = {
         "user.host=localhost",
@@ -49,7 +50,7 @@ public class AccountCreateTest {
 
     @ParameterizedTest
     @NullSource
-    //@ValueSource(strings = {"", "abc", "abcde", "efuusidhfauihsdfuhiusdhfaiuhsfiuhiufhs"})
+    @ValueSource(strings = {"", "abc", "efuusidhfauihsdfuhiusdhfaiuhsfiuhiufhs"})
     void createUserWithInvalidUser(String userName) {
         AccountCreateRequestDTO accountCreateRequestDTO = AccountCreateRequestBuilder.accountCreateRequest()
                 .withUserName(userName)
@@ -57,6 +58,15 @@ public class AccountCreateTest {
 
         scenarioExecutor
                 .userIsCreatedFor(accountCreateRequestDTO)
-                .then().expectReturnCode(204);
+                .then().expectReturnCode(400);
+    }
+
+    @Test
+    void createUserTest() {
+        AccountCreateRequestDTO accountCreateRequestDTO = AccountCreateRequestBuilder.accountCreateRequest().build();
+
+        scenarioExecutor
+                .userIsCreatedFor(accountCreateRequestDTO)
+                .then().expectReturnCode(201);
     }
 }

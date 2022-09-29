@@ -1,7 +1,7 @@
-package com.gt.user.utils;
+package com.gw.user.utils;
 
 import com.gw.common.domain.Gender;
-import com.gw.user.service.domain.AccountCreateRequestDTO;
+import com.gw.user.resource.domain.AccountCreateRequestDTO;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 

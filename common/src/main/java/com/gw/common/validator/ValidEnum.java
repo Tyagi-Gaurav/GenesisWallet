@@ -13,7 +13,7 @@ import static java.lang.annotation.ElementType.FIELD;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = EnumValidator.class)
 public @interface ValidEnum {
-    String message() default "{com.gt.scr.movie.constraints.ValidEnum.message}";
+    String message() default "{com.gw.common.constraints.ValidEnum.message}";
 
     Class<?>[] groups() default { };
 

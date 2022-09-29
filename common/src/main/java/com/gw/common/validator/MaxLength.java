@@ -13,7 +13,7 @@ import static java.lang.annotation.ElementType.FIELD;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = MaxLengthValidator.class)
 public @interface MaxLength {
-    String message() default "{com.gt.scr.movie.constraints.MaxLength.message}";
+    String message() default "{com.gw.common.constraints.MaxLength.message}";
 
     Class<?>[] groups() default { };
 

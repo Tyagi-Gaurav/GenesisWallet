@@ -1,4 +1,4 @@
-package com.gw.user.service.domain;
+package com.gw.user.resource.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -7,6 +7,7 @@ import com.gw.common.validator.AlphaNumeric;
 import com.gw.common.validator.MaxLength;
 import com.gw.common.validator.MinLength;
 import com.gw.common.validator.ValidEnum;
+import com.gw.user.service.domain.Role;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -15,7 +16,7 @@ import jakarta.validation.constraints.Pattern;
 @JsonDeserialize
 @Valid
 public record AccountCreateRequestDTO(
-        @MinLength(4) @MaxLength(20) String userName,
+        @NotNull @MinLength(4) @MaxLength(20) String userName,
         @AlphaNumeric @MinLength(6) @MaxLength(15) String password,
         @MinLength(3) @MaxLength(30) String firstName,
         @MinLength(3) @MaxLength(30) String lastName,

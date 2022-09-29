@@ -1,7 +1,7 @@
-package com.gt.user.function;
+package com.gw.user.function;
 
-import com.gt.user.utils.TestUtils;
-import com.gw.user.service.domain.AccountCreateRequestDTO;
+import com.gw.user.utils.TestUtils;
+import com.gw.user.resource.domain.AccountCreateRequestDTO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
@@ -15,9 +15,9 @@ public class UserCreate
                                             AccountCreateRequestDTO accountCreateRequestDTO) {
 
         try {
-            return webClient.post().uri("/user/account/create")
-                    .header(HttpHeaders.CONTENT_TYPE.toString(), "application/vnd+account.create.v1+json")
-                    .header(HttpHeaders.ACCEPT.toString(), "application/vnd+account.create.v1+json")
+            return webClient.post().uri("/user/create")
+                    .header(HttpHeaders.CONTENT_TYPE, "application/vnd+user.create.v1+json")
+                    .header(HttpHeaders.ACCEPT, "application/vnd+user.create.v1+json")
                     .bodyValue(TestUtils.asJsonString(accountCreateRequestDTO))
                     .exchange();
         } catch (Exception exception) {

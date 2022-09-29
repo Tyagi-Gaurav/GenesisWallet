@@ -13,7 +13,7 @@ import static java.lang.annotation.ElementType.FIELD;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = MinLengthValidator.class)
 public @interface MinLength {
-    String message() default "{com.gt.scr.movie.constraints.MinLength.message}";
+    String message() default "{com.gw.common.constraints.MinLength.message}";
 
     Class<?>[] groups() default { };
 
