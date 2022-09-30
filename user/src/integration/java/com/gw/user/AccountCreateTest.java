@@ -62,7 +62,7 @@ public class AccountCreateTest {
     }
 
     @Test
-    void createUserTest() {
+    void createValidUserTest() {
         AccountCreateRequestDTO accountCreateRequestDTO = AccountCreateRequestBuilder.accountCreateRequest().build();
 
         scenarioExecutor

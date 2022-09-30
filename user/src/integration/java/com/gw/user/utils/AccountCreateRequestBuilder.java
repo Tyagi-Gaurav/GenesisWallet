@@ -7,16 +7,15 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 public class AccountCreateRequestBuilder {
     private String userName = randomAlphabetic(4);
-    private String password = randomAlphabetic(6);
-    private String firstName = randomAlphabetic(7);
-    private String lastName = randomAlphabetic(7);
+    private final String password = randomAlphabetic(6);
+    private final String firstName = randomAlphabetic(7);
+    private final String lastName = randomAlphabetic(7);
     private String dateOfBirth = "10/10/2010";
-    private Gender gender = Gender.FEMALE;
+    private final Gender gender = Gender.FEMALE;
     private String homeCountry = "AUS";
-    private String role = "USER";
+    private String role = "ANONYMOUS_USER";
 
-    private AccountCreateRequestBuilder() {
-    }
+    private AccountCreateRequestBuilder() {}
 
     public static AccountCreateRequestBuilder accountCreateRequest() {
         return new AccountCreateRequestBuilder();
