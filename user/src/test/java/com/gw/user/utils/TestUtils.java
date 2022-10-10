@@ -4,7 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gw.common.domain.Gender;
 import com.gw.user.resource.domain.AccountCreateRequestDTO;
 
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class TestUtils {
     final static ObjectMapper mapper = new ObjectMapper();
@@ -33,4 +39,13 @@ public class TestUtils {
                 "USER");
     }
 
+    public static void executeQueryUpdate(DataSource dataSource, String query) throws SQLException {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            connection.setAutoCommit(true);
+            assertThat(preparedStatement.executeUpdate())
+                    .describedAs("Could not run query. {}", query)
+                    .isNotNegative();
+        }
+    }
 }

@@ -13,6 +13,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import reactor.core.publisher.Mono;
 
 import java.security.Key;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -45,18 +46,16 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
                         // that the current user is authenticated. So it passes the
                         // Spring Security Configurations successfully.
 
-                        List<Object> authoritiesObjects = (List<Object>) jwtTokenUtil.getClaimFromToken(claims -> claims.get("Authorities"));
+                        String authority = (String) jwtTokenUtil.getClaimFromToken(claims -> claims.get("Authorities"));
 
-                        LOG.info("Authorities Object {}", authoritiesObjects);
+                        LOG.info("Authorities Object {}", authority);
 
-                        String authority = (String) authoritiesObjects.get(0);
                         var userprofile = new UserProfile(ud.id(), authority, token);
 
                         LOG.info("User {} authenticated with role: {}", userId, authority);
                         UsernamePasswordAuthenticationToken userTokenData =
                                 new UsernamePasswordAuthenticationToken(userprofile, "",
-                                        ud.authorities().stream().map(SimpleGrantedAuthority::new)
-                                                .toList());
+                                        Collections.singletonList(new SimpleGrantedAuthority(ud.role())));
                         return Mono.just(userTokenData);
                     });
         }

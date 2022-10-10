@@ -28,14 +28,17 @@ dependencies {
         exclude group: "ch.qos.logback"
     }
 
-    implementation "mysql:mysql-connector-java:8.0.30"
-    implementation "com.mchange:c3p0:0.9.5.5"
+    implementation "org.liquibase:liquibase-core:4.16.1"
     implementation "io.jsonwebtoken:jjwt-api:0.11.5"
     implementation "io.jsonwebtoken:jjwt-impl:0.11.5"
     implementation "io.jsonwebtoken:jjwt-jackson:0.11.5"
+    implementation "org.springframework.data:spring-data-r2dbc:1.5.3"
+    implementation "org.springframework.boot:spring-boot-starter-data-r2dbc:2.7.4"
+    implementation "io.r2dbc:r2dbc-postgresql:0.8.13.RELEASE"
 
-    testImplementation "org.testcontainers:mysql:1.17.3"
+    testImplementation "org.testcontainers:junit-jupiter:1.17.4"
     testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "org.testcontainers:postgresql:1.17.5"
 }
 
 tasks.register('integrationTest', Test) {
@@ -59,3 +62,5 @@ tasks.register('integrationTest', Test) {
     shouldRunAfter test
     //finalizedBy jacocoTestReport
 }
+
+check.dependsOn(integrationTest)

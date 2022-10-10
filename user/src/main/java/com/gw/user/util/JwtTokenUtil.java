@@ -58,13 +58,13 @@ public class JwtTokenUtil {
                 .compact();
     }
 
-    private static Map<String, Object> addClaimsV2(Collection<String> authorities) {
-        return Map.of("Authorities", authorities);
+    private static Map<String, Object> addClaimsV2(String authority) {
+        return Map.of("Authorities", authority);
     }
 
     public static String generateTokenV2(User user,
                                          Duration tokenDuration, Key signingKey) {
-        Map<String, Object> claims = addClaimsV2(user.authorities());
+        Map<String, Object> claims = addClaimsV2(user.role());
         return doGenerateToken(claims, user.username(), user.id(), tokenDuration, signingKey);
     }
 

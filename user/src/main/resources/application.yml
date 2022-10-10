@@ -1,7 +1,7 @@
 spring:
   active: prod
-#  liquibase:
-#    changeLog: classpath:db.changelog/dbchangelog.sql
+  liquibase:
+    changeLog: classpath:db.changelog/userchangelog.sql
   webflux:
     base-path: /api
 

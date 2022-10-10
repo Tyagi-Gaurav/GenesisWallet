@@ -6,7 +6,6 @@ import com.gw.common.http.filter.LoggingFilter;
 import com.gw.common.http.filter.MetricsInterceptor;
 import com.gw.common.http.filter.RequestIdFilter;
 import com.gw.common.metrics.ExceptionCounter;
-import com.mchange.v2.c3p0.ComboPooledDataSource;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.slf4j.Logger;
@@ -70,29 +69,29 @@ public class ApplicationConfiguration implements WebFluxConfigurer {
         return new ObjectMapper();
     }
 
-    @Primary
-    @Bean
-    public DataSource dataSource(DatabaseConfig mySQLConfig) {
-        ComboPooledDataSource cpds = new ComboPooledDataSource();
-        try {
-            cpds.setDriverClass(mySQLConfig.driver());
-            String jdbcUrl = String.format("jdbc:mysql://%s:%d/%s", mySQLConfig.host(),
-                    mySQLConfig.port(), mySQLConfig.database());
-            LOG.info("Connecting to database {}", jdbcUrl);
-            cpds.setJdbcUrl(jdbcUrl);
-
-            cpds.setUser(mySQLConfig.user());
-            cpds.setPassword(mySQLConfig.password());
-
-            cpds.setMinPoolSize(mySQLConfig.minPoolSize());
-            cpds.setMaxPoolSize(mySQLConfig.maxPoolSize());
-        } catch (Exception e) {
-            if (LOG.isErrorEnabled()) {
-                LOG.error("Error while initializing database: {}", e.getMessage());
-            }
-            throw new IllegalArgumentException(e);
-        }
-
-        return cpds;
-    }
+//    @Primary
+//    @Bean
+//    public DataSource dataSource(DatabaseConfig mySQLConfig) {
+//        ComboPooledDataSource cpds = new ComboPooledDataSource();
+//        try {
+//            cpds.setDriverClass(mySQLConfig.driver());
+//            String jdbcUrl = String.format("jdbc:mysql://%s:%d/%s", mySQLConfig.host(),
+//                    mySQLConfig.port(), mySQLConfig.database());
+//            LOG.info("Connecting to database {}", jdbcUrl);
+//            cpds.setJdbcUrl(jdbcUrl);
+//
+//            cpds.setUser(mySQLConfig.user());
+//            cpds.setPassword(mySQLConfig.password());
+//
+//            cpds.setMinPoolSize(mySQLConfig.minPoolSize());
+//            cpds.setMaxPoolSize(mySQLConfig.maxPoolSize());
+//        } catch (Exception e) {
+//            if (LOG.isErrorEnabled()) {
+//                LOG.error("Error while initializing database: {}", e.getMessage());
+//            }
+//            throw new IllegalArgumentException(e);
+//        }
+//
+//        return cpds;
+//    }
 }

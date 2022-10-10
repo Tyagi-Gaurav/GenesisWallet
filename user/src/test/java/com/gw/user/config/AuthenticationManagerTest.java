@@ -20,10 +20,8 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
 import java.time.Duration;
-import java.util.Collections;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static org.testcontainers.shaded.org.awaitility.Awaitility.await;
@@ -38,7 +36,7 @@ class AuthenticationManagerTest {
 
     private Key signingKey;
     private AuthenticationManager authenticationManager;
-    private User user = new User(UUID.randomUUID(),
+    private final User user = new User(UUID.randomUUID(),
             "TestFirstName",
             "TestLastName",
             "TestUserName",
@@ -46,7 +44,7 @@ class AuthenticationManagerTest {
             "01/01/1989",
             Gender.FEMALE,
             "GBR",
-            Collections.singletonList("ADMIN"));
+            "ADMIN");
     private final static String KEY_256_BIT = "8A6872AD13BEC411DAC9746C7FEDB8A6872AD13BEC411DAC9746C7FEDB";
 
     @BeforeEach

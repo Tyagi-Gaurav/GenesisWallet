@@ -8,4 +8,8 @@ import java.util.UUID;
 
 public interface UserService extends ReactiveUserDetailsService {
     Mono<User> findUserBy(UUID userId);
+
+    Mono<Void> addUser(User user);
+
+    Mono<User> findUserBy(String userName);
 }
