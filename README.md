@@ -1,6 +1,7 @@
 # GenesisWallet
 
 # Functional Features
+* User Creation
 * User Authorization
     * MFA
         * SMS

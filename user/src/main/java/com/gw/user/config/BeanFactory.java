@@ -15,21 +15,19 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.web.reactive.config.EnableWebFlux;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.crypto.spec.SecretKeySpec;
-import javax.sql.DataSource;
 import java.security.Key;
 import java.util.Base64;
 
 @Configuration
 @EnableWebFlux
 @ConfigurationPropertiesScan(value = {"com.gw.user.config", "com.gw.common"})
-public class ApplicationConfiguration implements WebFluxConfigurer {
-    private static final Logger LOG = LoggerFactory.getLogger(ApplicationConfiguration.class);
+public class BeanFactory implements WebFluxConfigurer {
+    private static final Logger LOG = LoggerFactory.getLogger(BeanFactory.class);
 
     @Autowired
     private LoggingFilter loggingFilter;
@@ -68,30 +66,4 @@ public class ApplicationConfiguration implements WebFluxConfigurer {
     public ObjectMapper objectMapper() {
         return new ObjectMapper();
     }
-
-//    @Primary
-//    @Bean
-//    public DataSource dataSource(DatabaseConfig mySQLConfig) {
-//        ComboPooledDataSource cpds = new ComboPooledDataSource();
-//        try {
-//            cpds.setDriverClass(mySQLConfig.driver());
-//            String jdbcUrl = String.format("jdbc:mysql://%s:%d/%s", mySQLConfig.host(),
-//                    mySQLConfig.port(), mySQLConfig.database());
-//            LOG.info("Connecting to database {}", jdbcUrl);
-//            cpds.setJdbcUrl(jdbcUrl);
-//
-//            cpds.setUser(mySQLConfig.user());
-//            cpds.setPassword(mySQLConfig.password());
-//
-//            cpds.setMinPoolSize(mySQLConfig.minPoolSize());
-//            cpds.setMaxPoolSize(mySQLConfig.maxPoolSize());
-//        } catch (Exception e) {
-//            if (LOG.isErrorEnabled()) {
-//                LOG.error("Error while initializing database: {}", e.getMessage());
-//            }
-//            throw new IllegalArgumentException(e);
-//        }
-//
-//        return cpds;
-//    }
 }

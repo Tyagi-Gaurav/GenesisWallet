@@ -8,8 +8,7 @@ import org.testcontainers.utility.DockerImageName;
 
 import static org.testcontainers.containers.PostgreSQLContainer.POSTGRESQL_PORT;
 
-
-public class DatabaseInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+public class TestContainerDatabaseInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
     static PostgreSQLContainer postgres;
     private static final String USER_SCHEMA = "USER_SCHEMA";
@@ -24,12 +23,12 @@ public class DatabaseInitializer implements ApplicationContextInitializer<Config
         postgres.start();
 
         // Override MySql configuration
-        String databaseHost = "db.host=" + postgres.getHost();
-        String databasePort = "db.port=" + postgres.getMappedPort(POSTGRESQL_PORT);
-        String databaseUser = "db.user=" + postgres.getUsername();
-        String databasePassword = "db.password=" + postgres.getPassword();
-        String databaseName = "db.name=" + postgres.getDatabaseName();
-        String databaseSchema = "db.schema=" + USER_SCHEMA;
+        String databaseHost = "database.host=" + postgres.getHost();
+        String databasePort = "database.port=" + postgres.getMappedPort(POSTGRESQL_PORT);
+        String databaseUser = "database.user=" + postgres.getUsername();
+        String databasePassword = "database.password=" + postgres.getPassword();
+        String databaseName = "database.name=" + postgres.getDatabaseName();
+        String databaseSchema = "database.schema=" + USER_SCHEMA;
 
         TestPropertySourceUtils.addInlinedPropertiesToEnvironment(applicationContext,
                 databaseHost,

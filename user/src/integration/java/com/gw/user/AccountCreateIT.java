@@ -1,6 +1,6 @@
 package com.gw.user;
 
-import com.gw.user.repo.DatabaseInitializer;
+import com.gw.user.repo.TestContainerDatabaseInitializer;
 import com.gw.user.utils.AccountCreateRequestBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,9 +21,9 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = Application.class,
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ContextConfiguration(initializers = DatabaseInitializer.class)
+@ContextConfiguration(initializers = TestContainerDatabaseInitializer.class)
 @AutoConfigureWebFlux
-@ActiveProfiles("AccountCreateTest")
+@ActiveProfiles("AccountCreateIT")
 @AutoConfigureWireMock(port = 0)
 @TestPropertySource(properties = {
         "user.host=localhost",

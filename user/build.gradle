@@ -34,7 +34,10 @@ dependencies {
     implementation "io.jsonwebtoken:jjwt-jackson:0.11.5"
     implementation "org.springframework.data:spring-data-r2dbc:1.5.3"
     implementation "org.springframework.boot:spring-boot-starter-data-r2dbc:2.7.4"
-    implementation "io.r2dbc:r2dbc-postgresql:0.8.13.RELEASE"
+    implementation("io.r2dbc:r2dbc-postgresql:0.8.13.RELEASE") {
+        exclude group: "io.projectreactor"
+        exclude group: "io.projectreactor.netty"
+    }
 
     testImplementation "org.testcontainers:junit-jupiter:1.17.4"
     testImplementation "org.springframework.boot:spring-boot-starter-test"

@@ -24,7 +24,7 @@ public class AbstractResource {
     protected RestTemplate restTemplate;
 
     protected String getFullUrl(String hostName, String contextPath, String path, int port) {
-        StringBuilder fullUrl = new StringBuilder("http://" + hostName);
+        StringBuilder fullUrl = new StringBuilder("https://" + hostName);
 
         if (port != 0) {
             fullUrl.append(":").append(port);

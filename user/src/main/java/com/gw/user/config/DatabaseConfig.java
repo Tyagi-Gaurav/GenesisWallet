@@ -3,14 +3,14 @@ package com.gw.user.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
 
+import java.util.Map;
+
 @ConstructorBinding
 @ConfigurationProperties("database")
-public record DatabaseConfig(String driver,
-                             String host,
+public record DatabaseConfig(String host,
                              int port,
-                             String database,
+                             String name,
                              String schema,
                              String user,
                              String password,
-                             int minPoolSize,
-                             int maxPoolSize) {}
+                             Map<String, String> r2dbcPool) {}

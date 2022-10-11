@@ -18,7 +18,7 @@ public class DBTestUtils {
 
     public static void addToDatabase(User user, DatabaseClient databaseClient) {
 
-        LOG.info("Adding {} to database: ", user);
+        LOG.info("Adding {} to name: ", user);
         String query = "INSERT INTO USER_SCHEMA.USER_TABLE (ID, USER_NAME, FIRST_NAME, LAST_NAME, PASSWORD, DATE_OF_BIRTH, GENDER, HOME_COUNTRY, ROLE) " +
                 "values ($1, $2, $3, $4, $5, $6, $7, $8, $9)";
         Mono<Integer> result = databaseClient.sql(query)

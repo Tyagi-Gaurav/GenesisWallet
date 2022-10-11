@@ -31,14 +31,19 @@ auth:
   tokenDuration: ${TOKEN_DURATION:3650D}
   secret: ${SECRET:19CA249C582715657BDCAB1FB31E69F854443A4FE3CBAFFD215E3F3676}
 
-mysql:
-  driver: "com.mysql.cj.jdbc.Driver"
-  host: ${MYSQL_HOST:localhost}
-  port: ${MYSQL_PORT:3306}
-  user: ${MYSQL_USER:user}
-  password: ${MYSQL_PWD:password}
-  minPoolSize: 2
-  maxPoolSize: 2
-  database: ${MYSQL_DB_NAME:user_data}
+database:
+  host: ${DB_HOST:localhost}
+  port: ${DB_PORT:3306}
+  user: ${DB_USER:user}
+  password: ${DB_PWD:password}
+  name: ${DB_NAME:user_data}
   schema: USER_SCHEMA
-
+  r2dbcPool:
+    initialSize: 2
+    maxSize: 8
+    maxIdleTime: 300s
+    maxCreateConnectionTime: 9s
+    maxAcquireTime: 10s
+    maxLifeTime: 600s
+    validationDepth: LOCAL
+    blocking-warmup: true

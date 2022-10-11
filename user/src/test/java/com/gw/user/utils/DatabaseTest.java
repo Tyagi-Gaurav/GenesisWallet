@@ -1,4 +1,4 @@
-package com.gw.user.repo;
+package com.gw.user.utils;
 
 import io.r2dbc.postgresql.PostgresqlConnectionConfiguration;
 import io.r2dbc.postgresql.PostgresqlConnectionFactory;
@@ -8,29 +8,18 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.data.r2dbc.config.AbstractR2dbcConfiguration;
-import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories;
 import org.springframework.r2dbc.connection.init.ConnectionFactoryInitializer;
 import org.springframework.r2dbc.connection.init.ResourceDatabasePopulator;
+import org.springframework.r2dbc.core.DatabaseClient;
 
-import javax.sql.DataSource;
+import javax.xml.crypto.Data;
 import java.io.InputStream;
 
 @Import(DatabaseTest.TestDatabaseContextConfiguration.class)
 public abstract class DatabaseTest {
 
     @TestConfiguration
-    @EnableR2dbcRepositories
-    static class TestDatabaseContextConfiguration extends AbstractR2dbcConfiguration {
-
-        @Value("${db.port}")
-        String port;
-
-        @Value("${db.name}")
-        String databaseName;
-
-        @Value("${db.schema}")
-        String databaseSchema;
+    static class TestDatabaseContextConfiguration {
 
         @Bean
         public ConnectionFactoryInitializer inMemoryR2DbcDatabase(ConnectionFactory connectionFactory) {
@@ -44,16 +33,26 @@ public abstract class DatabaseTest {
             return initializer;
         }
 
-        @Override
         @Bean
-        public ConnectionFactory connectionFactory() {
+        public DatabaseClient databaseClient(ConnectionFactory connectionFactory) {
+            return DatabaseClient.create(connectionFactory);
+        }
+
+        @Bean
+        public ConnectionFactory connectionFactory(@Value("${database.host}") String host,
+                                                   @Value("${database.port}") String port,
+                                                   @Value("${database.user}") String user,
+                                                   @Value("${database.password}") String password,
+                                                   @Value("${database.name}") String databaseName,
+                                                   @Value("${database.schema}") String databaseSchema
+                                                   ) {
             return new PostgresqlConnectionFactory(PostgresqlConnectionConfiguration.builder()
+                    .host(host)
+                    .port(Integer.parseInt(port))
+                    .username(user)
+                    .password(password)
                     .database(databaseName)
                     .schema(databaseSchema)
-                    .host("localhost")
-                    .port(Integer.parseInt(port))
-                    .username("test")
-                    .password("test")
                     .build());
         }
     }

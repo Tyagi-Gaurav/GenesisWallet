@@ -1,6 +1,7 @@
 package com.gw.user.repo;
 
 import com.gw.common.domain.User;
+import com.gw.user.utils.DatabaseTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,8 +21,8 @@ import static com.gw.user.repo.DBTestUtils.clearDatabase;
 import static com.gw.user.utils.TestUserBuilder.aUser;
 import static com.gw.user.utils.TestUserBuilder.copyOf;
 
-@ActiveProfiles("UserRepositoryImplTest")
-@ContextConfiguration(initializers = DatabaseInitializer.class)
+@ActiveProfiles("UserRepositoryTest")
+@ContextConfiguration(initializers = TestContainerDatabaseInitializer.class)
 @SpringBootTest(classes = {UserRepository.class, UserRepositoryImpl.class})
 @ExtendWith(MockitoExtension.class)
 class UserRepositoryTest extends DatabaseTest {
@@ -302,4 +303,6 @@ class UserRepositoryTest extends DatabaseTest {
 //        //then
 //        assertThat(databaseException).isNotNull();
 //    }
+
+
 }
