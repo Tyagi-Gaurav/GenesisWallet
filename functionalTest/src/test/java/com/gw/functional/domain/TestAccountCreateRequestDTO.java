@@ -11,5 +11,4 @@ public record TestAccountCreateRequestDTO(String userName,
                                           String lastName,
                                           String dateOfBirth, //Format: dd/mm/yyyy
                                           TestGender gender,
-                                          String homeCountry, //ISO Alpha-3
-                                          String role) {}
+                                          String homeCountry) {}

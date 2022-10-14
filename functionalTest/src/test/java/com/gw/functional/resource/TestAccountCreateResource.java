@@ -23,9 +23,9 @@ public class TestAccountCreateResource extends AbstractResource {
 
     private void createUsingRest(TestAccountCreateRequestDTO accountCreateRequestDTO) {
         String fullUrl = getFullUrl(apiGatewayConfig.host().trim(),
-                apiGatewayConfig.userContextPath(), "/account/create", apiGatewayConfig.port());
+                apiGatewayConfig.userContextPath(), "/user/create", apiGatewayConfig.port());
         HttpHeaders headers = new HttpHeaders();
-        headers.set(HttpHeaders.CONTENT_TYPE, "application/vnd+account.create.v1+json");
+        headers.set(HttpHeaders.CONTENT_TYPE, "application/vnd+user.create.v1+json");
         HttpEntity<TestAccountCreateRequestDTO> request = new HttpEntity<>(accountCreateRequestDTO, headers);
         responseHolder.setResponse(this.post(fullUrl, request, String.class));
     }

@@ -4,7 +4,6 @@ spring:
 api-gateway:
   host: ${API_GATEWAY_HOST:localhost}
   port: ${API_GATEWAY_PORT:8080}
-  userContextPath: /user
 
 admin-credentials:
   userName: admin

@@ -24,12 +24,13 @@ public record AccessibleEndpointConfig(Map<String, Boolean> endpoints,
     }
 
     public boolean isEnabled(String method, String path) {
-        return endpoints.getOrDefault(String.format("%s-%s", method, path), false);
+        return endpoints != null &&
+                endpoints.getOrDefault(String.format("%s-%s", method, path), false);
     }
 
     public boolean satisfiesRegex(String method, String path) {
         String toMatch = String.format("%s-%s", method, path);
-        return endpointsRegex.keySet().stream().map(Pattern::compile)
+        return endpointsRegex != null && endpointsRegex.keySet().stream().map(Pattern::compile)
                 .map(p -> p.matcher(toMatch))
                 .anyMatch(Matcher::matches);
     }

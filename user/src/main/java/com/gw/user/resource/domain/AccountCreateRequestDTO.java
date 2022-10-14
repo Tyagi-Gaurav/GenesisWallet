@@ -6,8 +6,6 @@ import com.gw.common.domain.Gender;
 import com.gw.common.validator.AlphaNumeric;
 import com.gw.common.validator.MaxLength;
 import com.gw.common.validator.MinLength;
-import com.gw.common.validator.ValidEnum;
-import com.gw.user.service.domain.Role;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -23,7 +21,6 @@ public record AccountCreateRequestDTO(
         @MinLength(3) @MaxLength(30) String lastName,
         @NotNull @Pattern(regexp = "^(3[0-1]|[1-2]\\d|0[1-9])\\/((1[0-2])|0[1-9])\\/((19|20)\\d{2})$") String dateOfBirth,
         Gender gender,
-        @NotNull @Pattern(regexp = "^[A-Z]{3}$") String homeCountry,
-        @ValidEnum(Role.class) String role
+        @NotNull @Pattern(regexp = "^[A-Z]{3}$") String homeCountry
 ) {
 }

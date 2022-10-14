@@ -13,7 +13,6 @@ public class AccountCreateRequestBuilder {
     private String dateOfBirth = "10/10/2010";
     private final Gender gender = Gender.FEMALE;
     private String homeCountry = "AUS";
-    private String role = "ANONYMOUS_USER";
 
     private AccountCreateRequestBuilder() {}
 
@@ -24,16 +23,11 @@ public class AccountCreateRequestBuilder {
     public AccountCreateRequestDTO build() {
         return new AccountCreateRequestDTO(
                 userName, password, firstName, lastName,
-                dateOfBirth, gender, homeCountry, role);
+                dateOfBirth, gender, homeCountry);
     }
 
     public AccountCreateRequestBuilder withUserName(String userName) {
         this.userName = userName;
-        return this;
-    }
-
-    public AccountCreateRequestBuilder withRole(String role) {
-        this.role = role;
         return this;
     }
 

@@ -2,6 +2,7 @@ package com.gw.functional.resource;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.platform.commons.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +25,16 @@ public class AbstractResource {
     protected RestTemplate restTemplate;
 
     protected String getFullUrl(String hostName, String contextPath, String path, int port) {
-        StringBuilder fullUrl = new StringBuilder("https://" + hostName);
+        StringBuilder fullUrl = new StringBuilder("http://" + hostName);
 
         if (port != 0) {
             fullUrl.append(":").append(port);
         }
 
-        fullUrl.append(contextPath);
+        if (StringUtils.isNotBlank(contextPath)) {
+            fullUrl.append(contextPath);
+        }
+
         fullUrl.append(path);
 
         return fullUrl.toString();

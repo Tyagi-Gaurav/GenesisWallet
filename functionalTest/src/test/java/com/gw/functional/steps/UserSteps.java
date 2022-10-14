@@ -38,8 +38,7 @@ public class UserSteps implements En {
                             testAccountCreateRequestDTO.lastName(),
                             testAccountCreateRequestDTO.dateOfBirth(),
                             testAccountCreateRequestDTO.gender(),
-                            testAccountCreateRequestDTO.homeCountry(),
-                            testAccountCreateRequestDTO.role()
+                            testAccountCreateRequestDTO.homeCountry()
                     );
 
                     scenarioContext.storeCredentialsRequest(testAccountCreateRequestDTO);
@@ -55,8 +54,7 @@ public class UserSteps implements En {
                             RandomStringUtils.randomAlphabetic(6),
                             "12/04/1990",
                             TestGender.MALE,
-                            "AUS"
-                            ,role);
+                            "AUS");
 
                     scenarioContext.storeCredentialsRequest(testAccountCreateRequestDTO);
                     testAccountCreateResource.create(testAccountCreateRequestDTO);
@@ -78,8 +76,7 @@ public class UserSteps implements En {
                             RandomStringUtils.randomAlphabetic(6),
                             "12/04/1990",
                             TestGender.MALE,
-                            "AUS",
-                            role);
+                            "AUS");
 
                     scenarioContext.storeCredentialsRequest(testAccountCreateRequestDTO);
                     //userManagementResource.create(testAccountCreateRequestDTO);

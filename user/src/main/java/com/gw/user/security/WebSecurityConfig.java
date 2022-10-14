@@ -35,7 +35,6 @@ public class WebSecurityConfig {
         return httpSecurity
                 .csrf().disable()
                 .authorizeExchange()
-                .pathMatchers("/swagger-ui**", "/webjars/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .pathMatchers("/status", "/actuator/**").permitAll()
                 .pathMatchers("/user/**").permitAll()
                 .anyExchange().authenticated().and()

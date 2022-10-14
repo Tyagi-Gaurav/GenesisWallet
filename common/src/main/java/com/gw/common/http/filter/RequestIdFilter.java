@@ -12,7 +12,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
-//TODO: Add Unit Test
 @Component
 public class RequestIdFilter implements WebFilter {
 
