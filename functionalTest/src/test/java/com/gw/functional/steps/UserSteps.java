@@ -3,7 +3,9 @@ package com.gw.functional.steps;
 import com.gw.functional.config.ScenarioContext;
 import com.gw.functional.domain.TestAccountCreateRequestDTO;
 import com.gw.functional.domain.TestGender;
+import com.gw.functional.domain.TestLoginRequestDTO;
 import com.gw.functional.resource.TestAccountCreateResource;
+import com.gw.functional.resource.TestLoginResource;
 import com.gw.functional.util.ResponseHolder;
 import io.cucumber.java8.En;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -15,12 +17,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UserSteps implements En {
     @Autowired
     private TestAccountCreateResource testAccountCreateResource;
-
     @Autowired
     private ScenarioContext scenarioContext;
-
     @Autowired
     private ResponseHolder responseHolder;
+    @Autowired
+    private TestLoginResource testLoginResource;
 
     public UserSteps() {
         Given("^a user attempts to create a new account with following details$",
@@ -85,5 +87,16 @@ public class UserSteps implements En {
         And("^the userName is captured$", () -> {
             scenarioContext.setLastUserName(scenarioContext.getUserCredentialsRequest().userName());
         });
+
+        When("^the user attempts to login using the new credentials$", () -> {
+            loginUsing(scenarioContext.getUserCredentialsRequest());
+        });
+    }
+
+    private void loginUsing(TestAccountCreateRequestDTO userCredentialsRequest) {
+        TestLoginRequestDTO testLoginRequestDTO = new TestLoginRequestDTO(
+                userCredentialsRequest.userName(),
+                userCredentialsRequest.password());
+        testLoginResource.doLogin(testLoginRequestDTO);
     }
 }
