@@ -8,8 +8,6 @@ import com.gw.common.http.filter.RequestIdFilter;
 import com.gw.common.metrics.ExceptionCounter;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.micrometer.core.instrument.MeterRegistry;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
@@ -27,8 +25,6 @@ import java.util.Base64;
 @EnableWebFlux
 @ConfigurationPropertiesScan(value = {"com.gw.user.config", "com.gw.common"})
 public class BeanFactory implements WebFluxConfigurer {
-    private static final Logger LOG = LoggerFactory.getLogger(BeanFactory.class);
-
     @Autowired
     private LoggingFilter loggingFilter;
 

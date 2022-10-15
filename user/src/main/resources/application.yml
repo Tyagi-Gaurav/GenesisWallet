@@ -12,6 +12,7 @@ accessible:
   endpoints:
     "[GET-/api/status]": ${GET_STATUS:true}
     "[POST-/api/user/create]": ${CREATE_USER:true}
+    "[POST-/api/user/login]": ${LOGIN_USER:true}
     "[GET-/actuator/metrics]": ${GET_METRICS:true}
     "[GET-/actuator/config]": ${GET_CONFIG:true}
 
@@ -32,6 +33,7 @@ auth:
   secret: ${SECRET:19CA249C582715657BDCAB1FB31E69F854443A4FE3CBAFFD215E3F3676}
 
 database:
+  driver: "org.postgresql.Driver"
   host: ${DB_HOST:localhost}
   port: ${DB_PORT:3306}
   user: ${DB_USER:user}

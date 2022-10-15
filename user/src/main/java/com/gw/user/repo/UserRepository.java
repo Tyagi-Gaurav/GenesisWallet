@@ -7,4 +7,8 @@ import java.util.UUID;
 
 public interface UserRepository {
     Mono<User> findUserById(UUID id);
+
+    Mono<Void> addUser(User userToAdd);
+
+    Mono<User> findUserByName(String username);
 }

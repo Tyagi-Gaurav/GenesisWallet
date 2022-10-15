@@ -1,4 +1,4 @@
-package com.gw.user.utils;
+package com.gw.user.testutils;
 
 import com.gw.common.domain.Gender;
 import com.gw.common.domain.User;
@@ -7,7 +7,7 @@ import java.util.UUID;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
-public class TestUserBuilder {
+public class UserBuilder {
 
     private UUID id = UUID.randomUUID();
     private String password = randomAlphabetic(10);
@@ -19,15 +19,15 @@ public class TestUserBuilder {
     private String homeCountry = "AUS";
     private String authority = "USER";
 
-    private TestUserBuilder() {
+    private UserBuilder() {
     }
 
-    public static TestUserBuilder aUser() {
-        return new TestUserBuilder();
+    public static UserBuilder aUser() {
+        return new UserBuilder();
     }
 
-    public static TestUserBuilder copyOf(User currentUser) {
-        TestUserBuilder userBuilder = new TestUserBuilder();
+    public static UserBuilder copyOf(User currentUser) {
+        UserBuilder userBuilder = new UserBuilder();
 
         userBuilder.id = currentUser.id();
         userBuilder.username = currentUser.username();
@@ -39,12 +39,12 @@ public class TestUserBuilder {
         return userBuilder;
     }
 
-    public TestUserBuilder withUserName(String userName) {
+    public UserBuilder withUserName(String userName) {
         this.username = userName;
         return this;
     }
 
-    public TestUserBuilder withPassword(String password) {
+    public UserBuilder withPassword(String password) {
         this.password = password;
         return this;
     }

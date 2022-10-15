@@ -1,7 +1,9 @@
 package com.gw.user.repo;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gw.common.domain.Gender;
 import com.gw.common.domain.User;
+import io.r2dbc.spi.Row;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.r2dbc.core.DatabaseClient;
@@ -9,6 +11,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.sql.SQLException;
+import java.util.UUID;
 
 public class DBTestUtils {
     private static final Logger LOG = LoggerFactory.getLogger(DBTestUtils.class);
@@ -38,6 +41,29 @@ public class DBTestUtils {
         if (LOG.isInfoEnabled()) {
             LOG.info("User added with Id {}", user.id());
         }
+    }
+
+    public static Mono<User> getUser(UUID userId, DatabaseClient databaseClient) {
+        LOG.info("Fetching user Id: {} from user: ", userId);
+        String query = "SELECT * FROM USER_SCHEMA.USER_TABLE WHERE ID = $1";
+
+        return databaseClient.sql(query)
+                .bind(0, userId.toString())
+                .map(DBTestUtils::toModel)
+                .one();
+    }
+
+    private static User toModel(Row row) {
+        return new User.UserBuilder()
+                .setId(UUID.fromString(row.get("ID", String.class)))
+                .setUsername(row.get("USER_NAME", String.class))
+                .setFirstName(row.get("FIRST_NAME", String.class))
+                .setLastName(row.get("LAST_NAME", String.class))
+                .setDateOfBirth(row.get("DATE_OF_BIRTH", String.class))
+                .setHomeCountry(row.get("HOME_COUNTRY", String.class))
+                .setGender(Gender.valueOf(row.get("GENDER", String.class)))
+                .setRole(row.get("ROLE", String.class))
+                .createUser();
     }
 
     public static void clearDatabase(DatabaseClient databaseClient) throws SQLException {

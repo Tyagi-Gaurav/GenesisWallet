@@ -14,7 +14,6 @@ import reactor.core.publisher.Mono;
 
 import java.security.Key;
 import java.util.Collections;
-import java.util.List;
 import java.util.UUID;
 
 public class AuthenticationManager implements ReactiveAuthenticationManager {

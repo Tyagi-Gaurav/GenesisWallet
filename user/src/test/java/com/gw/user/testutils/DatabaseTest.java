@@ -1,4 +1,4 @@
-package com.gw.user.utils;
+package com.gw.user.testutils;
 
 import io.r2dbc.postgresql.PostgresqlConnectionConfiguration;
 import io.r2dbc.postgresql.PostgresqlConnectionFactory;
@@ -12,7 +12,6 @@ import org.springframework.r2dbc.connection.init.ConnectionFactoryInitializer;
 import org.springframework.r2dbc.connection.init.ResourceDatabasePopulator;
 import org.springframework.r2dbc.core.DatabaseClient;
 
-import javax.xml.crypto.Data;
 import java.io.InputStream;
 
 @Import(DatabaseTest.TestDatabaseContextConfiguration.class)

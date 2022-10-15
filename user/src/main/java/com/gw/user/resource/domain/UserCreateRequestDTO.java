@@ -14,7 +14,7 @@ import javax.validation.constraints.Pattern;
 @JsonSerialize
 @JsonDeserialize
 @Valid
-public record AccountCreateRequestDTO(
+public record UserCreateRequestDTO(
         @NotNull @MinLength(4) @MaxLength(20) String userName,
         @AlphaNumeric @MinLength(6) @MaxLength(15) String password,
         @MinLength(3) @MaxLength(30) String firstName,

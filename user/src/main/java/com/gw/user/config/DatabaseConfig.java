@@ -7,10 +7,13 @@ import java.util.Map;
 
 @ConstructorBinding
 @ConfigurationProperties("database")
-public record DatabaseConfig(String host,
-                             int port,
-                             String name,
-                             String schema,
-                             String user,
-                             String password,
-                             Map<String, String> r2dbcPool) {}
+public record DatabaseConfig(
+        String driver,
+        String host,
+        int port,
+        String name,
+        String schema,
+        String user,
+        String password,
+        Map<String, String> r2dbcPool) {
+}

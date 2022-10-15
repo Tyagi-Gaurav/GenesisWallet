@@ -2,6 +2,7 @@ package com.gw.user.config;
 
 import com.gw.common.domain.Gender;
 import com.gw.common.domain.User;
+import com.gw.user.config.AuthenticationManager;
 import com.gw.user.service.UserService;
 import com.gw.user.util.JwtTokenUtil;
 import io.jsonwebtoken.SignatureAlgorithm;

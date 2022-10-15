@@ -22,12 +22,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Mono<Void> addUser(User user) {
-        return null;
+        return userRepository.addUser(user);
     }
 
     @Override
     public Mono<User> findUserBy(String userName) {
         return null;
+    }
+
+    @Override
+    public Mono<User> authenticateUser(String userName, String password) {
+        return userRepository.findUserByName(userName)
+                .filter(user -> user.password().equals(password))
+                .switchIfEmpty(Mono.defer(Mono::empty));
     }
 
     @Override

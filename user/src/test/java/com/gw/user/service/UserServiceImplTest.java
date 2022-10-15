@@ -12,7 +12,8 @@ import reactor.test.StepVerifier;
 
 import java.util.UUID;
 
-import static com.gw.user.utils.TestUserBuilder.aUser;
+import static com.gw.user.testutils.UserBuilder.aUser;
+import static com.gw.user.testutils.UserBuilder.copyOf;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -32,6 +33,48 @@ class UserServiceImplTest {
 
         StepVerifier.create(userService.findUserBy(userId))
                 .expectNext(user)
+                .verifyComplete();
+    }
+
+    @Test
+    void addUser() {
+        User user = aUser().build();
+
+        when(userRepository.addUser(user)).thenReturn(Mono.empty());
+
+        StepVerifier.create(userService.addUser(user))
+                .verifyComplete();
+    }
+
+    @Test
+    void authenticateUser() {
+        User user = aUser().build();
+
+        when(userRepository.findUserByName(user.username())).thenReturn(Mono.just(user));
+
+        StepVerifier.create(userService.authenticateUser(user.username(), user.password()))
+                .expectNext(user)
+                .verifyComplete();
+    }
+
+    @Test
+    void authenticateUser_returnFalseWhenPasswordIsDifferent() {
+        User user = aUser().build();
+        User otherUser = copyOf(user).withPassword("testPassword").build();
+
+        when(userRepository.findUserByName(user.username())).thenReturn(Mono.just(otherUser));
+
+        StepVerifier.create(userService.authenticateUser(user.username(), user.password()))
+                .verifyComplete();
+    }
+
+    @Test
+    void authenticateUser_returnFalseWhenUserNotFound() {
+        User user = aUser().build();
+
+        when(userRepository.findUserByName(user.username())).thenReturn(Mono.empty());
+
+        StepVerifier.create(userService.authenticateUser(user.username(), user.password()))
                 .verifyComplete();
     }
 }

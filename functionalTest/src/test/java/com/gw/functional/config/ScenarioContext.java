@@ -32,7 +32,7 @@ public class ScenarioContext {
         this.regularUserId = userId;
     }
 
-    public TestAccountCreateRequestDTO getCredentials(String role) {
+    public TestAccountCreateRequestDTO getCredentials() {
         return this.userCredentialsRequest;
     }
 }

@@ -1,29 +1,34 @@
 package com.gw.user;
 
+import com.gw.common.domain.Gender;
+import com.gw.user.function.Login;
 import com.gw.user.function.UserCreate;
-import com.gw.user.resource.domain.AccountCreateRequestDTO;
+import com.gw.user.resource.domain.LoginRequestDTO;
+import com.gw.user.resource.domain.LoginResponseDTO;
+import com.gw.user.resource.domain.UserCreateRequestDTO;
+import com.gw.user.resource.domain.UserDetailsResponseDTO;
+import com.gw.user.builder.LoginRequestBuilder;
+import io.r2dbc.spi.Row;
+import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Mono;
 
-import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+import java.util.function.Consumer;
 
 public class ScenarioExecutor {
     private WebTestClient.ResponseSpec responseSpec;
-    private static final String NORMAL_USER_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJBdXRob3JpdGllcyI6WyJBRE1JTiJdLCJzdWIiOiJDcmNhaWciLCJqdGkiOiI2OWJkMTdiOC01Mzc5LTQ5MmUtYjQxMC0xNzUwY2IyZjE3ZTMiLCJpYXQiOjE2NDQ5NDI5MzYsImV4cCI6MTk2MDMwMjkzNn0.uVN9etpicGwftAvIdlxkq8c0SkG7_keHAqfjbPl6YtI";
-    private static final String TEST_NORMAL_USER_ID = "69bd17b8-5379-492e-b410-1750cb2f17e3";
-    private static final String TEST_NORMAL_USER_NAME = "Crcaig";
-    private static final String TEST_ADMIN_USER_NAME = "jyojoc";
-    private static final String TEST_ADMIN_USER_ID = "e9297e3d-be94-4452-a2a7-e5d2b448a785";
-    private static final String ADMIN_USER_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJBdXRob3JpdGllcyI6WyJBRE1JTiJdLCJzdWIiOiJqeW9qb2MiLCJqdGkiOiJlOTI5N2UzZC1iZTk0LTQ0NTItYTJhNy1lNWQyYjQ0OGE3ODUiLCJpYXQiOjE2NDU1NzIwNDIsImV4cCI6MTk2MDkzMjA0Mn0.xno8T08rBazF3X8NyBiwuzw57bunup4SHI5ZsvU98B0";
+    private LoginResponseDTO userLoginResponseDTO;
 
     private final Map<Class, Object> responses = new HashMap<>();
     private final WebTestClient webTestClient;
-    private final DataSource dataSource;
+    private final DatabaseClient databaseClient;
 
-    public ScenarioExecutor(WebTestClient webTestClient, DataSource dataSource) {
+    public ScenarioExecutor(WebTestClient webTestClient, DatabaseClient databaseClient) {
         this.webTestClient = webTestClient;
-        this.dataSource = dataSource;
+        this.databaseClient = databaseClient;
     }
 
     public ScenarioExecutor when() {
@@ -39,123 +44,65 @@ public class ScenarioExecutor {
         return this;
     }
 
-    public ScenarioExecutor userIsCreatedFor(AccountCreateRequestDTO accountCreateRequestDTO) {
-        this.responseSpec = new UserCreate().apply(webTestClient, accountCreateRequestDTO);
+    public ScenarioExecutor userIsCreatedFor(UserCreateRequestDTO userCreateRequestDTO) {
+        this.responseSpec = new UserCreate().apply(webTestClient, userCreateRequestDTO);
         return this;
     }
 
-//    public ScenarioExecutor userCreatesAMovieWith(MovieCreateRequestDTO movieCreateRequestDTO) {
-//        this.responseSpec = new MovieCreate().apply(webTestClient, NORMAL_USER_TOKEN, movieCreateRequestDTO);
-//        this.responses.put(MovieCreateResponseDTO.class, responseSpec.returnResult(MovieCreateResponseDTO.class)
-//                .getResponseBody().blockFirst());
-//        return this;
-//    }
-//
-//    public <T> ScenarioExecutor movieCreateEventShouldBePublishedForNormalUser(MovieCreateRequestDTO movieCreateRequestDTO) {
-//        assertOnEventUsing(movieCreateRequestDTO, TEST_NORMAL_USER_ID, TEST_NORMAL_USER_ID);
-//        return this;
-//    }
-//
-//    public <T> ScenarioExecutor movieCreateEventShouldBePublishedForAdminUser(MovieCreateRequestDTO movieCreateRequestDTO) {
-//        assertOnEventUsing(movieCreateRequestDTO, TEST_NORMAL_USER_ID, TEST_ADMIN_USER_ID);
-//        return this;
-//    }
-//
-//    public <T> ScenarioExecutor assertOnEventUsing(MovieCreateRequestDTO movieCreateRequestDTO,
-//                                                   String eventOwnerId, String eventOriginatorId) {
-//        List<UserEventMessage> events = new RetrieveEventsForUser().apply(dataSource, TEST_NORMAL_USER_ID);
-//        assertThat(events).isNotEmpty();
-//        assertThat(events.size()).isEqualTo(1);
-//        UserEventMessage userEventMessage = events.get(0);
-//
-//        MovieCreateResponseDTO movieCreateResponseDTO = getResponseOfType(MovieCreateResponseDTO.class);
-//
-//        assertThat(userEventMessage.eventType()).isEqualTo(EventType.MOVIE_CREATE);
-//        assertThat(userEventMessage).isInstanceOf(MovieCreateEvent.class);
-//        MovieCreateEvent movieCreateEvent = (MovieCreateEvent) userEventMessage;
-//        assertThat(movieCreateEvent.ownerUser().toString()).isEqualTo(eventOwnerId);
-//        assertThat(movieCreateEvent.originatorUser().toString()).isEqualTo(eventOriginatorId);
-//        assertThat(movieCreateEvent.name()).isEqualTo(movieCreateRequestDTO.name());
-//        assertThat(movieCreateEvent.movieId()).isEqualTo(movieCreateResponseDTO.movieId());
-//        return this;
-//    }
-//
-//    public ScenarioExecutor givenUserIsLoggedIn() {
-//        stubFor(get(String.format("/api/user?userId=%s", TEST_NORMAL_USER_ID))
-//                .withHeader(HttpHeaders.CONTENT_TYPE, equalTo("application/vnd.user.fetchByUserId.v1+json"))
-//                .withHeader(HttpHeaders.ACCEPT, equalTo("application/vnd.user.fetchByUserId.v1+json"))
-//                .willReturn(aResponse()
-//                        .withHeader(HttpHeaders.CONTENT_TYPE, "application/vnd.user.fetchByUserId.v1+json")
-//                        .withBody(jsonResponse(validUserResponseDto(UUID.fromString(TEST_NORMAL_USER_ID), TEST_NORMAL_USER_NAME, "USER"))
-//                                .getBody())));
-//        return this;
-//    }
-//
-//    public ScenarioExecutor givenAdminUserIsLoggedIn() {
-//        stubFor(get(String.format("/api/user?userId=%s", TEST_ADMIN_USER_ID))
-//                .withHeader(HttpHeaders.CONTENT_TYPE, equalTo("application/vnd.user.fetchByUserId.v1+json"))
-//                .withHeader(HttpHeaders.ACCEPT, equalTo("application/vnd.user.fetchByUserId.v1+json"))
-//                .willReturn(aResponse()
-//                        .withStatus(200)
-//                        .withHeader(HttpHeaders.CONTENT_TYPE, "application/vnd.user.fetchByUserId.v1+json")
-//                        .withBody(jsonResponse(validUserResponseDto(UUID.fromString(TEST_ADMIN_USER_ID), TEST_ADMIN_USER_NAME, "ADMIN"))
-//                                .getBody())));
-//        return this;
-//    }
-//
-//    public <T> ScenarioExecutor thenAssertThat(Consumer<T> responseSpecConsumer, Class<T> clazz) {
-//        T response = getResponseOfType(clazz);
-//        responseSpecConsumer.accept(response);
-//        return this;
-//    }
-//
-//    public ScenarioExecutor thenRetrieveMovieFromDatabaseAndAssert(Consumer<Movie> consumer) {
-//        MovieCreateResponseDTO movieCreateResponseDTO = getResponseOfType(MovieCreateResponseDTO.class);
-//        Movie movie = new RetrieveMovieFromDatabase().apply(movieCreateResponseDTO.movieId(), dataSource);
-//        consumer.accept(movie);
-//        return this;
-//    }
-//
-//    private <T> T getResponseOfType(Class<T> clazz) {
-//        T response = (T) responses.get(clazz);
-//        return response;
-//    }
-//
-//    public ScenarioExecutor adminUserCreatesAMovieWith(MovieCreateRequestDTO movieCreateRequestDTO) {
-//        this.responseSpec = new AdminMovieCreate(TEST_NORMAL_USER_ID)
-//                .apply(webTestClient, ADMIN_USER_TOKEN, movieCreateRequestDTO);
-//        this.responses.put(MovieCreateResponseDTO.class, responseSpec.returnResult(MovieCreateResponseDTO.class)
-//                .getResponseBody().blockFirst());
-//        return this;
-//    }
-//
-//    public ScenarioExecutor noEventsExistInTheSystem() {
-//        new DeleteEvents().accept(dataSource);
-//        return this;
-//    }
-//
-//    public ScenarioExecutor userUploadsAByteStreamForTheMovie(UUID movieId, String streamName, byte[] byteStream) {
-//        this.responseSpec = new ByteStreamUpload(movieId, streamName, byteStream)
-//                .apply(NORMAL_USER_TOKEN, webTestClient);
-//        this.responses.put(ByteStreamUploadResponseDTO.class,
-//                responseSpec.returnResult(ByteStreamUploadResponseDTO.class)
-//                .getResponseBody().blockFirst());
-//        return this;
-//    }
-//
-//    public MovieCreateResponseDTO returnMovieCreateResponse() {
-//        return this.getResponseOfType(MovieCreateResponseDTO.class);
-//    }
-//
-//    public ScenarioExecutor thenRetrieveMovieUsingApi() {
-//        this.responseSpec = new MovieRead().apply(webTestClient, NORMAL_USER_TOKEN);
-//        this.responses.put(MoviesDTO.class, responseSpec.returnResult(MoviesDTO.class)
-//                .getResponseBody().blockFirst());
-//        return this;
-//    }
-//
-//    public void deleteUserState() {
-//        new MovieDelete().accept(dataSource, UUID.fromString(TEST_NORMAL_USER_ID));
-//        new MovieDelete().accept(dataSource, UUID.fromString(TEST_ADMIN_USER_ID));
-//    }
+    public ScenarioExecutor userLoginsWith(UserCreateRequestDTO userCreateRequestDTO) {
+        return userLoginsWith(LoginRequestBuilder.loginRequestUsing(userCreateRequestDTO));
+    }
+
+    public ScenarioExecutor userLoginsWith(LoginRequestDTO loginRequestDTO) {
+        this.responseSpec = new Login().apply(webTestClient, loginRequestDTO);
+        this.userLoginResponseDTO = this.responseSpec.returnResult(LoginResponseDTO.class)
+                .getResponseBody().blockFirst();
+        responses.put(LoginResponseDTO.class, userLoginResponseDTO);
+        return this;
+    }
+
+    public <T> ScenarioExecutor thenAssertThat(Consumer<T> responseSpecConsumer, Class<T> clazz) {
+        T response = getResponseOfType(clazz);
+        responseSpecConsumer.accept(response);
+        return this;
+    }
+
+    private <T> T getResponseOfType(Class<T> clazz) {
+        T response = (T) responses.get(clazz);
+        return response;
+    }
+
+    public ScenarioExecutor retrieveUserFromDatabase(String userName) {
+        UserDetailsResponseDTO userDetailsResponseDTO = databaseClient.sql("SELECT * FROM USER_SCHEMA.USER_TABLE WHERE USER_NAME = :userName")
+                .bind("userName", userName)
+                .map(this::toModel)
+                .one()
+                .switchIfEmpty(Mono.defer(Mono::empty))
+                .block();
+
+        if (userDetailsResponseDTO != null) {
+            responses.put(UserDetailsResponseDTO.class, userDetailsResponseDTO);
+        }
+
+        return this;
+    }
+
+    private UserDetailsResponseDTO toModel(Row row) {
+        return new UserDetailsResponseDTO(
+                row.get("USER_NAME", String.class),
+                row.get("FIRST_NAME", String.class),
+                row.get("LAST_NAME", String.class),
+                row.get("ROLE", String.class),
+                UUID.fromString(row.get("ID", String.class)),
+                row.get("DATE_OF_BIRTH", String.class),
+                Gender.valueOf(row.get("GENDER", String.class)),
+                row.get("HOME_COUNTRY", String.class)
+        );
+    }
+
+    public ScenarioExecutor responseHeaderContains(String expectedHeaderKey) {
+        this.responseSpec.expectHeader()
+                .exists(expectedHeaderKey);
+        return this;
+    }
 }

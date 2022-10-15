@@ -1,12 +1,13 @@
-package com.gw.user.utils;
+package com.gw.user.testutils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gw.common.domain.Gender;
-import com.gw.user.resource.domain.AccountCreateRequestDTO;
+import com.gw.user.resource.domain.LoginRequestDTO;
+import com.gw.user.resource.domain.UserCreateRequestDTO;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
-public class TestUtils {
+public class DtoBuilder {
     final static ObjectMapper mapper = new ObjectMapper();
 
     public static String asJsonString(final Object obj) {
@@ -17,10 +18,15 @@ public class TestUtils {
         }
     }
 
-    public static AccountCreateRequestDTO testAccountCreateRequestDTO() {
-        return new AccountCreateRequestDTO(
+    public static UserCreateRequestDTO testAccountCreateRequestDTO() {
+        return new UserCreateRequestDTO(
                 randomAlphabetic(4), randomAlphabetic(6)
                 , randomAlphabetic(7), randomAlphabetic(7),
                 "10/10/2010", Gender.FEMALE, "AUS");
+    }
+
+    public static LoginRequestDTO testLoginRequestDTO() {
+        return new LoginRequestDTO(
+                randomAlphabetic(4), randomAlphabetic(6));
     }
 }

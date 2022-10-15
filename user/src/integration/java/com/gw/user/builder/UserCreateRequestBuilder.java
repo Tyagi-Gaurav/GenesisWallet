@@ -1,11 +1,11 @@
-package com.gw.user.utils;
+package com.gw.user.builder;
 
 import com.gw.common.domain.Gender;
-import com.gw.user.resource.domain.AccountCreateRequestDTO;
+import com.gw.user.resource.domain.UserCreateRequestDTO;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
-public class AccountCreateRequestBuilder {
+public class UserCreateRequestBuilder {
     private String userName = randomAlphabetic(4);
     private final String password = randomAlphabetic(6);
     private final String firstName = randomAlphabetic(7);
@@ -14,29 +14,29 @@ public class AccountCreateRequestBuilder {
     private final Gender gender = Gender.FEMALE;
     private String homeCountry = "AUS";
 
-    private AccountCreateRequestBuilder() {}
+    private UserCreateRequestBuilder() {}
 
-    public static AccountCreateRequestBuilder accountCreateRequest() {
-        return new AccountCreateRequestBuilder();
+    public static UserCreateRequestBuilder userCreateRequest() {
+        return new UserCreateRequestBuilder();
     }
 
-    public AccountCreateRequestDTO build() {
-        return new AccountCreateRequestDTO(
+    public UserCreateRequestDTO build() {
+        return new UserCreateRequestDTO(
                 userName, password, firstName, lastName,
                 dateOfBirth, gender, homeCountry);
     }
 
-    public AccountCreateRequestBuilder withUserName(String userName) {
+    public UserCreateRequestBuilder withUserName(String userName) {
         this.userName = userName;
         return this;
     }
 
-    public AccountCreateRequestBuilder withDateOfBirth(String dateOfBirth) {
+    public UserCreateRequestBuilder withDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
         return this;
     }
 
-    public AccountCreateRequestBuilder withHomeCountry(String homeCountry) {
+    public UserCreateRequestBuilder withHomeCountry(String homeCountry) {
         this.homeCountry = homeCountry;
         return this;
     }

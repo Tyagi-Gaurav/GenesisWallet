@@ -12,4 +12,6 @@ public interface UserService extends ReactiveUserDetailsService {
     Mono<Void> addUser(User user);
 
     Mono<User> findUserBy(String userName);
+
+    Mono<User> authenticateUser(String userName, String password);
 }
