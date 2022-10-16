@@ -2,6 +2,7 @@ package com.gw.user.resource;
 
 import com.gw.common.domain.User;
 import com.gw.common.exception.ApplicationAuthenticationException;
+import com.gw.common.util.TokenManager;
 import com.gw.user.resource.domain.LoginRequestDTO;
 import com.gw.user.resource.domain.LoginResponseDTO;
 import com.gw.user.resource.domain.UserCreateRequestDTO;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
+import java.time.Duration;
 import java.util.UUID;
 
 @RestController
@@ -23,6 +25,9 @@ public class UserCreateResource {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TokenManager tokenManager;
 
     @PostMapping(consumes = "application/vnd+user.create.v1+json",
             produces = "application/vnd+user.create.v1+json",
@@ -47,7 +52,8 @@ public class UserCreateResource {
     @ResponseStatus(code = HttpStatus.OK)
     public Mono<LoginResponseDTO> login(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
         return userService.authenticateUser(loginRequestDTO.userName(), loginRequestDTO.password())
-                .map(value -> new LoginResponseDTO(" "))
-                .switchIfEmpty(Mono.error(() -> new ApplicationAuthenticationException("")));
+                .map(value -> new LoginResponseDTO(tokenManager.generateToken(value, Duration.ofMinutes(10))))
+                .switchIfEmpty(Mono.error(() -> new ApplicationAuthenticationException("No user found [UserName]: " +
+                        loginRequestDTO.userName())));
     }
 }

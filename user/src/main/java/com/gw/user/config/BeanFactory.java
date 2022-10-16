@@ -6,6 +6,7 @@ import com.gw.common.http.filter.LoggingFilter;
 import com.gw.common.http.filter.MetricsInterceptor;
 import com.gw.common.http.filter.RequestIdFilter;
 import com.gw.common.metrics.ExceptionCounter;
+import com.gw.common.util.TokenManager;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,5 +62,10 @@ public class BeanFactory implements WebFluxConfigurer {
     @Bean
     public ObjectMapper objectMapper() {
         return new ObjectMapper();
+    }
+
+    @Bean
+    public TokenManager tokenManager(@Qualifier("signingKey") Key key) {
+        return new TokenManager(key);
     }
 }

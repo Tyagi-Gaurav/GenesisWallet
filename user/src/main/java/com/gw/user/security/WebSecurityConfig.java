@@ -1,5 +1,6 @@
 package com.gw.user.security;
 
+import com.gw.common.util.TokenManager;
 import com.gw.user.config.AuthenticationManager;
 import com.gw.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class WebSecurityConfig {
     @Order(Ordered.HIGHEST_PRECEDENCE)
     SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity httpSecurity,
                                                 JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
-                                                @Qualifier("signingKey") Key signingKey) {
+                                                TokenManager tokenManager) {
         return httpSecurity
                 .csrf().disable()
                 .authorizeExchange()
@@ -42,7 +43,7 @@ public class WebSecurityConfig {
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and()
                 .securityContextRepository(new SecurityContextRepository(
-                        new AuthenticationManager(userDetailsService, signingKey)
+                        new AuthenticationManager(userDetailsService, tokenManager)
                 ))
                 .build();
     }

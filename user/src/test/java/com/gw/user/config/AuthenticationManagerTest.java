@@ -2,9 +2,8 @@ package com.gw.user.config;
 
 import com.gw.common.domain.Gender;
 import com.gw.common.domain.User;
-import com.gw.user.config.AuthenticationManager;
+import com.gw.common.util.TokenManager;
 import com.gw.user.service.UserService;
-import com.gw.user.util.JwtTokenUtil;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,7 +34,6 @@ class AuthenticationManagerTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
-    private Key signingKey;
     private AuthenticationManager authenticationManager;
     private final User user = new User(UUID.randomUUID(),
             "TestFirstName",
@@ -48,17 +46,20 @@ class AuthenticationManagerTest {
             "ADMIN");
     private final static String KEY_256_BIT = "8A6872AD13BEC411DAC9746C7FEDB8A6872AD13BEC411DAC9746C7FEDB";
 
+    private String token;
+    private TokenManager tokenManager;
+
     @BeforeEach
     void setUp() {
         byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(KEY_256_BIT);
-        signingKey =  new SecretKeySpec(apiKeySecretBytes, SignatureAlgorithm.HS256.getJcaName());
-        authenticationManager = new AuthenticationManager(userService, signingKey);
+        Key signingKey = new SecretKeySpec(apiKeySecretBytes, SignatureAlgorithm.HS256.getJcaName());
+        tokenManager = new TokenManager(signingKey);
+        authenticationManager = new AuthenticationManager(userService, tokenManager);
+        token = tokenManager.generateToken(user, Duration.ofMinutes(1L));
     }
 
     @Test
     void shouldReturnEmptyWhenNoUserFound() {
-        String token = JwtTokenUtil.generateTokenV2(user, Duration.ofMinutes(1L), signingKey);;
-
         when(userService.findUserBy(user.id())).thenReturn(Mono.empty());
 
         //when
@@ -71,9 +72,8 @@ class AuthenticationManagerTest {
     }
 
     @Test
-    void shouldReturnEmptyWhenTokenIsExpired() throws InterruptedException {
-        String token = JwtTokenUtil.generateTokenV2(user, Duration.ofMillis(1L), signingKey);;
-
+    void shouldReturnEmptyWhenTokenIsExpired() {
+        token = tokenManager.generateToken(user, Duration.ofMillis(10L));
         await("Wait for token to Expire").atLeast(Duration.ofMillis(50))
                 .until(() -> true);
 
@@ -90,8 +90,6 @@ class AuthenticationManagerTest {
 
     @Test
     void shouldReturnResponseWhenUserFound() {
-        String token = JwtTokenUtil.generateTokenV2(user, Duration.ofMinutes(1L), signingKey);;
-
         when(userService.findUserBy(user.id())).thenReturn(Mono.just(user));
 
         //when
