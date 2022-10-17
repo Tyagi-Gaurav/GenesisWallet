@@ -24,8 +24,12 @@ public class AbstractResource {
     @Autowired
     protected RestTemplate restTemplate;
 
-    protected String getFullUrl(String hostName, String contextPath, String path, int port) {
-        StringBuilder fullUrl = new StringBuilder("https://" + hostName);
+    protected String getSecuredUrl(String hostName, String contextPath, String path, int port) {
+        return getFullUrlWithScheme("https", hostName, contextPath, path, port);
+    }
+
+    protected String getFullUrlWithScheme(String scheme, String hostName, String contextPath, String path, int port) {
+        StringBuilder fullUrl = new StringBuilder(scheme + "://" + hostName);
 
         if (port != 0) {
             fullUrl.append(":").append(port);
@@ -99,7 +103,7 @@ public class AbstractResource {
 
     private void log(String url, Object body) {
         try {
-            LOG.debug(String.format("\n============ Payload Start ======= \n" +
+            LOG.info(String.format("\n============ Payload Start ======= \n" +
                             "\tFull URL: %s ,\n " +
                             "\tBody: \n\t%s \n" +
                             "============ Payload End ======= \n", url,

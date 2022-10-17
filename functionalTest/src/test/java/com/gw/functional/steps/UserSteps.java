@@ -91,6 +91,27 @@ public class UserSteps implements En {
         When("^the user attempts to login using the new credentials$", () -> {
             loginUsing(scenarioContext.getUserCredentialsRequest());
         });
+        Given("^a user attempts to create a new account with following details with HTTP$",
+                (TestAccountCreateRequestDTO testAccountCreateRequestDTO) -> {
+            String userNameValue = testAccountCreateRequestDTO.userName();
+
+            if ("<captured>".equals(userNameValue)) {
+                userNameValue = scenarioContext.getLastUserName();
+            }
+
+            testAccountCreateRequestDTO = new TestAccountCreateRequestDTO(
+                    actualOrRandom(userNameValue, 6),
+                    actualOrRandom(testAccountCreateRequestDTO.password(), 6),
+                    testAccountCreateRequestDTO.firstName(),
+                    testAccountCreateRequestDTO.lastName(),
+                    testAccountCreateRequestDTO.dateOfBirth(),
+                    testAccountCreateRequestDTO.gender(),
+                    testAccountCreateRequestDTO.homeCountry()
+            );
+
+            scenarioContext.storeCredentialsRequest(testAccountCreateRequestDTO);
+            testAccountCreateResource.createWithHttp(testAccountCreateRequestDTO);
+        });
     }
 
     private void loginUsing(TestAccountCreateRequestDTO userCredentialsRequest) {
