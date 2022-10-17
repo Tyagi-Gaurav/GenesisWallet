@@ -14,3 +14,6 @@ openssl x509 -signkey api-gateway/local_wallet.key -in api-gateway/local_wallet.
 
 #Check DNS in CSR
 openssl req -noout -text -in api-gateway/local_wallet.csr | grep DNS
+
+#Create KeyStore
+keytool -keystore ftkeystore -genkey -alias client -keyalg RSA
