@@ -25,7 +25,7 @@ subprojects {
 
     sonarqube {
         properties {
-            property "sonar.projectKey", "Tyagi-Gaurav_Movie"
+            property "sonar.projectKey", "Tyagi-Gaurav_GenesisWallet"
             property "sonar.organization", "tyagi-gaurav"
             property "sonar.host.url", "https://sonarcloud.io"
             property "sonar.java.coveragePlugin", "jacoco"

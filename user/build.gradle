@@ -71,7 +71,27 @@ tasks.register('integrationTest', Test) {
         junitXml.enabled = true
     }
     shouldRunAfter test
-    //finalizedBy jacocoTestReport
+    finalizedBy jacocoTestReport
 }
 
 check.dependsOn(integrationTest)
+
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+
+jacoco {
+    toolVersion = "0.8.7"
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.enabled true
+        html.destination layout.buildDirectory.dir('jacocoHtml').get().asFile
+    }
+    executionData.from = files('build/jacoco/test.exec','build/jacoco/integrationTest.exec')
+}
