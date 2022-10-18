@@ -28,6 +28,9 @@ dependencies {
         exclude group: "ch.qos.logback"
     }
 
+    implementation "io.grpc:grpc-stub:1.49.2"
+    implementation "io.grpc:grpc-protobuf:1.49.2"
+    implementation "io.grpc:grpc-netty-shaded:1.49.2"
     implementation "org.liquibase:liquibase-core:4.17.0"
     implementation "io.jsonwebtoken:jjwt-api:0.11.5"
     implementation "io.jsonwebtoken:jjwt-impl:0.11.5"
@@ -42,6 +45,7 @@ dependencies {
     implementation "com.mchange:c3p0:0.9.5.5"
     implementation "org.postgresql:postgresql:42.5.0"
 
+    testImplementation "io.grpc:grpc-testing:1.49.2"
     testImplementation "org.testcontainers:junit-jupiter:1.17.4"
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation "org.testcontainers:postgresql:1.17.5"

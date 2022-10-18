@@ -3,8 +3,8 @@
 
 package com.gw.user.grpc;
 
-public interface AccountCreateGrpcRequestDTOOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:com.gw.user.grpc.AccountCreateGrpcRequestDTO)
+public interface UserCreateGrpcRequestDTOOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:com.gw.user.grpc.UserCreateGrpcRequestDTO)
     com.google.protobuf.MessageOrBuilder {
 
   /**
@@ -56,48 +56,35 @@ public interface AccountCreateGrpcRequestDTOOrBuilder extends
       getLastNameBytes();
 
   /**
-   * <code>string role = 5;</code>
-   * @return The role.
-   */
-  java.lang.String getRole();
-  /**
-   * <code>string role = 5;</code>
-   * @return The bytes for role.
-   */
-  com.google.protobuf.ByteString
-      getRoleBytes();
-
-  /**
-   * <code>string dateOfBirth = 6;</code>
+   * <code>string dateOfBirth = 5;</code>
    * @return The dateOfBirth.
    */
   java.lang.String getDateOfBirth();
   /**
-   * <code>string dateOfBirth = 6;</code>
+   * <code>string dateOfBirth = 5;</code>
    * @return The bytes for dateOfBirth.
    */
   com.google.protobuf.ByteString
       getDateOfBirthBytes();
 
   /**
-   * <code>string gender = 7;</code>
+   * <code>.com.gw.user.grpc.Gender gender = 6;</code>
+   * @return The enum numeric value on the wire for gender.
+   */
+  int getGenderValue();
+  /**
+   * <code>.com.gw.user.grpc.Gender gender = 6;</code>
    * @return The gender.
    */
-  java.lang.String getGender();
-  /**
-   * <code>string gender = 7;</code>
-   * @return The bytes for gender.
-   */
-  com.google.protobuf.ByteString
-      getGenderBytes();
+  com.gw.user.grpc.Gender getGender();
 
   /**
-   * <code>string homeCountry = 8;</code>
+   * <code>string homeCountry = 7;</code>
    * @return The homeCountry.
    */
   java.lang.String getHomeCountry();
   /**
-   * <code>string homeCountry = 8;</code>
+   * <code>string homeCountry = 7;</code>
    * @return The bytes for homeCountry.
    */
   com.google.protobuf.ByteString

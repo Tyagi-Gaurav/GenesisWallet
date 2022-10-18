@@ -5,17 +5,16 @@ import "google/protobuf/empty.proto";
 
 option java_multiple_files = true;
 
-option java_outer_classname = "AccountCreateGrpc";
+option java_outer_classname = "UserManagementGrpc";
 
-message AccountCreateGrpcRequestDTO {
+message UserCreateGrpcRequestDTO {
   string userName = 1;
   string password = 2;
   string firstName = 3;
   string lastName = 4;
-  string role = 5;
-  string dateOfBirth = 6;
-  string gender = 7;
-  string homeCountry = 8;
+  string dateOfBirth = 5;
+  Gender gender = 6;
+  string homeCountry = 7;
 }
 
 enum Gender {
@@ -45,11 +44,8 @@ message UserDetailsGrpcResponseDTO {
   string homeCountry = 9;
 }
 
-service FetchUserService {
+service UserService {
   rpc fetchUsersById(FetchUserDetailsByIdGrpcRequestDTO) returns (UserDetailsGrpcResponseDTO);
   rpc fetchUsersByName(FetchUserDetailsByNameGrpcRequestDTO) returns (UserDetailsGrpcResponseDTO);
-}
-
-service CreateAccountService {
-  rpc createAccount(AccountCreateGrpcRequestDTO) returns (google.protobuf.Empty);
+  rpc createUser(UserCreateGrpcRequestDTO) returns (google.protobuf.Empty);
 }

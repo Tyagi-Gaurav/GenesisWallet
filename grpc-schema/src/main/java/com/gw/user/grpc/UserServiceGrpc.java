@@ -8,11 +8,11 @@ import static io.grpc.MethodDescriptor.generateFullMethodName;
     value = "by gRPC proto compiler (version 1.40.1)",
     comments = "Source: UserService.proto")
 @io.grpc.stub.annotations.GrpcGenerated
-public final class FetchUserServiceGrpc {
+public final class UserServiceGrpc {
 
-  private FetchUserServiceGrpc() {}
+  private UserServiceGrpc() {}
 
-  public static final String SERVICE_NAME = "com.gw.user.grpc.FetchUserService";
+  public static final String SERVICE_NAME = "com.gw.user.grpc.UserService";
 
   // Static method descriptors that strictly reflect the proto.
   private static volatile io.grpc.MethodDescriptor<com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO,
@@ -26,10 +26,10 @@ public final class FetchUserServiceGrpc {
   public static io.grpc.MethodDescriptor<com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO,
       com.gw.user.grpc.UserDetailsGrpcResponseDTO> getFetchUsersByIdMethod() {
     io.grpc.MethodDescriptor<com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO, com.gw.user.grpc.UserDetailsGrpcResponseDTO> getFetchUsersByIdMethod;
-    if ((getFetchUsersByIdMethod = FetchUserServiceGrpc.getFetchUsersByIdMethod) == null) {
-      synchronized (FetchUserServiceGrpc.class) {
-        if ((getFetchUsersByIdMethod = FetchUserServiceGrpc.getFetchUsersByIdMethod) == null) {
-          FetchUserServiceGrpc.getFetchUsersByIdMethod = getFetchUsersByIdMethod =
+    if ((getFetchUsersByIdMethod = UserServiceGrpc.getFetchUsersByIdMethod) == null) {
+      synchronized (UserServiceGrpc.class) {
+        if ((getFetchUsersByIdMethod = UserServiceGrpc.getFetchUsersByIdMethod) == null) {
+          UserServiceGrpc.getFetchUsersByIdMethod = getFetchUsersByIdMethod =
               io.grpc.MethodDescriptor.<com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO, com.gw.user.grpc.UserDetailsGrpcResponseDTO>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "fetchUsersById"))
@@ -38,7 +38,7 @@ public final class FetchUserServiceGrpc {
                   com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.gw.user.grpc.UserDetailsGrpcResponseDTO.getDefaultInstance()))
-              .setSchemaDescriptor(new FetchUserServiceMethodDescriptorSupplier("fetchUsersById"))
+              .setSchemaDescriptor(new UserServiceMethodDescriptorSupplier("fetchUsersById"))
               .build();
         }
       }
@@ -57,10 +57,10 @@ public final class FetchUserServiceGrpc {
   public static io.grpc.MethodDescriptor<com.gw.user.grpc.FetchUserDetailsByNameGrpcRequestDTO,
       com.gw.user.grpc.UserDetailsGrpcResponseDTO> getFetchUsersByNameMethod() {
     io.grpc.MethodDescriptor<com.gw.user.grpc.FetchUserDetailsByNameGrpcRequestDTO, com.gw.user.grpc.UserDetailsGrpcResponseDTO> getFetchUsersByNameMethod;
-    if ((getFetchUsersByNameMethod = FetchUserServiceGrpc.getFetchUsersByNameMethod) == null) {
-      synchronized (FetchUserServiceGrpc.class) {
-        if ((getFetchUsersByNameMethod = FetchUserServiceGrpc.getFetchUsersByNameMethod) == null) {
-          FetchUserServiceGrpc.getFetchUsersByNameMethod = getFetchUsersByNameMethod =
+    if ((getFetchUsersByNameMethod = UserServiceGrpc.getFetchUsersByNameMethod) == null) {
+      synchronized (UserServiceGrpc.class) {
+        if ((getFetchUsersByNameMethod = UserServiceGrpc.getFetchUsersByNameMethod) == null) {
+          UserServiceGrpc.getFetchUsersByNameMethod = getFetchUsersByNameMethod =
               io.grpc.MethodDescriptor.<com.gw.user.grpc.FetchUserDetailsByNameGrpcRequestDTO, com.gw.user.grpc.UserDetailsGrpcResponseDTO>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "fetchUsersByName"))
@@ -69,7 +69,7 @@ public final class FetchUserServiceGrpc {
                   com.gw.user.grpc.FetchUserDetailsByNameGrpcRequestDTO.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.gw.user.grpc.UserDetailsGrpcResponseDTO.getDefaultInstance()))
-              .setSchemaDescriptor(new FetchUserServiceMethodDescriptorSupplier("fetchUsersByName"))
+              .setSchemaDescriptor(new UserServiceMethodDescriptorSupplier("fetchUsersByName"))
               .build();
         }
       }
@@ -77,53 +77,84 @@ public final class FetchUserServiceGrpc {
     return getFetchUsersByNameMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<com.gw.user.grpc.UserCreateGrpcRequestDTO,
+      com.google.protobuf.Empty> getCreateUserMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "createUser",
+      requestType = com.gw.user.grpc.UserCreateGrpcRequestDTO.class,
+      responseType = com.google.protobuf.Empty.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<com.gw.user.grpc.UserCreateGrpcRequestDTO,
+      com.google.protobuf.Empty> getCreateUserMethod() {
+    io.grpc.MethodDescriptor<com.gw.user.grpc.UserCreateGrpcRequestDTO, com.google.protobuf.Empty> getCreateUserMethod;
+    if ((getCreateUserMethod = UserServiceGrpc.getCreateUserMethod) == null) {
+      synchronized (UserServiceGrpc.class) {
+        if ((getCreateUserMethod = UserServiceGrpc.getCreateUserMethod) == null) {
+          UserServiceGrpc.getCreateUserMethod = getCreateUserMethod =
+              io.grpc.MethodDescriptor.<com.gw.user.grpc.UserCreateGrpcRequestDTO, com.google.protobuf.Empty>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "createUser"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.gw.user.grpc.UserCreateGrpcRequestDTO.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.google.protobuf.Empty.getDefaultInstance()))
+              .setSchemaDescriptor(new UserServiceMethodDescriptorSupplier("createUser"))
+              .build();
+        }
+      }
+    }
+    return getCreateUserMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
-  public static FetchUserServiceStub newStub(io.grpc.Channel channel) {
-    io.grpc.stub.AbstractStub.StubFactory<FetchUserServiceStub> factory =
-      new io.grpc.stub.AbstractStub.StubFactory<FetchUserServiceStub>() {
+  public static UserServiceStub newStub(io.grpc.Channel channel) {
+    io.grpc.stub.AbstractStub.StubFactory<UserServiceStub> factory =
+      new io.grpc.stub.AbstractStub.StubFactory<UserServiceStub>() {
         @java.lang.Override
-        public FetchUserServiceStub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
-          return new FetchUserServiceStub(channel, callOptions);
+        public UserServiceStub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+          return new UserServiceStub(channel, callOptions);
         }
       };
-    return FetchUserServiceStub.newStub(factory, channel);
+    return UserServiceStub.newStub(factory, channel);
   }
 
   /**
    * Creates a new blocking-style stub that supports unary and streaming output calls on the service
    */
-  public static FetchUserServiceBlockingStub newBlockingStub(
+  public static UserServiceBlockingStub newBlockingStub(
       io.grpc.Channel channel) {
-    io.grpc.stub.AbstractStub.StubFactory<FetchUserServiceBlockingStub> factory =
-      new io.grpc.stub.AbstractStub.StubFactory<FetchUserServiceBlockingStub>() {
+    io.grpc.stub.AbstractStub.StubFactory<UserServiceBlockingStub> factory =
+      new io.grpc.stub.AbstractStub.StubFactory<UserServiceBlockingStub>() {
         @java.lang.Override
-        public FetchUserServiceBlockingStub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
-          return new FetchUserServiceBlockingStub(channel, callOptions);
+        public UserServiceBlockingStub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+          return new UserServiceBlockingStub(channel, callOptions);
         }
       };
-    return FetchUserServiceBlockingStub.newStub(factory, channel);
+    return UserServiceBlockingStub.newStub(factory, channel);
   }
 
   /**
    * Creates a new ListenableFuture-style stub that supports unary calls on the service
    */
-  public static FetchUserServiceFutureStub newFutureStub(
+  public static UserServiceFutureStub newFutureStub(
       io.grpc.Channel channel) {
-    io.grpc.stub.AbstractStub.StubFactory<FetchUserServiceFutureStub> factory =
-      new io.grpc.stub.AbstractStub.StubFactory<FetchUserServiceFutureStub>() {
+    io.grpc.stub.AbstractStub.StubFactory<UserServiceFutureStub> factory =
+      new io.grpc.stub.AbstractStub.StubFactory<UserServiceFutureStub>() {
         @java.lang.Override
-        public FetchUserServiceFutureStub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
-          return new FetchUserServiceFutureStub(channel, callOptions);
+        public UserServiceFutureStub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+          return new UserServiceFutureStub(channel, callOptions);
         }
       };
-    return FetchUserServiceFutureStub.newStub(factory, channel);
+    return UserServiceFutureStub.newStub(factory, channel);
   }
 
   /**
    */
-  public static abstract class FetchUserServiceImplBase implements io.grpc.BindableService {
+  public static abstract class UserServiceImplBase implements io.grpc.BindableService {
 
     /**
      */
@@ -137,6 +168,13 @@ public final class FetchUserServiceGrpc {
     public void fetchUsersByName(com.gw.user.grpc.FetchUserDetailsByNameGrpcRequestDTO request,
         io.grpc.stub.StreamObserver<com.gw.user.grpc.UserDetailsGrpcResponseDTO> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getFetchUsersByNameMethod(), responseObserver);
+    }
+
+    /**
+     */
+    public void createUser(com.gw.user.grpc.UserCreateGrpcRequestDTO request,
+        io.grpc.stub.StreamObserver<com.google.protobuf.Empty> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getCreateUserMethod(), responseObserver);
     }
 
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
@@ -155,22 +193,29 @@ public final class FetchUserServiceGrpc {
                 com.gw.user.grpc.FetchUserDetailsByNameGrpcRequestDTO,
                 com.gw.user.grpc.UserDetailsGrpcResponseDTO>(
                   this, METHODID_FETCH_USERS_BY_NAME)))
+          .addMethod(
+            getCreateUserMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                com.gw.user.grpc.UserCreateGrpcRequestDTO,
+                com.google.protobuf.Empty>(
+                  this, METHODID_CREATE_USER)))
           .build();
     }
   }
 
   /**
    */
-  public static final class FetchUserServiceStub extends io.grpc.stub.AbstractAsyncStub<FetchUserServiceStub> {
-    private FetchUserServiceStub(
+  public static final class UserServiceStub extends io.grpc.stub.AbstractAsyncStub<UserServiceStub> {
+    private UserServiceStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
     }
 
     @java.lang.Override
-    protected FetchUserServiceStub build(
+    protected UserServiceStub build(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
-      return new FetchUserServiceStub(channel, callOptions);
+      return new UserServiceStub(channel, callOptions);
     }
 
     /**
@@ -188,20 +233,28 @@ public final class FetchUserServiceGrpc {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
           getChannel().newCall(getFetchUsersByNameMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void createUser(com.gw.user.grpc.UserCreateGrpcRequestDTO request,
+        io.grpc.stub.StreamObserver<com.google.protobuf.Empty> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getCreateUserMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
    */
-  public static final class FetchUserServiceBlockingStub extends io.grpc.stub.AbstractBlockingStub<FetchUserServiceBlockingStub> {
-    private FetchUserServiceBlockingStub(
+  public static final class UserServiceBlockingStub extends io.grpc.stub.AbstractBlockingStub<UserServiceBlockingStub> {
+    private UserServiceBlockingStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
     }
 
     @java.lang.Override
-    protected FetchUserServiceBlockingStub build(
+    protected UserServiceBlockingStub build(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
-      return new FetchUserServiceBlockingStub(channel, callOptions);
+      return new UserServiceBlockingStub(channel, callOptions);
     }
 
     /**
@@ -217,20 +270,27 @@ public final class FetchUserServiceGrpc {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getFetchUsersByNameMethod(), getCallOptions(), request);
     }
+
+    /**
+     */
+    public com.google.protobuf.Empty createUser(com.gw.user.grpc.UserCreateGrpcRequestDTO request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getCreateUserMethod(), getCallOptions(), request);
+    }
   }
 
   /**
    */
-  public static final class FetchUserServiceFutureStub extends io.grpc.stub.AbstractFutureStub<FetchUserServiceFutureStub> {
-    private FetchUserServiceFutureStub(
+  public static final class UserServiceFutureStub extends io.grpc.stub.AbstractFutureStub<UserServiceFutureStub> {
+    private UserServiceFutureStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
     }
 
     @java.lang.Override
-    protected FetchUserServiceFutureStub build(
+    protected UserServiceFutureStub build(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
-      return new FetchUserServiceFutureStub(channel, callOptions);
+      return new UserServiceFutureStub(channel, callOptions);
     }
 
     /**
@@ -248,20 +308,29 @@ public final class FetchUserServiceGrpc {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
           getChannel().newCall(getFetchUsersByNameMethod(), getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<com.google.protobuf.Empty> createUser(
+        com.gw.user.grpc.UserCreateGrpcRequestDTO request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getCreateUserMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_FETCH_USERS_BY_ID = 0;
   private static final int METHODID_FETCH_USERS_BY_NAME = 1;
+  private static final int METHODID_CREATE_USER = 2;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
       io.grpc.stub.ServerCalls.ServerStreamingMethod<Req, Resp>,
       io.grpc.stub.ServerCalls.ClientStreamingMethod<Req, Resp>,
       io.grpc.stub.ServerCalls.BidiStreamingMethod<Req, Resp> {
-    private final FetchUserServiceImplBase serviceImpl;
+    private final UserServiceImplBase serviceImpl;
     private final int methodId;
 
-    MethodHandlers(FetchUserServiceImplBase serviceImpl, int methodId) {
+    MethodHandlers(UserServiceImplBase serviceImpl, int methodId) {
       this.serviceImpl = serviceImpl;
       this.methodId = methodId;
     }
@@ -277,6 +346,10 @@ public final class FetchUserServiceGrpc {
         case METHODID_FETCH_USERS_BY_NAME:
           serviceImpl.fetchUsersByName((com.gw.user.grpc.FetchUserDetailsByNameGrpcRequestDTO) request,
               (io.grpc.stub.StreamObserver<com.gw.user.grpc.UserDetailsGrpcResponseDTO>) responseObserver);
+          break;
+        case METHODID_CREATE_USER:
+          serviceImpl.createUser((com.gw.user.grpc.UserCreateGrpcRequestDTO) request,
+              (io.grpc.stub.StreamObserver<com.google.protobuf.Empty>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -294,32 +367,32 @@ public final class FetchUserServiceGrpc {
     }
   }
 
-  private static abstract class FetchUserServiceBaseDescriptorSupplier
+  private static abstract class UserServiceBaseDescriptorSupplier
       implements io.grpc.protobuf.ProtoFileDescriptorSupplier, io.grpc.protobuf.ProtoServiceDescriptorSupplier {
-    FetchUserServiceBaseDescriptorSupplier() {}
+    UserServiceBaseDescriptorSupplier() {}
 
     @java.lang.Override
     public com.google.protobuf.Descriptors.FileDescriptor getFileDescriptor() {
-      return com.gw.user.grpc.AccountCreateGrpc.getDescriptor();
+      return com.gw.user.grpc.UserManagementGrpc.getDescriptor();
     }
 
     @java.lang.Override
     public com.google.protobuf.Descriptors.ServiceDescriptor getServiceDescriptor() {
-      return getFileDescriptor().findServiceByName("FetchUserService");
+      return getFileDescriptor().findServiceByName("UserService");
     }
   }
 
-  private static final class FetchUserServiceFileDescriptorSupplier
-      extends FetchUserServiceBaseDescriptorSupplier {
-    FetchUserServiceFileDescriptorSupplier() {}
+  private static final class UserServiceFileDescriptorSupplier
+      extends UserServiceBaseDescriptorSupplier {
+    UserServiceFileDescriptorSupplier() {}
   }
 
-  private static final class FetchUserServiceMethodDescriptorSupplier
-      extends FetchUserServiceBaseDescriptorSupplier
+  private static final class UserServiceMethodDescriptorSupplier
+      extends UserServiceBaseDescriptorSupplier
       implements io.grpc.protobuf.ProtoMethodDescriptorSupplier {
     private final String methodName;
 
-    FetchUserServiceMethodDescriptorSupplier(String methodName) {
+    UserServiceMethodDescriptorSupplier(String methodName) {
       this.methodName = methodName;
     }
 
@@ -334,13 +407,14 @@ public final class FetchUserServiceGrpc {
   public static io.grpc.ServiceDescriptor getServiceDescriptor() {
     io.grpc.ServiceDescriptor result = serviceDescriptor;
     if (result == null) {
-      synchronized (FetchUserServiceGrpc.class) {
+      synchronized (UserServiceGrpc.class) {
         result = serviceDescriptor;
         if (result == null) {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
-              .setSchemaDescriptor(new FetchUserServiceFileDescriptorSupplier())
+              .setSchemaDescriptor(new UserServiceFileDescriptorSupplier())
               .addMethod(getFetchUsersByIdMethod())
               .addMethod(getFetchUsersByNameMethod())
+              .addMethod(getCreateUserMethod())
               .build();
         }
       }

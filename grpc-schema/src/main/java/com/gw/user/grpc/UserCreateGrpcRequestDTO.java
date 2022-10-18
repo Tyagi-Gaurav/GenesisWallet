@@ -4,25 +4,24 @@
 package com.gw.user.grpc;
 
 /**
- * Protobuf type {@code com.gw.user.grpc.AccountCreateGrpcRequestDTO}
+ * Protobuf type {@code com.gw.user.grpc.UserCreateGrpcRequestDTO}
  */
-public final class AccountCreateGrpcRequestDTO extends
+public final class UserCreateGrpcRequestDTO extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:com.gw.user.grpc.AccountCreateGrpcRequestDTO)
-    AccountCreateGrpcRequestDTOOrBuilder {
+    // @@protoc_insertion_point(message_implements:com.gw.user.grpc.UserCreateGrpcRequestDTO)
+    UserCreateGrpcRequestDTOOrBuilder {
 private static final long serialVersionUID = 0L;
-  // Use AccountCreateGrpcRequestDTO.newBuilder() to construct.
-  private AccountCreateGrpcRequestDTO(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+  // Use UserCreateGrpcRequestDTO.newBuilder() to construct.
+  private UserCreateGrpcRequestDTO(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private AccountCreateGrpcRequestDTO() {
+  private UserCreateGrpcRequestDTO() {
     userName_ = "";
     password_ = "";
     firstName_ = "";
     lastName_ = "";
-    role_ = "";
     dateOfBirth_ = "";
-    gender_ = "";
+    gender_ = 0;
     homeCountry_ = "";
   }
 
@@ -30,7 +29,7 @@ private static final long serialVersionUID = 0L;
   @SuppressWarnings({"unused"})
   protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
-    return new AccountCreateGrpcRequestDTO();
+    return new UserCreateGrpcRequestDTO();
   }
 
   @java.lang.Override
@@ -38,7 +37,7 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private AccountCreateGrpcRequestDTO(
+  private UserCreateGrpcRequestDTO(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -83,22 +82,16 @@ private static final long serialVersionUID = 0L;
           case 42: {
             java.lang.String s = input.readStringRequireUtf8();
 
-            role_ = s;
-            break;
-          }
-          case 50: {
-            java.lang.String s = input.readStringRequireUtf8();
-
             dateOfBirth_ = s;
             break;
           }
-          case 58: {
-            java.lang.String s = input.readStringRequireUtf8();
+          case 48: {
+            int rawValue = input.readEnum();
 
-            gender_ = s;
+            gender_ = rawValue;
             break;
           }
-          case 66: {
+          case 58: {
             java.lang.String s = input.readStringRequireUtf8();
 
             homeCountry_ = s;
@@ -125,15 +118,15 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.gw.user.grpc.AccountCreateGrpc.internal_static_com_gw_user_grpc_AccountCreateGrpcRequestDTO_descriptor;
+    return com.gw.user.grpc.UserManagementGrpc.internal_static_com_gw_user_grpc_UserCreateGrpcRequestDTO_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.gw.user.grpc.AccountCreateGrpc.internal_static_com_gw_user_grpc_AccountCreateGrpcRequestDTO_fieldAccessorTable
+    return com.gw.user.grpc.UserManagementGrpc.internal_static_com_gw_user_grpc_UserCreateGrpcRequestDTO_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            com.gw.user.grpc.AccountCreateGrpcRequestDTO.class, com.gw.user.grpc.AccountCreateGrpcRequestDTO.Builder.class);
+            com.gw.user.grpc.UserCreateGrpcRequestDTO.class, com.gw.user.grpc.UserCreateGrpcRequestDTO.Builder.class);
   }
 
   public static final int USERNAME_FIELD_NUMBER = 1;
@@ -288,48 +281,10 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int ROLE_FIELD_NUMBER = 5;
-  private volatile java.lang.Object role_;
-  /**
-   * <code>string role = 5;</code>
-   * @return The role.
-   */
-  @java.lang.Override
-  public java.lang.String getRole() {
-    java.lang.Object ref = role_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      role_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string role = 5;</code>
-   * @return The bytes for role.
-   */
-  @java.lang.Override
-  public com.google.protobuf.ByteString
-      getRoleBytes() {
-    java.lang.Object ref = role_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      role_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
-  }
-
-  public static final int DATEOFBIRTH_FIELD_NUMBER = 6;
+  public static final int DATEOFBIRTH_FIELD_NUMBER = 5;
   private volatile java.lang.Object dateOfBirth_;
   /**
-   * <code>string dateOfBirth = 6;</code>
+   * <code>string dateOfBirth = 5;</code>
    * @return The dateOfBirth.
    */
   @java.lang.Override
@@ -346,7 +301,7 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string dateOfBirth = 6;</code>
+   * <code>string dateOfBirth = 5;</code>
    * @return The bytes for dateOfBirth.
    */
   @java.lang.Override
@@ -364,48 +319,29 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int GENDER_FIELD_NUMBER = 7;
-  private volatile java.lang.Object gender_;
+  public static final int GENDER_FIELD_NUMBER = 6;
+  private int gender_;
   /**
-   * <code>string gender = 7;</code>
+   * <code>.com.gw.user.grpc.Gender gender = 6;</code>
+   * @return The enum numeric value on the wire for gender.
+   */
+  @java.lang.Override public int getGenderValue() {
+    return gender_;
+  }
+  /**
+   * <code>.com.gw.user.grpc.Gender gender = 6;</code>
    * @return The gender.
    */
-  @java.lang.Override
-  public java.lang.String getGender() {
-    java.lang.Object ref = gender_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      gender_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string gender = 7;</code>
-   * @return The bytes for gender.
-   */
-  @java.lang.Override
-  public com.google.protobuf.ByteString
-      getGenderBytes() {
-    java.lang.Object ref = gender_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      gender_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
+  @java.lang.Override public com.gw.user.grpc.Gender getGender() {
+    @SuppressWarnings("deprecation")
+    com.gw.user.grpc.Gender result = com.gw.user.grpc.Gender.valueOf(gender_);
+    return result == null ? com.gw.user.grpc.Gender.UNRECOGNIZED : result;
   }
 
-  public static final int HOMECOUNTRY_FIELD_NUMBER = 8;
+  public static final int HOMECOUNTRY_FIELD_NUMBER = 7;
   private volatile java.lang.Object homeCountry_;
   /**
-   * <code>string homeCountry = 8;</code>
+   * <code>string homeCountry = 7;</code>
    * @return The homeCountry.
    */
   @java.lang.Override
@@ -422,7 +358,7 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string homeCountry = 8;</code>
+   * <code>string homeCountry = 7;</code>
    * @return The bytes for homeCountry.
    */
   @java.lang.Override
@@ -466,17 +402,14 @@ private static final long serialVersionUID = 0L;
     if (!getLastNameBytes().isEmpty()) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 4, lastName_);
     }
-    if (!getRoleBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 5, role_);
-    }
     if (!getDateOfBirthBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 6, dateOfBirth_);
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 5, dateOfBirth_);
     }
-    if (!getGenderBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 7, gender_);
+    if (gender_ != com.gw.user.grpc.Gender.GENDER_UNSPECIFIED.getNumber()) {
+      output.writeEnum(6, gender_);
     }
     if (!getHomeCountryBytes().isEmpty()) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 8, homeCountry_);
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 7, homeCountry_);
     }
     unknownFields.writeTo(output);
   }
@@ -499,17 +432,15 @@ private static final long serialVersionUID = 0L;
     if (!getLastNameBytes().isEmpty()) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, lastName_);
     }
-    if (!getRoleBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, role_);
-    }
     if (!getDateOfBirthBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, dateOfBirth_);
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, dateOfBirth_);
     }
-    if (!getGenderBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, gender_);
+    if (gender_ != com.gw.user.grpc.Gender.GENDER_UNSPECIFIED.getNumber()) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(6, gender_);
     }
     if (!getHomeCountryBytes().isEmpty()) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, homeCountry_);
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, homeCountry_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -521,10 +452,10 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof com.gw.user.grpc.AccountCreateGrpcRequestDTO)) {
+    if (!(obj instanceof com.gw.user.grpc.UserCreateGrpcRequestDTO)) {
       return super.equals(obj);
     }
-    com.gw.user.grpc.AccountCreateGrpcRequestDTO other = (com.gw.user.grpc.AccountCreateGrpcRequestDTO) obj;
+    com.gw.user.grpc.UserCreateGrpcRequestDTO other = (com.gw.user.grpc.UserCreateGrpcRequestDTO) obj;
 
     if (!getUserName()
         .equals(other.getUserName())) return false;
@@ -534,12 +465,9 @@ private static final long serialVersionUID = 0L;
         .equals(other.getFirstName())) return false;
     if (!getLastName()
         .equals(other.getLastName())) return false;
-    if (!getRole()
-        .equals(other.getRole())) return false;
     if (!getDateOfBirth()
         .equals(other.getDateOfBirth())) return false;
-    if (!getGender()
-        .equals(other.getGender())) return false;
+    if (gender_ != other.gender_) return false;
     if (!getHomeCountry()
         .equals(other.getHomeCountry())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
@@ -561,12 +489,10 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getFirstName().hashCode();
     hash = (37 * hash) + LASTNAME_FIELD_NUMBER;
     hash = (53 * hash) + getLastName().hashCode();
-    hash = (37 * hash) + ROLE_FIELD_NUMBER;
-    hash = (53 * hash) + getRole().hashCode();
     hash = (37 * hash) + DATEOFBIRTH_FIELD_NUMBER;
     hash = (53 * hash) + getDateOfBirth().hashCode();
     hash = (37 * hash) + GENDER_FIELD_NUMBER;
-    hash = (53 * hash) + getGender().hashCode();
+    hash = (53 * hash) + gender_;
     hash = (37 * hash) + HOMECOUNTRY_FIELD_NUMBER;
     hash = (53 * hash) + getHomeCountry().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
@@ -574,69 +500,69 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static com.gw.user.grpc.AccountCreateGrpcRequestDTO parseFrom(
+  public static com.gw.user.grpc.UserCreateGrpcRequestDTO parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.gw.user.grpc.AccountCreateGrpcRequestDTO parseFrom(
+  public static com.gw.user.grpc.UserCreateGrpcRequestDTO parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.gw.user.grpc.AccountCreateGrpcRequestDTO parseFrom(
+  public static com.gw.user.grpc.UserCreateGrpcRequestDTO parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.gw.user.grpc.AccountCreateGrpcRequestDTO parseFrom(
+  public static com.gw.user.grpc.UserCreateGrpcRequestDTO parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.gw.user.grpc.AccountCreateGrpcRequestDTO parseFrom(byte[] data)
+  public static com.gw.user.grpc.UserCreateGrpcRequestDTO parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.gw.user.grpc.AccountCreateGrpcRequestDTO parseFrom(
+  public static com.gw.user.grpc.UserCreateGrpcRequestDTO parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.gw.user.grpc.AccountCreateGrpcRequestDTO parseFrom(java.io.InputStream input)
+  public static com.gw.user.grpc.UserCreateGrpcRequestDTO parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.gw.user.grpc.AccountCreateGrpcRequestDTO parseFrom(
+  public static com.gw.user.grpc.UserCreateGrpcRequestDTO parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.gw.user.grpc.AccountCreateGrpcRequestDTO parseDelimitedFrom(java.io.InputStream input)
+  public static com.gw.user.grpc.UserCreateGrpcRequestDTO parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static com.gw.user.grpc.AccountCreateGrpcRequestDTO parseDelimitedFrom(
+  public static com.gw.user.grpc.UserCreateGrpcRequestDTO parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.gw.user.grpc.AccountCreateGrpcRequestDTO parseFrom(
+  public static com.gw.user.grpc.UserCreateGrpcRequestDTO parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.gw.user.grpc.AccountCreateGrpcRequestDTO parseFrom(
+  public static com.gw.user.grpc.UserCreateGrpcRequestDTO parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -649,7 +575,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(com.gw.user.grpc.AccountCreateGrpcRequestDTO prototype) {
+  public static Builder newBuilder(com.gw.user.grpc.UserCreateGrpcRequestDTO prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -665,26 +591,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code com.gw.user.grpc.AccountCreateGrpcRequestDTO}
+   * Protobuf type {@code com.gw.user.grpc.UserCreateGrpcRequestDTO}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:com.gw.user.grpc.AccountCreateGrpcRequestDTO)
-      com.gw.user.grpc.AccountCreateGrpcRequestDTOOrBuilder {
+      // @@protoc_insertion_point(builder_implements:com.gw.user.grpc.UserCreateGrpcRequestDTO)
+      com.gw.user.grpc.UserCreateGrpcRequestDTOOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.gw.user.grpc.AccountCreateGrpc.internal_static_com_gw_user_grpc_AccountCreateGrpcRequestDTO_descriptor;
+      return com.gw.user.grpc.UserManagementGrpc.internal_static_com_gw_user_grpc_UserCreateGrpcRequestDTO_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.gw.user.grpc.AccountCreateGrpc.internal_static_com_gw_user_grpc_AccountCreateGrpcRequestDTO_fieldAccessorTable
+      return com.gw.user.grpc.UserManagementGrpc.internal_static_com_gw_user_grpc_UserCreateGrpcRequestDTO_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.gw.user.grpc.AccountCreateGrpcRequestDTO.class, com.gw.user.grpc.AccountCreateGrpcRequestDTO.Builder.class);
+              com.gw.user.grpc.UserCreateGrpcRequestDTO.class, com.gw.user.grpc.UserCreateGrpcRequestDTO.Builder.class);
     }
 
-    // Construct using com.gw.user.grpc.AccountCreateGrpcRequestDTO.newBuilder()
+    // Construct using com.gw.user.grpc.UserCreateGrpcRequestDTO.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -710,11 +636,9 @@ private static final long serialVersionUID = 0L;
 
       lastName_ = "";
 
-      role_ = "";
-
       dateOfBirth_ = "";
 
-      gender_ = "";
+      gender_ = 0;
 
       homeCountry_ = "";
 
@@ -724,17 +648,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.gw.user.grpc.AccountCreateGrpc.internal_static_com_gw_user_grpc_AccountCreateGrpcRequestDTO_descriptor;
+      return com.gw.user.grpc.UserManagementGrpc.internal_static_com_gw_user_grpc_UserCreateGrpcRequestDTO_descriptor;
     }
 
     @java.lang.Override
-    public com.gw.user.grpc.AccountCreateGrpcRequestDTO getDefaultInstanceForType() {
-      return com.gw.user.grpc.AccountCreateGrpcRequestDTO.getDefaultInstance();
+    public com.gw.user.grpc.UserCreateGrpcRequestDTO getDefaultInstanceForType() {
+      return com.gw.user.grpc.UserCreateGrpcRequestDTO.getDefaultInstance();
     }
 
     @java.lang.Override
-    public com.gw.user.grpc.AccountCreateGrpcRequestDTO build() {
-      com.gw.user.grpc.AccountCreateGrpcRequestDTO result = buildPartial();
+    public com.gw.user.grpc.UserCreateGrpcRequestDTO build() {
+      com.gw.user.grpc.UserCreateGrpcRequestDTO result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -742,13 +666,12 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public com.gw.user.grpc.AccountCreateGrpcRequestDTO buildPartial() {
-      com.gw.user.grpc.AccountCreateGrpcRequestDTO result = new com.gw.user.grpc.AccountCreateGrpcRequestDTO(this);
+    public com.gw.user.grpc.UserCreateGrpcRequestDTO buildPartial() {
+      com.gw.user.grpc.UserCreateGrpcRequestDTO result = new com.gw.user.grpc.UserCreateGrpcRequestDTO(this);
       result.userName_ = userName_;
       result.password_ = password_;
       result.firstName_ = firstName_;
       result.lastName_ = lastName_;
-      result.role_ = role_;
       result.dateOfBirth_ = dateOfBirth_;
       result.gender_ = gender_;
       result.homeCountry_ = homeCountry_;
@@ -790,16 +713,16 @@ private static final long serialVersionUID = 0L;
     }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof com.gw.user.grpc.AccountCreateGrpcRequestDTO) {
-        return mergeFrom((com.gw.user.grpc.AccountCreateGrpcRequestDTO)other);
+      if (other instanceof com.gw.user.grpc.UserCreateGrpcRequestDTO) {
+        return mergeFrom((com.gw.user.grpc.UserCreateGrpcRequestDTO)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(com.gw.user.grpc.AccountCreateGrpcRequestDTO other) {
-      if (other == com.gw.user.grpc.AccountCreateGrpcRequestDTO.getDefaultInstance()) return this;
+    public Builder mergeFrom(com.gw.user.grpc.UserCreateGrpcRequestDTO other) {
+      if (other == com.gw.user.grpc.UserCreateGrpcRequestDTO.getDefaultInstance()) return this;
       if (!other.getUserName().isEmpty()) {
         userName_ = other.userName_;
         onChanged();
@@ -816,17 +739,12 @@ private static final long serialVersionUID = 0L;
         lastName_ = other.lastName_;
         onChanged();
       }
-      if (!other.getRole().isEmpty()) {
-        role_ = other.role_;
-        onChanged();
-      }
       if (!other.getDateOfBirth().isEmpty()) {
         dateOfBirth_ = other.dateOfBirth_;
         onChanged();
       }
-      if (!other.getGender().isEmpty()) {
-        gender_ = other.gender_;
-        onChanged();
+      if (other.gender_ != 0) {
+        setGenderValue(other.getGenderValue());
       }
       if (!other.getHomeCountry().isEmpty()) {
         homeCountry_ = other.homeCountry_;
@@ -847,11 +765,11 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      com.gw.user.grpc.AccountCreateGrpcRequestDTO parsedMessage = null;
+      com.gw.user.grpc.UserCreateGrpcRequestDTO parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (com.gw.user.grpc.AccountCreateGrpcRequestDTO) e.getUnfinishedMessage();
+        parsedMessage = (com.gw.user.grpc.UserCreateGrpcRequestDTO) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -1165,85 +1083,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.lang.Object role_ = "";
-    /**
-     * <code>string role = 5;</code>
-     * @return The role.
-     */
-    public java.lang.String getRole() {
-      java.lang.Object ref = role_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        role_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <code>string role = 5;</code>
-     * @return The bytes for role.
-     */
-    public com.google.protobuf.ByteString
-        getRoleBytes() {
-      java.lang.Object ref = role_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        role_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string role = 5;</code>
-     * @param value The role to set.
-     * @return This builder for chaining.
-     */
-    public Builder setRole(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      role_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string role = 5;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearRole() {
-      
-      role_ = getDefaultInstance().getRole();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string role = 5;</code>
-     * @param value The bytes for role to set.
-     * @return This builder for chaining.
-     */
-    public Builder setRoleBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      role_ = value;
-      onChanged();
-      return this;
-    }
-
     private java.lang.Object dateOfBirth_ = "";
     /**
-     * <code>string dateOfBirth = 6;</code>
+     * <code>string dateOfBirth = 5;</code>
      * @return The dateOfBirth.
      */
     public java.lang.String getDateOfBirth() {
@@ -1259,7 +1101,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string dateOfBirth = 6;</code>
+     * <code>string dateOfBirth = 5;</code>
      * @return The bytes for dateOfBirth.
      */
     public com.google.protobuf.ByteString
@@ -1276,7 +1118,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string dateOfBirth = 6;</code>
+     * <code>string dateOfBirth = 5;</code>
      * @param value The dateOfBirth to set.
      * @return This builder for chaining.
      */
@@ -1291,7 +1133,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string dateOfBirth = 6;</code>
+     * <code>string dateOfBirth = 5;</code>
      * @return This builder for chaining.
      */
     public Builder clearDateOfBirth() {
@@ -1301,7 +1143,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string dateOfBirth = 6;</code>
+     * <code>string dateOfBirth = 5;</code>
      * @param value The bytes for dateOfBirth to set.
      * @return This builder for chaining.
      */
@@ -1317,85 +1159,63 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.lang.Object gender_ = "";
+    private int gender_ = 0;
     /**
-     * <code>string gender = 7;</code>
-     * @return The gender.
+     * <code>.com.gw.user.grpc.Gender gender = 6;</code>
+     * @return The enum numeric value on the wire for gender.
      */
-    public java.lang.String getGender() {
-      java.lang.Object ref = gender_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        gender_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
+    @java.lang.Override public int getGenderValue() {
+      return gender_;
     }
     /**
-     * <code>string gender = 7;</code>
-     * @return The bytes for gender.
-     */
-    public com.google.protobuf.ByteString
-        getGenderBytes() {
-      java.lang.Object ref = gender_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        gender_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string gender = 7;</code>
-     * @param value The gender to set.
+     * <code>.com.gw.user.grpc.Gender gender = 6;</code>
+     * @param value The enum numeric value on the wire for gender to set.
      * @return This builder for chaining.
      */
-    public Builder setGender(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+    public Builder setGenderValue(int value) {
+      
       gender_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>string gender = 7;</code>
+     * <code>.com.gw.user.grpc.Gender gender = 6;</code>
+     * @return The gender.
+     */
+    @java.lang.Override
+    public com.gw.user.grpc.Gender getGender() {
+      @SuppressWarnings("deprecation")
+      com.gw.user.grpc.Gender result = com.gw.user.grpc.Gender.valueOf(gender_);
+      return result == null ? com.gw.user.grpc.Gender.UNRECOGNIZED : result;
+    }
+    /**
+     * <code>.com.gw.user.grpc.Gender gender = 6;</code>
+     * @param value The gender to set.
+     * @return This builder for chaining.
+     */
+    public Builder setGender(com.gw.user.grpc.Gender value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      
+      gender_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>.com.gw.user.grpc.Gender gender = 6;</code>
      * @return This builder for chaining.
      */
     public Builder clearGender() {
       
-      gender_ = getDefaultInstance().getGender();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string gender = 7;</code>
-     * @param value The bytes for gender to set.
-     * @return This builder for chaining.
-     */
-    public Builder setGenderBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      gender_ = value;
+      gender_ = 0;
       onChanged();
       return this;
     }
 
     private java.lang.Object homeCountry_ = "";
     /**
-     * <code>string homeCountry = 8;</code>
+     * <code>string homeCountry = 7;</code>
      * @return The homeCountry.
      */
     public java.lang.String getHomeCountry() {
@@ -1411,7 +1231,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string homeCountry = 8;</code>
+     * <code>string homeCountry = 7;</code>
      * @return The bytes for homeCountry.
      */
     public com.google.protobuf.ByteString
@@ -1428,7 +1248,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string homeCountry = 8;</code>
+     * <code>string homeCountry = 7;</code>
      * @param value The homeCountry to set.
      * @return This builder for chaining.
      */
@@ -1443,7 +1263,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string homeCountry = 8;</code>
+     * <code>string homeCountry = 7;</code>
      * @return This builder for chaining.
      */
     public Builder clearHomeCountry() {
@@ -1453,7 +1273,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string homeCountry = 8;</code>
+     * <code>string homeCountry = 7;</code>
      * @param value The bytes for homeCountry to set.
      * @return This builder for chaining.
      */
@@ -1481,41 +1301,41 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:com.gw.user.grpc.AccountCreateGrpcRequestDTO)
+    // @@protoc_insertion_point(builder_scope:com.gw.user.grpc.UserCreateGrpcRequestDTO)
   }
 
-  // @@protoc_insertion_point(class_scope:com.gw.user.grpc.AccountCreateGrpcRequestDTO)
-  private static final com.gw.user.grpc.AccountCreateGrpcRequestDTO DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:com.gw.user.grpc.UserCreateGrpcRequestDTO)
+  private static final com.gw.user.grpc.UserCreateGrpcRequestDTO DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new com.gw.user.grpc.AccountCreateGrpcRequestDTO();
+    DEFAULT_INSTANCE = new com.gw.user.grpc.UserCreateGrpcRequestDTO();
   }
 
-  public static com.gw.user.grpc.AccountCreateGrpcRequestDTO getDefaultInstance() {
+  public static com.gw.user.grpc.UserCreateGrpcRequestDTO getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<AccountCreateGrpcRequestDTO>
-      PARSER = new com.google.protobuf.AbstractParser<AccountCreateGrpcRequestDTO>() {
+  private static final com.google.protobuf.Parser<UserCreateGrpcRequestDTO>
+      PARSER = new com.google.protobuf.AbstractParser<UserCreateGrpcRequestDTO>() {
     @java.lang.Override
-    public AccountCreateGrpcRequestDTO parsePartialFrom(
+    public UserCreateGrpcRequestDTO parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new AccountCreateGrpcRequestDTO(input, extensionRegistry);
+      return new UserCreateGrpcRequestDTO(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<AccountCreateGrpcRequestDTO> parser() {
+  public static com.google.protobuf.Parser<UserCreateGrpcRequestDTO> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<AccountCreateGrpcRequestDTO> getParserForType() {
+  public com.google.protobuf.Parser<UserCreateGrpcRequestDTO> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.gw.user.grpc.AccountCreateGrpcRequestDTO getDefaultInstanceForType() {
+  public com.gw.user.grpc.UserCreateGrpcRequestDTO getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

@@ -3,8 +3,8 @@
 
 package com.gw.user.grpc;
 
-public final class AccountCreateGrpc {
-  private AccountCreateGrpc() {}
+public final class UserManagementGrpc {
+  private UserManagementGrpc() {}
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistryLite registry) {
   }
@@ -15,10 +15,10 @@ public final class AccountCreateGrpc {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_gw_user_grpc_AccountCreateGrpcRequestDTO_descriptor;
+    internal_static_com_gw_user_grpc_UserCreateGrpcRequestDTO_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_com_gw_user_grpc_AccountCreateGrpcRequestDTO_fieldAccessorTable;
+      internal_static_com_gw_user_grpc_UserCreateGrpcRequestDTO_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_gw_user_grpc_FetchUserDetailsByIdGrpcRequestDTO_descriptor;
   static final 
@@ -44,44 +44,43 @@ public final class AccountCreateGrpc {
   static {
     java.lang.String[] descriptorData = {
       "\n\021UserService.proto\022\020com.gw.user.grpc\032\033g" +
-      "oogle/protobuf/empty.proto\"\256\001\n\033AccountCr" +
-      "eateGrpcRequestDTO\022\020\n\010userName\030\001 \001(\t\022\020\n\010" +
-      "password\030\002 \001(\t\022\021\n\tfirstName\030\003 \001(\t\022\020\n\010las" +
-      "tName\030\004 \001(\t\022\014\n\004role\030\005 \001(\t\022\023\n\013dateOfBirth" +
-      "\030\006 \001(\t\022\016\n\006gender\030\007 \001(\t\022\023\n\013homeCountry\030\010 " +
-      "\001(\t\"0\n\"FetchUserDetailsByIdGrpcRequestDT" +
-      "O\022\n\n\002id\030\001 \001(\t\"4\n$FetchUserDetailsByNameG" +
-      "rpcRequestDTO\022\014\n\004name\030\001 \001(\t\"\323\001\n\032UserDeta" +
-      "ilsGrpcResponseDTO\022\020\n\010userName\030\001 \001(\t\022\020\n\010" +
-      "password\030\002 \001(\t\022\021\n\tfirstName\030\003 \001(\t\022\020\n\010las" +
-      "tName\030\004 \001(\t\022\014\n\004role\030\005 \001(\t\022\n\n\002id\030\006 \001(\t\022\023\n" +
-      "\013dateOfBirth\030\007 \001(\t\022(\n\006gender\030\010 \001(\0162\030.com" +
-      ".gw.user.grpc.Gender\022\023\n\013homeCountry\030\t \001(" +
-      "\t*V\n\006Gender\022\026\n\022GENDER_UNSPECIFIED\020\000\022\017\n\013G" +
-      "ENDER_MALE\020\001\022\021\n\rGENDER_FEMALE\020\002\022\020\n\014GENDE" +
-      "R_OTHER\020\0032\202\002\n\020FetchUserService\022t\n\016fetchU" +
-      "sersById\0224.com.gw.user.grpc.FetchUserDet" +
-      "ailsByIdGrpcRequestDTO\032,.com.gw.user.grp" +
-      "c.UserDetailsGrpcResponseDTO\022x\n\020fetchUse" +
-      "rsByName\0226.com.gw.user.grpc.FetchUserDet" +
-      "ailsByNameGrpcRequestDTO\032,.com.gw.user.g" +
-      "rpc.UserDetailsGrpcResponseDTO2n\n\024Create" +
-      "AccountService\022V\n\rcreateAccount\022-.com.gw" +
-      ".user.grpc.AccountCreateGrpcRequestDTO\032\026" +
-      ".google.protobuf.EmptyB\025B\021AccountCreateG" +
-      "rpcP\001b\006proto3"
+      "oogle/protobuf/empty.proto\"\267\001\n\030UserCreat" +
+      "eGrpcRequestDTO\022\020\n\010userName\030\001 \001(\t\022\020\n\010pas" +
+      "sword\030\002 \001(\t\022\021\n\tfirstName\030\003 \001(\t\022\020\n\010lastNa" +
+      "me\030\004 \001(\t\022\023\n\013dateOfBirth\030\005 \001(\t\022(\n\006gender\030" +
+      "\006 \001(\0162\030.com.gw.user.grpc.Gender\022\023\n\013homeC" +
+      "ountry\030\007 \001(\t\"0\n\"FetchUserDetailsByIdGrpc" +
+      "RequestDTO\022\n\n\002id\030\001 \001(\t\"4\n$FetchUserDetai" +
+      "lsByNameGrpcRequestDTO\022\014\n\004name\030\001 \001(\t\"\323\001\n" +
+      "\032UserDetailsGrpcResponseDTO\022\020\n\010userName\030" +
+      "\001 \001(\t\022\020\n\010password\030\002 \001(\t\022\021\n\tfirstName\030\003 \001" +
+      "(\t\022\020\n\010lastName\030\004 \001(\t\022\014\n\004role\030\005 \001(\t\022\n\n\002id" +
+      "\030\006 \001(\t\022\023\n\013dateOfBirth\030\007 \001(\t\022(\n\006gender\030\010 " +
+      "\001(\0162\030.com.gw.user.grpc.Gender\022\023\n\013homeCou" +
+      "ntry\030\t \001(\t*V\n\006Gender\022\026\n\022GENDER_UNSPECIFI" +
+      "ED\020\000\022\017\n\013GENDER_MALE\020\001\022\021\n\rGENDER_FEMALE\020\002" +
+      "\022\020\n\014GENDER_OTHER\020\0032\317\002\n\013UserService\022t\n\016fe" +
+      "tchUsersById\0224.com.gw.user.grpc.FetchUse" +
+      "rDetailsByIdGrpcRequestDTO\032,.com.gw.user" +
+      ".grpc.UserDetailsGrpcResponseDTO\022x\n\020fetc" +
+      "hUsersByName\0226.com.gw.user.grpc.FetchUse" +
+      "rDetailsByNameGrpcRequestDTO\032,.com.gw.us" +
+      "er.grpc.UserDetailsGrpcResponseDTO\022P\n\ncr" +
+      "eateUser\022*.com.gw.user.grpc.UserCreateGr" +
+      "pcRequestDTO\032\026.google.protobuf.EmptyB\026B\022" +
+      "UserManagementGrpcP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.google.protobuf.EmptyProto.getDescriptor(),
         });
-    internal_static_com_gw_user_grpc_AccountCreateGrpcRequestDTO_descriptor =
+    internal_static_com_gw_user_grpc_UserCreateGrpcRequestDTO_descriptor =
       getDescriptor().getMessageTypes().get(0);
-    internal_static_com_gw_user_grpc_AccountCreateGrpcRequestDTO_fieldAccessorTable = new
+    internal_static_com_gw_user_grpc_UserCreateGrpcRequestDTO_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_com_gw_user_grpc_AccountCreateGrpcRequestDTO_descriptor,
-        new java.lang.String[] { "UserName", "Password", "FirstName", "LastName", "Role", "DateOfBirth", "Gender", "HomeCountry", });
+        internal_static_com_gw_user_grpc_UserCreateGrpcRequestDTO_descriptor,
+        new java.lang.String[] { "UserName", "Password", "FirstName", "LastName", "DateOfBirth", "Gender", "HomeCountry", });
     internal_static_com_gw_user_grpc_FetchUserDetailsByIdGrpcRequestDTO_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_com_gw_user_grpc_FetchUserDetailsByIdGrpcRequestDTO_fieldAccessorTable = new

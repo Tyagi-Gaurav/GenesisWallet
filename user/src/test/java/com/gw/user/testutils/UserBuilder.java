@@ -2,6 +2,7 @@ package com.gw.user.testutils;
 
 import com.gw.common.domain.Gender;
 import com.gw.common.domain.User;
+import com.gw.user.grpc.UserCreateGrpcRequestDTO;
 
 import java.util.UUID;
 
@@ -60,5 +61,25 @@ public class UserBuilder {
                 .setHomeCountry(this.homeCountry)
                 .setRole(this.authority)
                 .createUser();
+    }
+
+    public static UserCreateGrpcRequestDTO userCreateGrpcRequestDTOBuilder(User user) {
+        return UserCreateGrpcRequestDTO.newBuilder()
+                .setUserName(user.username())
+                .setFirstName(user.firstName())
+                .setLastName(user.lastName())
+                .setDateOfBirth(user.dateOfBirth())
+                .setGender(toGrpcGender(user.gender()))
+                .setPassword(user.password())
+                .setHomeCountry(user.homeCountry())
+                .build();
+    }
+
+    public static com.gw.user.grpc.Gender toGrpcGender(Gender gender) {
+        return switch(gender) {
+            case MALE -> com.gw.user.grpc.Gender.GENDER_MALE;
+            case FEMALE -> com.gw.user.grpc.Gender.GENDER_FEMALE;
+            case UNSPECIFIED -> com.gw.user.grpc.Gender.GENDER_UNSPECIFIED;
+        };
     }
 }

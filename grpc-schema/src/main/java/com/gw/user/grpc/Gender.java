@@ -103,7 +103,7 @@ public enum Gender
   }
   public static final com.google.protobuf.Descriptors.EnumDescriptor
       getDescriptor() {
-    return com.gw.user.grpc.AccountCreateGrpc.getDescriptor().getEnumTypes().get(0);
+    return com.gw.user.grpc.UserManagementGrpc.getDescriptor().getEnumTypes().get(0);
   }
 
   private static final Gender[] VALUES = values();

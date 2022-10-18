@@ -132,13 +132,13 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.gw.user.grpc.AccountCreateGrpc.internal_static_com_gw_user_grpc_UserDetailsGrpcResponseDTO_descriptor;
+    return com.gw.user.grpc.UserManagementGrpc.internal_static_com_gw_user_grpc_UserDetailsGrpcResponseDTO_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.gw.user.grpc.AccountCreateGrpc.internal_static_com_gw_user_grpc_UserDetailsGrpcResponseDTO_fieldAccessorTable
+    return com.gw.user.grpc.UserManagementGrpc.internal_static_com_gw_user_grpc_UserDetailsGrpcResponseDTO_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             com.gw.user.grpc.UserDetailsGrpcResponseDTO.class, com.gw.user.grpc.UserDetailsGrpcResponseDTO.Builder.class);
   }
@@ -709,13 +709,13 @@ private static final long serialVersionUID = 0L;
       com.gw.user.grpc.UserDetailsGrpcResponseDTOOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.gw.user.grpc.AccountCreateGrpc.internal_static_com_gw_user_grpc_UserDetailsGrpcResponseDTO_descriptor;
+      return com.gw.user.grpc.UserManagementGrpc.internal_static_com_gw_user_grpc_UserDetailsGrpcResponseDTO_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.gw.user.grpc.AccountCreateGrpc.internal_static_com_gw_user_grpc_UserDetailsGrpcResponseDTO_fieldAccessorTable
+      return com.gw.user.grpc.UserManagementGrpc.internal_static_com_gw_user_grpc_UserDetailsGrpcResponseDTO_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               com.gw.user.grpc.UserDetailsGrpcResponseDTO.class, com.gw.user.grpc.UserDetailsGrpcResponseDTO.Builder.class);
     }
@@ -762,7 +762,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.gw.user.grpc.AccountCreateGrpc.internal_static_com_gw_user_grpc_UserDetailsGrpcResponseDTO_descriptor;
+      return com.gw.user.grpc.UserManagementGrpc.internal_static_com_gw_user_grpc_UserDetailsGrpcResponseDTO_descriptor;
     }
 
     @java.lang.Override

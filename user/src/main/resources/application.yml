@@ -8,6 +8,9 @@ spring:
 server:
   port: ${SERVER_PORT:9090}
 
+grpc:
+  port: ${GRPC_PORT:19090}
+
 accessible:
   endpoints:
     "[GET-/api/status]": ${GET_STATUS:true}
