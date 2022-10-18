@@ -62,6 +62,7 @@ public class UserServiceGrpcImpl extends UserServiceImplBase {
         userService.addUser(createUserFrom(request))
                 .map((v) -> Empty.getDefaultInstance())
                 .switchIfEmpty(Mono.defer(() -> Mono.just(Empty.getDefaultInstance())))
+                .doOnError(responseObserver::onError) //TODO Throw external exception and send error payload.
                 .subscribe(v -> {
                     responseObserver.onNext(Empty.newBuilder().build());
                     responseObserver.onCompleted();

@@ -3,6 +3,7 @@ package com.gw.user.grpc;
 import com.google.protobuf.Empty;
 import com.gw.common.domain.User;
 import com.gw.user.service.UserService;
+import io.grpc.StatusRuntimeException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +17,7 @@ import java.util.UUID;
 
 import static com.gw.user.testutils.UserBuilder.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -43,6 +45,17 @@ class UserServiceGrpcImplTest {
 
         Empty user1 = userServiceBlockingStub.createUser(userCreateGrpcRequestDTO);
         assertThat(user1).isNotNull();
+    }
+
+    @Test
+    void createUser_handleException()  {
+        when(userService.addUser(any(User.class))).thenReturn(Mono.error(new IllegalArgumentException()));
+
+        User user = aUser().build();
+        UserCreateGrpcRequestDTO userCreateGrpcRequestDTO = userCreateGrpcRequestDTOBuilder(user);
+
+        assertThatExceptionOfType(StatusRuntimeException.class)
+                .isThrownBy(() -> userServiceBlockingStub.createUser(userCreateGrpcRequestDTO));
     }
 
     @Test
