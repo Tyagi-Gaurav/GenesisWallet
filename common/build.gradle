@@ -1,5 +1,6 @@
 plugins {
     id 'java-library'
+    id "org.sonarqube" version "2.7"
 }
 
 dependencies {
@@ -14,3 +15,14 @@ dependencies {
     api group: 'org.glassfish.expressly', name: 'expressly', version: '5.0.0'
 }
 
+sonarqube {
+    properties {
+        property "sonar.projectKey", "Tyagi-Gaurav_Genesis_Wallet"
+        property "sonar.organization", "tyagi-gaurav"
+        property "sonar.host.url", "https://sonarcloud.io"
+        property "sonar.java.coveragePlugin", "jacoco"
+        property "sonar.dynamicAnalysis", "reuseReports"
+        property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.jacoco.reportPath", "$projectDir/application/build/jacoco"
+    }
+}
