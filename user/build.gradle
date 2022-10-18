@@ -22,18 +22,6 @@ configurations {
     integrationRuntime.extendsFrom testImplementation
 }
 
-sonarqube {
-    properties {
-        property "sonar.projectKey", "Tyagi-Gaurav_GenesisWallet"
-        property "sonar.organization", "tyagi-gaurav"
-        property "sonar.host.url", "https://sonarcloud.io"
-        property "sonar.java.coveragePlugin", "jacoco"
-        property "sonar.dynamicAnalysis", "reuseReports"
-        property "sonar.sourceEncoding", "UTF-8"
-        property "sonar.jacoco.reportPath", "$projectDir/application/build/jacoco"
-    }
-}
-
 dependencies {
     implementation project(":grpc-schema")
     implementation project(":common")

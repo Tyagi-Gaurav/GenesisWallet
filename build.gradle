@@ -7,6 +7,10 @@ buildscript {
     }
 }
 
+plugins {
+    id "org.sonarqube" version "2.7"
+}
+
 subprojects {
     repositories {
         mavenCentral()
@@ -18,6 +22,18 @@ subprojects {
     targetCompatibility = JavaVersion.VERSION_17
 
     group 'genesis.wallets'
+
+    sonarqube {
+        properties {
+            property "sonar.projectKey", "Tyagi-Gaurav_Movie"
+            property "sonar.organization", "tyagi-gaurav"
+            property "sonar.host.url", "https://sonarcloud.io"
+            property "sonar.java.coveragePlugin", "jacoco"
+            property "sonar.dynamicAnalysis", "reuseReports"
+            property "sonar.sourceEncoding", "UTF-8"
+            property "sonar.jacoco.reportPath", "$projectDir/application/build/jacoco"
+        }
+    }
 
     dependencies {
         implementation "org.springframework.boot:spring-boot:2.7.4"

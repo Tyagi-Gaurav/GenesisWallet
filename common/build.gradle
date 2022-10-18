@@ -14,15 +14,3 @@ dependencies {
     api group: 'jakarta.el', name: 'jakarta.el-api', version: '5.0.1'
     api group: 'org.glassfish.expressly', name: 'expressly', version: '5.0.0'
 }
-
-sonarqube {
-    properties {
-        property "sonar.projectKey", "Tyagi-Gaurav_Genesis_Wallet"
-        property "sonar.organization", "tyagi-gaurav"
-        property "sonar.host.url", "https://sonarcloud.io"
-        property "sonar.java.coveragePlugin", "jacoco"
-        property "sonar.dynamicAnalysis", "reuseReports"
-        property "sonar.sourceEncoding", "UTF-8"
-        property "sonar.jacoco.reportPath", "$projectDir/application/build/jacoco"
-    }
-}
