@@ -74,8 +74,6 @@ tasks.register('integrationTest', Test) {
     finalizedBy jacocoTestReport
 }
 
-check.dependsOn(integrationTest)
-
 test {
     useJUnitPlatform()
     finalizedBy jacocoTestReport
