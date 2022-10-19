@@ -2,6 +2,7 @@ package com.gw.user.grpc;
 
 import com.google.protobuf.Empty;
 import com.gw.common.domain.User;
+import com.gw.test.common.grpc.GrpcExtension;
 import com.gw.user.service.UserService;
 import io.grpc.StatusRuntimeException;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +34,8 @@ class UserServiceGrpcImplTest {
     void setUp() throws IOException {
         userService = Mockito.mock(UserService.class);
         UserServiceGrpcImpl bindableService = new UserServiceGrpcImpl(userService);
-        userServiceBlockingStub = UserServiceGrpc.newBlockingStub(grpcExtension.addService(bindableService));
+        GrpcExtension.ServiceDetails serviceDetails = grpcExtension.createGrpcServerFor(bindableService);
+        userServiceBlockingStub = UserServiceGrpc.newBlockingStub(serviceDetails.managedChannel());
     }
 
     @Test

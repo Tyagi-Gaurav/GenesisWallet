@@ -1,4 +1,4 @@
-package com.gw.user.grpc;
+package com.gw.test.common.grpc;
 
 import io.grpc.BindableService;
 import io.grpc.ManagedChannel;
@@ -26,7 +26,6 @@ public class GrpcExtension implements AfterEachCallback {
         cleanupTargets.forEach(ct -> {
             try {
                 ct.shutdown();
-
                 ct.awaitTermination(TERMINATION_TIMEOUT_MS, TimeUnit.MILLISECONDS);
             } catch (InterruptedException e) {
                 LOG.error("Error occurred while terminating grpc server/channel", e);
@@ -35,7 +34,7 @@ public class GrpcExtension implements AfterEachCallback {
         cleanupTargets.clear();
     }
 
-    public ManagedChannel addService(BindableService bindableService) throws IOException {
+    public ServiceDetails createGrpcServerFor(BindableService bindableService) throws IOException {
         var serverName = InProcessServerBuilder.generateName();
         Server server = InProcessServerBuilder.forName(serverName)
                 .directExecutor()
@@ -47,8 +46,7 @@ public class GrpcExtension implements AfterEachCallback {
 
         cleanupTargets.add(new ManagedChannelTarget(channel));
         cleanupTargets.add(new ManagedServerTarget(server));
-
-        return channel;
+        return new ServiceDetails(serverName, server.getPort(), channel);
     }
 
     interface CleanupTarget {
@@ -91,5 +89,8 @@ public class GrpcExtension implements AfterEachCallback {
         public boolean awaitTermination(long timeout, TimeUnit unit) throws InterruptedException {
             return server.awaitTermination(timeout, unit);
         }
+    }
+
+    public record ServiceDetails(String serverName, int port, ManagedChannel managedChannel) {
     }
 }
