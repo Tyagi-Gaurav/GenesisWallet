@@ -16,7 +16,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class SystemExceptionHandlerTest {
+class SystemExceptionHandlerTest { //TODO Check tests
     @Mock
     private ErrorResponseHelper errorResponseHelper;
 

@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 import java.util.Objects;
 
 @Component
-public class SecurityContextHolder {
+public class SecurityContextHolder { //TODO Test
     private final Mono<SecurityContext> securityContextMono = ReactiveSecurityContextHolder.getContext();
 
     public <T> Mono<T> getContext(Class<T> clazz) {

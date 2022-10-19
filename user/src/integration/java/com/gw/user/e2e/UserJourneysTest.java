@@ -1,9 +1,10 @@
-package com.gw.user;
+package com.gw.user.e2e;
 
-import com.gw.user.builder.UserCreateRequestBuilder;
+import com.gw.user.Application;
+import com.gw.user.e2e.builder.UserCreateRequestBuilder;
 import com.gw.user.repo.TestContainerDatabaseInitializer;
 import com.gw.user.resource.domain.LoginResponseDTO;
-import com.gw.user.resource.domain.UserDetailsResponseDTO;
+import com.gw.user.e2e.domain.UserDetailsResponseDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

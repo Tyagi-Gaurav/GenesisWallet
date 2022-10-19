@@ -39,24 +39,6 @@ public class UserServiceGrpcImpl extends UserServiceImplBase {
     }
 
     @Override
-    public void fetchUsersByName(FetchUserDetailsByNameGrpcRequestDTO request, StreamObserver<UserDetailsGrpcResponseDTO> responseObserver) {
-        userService.findUserBy(request.getName())
-                .map(user -> UserDetailsGrpcResponseDTO.newBuilder()
-                        .setFirstName(user.firstName())
-                        .setLastName(user.lastName())
-                        .setUserName(user.username())
-                        .setDateOfBirth(user.dateOfBirth())
-                        .setHomeCountry(user.homeCountry())
-                        .setId(user.id().toString())
-                        .setGender(toGrpcGender(user.gender()))
-                        .build())
-                .subscribe(resp -> {
-                    responseObserver.onNext(resp);
-                    responseObserver.onCompleted();
-                });
-    }
-
-    @Override
     public void createUser(UserCreateGrpcRequestDTO request, StreamObserver<Empty> responseObserver) {
         LOG.info("Inside GRPC create user");
         userService.addUser(createUserFrom(request))

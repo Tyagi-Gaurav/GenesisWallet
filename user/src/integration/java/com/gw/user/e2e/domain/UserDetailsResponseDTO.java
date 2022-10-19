@@ -1,12 +1,10 @@
-package com.gw.user.resource.domain;
+package com.gw.user.e2e.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.gw.common.domain.Gender;
 
 import java.util.UUID;
 
-@JsonSerialize
 @JsonDeserialize
 public record UserDetailsResponseDTO(String userName,
                                      String firstName,

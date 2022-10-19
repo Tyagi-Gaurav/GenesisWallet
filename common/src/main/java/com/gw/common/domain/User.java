@@ -2,11 +2,9 @@ package com.gw.common.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.UUID;
 
-@JsonSerialize
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonDeserialize
 public record User(UUID id,

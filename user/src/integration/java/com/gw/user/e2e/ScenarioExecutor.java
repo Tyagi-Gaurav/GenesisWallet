@@ -1,13 +1,13 @@
-package com.gw.user;
+package com.gw.user.e2e;
 
 import com.gw.common.domain.Gender;
-import com.gw.user.function.Login;
-import com.gw.user.function.UserCreate;
+import com.gw.user.e2e.function.Login;
+import com.gw.user.e2e.function.UserCreate;
 import com.gw.user.resource.domain.LoginRequestDTO;
 import com.gw.user.resource.domain.LoginResponseDTO;
 import com.gw.user.resource.domain.UserCreateRequestDTO;
-import com.gw.user.resource.domain.UserDetailsResponseDTO;
-import com.gw.user.builder.LoginRequestBuilder;
+import com.gw.user.e2e.domain.UserDetailsResponseDTO;
+import com.gw.user.e2e.builder.LoginRequestBuilder;
 import io.r2dbc.spi.Row;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.test.web.reactive.server.WebTestClient;

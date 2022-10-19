@@ -1,4 +1,4 @@
-package com.gw.user.function;
+package com.gw.user.e2e.function;
 
 import com.gw.user.testutils.DtoBuilder;
 import com.gw.user.resource.domain.UserCreateRequestDTO;

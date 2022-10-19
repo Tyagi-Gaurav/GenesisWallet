@@ -27,7 +27,7 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
 
     @Override
     public Mono<Authentication> authenticate(Authentication authentication) {
-        TokenManager.Token token = tokenManager.parse(authentication.getPrincipal().toString());
+        var token = tokenManager.parse(authentication.getPrincipal().toString());
         String userId = token.getUserId();
         LOG.debug("Token: {}", token);
 

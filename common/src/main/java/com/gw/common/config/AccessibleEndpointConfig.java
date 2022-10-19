@@ -3,7 +3,6 @@ package com.gw.common.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
 
-import java.util.Collections;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,16 +11,6 @@ import java.util.regex.Pattern;
 @ConstructorBinding
 public record AccessibleEndpointConfig(Map<String, Boolean> endpoints,
                                        Map<String, Boolean> endpointsRegex) {
-
-    @Override
-    public Map<String, Boolean> endpoints() {
-        return Collections.unmodifiableMap(endpoints);
-    }
-
-    @Override
-    public Map<String, Boolean> endpointsRegex() {
-        return Collections.unmodifiableMap(endpointsRegex);
-    }
 
     public boolean isEnabled(String method, String path) {
         return endpoints != null &&

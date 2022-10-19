@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
 
-public class TokenManager {
+public class TokenManager { //TODO Test
     private static final Logger LOG = LoggerFactory.getLogger(TokenManager.class);
     private final Key signingKey;
 

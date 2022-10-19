@@ -33,10 +33,9 @@ class ApplicationAuthenticationExceptionHandlerTest {
     }
 
     @Test
-    void shouldHandleAuthenticationException() throws Exception {
+    void shouldHandleAuthenticationException() {
         String exceptionMessage = "Unauthorised";
-        Mono<ErrorResponse> handle = applicationAuthenticationExceptionHandler.handle(new ApplicationAuthenticationException(exceptionMessage,
-                new IllegalCallerException()));
+        Mono<ErrorResponse> handle = applicationAuthenticationExceptionHandler.handle(new ApplicationAuthenticationException(exceptionMessage));
 
         StepVerifier.create(handle)
                 .expectNext(new ErrorResponse(401, exceptionMessage))

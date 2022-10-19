@@ -26,11 +26,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Mono<User> findUserBy(String userName) {
-        return null;
-    }
-
-    @Override
     public Mono<User> authenticateUser(String userName, String password) {
         return userRepository.findUserByName(userName)
                 .filter(user -> user.password().equals(password))

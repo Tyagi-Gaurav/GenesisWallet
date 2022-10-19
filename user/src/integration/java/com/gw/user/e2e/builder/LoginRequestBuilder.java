@@ -1,4 +1,4 @@
-package com.gw.user.builder;
+package com.gw.user.e2e.builder;
 
 
 import com.gw.user.resource.domain.LoginRequestDTO;

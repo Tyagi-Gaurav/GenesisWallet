@@ -59,26 +59,6 @@ class UserServiceGrpcImplTest {
     }
 
     @Test
-    void fetchUsersByName()  {
-        User user = aUser().build();
-        when(userService.findUserBy(any(String.class))).thenReturn(Mono.just(user));
-
-        FetchUserDetailsByNameGrpcRequestDTO fetchRequest = FetchUserDetailsByNameGrpcRequestDTO.newBuilder()
-                .setName(user.username())
-                .build();
-
-        UserDetailsGrpcResponseDTO userDetailsGrpcResponseDTO = userServiceBlockingStub.fetchUsersByName(fetchRequest);
-
-        assertThat(userDetailsGrpcResponseDTO.getUserName()).isEqualTo(user.username());
-        assertThat(userDetailsGrpcResponseDTO.getDateOfBirth()).isEqualTo(user.dateOfBirth());
-        assertThat(userDetailsGrpcResponseDTO.getFirstName()).isEqualTo(user.firstName());
-        assertThat(userDetailsGrpcResponseDTO.getLastName()).isEqualTo(user.lastName());
-        assertThat(userDetailsGrpcResponseDTO.getGender()).isEqualTo(toGrpcGender(user.gender()));
-        assertThat(userDetailsGrpcResponseDTO.getHomeCountry()).isEqualTo(user.homeCountry());
-        assertThat(userDetailsGrpcResponseDTO.getId()).isEqualTo(user.id().toString());
-    }
-
-    @Test
     void fetchUsersById()  {
         User user = aUser().build();
         when(userService.findUserBy(any(UUID.class))).thenReturn(Mono.just(user));
