@@ -1,0 +1,50 @@
+name: Functional Test
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+
+jobs:
+  build:
+    name: functionalTest
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+    - uses: actions/setup-java@v3
+      with:
+        distribution: 'zulu'
+        java-version: '17'
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
+    - name: Build with Gradle
+      run: ./gradlew clean build --info
+
+    - name: Build the docker-compose stack
+      env:
+        OAUTH_CLIENT_ID_GITHUB: ${{ secrets.OAUTH_CLIENT_ID_GITHUB }}
+        OAUTH_CLIENT_SECRET_GITHUB: ${{ secrets.OAUTH_CLIENT_SECRET_GITHUB }}
+      run: docker-compose up -d
+
+    - name: Sleep
+      uses: jakejarvis/wait-action@master
+      with:
+        time: '30s'
+
+    - name: Check running containers
+      run: docker ps
+
+    - name: Run test suite
+      run: ./gradlew remoteFunctional --info
+
+#   Enable below only for DEBUG
+
+#    - name: Show container logs
+#      if: always()
+#      run: docker logs local.movie-app
