@@ -6,9 +6,9 @@ plugins {
 
 dependencies {
     implementation project(":grpc-schema")
-    implementation "io.grpc:grpc-stub:1.49.2"
-    implementation "io.grpc:grpc-protobuf:1.49.2"
-    implementation "io.grpc:grpc-netty-shaded:1.49.2"
+    implementation "io.grpc:grpc-stub:1.50.0"
+    implementation "io.grpc:grpc-protobuf:1.50.0"
+    implementation "io.grpc:grpc-netty-shaded:1.50.0"
 
     testImplementation project(":test-common").sourceSets.test.output
 }
