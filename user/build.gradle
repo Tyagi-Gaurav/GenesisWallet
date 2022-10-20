@@ -24,6 +24,7 @@ configurations {
 
 dependencies {
     implementation project(":grpc-schema")
+    implementation project(":grpc-common")
     implementation project(":common")
     implementation("org.springframework.boot:spring-boot-starter-actuator") {
         exclude group: "ch.qos.logback"

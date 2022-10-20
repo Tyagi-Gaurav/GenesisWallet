@@ -1,5 +1,6 @@
 package com.gw.user.config;
 
+import com.gw.grpc.common.CorrelationIdInterceptor;
 import com.gw.user.grpc.UserServiceGrpcImpl;
 import com.gw.user.service.UserService;
 import io.grpc.Server;
@@ -16,6 +17,7 @@ public class GrpcServerFactory {
                              GrpcConfig grpcConfig) throws IOException {
         var grpcServer = ServerBuilder.forPort(grpcConfig.port())
                 .addService(userServiceGrpcImpl)
+                .intercept(new CorrelationIdInterceptor())
                 .build();
 
         grpcServer.start();

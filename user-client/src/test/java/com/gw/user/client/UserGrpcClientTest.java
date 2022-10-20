@@ -3,10 +3,13 @@ package com.gw.user.client;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.gw.grpc.common.CorrelationIdInterceptor;
 import com.gw.test.common.grpc.GrpcExtension;
 import com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO;
 import com.gw.user.grpc.UserDetailsGrpcResponseDTO;
 import com.gw.user.grpc.UserServiceGrpc;
+import io.grpc.ClientInterceptor;
+import io.grpc.ServerInterceptor;
 import io.grpc.stub.StreamObserver;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -34,15 +38,16 @@ class UserGrpcClientTest {
     private final GrpcExtension grpcExtension = new GrpcExtension();
     private UserServiceGrpc.UserServiceImplBase bindableService;
     private UserGrpcClient userGrpcClient;
-    private UserGrpcClientConfig userGrpcClientConfig;
+    private final ServerInterceptor correlationIdInterceptor = new CorrelationIdInterceptor();
+    private final ClientInterceptor clientCorrelationIdInterceptor = new CorrelationIdInterceptor();
 
     @BeforeEach
     void setUp() throws IOException {
         bindableService = mock(UserServiceGrpc.UserServiceImplBase.class);
-        GrpcExtension.ServiceDetails serviceDetails = grpcExtension.createGrpcServerFor(bindableService);
-        userGrpcClientConfig = new UserGrpcClientConfig(serviceDetails.serverName(),
+        GrpcExtension.ServiceDetails serviceDetails = grpcExtension.createGrpcServerFor(bindableService, correlationIdInterceptor);
+        UserGrpcClientConfig userGrpcClientConfig = new UserGrpcClientConfig(serviceDetails.serverName(),
                 0, 300);
-        userGrpcClient = new UserGrpcClient(serviceDetails.managedChannel(), userGrpcClientConfig);
+        userGrpcClient = new UserGrpcClient(serviceDetails.managedChannel(), userGrpcClientConfig, List.of(clientCorrelationIdInterceptor));
     }
 
     @Test

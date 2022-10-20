@@ -3,6 +3,7 @@ package com.gw.test.common.grpc;
 import io.grpc.BindableService;
 import io.grpc.ManagedChannel;
 import io.grpc.Server;
+import io.grpc.ServerInterceptor;
 import io.grpc.inprocess.InProcessChannelBuilder;
 import io.grpc.inprocess.InProcessServerBuilder;
 import org.junit.jupiter.api.extension.AfterEachCallback;
@@ -34,10 +35,12 @@ public class GrpcExtension implements AfterEachCallback {
         cleanupTargets.clear();
     }
 
-    public ServiceDetails createGrpcServerFor(BindableService bindableService) throws IOException {
+    public ServiceDetails createGrpcServerFor(BindableService bindableService,
+                                              ServerInterceptor correlationIdInterceptor) throws IOException {
         var serverName = InProcessServerBuilder.generateName();
         Server server = InProcessServerBuilder.forName(serverName)
                 .directExecutor()
+                .intercept(correlationIdInterceptor)
                 .addService(bindableService)
                 .build().start();
 
