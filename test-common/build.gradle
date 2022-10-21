@@ -8,6 +8,6 @@ repositories {
 
 dependencies {
     testImplementation "io.grpc:grpc-stub:1.49.2"
-    testImplementation "io.grpc:grpc-protobuf:1.49.2"
+    testImplementation "io.grpc:grpc-protobuf:1.50.2"
     testImplementation "io.grpc:grpc-netty-shaded:1.49.2"
 }
