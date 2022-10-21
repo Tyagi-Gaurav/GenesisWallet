@@ -24,15 +24,6 @@ public class SystemExceptionHandler {
     }
 
     @ResponseStatus(code= HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(value = {RuntimeException.class, UnexpectedSystemException.class})
-    public Mono<ErrorResponse> handleRuntime(RuntimeException exception) {
-        if (LOG.isErrorEnabled()) {
-            LOG.error(exception.getMessage(), exception);
-        }
-        return errorResponseHelper.errorResponse(500, UNEXPECTED_ERROR_OCCURRED);
-    }
-
-    @ResponseStatus(code= HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(value = {Exception.class})
     public Mono<ErrorResponse> handleException(Exception exception) {
         if (LOG.isErrorEnabled()) {

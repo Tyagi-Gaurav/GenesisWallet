@@ -2,6 +2,7 @@ package com.gw.user.exception;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ import static org.mockito.Mockito.when;
 class GlobalExceptionHandlerTest {
     private final GlobalExceptionHandler validationExceptionHandler = new GlobalExceptionHandler();
 
-    @Mock
+    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private ServerWebExchange serverWebExchange;
 
     @Mock
@@ -44,6 +45,30 @@ class GlobalExceptionHandlerTest {
 
         StepVerifier.create(handle).verifyComplete();
         verify(httpResponse).setStatusCode(HttpStatus.UNAUTHORIZED);
+        verify(httpResponse).setComplete();
+    }
+
+    @Test
+    void handle2xxStatusCode() {
+        when(serverWebExchange.getResponse()).thenReturn(httpResponse);
+        when(httpResponse.getStatusCode()).thenReturn(HttpStatus.OK);
+        when(httpResponse.setComplete()).thenReturn(Mono.empty());
+
+        Mono<Void> handle = validationExceptionHandler.handle(serverWebExchange, new IllegalArgumentException());
+
+        StepVerifier.create(handle).verifyComplete();
+        verify(httpResponse).setComplete();
+    }
+
+    @Test
+    void handleOtherStatusCode() {
+        when(serverWebExchange.getResponse()).thenReturn(httpResponse);
+        when(httpResponse.getStatusCode()).thenReturn(HttpStatus.INTERNAL_SERVER_ERROR);
+        when(httpResponse.setComplete()).thenReturn(Mono.empty());
+
+        Mono<Void> handle = validationExceptionHandler.handle(serverWebExchange, new IllegalArgumentException());
+
+        StepVerifier.create(handle).verifyComplete();
         verify(httpResponse).setComplete();
     }
 }

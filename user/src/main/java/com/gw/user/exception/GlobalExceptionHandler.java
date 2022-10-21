@@ -15,7 +15,6 @@ import reactor.core.publisher.Mono;
 @Order(value = -2)
 @ControllerAdvice
 public class GlobalExceptionHandler implements WebExceptionHandler {
-
     private static final Logger LOG = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @Override

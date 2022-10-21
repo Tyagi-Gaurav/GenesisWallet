@@ -12,9 +12,9 @@ import java.util.UUID;
 @Component
 public class UserRepositoryImpl implements UserRepository {
     private final DatabaseClient databaseClient;
-    private static String FIND_USER_BY_ID = "SELECT * FROM USER_SCHEMA.USER_TABLE WHERE ID = :id";
-    private static String FIND_USER_BY_USER_NAME = "SELECT * FROM USER_SCHEMA.USER_TABLE WHERE USER_NAME = :username";
-    private static String ADD_USER = "INSERT INTO USER_SCHEMA.USER_TABLE (ID, USER_NAME, FIRST_NAME, LAST_NAME, PASSWORD, DATE_OF_BIRTH, GENDER, HOME_COUNTRY, ROLE) " +
+    private static final String FIND_USER_BY_ID = "SELECT * FROM USER_SCHEMA.USER_TABLE WHERE ID = :id";
+    private static final String FIND_USER_BY_USER_NAME = "SELECT * FROM USER_SCHEMA.USER_TABLE WHERE USER_NAME = :username";
+    private static final String ADD_USER = "INSERT INTO USER_SCHEMA.USER_TABLE (ID, USER_NAME, FIRST_NAME, LAST_NAME, PASSWORD, DATE_OF_BIRTH, GENDER, HOME_COUNTRY, ROLE) " +
             "values ($1, $2, $3, $4, $5, $6, $7, $8, $9)";
 
     public UserRepositoryImpl(DatabaseClient databaseClient) {

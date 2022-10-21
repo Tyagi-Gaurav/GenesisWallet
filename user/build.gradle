@@ -100,6 +100,7 @@ sonarqube {
     properties {
         property "sonar.coverage.exclusions",
                         "**/com/gw/user/config/**, **/com/gw/user/security/WebSecurityConfig**, " +
-                                "**/com/gw/user/Application**, **/com/gw/user/Graceful**"
+                                "**/com/gw/user/Application**, **/com/gw/user/Graceful**," +
+                                "**/com/gw/user/security/SecurityContextHolder**"
     }
 }

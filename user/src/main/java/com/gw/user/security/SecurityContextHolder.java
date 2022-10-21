@@ -1,4 +1,4 @@
-package com.gw.user.resource;
+package com.gw.user.security;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 import java.util.Objects;
 
 @Component
-public class SecurityContextHolder { //TODO Test
+public class SecurityContextHolder {
     private final Mono<SecurityContext> securityContextMono = ReactiveSecurityContextHolder.getContext();
 
     public <T> Mono<T> getContext(Class<T> clazz) {

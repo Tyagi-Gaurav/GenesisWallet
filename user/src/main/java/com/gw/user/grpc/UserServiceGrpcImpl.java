@@ -42,7 +42,7 @@ public class UserServiceGrpcImpl extends UserServiceImplBase {
     public void createUser(UserCreateGrpcRequestDTO request, StreamObserver<Empty> responseObserver) {
         LOG.info("Inside GRPC create user");
         userService.addUser(createUserFrom(request))
-                .map((v) -> Empty.getDefaultInstance())
+                .map(v -> Empty.getDefaultInstance())
                 .switchIfEmpty(Mono.defer(() -> Mono.just(Empty.getDefaultInstance())))
                 .doOnError(responseObserver::onError)
                 .subscribe(v -> {

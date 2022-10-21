@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
 
-public class TokenManager { //TODO Test
+public class TokenManager {
     private static final Logger LOG = LoggerFactory.getLogger(TokenManager.class);
     private final Key signingKey;
 
@@ -71,11 +71,6 @@ public class TokenManager { //TODO Test
                 LOG.warn("Expired user token found");
                 return null;
             }
-        }
-
-        public boolean validateDataWith(User user) {
-            final String username = getUsernameFromToken();
-            return (username != null && username.equals(user.username()));
         }
 
         public String getUsernameFromToken() {
