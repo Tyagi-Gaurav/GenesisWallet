@@ -6,7 +6,7 @@
 version: 2
 updates:
   - package-ecosystem: "gradle"
-    directory: "/user" # Location of package manifests
+    directory: "/common" # Location of package manifests
     schedule:
       interval: "daily"
   - package-ecosystem: "gradle"
@@ -14,6 +14,22 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "gradle"
-    directory: "/common" # Location of package manifests
+    directory: "/grpc-common" # Location of package manifests
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "gradle"
+    directory: "/grpc-schema" # Location of package manifests
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "gradle"
+    directory: "/test-common" # Location of package manifests
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "gradle"
+    directory: "/user" # Location of package manifests
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "gradle"
+    directory: "/user-client" # Location of package manifests
     schedule:
       interval: "daily"
