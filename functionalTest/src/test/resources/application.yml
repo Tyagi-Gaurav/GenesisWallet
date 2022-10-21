@@ -1,0 +1,11 @@
+spring:
+  active: local
+
+api-gateway:
+  host: ${API_GATEWAY_HOST:localhost}
+  securedPort: ${API_GATEWAY_SECURED_PORT:443}
+  nonSecuredPort: ${API_GATEWAY_NON_SECURED_PORT:8080}
+
+admin-credentials:
+  userName: admin
+  password: ${ADMIN_PASSWORD:admin123}

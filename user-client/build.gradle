@@ -1,0 +1,35 @@
+plugins {
+    id 'java-library'
+    id 'jacoco'
+    id "org.sonarqube" version "3.4.0.2513"
+}
+
+dependencies {
+    implementation project(":grpc-schema")
+    implementation project(":grpc-common")
+    implementation "io.grpc:grpc-stub:1.50.0"
+    implementation "io.grpc:grpc-protobuf:1.50.0"
+    implementation "io.grpc:grpc-netty-shaded:1.50.0"
+
+    testImplementation project(":test-common").sourceSets.test.output
+}
+
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+
+jacoco {
+    toolVersion = "0.8.7"
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.enabled true
+        html.destination layout.buildDirectory.dir('jacocoHtml').get().asFile
+    }
+    executionData.from = files('build/jacoco/test.exec')
+}

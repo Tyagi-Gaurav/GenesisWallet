@@ -3,10 +3,18 @@ services:
   user-app:
     container_name: local.user-app
     build:
-      context: .
-      dockerfile: ./user/Dockerfile
+      context: user
+    depends_on:
+      - postgres
     ports:
-      - "50051:50051"
+      - "19090:19090"
+      - "9090:9090"
+    environment:
+      - "DB_HOST=local.postgres"
+      - "DB_PORT=5432"
+      - "DB_USER=user"
+      - "DB_PWD=password"
+      - "DB_NAME=testUserDB"
     networks:
       - overlay
   
@@ -19,6 +27,18 @@ services:
     ports:
       - "8080:8080"
       - "443:443"
+    networks:
+      - overlay
+
+  postgres:
+    image: postgres:14.1
+    container_name: local.postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - "POSTGRES_USER=user"
+      - "POSTGRES_PASSWORD=password"
+      - "POSTGRES_DB=testUserDB"
     networks:
       - overlay
 

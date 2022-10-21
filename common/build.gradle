@@ -1,0 +1,45 @@
+plugins {
+    id 'java-library'
+    id 'jacoco'
+    id "org.sonarqube" version "3.4.0.2513"
+}
+
+dependencies {
+    implementation "io.jsonwebtoken:jjwt-api:0.11.5"
+    implementation "io.jsonwebtoken:jjwt-impl:0.11.5"
+    implementation "io.jsonwebtoken:jjwt-jackson:0.11.5"
+    implementation "org.bouncycastle:bcprov-jdk15on:1.70"
+
+    api "org.hibernate.validator:hibernate-validator:6.0.13.Final" //With latest version - javax.validation constraints do not work.
+    api group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
+    api group: 'jakarta.el', name: 'jakarta.el-api', version: '5.0.1'
+    api group: 'org.glassfish.expressly', name: 'expressly', version: '5.0.0'
+}
+
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+
+jacoco {
+    toolVersion = "0.8.7"
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.enabled true
+        html.destination layout.buildDirectory.dir('jacocoHtml').get().asFile
+    }
+    executionData.from = files('build/jacoco/test.exec')
+}
+
+sonarqube {
+    properties {
+        property "sonar.coverage.exclusions",
+                "**/com/gw/common/**/LoggingFilter**,**/com/gw/common/**/MetricsFilter**," +
+                        "**/com/gw/common/**/TokenManager**"
+    }
+}

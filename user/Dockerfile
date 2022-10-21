@@ -1,28 +1,12 @@
-FROM golang:1.18-alpine AS builder
+FROM openjdk:17
 
-ADD . /src
-WORKDIR /src/user
-RUN go mod edit --replace github.com/wallet/utils=../utils/ && \
-	go get github.com/google/uuid && \
-	go get google.golang.org/protobuf/reflect/protoreflect && \
-	go get google.golang.org/protobuf/runtime/protoimpl && \
-	go get google.golang.org/grpc/codes && \
-	go get google.golang.org/grpc/status && \
-	go get golang.org/x/net/http2 && \
-	go get golang.org/x/net/http2/hpack && \
-	go get github.com/wallet/user && \
-	go get github.com/wallet/utils
+ADD build/libs/user.jar /data/application.jar
 
-RUN go build *.go && \
-    go build -o ../out/user_main main/user_server_main.go && \
-    go build -o ../out/user_client client/user_client.go
+COPY ./startup.sh /data/startup.sh
 
-FROM golang:1.18-alpine
+CMD ["/bin/bash", "/data/startup.sh"]
 
-WORKDIR /build
-COPY --from=builder /src/out/user_main .
+#HEALTHCHECK CMD wget --quiet --tries=1 --spider http://localhost:9090/api/status || exit 1
 
-ENV GRPC_GO_LOG_SEVERITY_LEVEL=info 
-ENV GRPC_GO_LOG_VERBOSITY_LEVEL=99
-
-CMD ["/build/user_main"]
+EXPOSE 9090
+EXPOSE 19090
