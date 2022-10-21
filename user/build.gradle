@@ -30,7 +30,7 @@ dependencies {
         exclude group: "ch.qos.logback"
     }
 
-    implementation "io.grpc:grpc-stub:1.49.2"
+    implementation "io.grpc:grpc-stub:1.50.2"
     implementation "io.grpc:grpc-protobuf:1.50.2"
     implementation "io.grpc:grpc-netty-shaded:1.50.2"
     implementation "org.liquibase:liquibase-core:4.17.0"
