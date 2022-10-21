@@ -39,6 +39,7 @@ jacocoTestReport {
 sonarqube {
     properties {
         property "sonar.coverage.exclusions",
-                "**/com/gw/common/**/LoggingFilter**,**/com/gw/common/**/MetricsFilter**"
+                "**/com/gw/common/**/LoggingFilter**,**/com/gw/common/**/MetricsFilter**," +
+                        "**/com/gw/common/**/TokenManager**"
     }
 }
