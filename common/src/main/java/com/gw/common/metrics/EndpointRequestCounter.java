@@ -5,7 +5,6 @@ import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-//TODO: Add Unit Test
 @Component
 public class EndpointRequestCounter {
     private static final String METHOD_TAG = "method";

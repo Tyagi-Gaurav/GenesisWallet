@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 
-//TODO: Add Unit Test
 @Component
 public class EndpointHistogram {
     private final Timer histogram;

@@ -35,3 +35,10 @@ jacocoTestReport {
     }
     executionData.from = files('build/jacoco/test.exec')
 }
+
+sonarqube {
+    properties {
+        property "sonar.coverage.exclusions",
+                "**/com/gw/common/**/LoggingFilter**,**/com/gw/common/**/MetricsFilter**"
+    }
+}

@@ -10,7 +10,7 @@ import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
-@Component //TODO Write test
+@Component
 public class LoggingFilter implements WebFilter {
 
     private static final Logger LOG = LoggerFactory.getLogger(LoggingFilter.class);

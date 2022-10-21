@@ -15,11 +15,10 @@ import reactor.core.publisher.Mono;
 
 import java.time.Instant;
 
-//TODO: Add Unit Test
 @Component
-public class MetricsInterceptor implements WebFilter {
+public class MetricsFilter implements WebFilter {
 
-    private static final Logger LOG = LoggerFactory.getLogger(MetricsInterceptor.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MetricsFilter.class);
 
     @Autowired
     private EndpointRequestCounter endpointRequestCounter;
@@ -34,7 +33,7 @@ public class MetricsInterceptor implements WebFilter {
         HttpMethod method = request.getMethod();
         String path = request.getURI().getPath();
         endpointRequestCounter.increment(String.valueOf(method), path);
-        Instant startTime = Instant.now();
+        var startTime = Instant.now();
 
         Mono<Void> result = chain.filter(exchange);
 

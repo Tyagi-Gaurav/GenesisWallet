@@ -3,7 +3,7 @@ package com.gw.user.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gw.common.exception.ErrorResponseHelper;
 import com.gw.common.http.filter.LoggingFilter;
-import com.gw.common.http.filter.MetricsInterceptor;
+import com.gw.common.http.filter.MetricsFilter;
 import com.gw.common.http.filter.RequestIdFilter;
 import com.gw.common.metrics.ExceptionCounter;
 import com.gw.common.util.TokenManager;
@@ -33,7 +33,7 @@ public class BeanFactory implements WebFluxConfigurer {
     private RequestIdFilter requestIdFilter;
 
     @Autowired
-    private MetricsInterceptor metricsInterceptor;
+    private MetricsFilter metricsFilter;
 
     @Bean
     @Qualifier("signingKey")
