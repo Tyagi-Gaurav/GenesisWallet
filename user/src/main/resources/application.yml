@@ -19,6 +19,10 @@ accessible:
     "[GET-/actuator/metrics]": ${GET_METRICS:true}
     "[GET-/api/v2/api-docs]": ${GET_SWAGGER_JSON:true}
     "[GET-/api/swagger-ui/]": ${GET_SWAGGER_UI:true}
+    "[GET-/api/swagger-resources]": ${GET_SWAGGER_RESOURCES:true}
+  endpointsRegex:
+    "[GET-/api/swagger-resources/.*]": ${GET_SWAGGER_RESOURCES:true}
+    "[GET-/api/swagger-ui/.*]": ${GET_SWAGGER_UI_RESOURCES:true}
 
 management:
   server.port: ${SERVER_MGT_PORT:9091}
