@@ -56,7 +56,7 @@
     * Timeouts
     * Rate Limiting on Client
 * Documentation
-  * Swagger for APIs (#44)
+  * Swagger for APIs (https://github.com/Tyagi-Gaurav/GenesisWallet/issues/44)
   * Information dashboard for application
     * Current Version in prod
     * HealthCheck panel
