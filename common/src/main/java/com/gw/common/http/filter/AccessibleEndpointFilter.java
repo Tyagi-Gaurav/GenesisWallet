@@ -27,7 +27,7 @@ public class AccessibleEndpointFilter implements WebFilter {
         String path = exchange.getRequest().getPath().value();
         String method = exchange.getRequest().getMethodValue();
 
-        String methodPathAsString = String.format("%s-%s", method, path);
+        var methodPathAsString = String.format("%s-%s", method, path);
 
         if (!(accessibleEndpointConfig.isEnabled(method, path)
                 || accessibleEndpointConfig.satisfiesRegex(method, path))) {
