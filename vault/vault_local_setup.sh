@@ -4,7 +4,6 @@ export VAULT_ADDR='http://127.0.0.1:8200'
 export VAULT_API_ADDR='http://local.vault:8200'
 echo "Starting Vault Server"
 vault server -dev -dev-root-token-id="root" -dev-listen-address="0.0.0.0:8200" &
-#vault server -config=./config.hcl --cap-add=IPC_LOCK  &
 PID="$!"
 echo "Waiting for Vault with pid...$PID"
 while [ "$(curl --insecure $VAULT_ADDR/v1/sys/health | jq '.initialized')" != "true" ]
