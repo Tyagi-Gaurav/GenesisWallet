@@ -1,7 +1,5 @@
 package com.gw.vault.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.vault.authentication.AppRoleAuthentication;
@@ -13,7 +11,6 @@ import org.springframework.vault.support.VaultToken;
 
 @Component
 public class VaultInitializer extends AbstractVaultConfiguration {
-    private static final Logger LOG = LoggerFactory.getLogger(VaultInitializer.class);
 
     @Autowired
     private VaultProperties vaultProperties;
@@ -27,7 +24,6 @@ public class VaultInitializer extends AbstractVaultConfiguration {
 
     @Override
     public ClientAuthentication clientAuthentication() {
-        LOG.info("Using token: " + vaultProperties.token());
         final VaultToken initialToken = VaultToken.of(vaultProperties.token());
         final AppRoleAuthenticationOptions options = AppRoleAuthenticationOptions
                 .builder()

@@ -48,7 +48,7 @@ tee postgres.txt <<"EOF"
   "url": "jdbc:postgresql://local.postgres:5432/testUserDB",
   "username": "user",
   "password": "password",
-  "port": 5432,
+  "port": "5432",
   "host" : "local.postgres"
 }
 EOF
