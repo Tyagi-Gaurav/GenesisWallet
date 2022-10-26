@@ -45,7 +45,6 @@ vault write auth/approle/role/pg_service_1 policies="database" token_ttl=3h
 # Store kv data
 tee postgres.txt <<"EOF"
 {
-  "url": "jdbc:postgresql://local.postgres:5432/testUserDB",
   "username": "user",
   "password": "password",
   "port": "5432",

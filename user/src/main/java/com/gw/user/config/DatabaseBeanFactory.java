@@ -24,7 +24,6 @@ import java.util.Optional;
 @Configuration
 public class DatabaseBeanFactory {
     private static final Logger LOG = LoggerFactory.getLogger(DatabaseBeanFactory.class);
-    private static final String URL = "url";
     private static final String USER_NAME = "username";
     private static final String PASSWORD = "password";
     private static final String HOST = "host";
@@ -50,10 +49,11 @@ public class DatabaseBeanFactory {
         try {
             cpds.setDriverClass(databaseConfig.driver());
 
-            LOG.info("DB Credentials Map for Datasource {}", dbCredentials);
-            var jdbcUrl = dbCredentials.get(URL).toString();
             var userName = dbCredentials.get(USER_NAME).toString();
             var password = dbCredentials.get(PASSWORD).toString();
+            var host = dbCredentials.get(HOST).toString();
+            var port = Integer.parseInt(dbCredentials.get(PORT).toString());
+            var jdbcUrl = String.format("jdbc:postgresql://%s:%d/%s", host, port, databaseConfig.name());
 
             cpds.setJdbcUrl(jdbcUrl);
             cpds.setUser(userName);
