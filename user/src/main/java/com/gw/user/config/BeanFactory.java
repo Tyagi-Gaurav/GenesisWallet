@@ -24,7 +24,7 @@ import java.util.Base64;
 
 @Configuration
 @EnableWebFlux
-@ConfigurationPropertiesScan(value = {"com.gw.user.config", "com.gw.common"})
+@ConfigurationPropertiesScan(value = {"com.gw.user.config", "com.gw.common", "com.gw.vault.config"})
 public class BeanFactory implements WebFluxConfigurer {
     @Autowired
     private LoggingFilter loggingFilter;

@@ -42,10 +42,6 @@ auth:
 
 database:
   driver: "org.postgresql.Driver"
-  host: ${DB_HOST:localhost}
-  port: ${DB_PORT:3306}
-  user: ${DB_USER:user}
-  password: ${DB_PWD:password}
   name: ${DB_NAME:user_data}
   schema: USER_SCHEMA
   r2dbcPool:
@@ -57,3 +53,10 @@ database:
     maxLifeTime: 600s
     validationDepth: LOCAL
     blocking-warmup: true
+
+vault:
+  token: "${VAULT_ACCESS_TOKEN:root}"
+  host: "local.vault"
+  port: 8200
+  httpScheme: "http"
+  appRole: "pg_service_1"

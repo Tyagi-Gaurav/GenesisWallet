@@ -1,0 +1,13 @@
+plugins {
+    id 'java-library'
+    id 'jacoco'
+    id "org.sonarqube" version "3.4.0.2513"
+}
+
+dependencies {
+    implementation "org.springframework.vault:spring-vault-core:2.3.2"
+}
+
+test {
+    useJUnitPlatform()
+}
