@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.vault.authentication.TokenAuthentication;
-import org.springframework.vault.core.VaultKeyValueOperations;
 import org.springframework.vault.core.VaultKeyValueOperationsSupport;
 import org.springframework.vault.core.VaultTemplate;
 import org.springframework.vault.support.VaultResponseSupport;
@@ -31,17 +30,17 @@ public class DatabaseBeanFactory {
     private static final String VAULT_DB_SERVICE_NAME = "postgres/service_1";
 
     @Bean
-    public VaultKeyValueOperations dbCredentials(VaultInitializer vaultInitializer) {
+    public VaultTemplate dbCredentials(VaultInitializer vaultInitializer) {
         VaultToken login = vaultInitializer.clientAuthentication().login();
-        var vaultTemplate = new VaultTemplate(vaultInitializer.vaultEndpoint(),
+        return new VaultTemplate(vaultInitializer.vaultEndpoint(),
                 new TokenAuthentication(login.getToken()));
-        return vaultTemplate.opsForKeyValue("database",
-                VaultKeyValueOperationsSupport.KeyValueBackend.versioned());
     }
 
     @Bean
     public DataSource dataSource(DatabaseConfig databaseConfig,
-                                 VaultKeyValueOperations operations) {
+                                 VaultTemplate vaultTemplate) {
+        var operations = vaultTemplate.opsForKeyValue("database",
+                VaultKeyValueOperationsSupport.KeyValueBackend.versioned());
         var dbCredentials = Optional.ofNullable(operations.get(VAULT_DB_SERVICE_NAME))
                 .map(VaultResponseSupport::getData).orElseGet(Map::of);
 
@@ -70,7 +69,9 @@ public class DatabaseBeanFactory {
 
     @Bean
     public PostgresqlConnectionConfiguration configuration(DatabaseConfig databaseConfig,
-                                                           VaultKeyValueOperations operations) {
+                                                           VaultTemplate vaultTemplate) {
+        var operations = vaultTemplate.opsForKeyValue("database",
+                VaultKeyValueOperationsSupport.KeyValueBackend.versioned());
         var dbCredentials = Optional.ofNullable(operations.get(VAULT_DB_SERVICE_NAME))
                 .map(VaultResponseSupport::getData).orElseGet(Map::of);
 

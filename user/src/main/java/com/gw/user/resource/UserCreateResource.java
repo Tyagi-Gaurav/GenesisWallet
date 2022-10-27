@@ -2,6 +2,7 @@ package com.gw.user.resource;
 
 import com.gw.common.domain.User;
 import com.gw.common.exception.ApplicationAuthenticationException;
+import com.gw.common.util.DataEncoder;
 import com.gw.common.util.TokenManager;
 import com.gw.user.resource.domain.LoginRequestDTO;
 import com.gw.user.resource.domain.LoginResponseDTO;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.UUID;
 
@@ -25,21 +27,36 @@ public class UserCreateResource {
 
     @Autowired
     private UserService userService;
-
     @Autowired
     private TokenManager tokenManager;
+    @Autowired
+    private DataEncoder dataEncoder;
+//    @Autowired
+//    private VaultTemplate vaultTemplate;
+//    private String encryptionKey;
+
+//    @PostConstruct
+//    public void setEncryptionKey() {
+//        VaultKeyValueOperations userPasswordEncryption =
+//                vaultTemplate.opsForKeyValue("UserPasswordEncryption", VaultKeyValueOperationsSupport.KeyValueBackend.KV_1);
+//        VaultResponse vaultResponse = userPasswordEncryption.get("user_service/passwordEncryptionKey");
+//        Map<String, Object> keyValueMap = Optional.ofNullable(vaultResponse)
+//                .map(VaultResponseSupport::getData).orElseGet(Map::of);
+//        encryptionKey = keyValueMap.get("encryptionKey").toString();
+//    }
 
     @PostMapping(consumes = "application/vnd+user.create.v1+json",
             produces = "application/vnd+user.create.v1+json",
             path = "/user/create")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Mono<Void> createUser(@Valid @RequestBody UserCreateRequestDTO userCreateRequestDTO) {
+    public Mono<Void> createUser(@Valid @RequestBody UserCreateRequestDTO userCreateRequestDTO) throws IOException {
         return userService.addUser(new User(
                 UUID.randomUUID(),
                 userCreateRequestDTO.firstName(),
                 userCreateRequestDTO.lastName(),
                 userCreateRequestDTO.userName(),
-                userCreateRequestDTO.password(),
+                dataEncoder.encode(userCreateRequestDTO.password()),
+                dataEncoder.encode(userCreateRequestDTO.password()),
                 userCreateRequestDTO.dateOfBirth(),
                 userCreateRequestDTO.gender(),
                 userCreateRequestDTO.homeCountry(),
@@ -50,8 +67,8 @@ public class UserCreateResource {
             produces = "application/vnd.login.v1+json",
             path = "/user/login")
     @ResponseStatus(code = HttpStatus.OK)
-    public Mono<LoginResponseDTO> login(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
-        return userService.authenticateUser(loginRequestDTO.userName(), loginRequestDTO.password())
+    public Mono<LoginResponseDTO> login(@Valid @RequestBody LoginRequestDTO loginRequestDTO) throws IOException {
+        return userService.authenticateUser(loginRequestDTO.userName(), dataEncoder.encode(loginRequestDTO.password()))
                 .map(value -> new LoginResponseDTO(tokenManager.generateToken(value, Duration.ofMinutes(10))))
                 .switchIfEmpty(Mono.error(() -> new ApplicationAuthenticationException("No user found [UserName]: " +
                         loginRequestDTO.userName())));

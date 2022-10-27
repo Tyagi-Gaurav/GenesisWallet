@@ -12,6 +12,7 @@ public record User(UUID id,
                    String lastName,
                    String username,
                    String password,
+                   String salt,
                    String dateOfBirth,
                    Gender gender,
                    String homeCountry,
@@ -23,6 +24,7 @@ public record User(UUID id,
         private String lastName;
         private String username;
         private String password;
+        private String salt;
         private String dateOfBirth;
         private Gender gender;
         private String homeCountry;
@@ -73,8 +75,13 @@ public record User(UUID id,
             return this;
         }
 
+        public UserBuilder setSalt(String salt) {
+            this.salt = salt;
+            return this;
+        }
+
         public User createUser() {
-            return new User(id, firstName, lastName, username, password, dateOfBirth, gender, homeCountry, role);
+            return new User(id, firstName, lastName, username, password, salt, dateOfBirth, gender, homeCountry, role);
         }
     }
 }

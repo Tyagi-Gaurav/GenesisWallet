@@ -57,6 +57,7 @@ public class UserServiceGrpcImpl extends UserServiceImplBase {
                 request.getLastName(),
                 request.getUserName(),
                 request.getPassword(),
+                request.getSalt(),
                 request.getDateOfBirth(),
                 toDomainGender(request.getGender()),
                 request.getHomeCountry(),

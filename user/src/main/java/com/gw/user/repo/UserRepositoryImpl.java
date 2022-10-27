@@ -14,8 +14,8 @@ public class UserRepositoryImpl implements UserRepository {
     private final DatabaseClient databaseClient;
     private static final String FIND_USER_BY_ID = "SELECT * FROM USER_SCHEMA.USER_TABLE WHERE ID = :id";
     private static final String FIND_USER_BY_USER_NAME = "SELECT * FROM USER_SCHEMA.USER_TABLE WHERE USER_NAME = :username";
-    private static final String ADD_USER = "INSERT INTO USER_SCHEMA.USER_TABLE (ID, USER_NAME, FIRST_NAME, LAST_NAME, PASSWORD, DATE_OF_BIRTH, GENDER, HOME_COUNTRY, ROLE) " +
-            "values ($1, $2, $3, $4, $5, $6, $7, $8, $9)";
+    private static final String ADD_USER = "INSERT INTO USER_SCHEMA.USER_TABLE (ID, USER_NAME, FIRST_NAME, LAST_NAME, PASSWORD, SALT, DATE_OF_BIRTH, GENDER, HOME_COUNTRY, ROLE) " +
+            "values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)";
 
     public UserRepositoryImpl(DatabaseClient databaseClient) {
         this.databaseClient = databaseClient;
@@ -37,10 +37,11 @@ public class UserRepositoryImpl implements UserRepository {
                 .bind(2, user.firstName())
                 .bind(3, user.lastName())
                 .bind(4, user.password())
-                .bind(5, user.dateOfBirth())
-                .bind(6, user.gender().name())
-                .bind(7, user.homeCountry())
-                .bind(8, user.role())
+                .bind(5, user.salt())
+                .bind(6, user.dateOfBirth())
+                .bind(7, user.gender().name())
+                .bind(8, user.homeCountry())
+                .bind(9, user.role())
                 .then();
     }
 
@@ -70,6 +71,7 @@ public class UserRepositoryImpl implements UserRepository {
                 .setId(UUID.fromString(row.get("ID", String.class)))
                 .setUsername(row.get("USER_NAME", String.class))
                 .setPassword(row.get("PASSWORD", String.class))
+                .setSalt(row.get("SALT", String.class))
                 .setFirstName(row.get("FIRST_NAME", String.class))
                 .setLastName(row.get("LAST_NAME", String.class))
                 .setDateOfBirth(row.get("DATE_OF_BIRTH", String.class))

@@ -40,6 +40,7 @@ class AuthenticationManagerTest {
             "TestLastName",
             "TestUserName",
             "",
+            "",
             "01/01/1989",
             Gender.FEMALE,
             "GBR",

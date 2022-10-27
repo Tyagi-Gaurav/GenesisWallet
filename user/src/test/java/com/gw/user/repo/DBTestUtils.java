@@ -22,18 +22,19 @@ public class DBTestUtils {
     public static void addToDatabase(User user, DatabaseClient databaseClient) {
 
         LOG.info("Adding {} to name: ", user);
-        String query = "INSERT INTO USER_SCHEMA.USER_TABLE (ID, USER_NAME, FIRST_NAME, LAST_NAME, PASSWORD, DATE_OF_BIRTH, GENDER, HOME_COUNTRY, ROLE) " +
-                "values ($1, $2, $3, $4, $5, $6, $7, $8, $9)";
+        String query = "INSERT INTO USER_SCHEMA.USER_TABLE (ID, USER_NAME, FIRST_NAME, LAST_NAME, PASSWORD, SALT, DATE_OF_BIRTH, GENDER, HOME_COUNTRY, ROLE) " +
+                "values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)";
         Mono<Integer> result = databaseClient.sql(query)
                 .bind(0, user.id().toString())
                 .bind(1, user.username())
                 .bind(2, user.firstName())
                 .bind(3, user.lastName())
                 .bind(4, user.password())
-                .bind(5, user.dateOfBirth())
-                .bind(6, user.gender().name())
-                .bind(7, user.homeCountry())
-                .bind(8, user.role())
+                .bind(5, user.salt())
+                .bind(6, user.dateOfBirth())
+                .bind(7, user.gender().name())
+                .bind(8, user.homeCountry())
+                .bind(9, user.role())
                 .fetch()
                 .rowsUpdated();
 
@@ -60,6 +61,8 @@ public class DBTestUtils {
                 .setFirstName(row.get("FIRST_NAME", String.class))
                 .setLastName(row.get("LAST_NAME", String.class))
                 .setDateOfBirth(row.get("DATE_OF_BIRTH", String.class))
+                .setPassword(row.get("PASSWORD", String.class))
+                .setSalt(row.get("SALT", String.class))
                 .setHomeCountry(row.get("HOME_COUNTRY", String.class))
                 .setGender(Gender.valueOf(row.get("GENDER", String.class)))
                 .setRole(row.get("ROLE", String.class))

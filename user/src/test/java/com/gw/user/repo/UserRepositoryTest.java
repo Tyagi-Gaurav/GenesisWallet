@@ -42,7 +42,10 @@ class UserRepositoryTest extends DatabaseTest {
         User userInDatabase = aUser().build();
         addToDatabase(userInDatabase, databaseClient);
 
-        User expectedUser = copyOf(userInDatabase).withPassword(null).build();
+        User expectedUser = copyOf(userInDatabase)
+                .withPassword(null)
+                .withSalt(null)
+                .build();
 
         //when
         Mono<User> actualUser = userRepository.findUserById(userInDatabase.id());
@@ -57,7 +60,7 @@ class UserRepositoryTest extends DatabaseTest {
     void shouldAddUser() {
         //given
         User userToAdd = aUser().build();
-        User expectedUser = copyOf(userToAdd).withPassword(null).build();
+        User expectedUser = copyOf(userToAdd).build();
 
         //when
         StepVerifier.create(userRepository.addUser(userToAdd))

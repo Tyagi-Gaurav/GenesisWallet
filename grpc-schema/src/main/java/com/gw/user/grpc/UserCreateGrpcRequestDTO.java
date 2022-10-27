@@ -18,6 +18,7 @@ private static final long serialVersionUID = 0L;
   private UserCreateGrpcRequestDTO() {
     userName_ = "";
     password_ = "";
+    salt_ = "";
     firstName_ = "";
     lastName_ = "";
     dateOfBirth_ = "";
@@ -126,10 +127,48 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int FIRSTNAME_FIELD_NUMBER = 3;
+  public static final int SALT_FIELD_NUMBER = 3;
+  private volatile java.lang.Object salt_;
+  /**
+   * <code>string salt = 3;</code>
+   * @return The salt.
+   */
+  @java.lang.Override
+  public java.lang.String getSalt() {
+    java.lang.Object ref = salt_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      salt_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string salt = 3;</code>
+   * @return The bytes for salt.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getSaltBytes() {
+    java.lang.Object ref = salt_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      salt_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int FIRSTNAME_FIELD_NUMBER = 4;
   private volatile java.lang.Object firstName_;
   /**
-   * <code>string firstName = 3;</code>
+   * <code>string firstName = 4;</code>
    * @return The firstName.
    */
   @java.lang.Override
@@ -146,7 +185,7 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string firstName = 3;</code>
+   * <code>string firstName = 4;</code>
    * @return The bytes for firstName.
    */
   @java.lang.Override
@@ -164,10 +203,10 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int LASTNAME_FIELD_NUMBER = 4;
+  public static final int LASTNAME_FIELD_NUMBER = 5;
   private volatile java.lang.Object lastName_;
   /**
-   * <code>string lastName = 4;</code>
+   * <code>string lastName = 5;</code>
    * @return The lastName.
    */
   @java.lang.Override
@@ -184,7 +223,7 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string lastName = 4;</code>
+   * <code>string lastName = 5;</code>
    * @return The bytes for lastName.
    */
   @java.lang.Override
@@ -202,10 +241,10 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int DATEOFBIRTH_FIELD_NUMBER = 5;
+  public static final int DATEOFBIRTH_FIELD_NUMBER = 6;
   private volatile java.lang.Object dateOfBirth_;
   /**
-   * <code>string dateOfBirth = 5;</code>
+   * <code>string dateOfBirth = 6;</code>
    * @return The dateOfBirth.
    */
   @java.lang.Override
@@ -222,7 +261,7 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string dateOfBirth = 5;</code>
+   * <code>string dateOfBirth = 6;</code>
    * @return The bytes for dateOfBirth.
    */
   @java.lang.Override
@@ -240,17 +279,17 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int GENDER_FIELD_NUMBER = 6;
+  public static final int GENDER_FIELD_NUMBER = 7;
   private int gender_;
   /**
-   * <code>.com.gw.user.grpc.Gender gender = 6;</code>
+   * <code>.com.gw.user.grpc.Gender gender = 7;</code>
    * @return The enum numeric value on the wire for gender.
    */
   @java.lang.Override public int getGenderValue() {
     return gender_;
   }
   /**
-   * <code>.com.gw.user.grpc.Gender gender = 6;</code>
+   * <code>.com.gw.user.grpc.Gender gender = 7;</code>
    * @return The gender.
    */
   @java.lang.Override public com.gw.user.grpc.Gender getGender() {
@@ -259,10 +298,10 @@ private static final long serialVersionUID = 0L;
     return result == null ? com.gw.user.grpc.Gender.UNRECOGNIZED : result;
   }
 
-  public static final int HOMECOUNTRY_FIELD_NUMBER = 7;
+  public static final int HOMECOUNTRY_FIELD_NUMBER = 8;
   private volatile java.lang.Object homeCountry_;
   /**
-   * <code>string homeCountry = 7;</code>
+   * <code>string homeCountry = 8;</code>
    * @return The homeCountry.
    */
   @java.lang.Override
@@ -279,7 +318,7 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string homeCountry = 7;</code>
+   * <code>string homeCountry = 8;</code>
    * @return The bytes for homeCountry.
    */
   @java.lang.Override
@@ -317,20 +356,23 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(password_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 2, password_);
     }
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(salt_)) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 3, salt_);
+    }
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(firstName_)) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 3, firstName_);
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 4, firstName_);
     }
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(lastName_)) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 4, lastName_);
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 5, lastName_);
     }
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(dateOfBirth_)) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 5, dateOfBirth_);
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 6, dateOfBirth_);
     }
     if (gender_ != com.gw.user.grpc.Gender.GENDER_UNSPECIFIED.getNumber()) {
-      output.writeEnum(6, gender_);
+      output.writeEnum(7, gender_);
     }
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(homeCountry_)) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 7, homeCountry_);
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 8, homeCountry_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -347,21 +389,24 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(password_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, password_);
     }
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(salt_)) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, salt_);
+    }
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(firstName_)) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, firstName_);
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, firstName_);
     }
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(lastName_)) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, lastName_);
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, lastName_);
     }
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(dateOfBirth_)) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, dateOfBirth_);
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, dateOfBirth_);
     }
     if (gender_ != com.gw.user.grpc.Gender.GENDER_UNSPECIFIED.getNumber()) {
       size += com.google.protobuf.CodedOutputStream
-        .computeEnumSize(6, gender_);
+        .computeEnumSize(7, gender_);
     }
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(homeCountry_)) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, homeCountry_);
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, homeCountry_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -382,6 +427,8 @@ private static final long serialVersionUID = 0L;
         .equals(other.getUserName())) return false;
     if (!getPassword()
         .equals(other.getPassword())) return false;
+    if (!getSalt()
+        .equals(other.getSalt())) return false;
     if (!getFirstName()
         .equals(other.getFirstName())) return false;
     if (!getLastName()
@@ -406,6 +453,8 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getUserName().hashCode();
     hash = (37 * hash) + PASSWORD_FIELD_NUMBER;
     hash = (53 * hash) + getPassword().hashCode();
+    hash = (37 * hash) + SALT_FIELD_NUMBER;
+    hash = (53 * hash) + getSalt().hashCode();
     hash = (37 * hash) + FIRSTNAME_FIELD_NUMBER;
     hash = (53 * hash) + getFirstName().hashCode();
     hash = (37 * hash) + LASTNAME_FIELD_NUMBER;
@@ -548,6 +597,8 @@ private static final long serialVersionUID = 0L;
 
       password_ = "";
 
+      salt_ = "";
+
       firstName_ = "";
 
       lastName_ = "";
@@ -586,6 +637,7 @@ private static final long serialVersionUID = 0L;
       com.gw.user.grpc.UserCreateGrpcRequestDTO result = new com.gw.user.grpc.UserCreateGrpcRequestDTO(this);
       result.userName_ = userName_;
       result.password_ = password_;
+      result.salt_ = salt_;
       result.firstName_ = firstName_;
       result.lastName_ = lastName_;
       result.dateOfBirth_ = dateOfBirth_;
@@ -647,6 +699,10 @@ private static final long serialVersionUID = 0L;
         password_ = other.password_;
         onChanged();
       }
+      if (!other.getSalt().isEmpty()) {
+        salt_ = other.salt_;
+        onChanged();
+      }
       if (!other.getFirstName().isEmpty()) {
         firstName_ = other.firstName_;
         onChanged();
@@ -703,30 +759,35 @@ private static final long serialVersionUID = 0L;
               break;
             } // case 18
             case 26: {
-              firstName_ = input.readStringRequireUtf8();
+              salt_ = input.readStringRequireUtf8();
 
               break;
             } // case 26
             case 34: {
-              lastName_ = input.readStringRequireUtf8();
+              firstName_ = input.readStringRequireUtf8();
 
               break;
             } // case 34
             case 42: {
-              dateOfBirth_ = input.readStringRequireUtf8();
+              lastName_ = input.readStringRequireUtf8();
 
               break;
             } // case 42
-            case 48: {
+            case 50: {
+              dateOfBirth_ = input.readStringRequireUtf8();
+
+              break;
+            } // case 50
+            case 56: {
               gender_ = input.readEnum();
 
               break;
-            } // case 48
-            case 58: {
+            } // case 56
+            case 66: {
               homeCountry_ = input.readStringRequireUtf8();
 
               break;
-            } // case 58
+            } // case 66
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -895,9 +956,85 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
+    private java.lang.Object salt_ = "";
+    /**
+     * <code>string salt = 3;</code>
+     * @return The salt.
+     */
+    public java.lang.String getSalt() {
+      java.lang.Object ref = salt_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        salt_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string salt = 3;</code>
+     * @return The bytes for salt.
+     */
+    public com.google.protobuf.ByteString
+        getSaltBytes() {
+      java.lang.Object ref = salt_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        salt_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string salt = 3;</code>
+     * @param value The salt to set.
+     * @return This builder for chaining.
+     */
+    public Builder setSalt(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      salt_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string salt = 3;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearSalt() {
+      
+      salt_ = getDefaultInstance().getSalt();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string salt = 3;</code>
+     * @param value The bytes for salt to set.
+     * @return This builder for chaining.
+     */
+    public Builder setSaltBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      salt_ = value;
+      onChanged();
+      return this;
+    }
+
     private java.lang.Object firstName_ = "";
     /**
-     * <code>string firstName = 3;</code>
+     * <code>string firstName = 4;</code>
      * @return The firstName.
      */
     public java.lang.String getFirstName() {
@@ -913,7 +1050,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string firstName = 3;</code>
+     * <code>string firstName = 4;</code>
      * @return The bytes for firstName.
      */
     public com.google.protobuf.ByteString
@@ -930,7 +1067,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string firstName = 3;</code>
+     * <code>string firstName = 4;</code>
      * @param value The firstName to set.
      * @return This builder for chaining.
      */
@@ -945,7 +1082,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string firstName = 3;</code>
+     * <code>string firstName = 4;</code>
      * @return This builder for chaining.
      */
     public Builder clearFirstName() {
@@ -955,7 +1092,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string firstName = 3;</code>
+     * <code>string firstName = 4;</code>
      * @param value The bytes for firstName to set.
      * @return This builder for chaining.
      */
@@ -973,7 +1110,7 @@ private static final long serialVersionUID = 0L;
 
     private java.lang.Object lastName_ = "";
     /**
-     * <code>string lastName = 4;</code>
+     * <code>string lastName = 5;</code>
      * @return The lastName.
      */
     public java.lang.String getLastName() {
@@ -989,7 +1126,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string lastName = 4;</code>
+     * <code>string lastName = 5;</code>
      * @return The bytes for lastName.
      */
     public com.google.protobuf.ByteString
@@ -1006,7 +1143,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string lastName = 4;</code>
+     * <code>string lastName = 5;</code>
      * @param value The lastName to set.
      * @return This builder for chaining.
      */
@@ -1021,7 +1158,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string lastName = 4;</code>
+     * <code>string lastName = 5;</code>
      * @return This builder for chaining.
      */
     public Builder clearLastName() {
@@ -1031,7 +1168,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string lastName = 4;</code>
+     * <code>string lastName = 5;</code>
      * @param value The bytes for lastName to set.
      * @return This builder for chaining.
      */
@@ -1049,7 +1186,7 @@ private static final long serialVersionUID = 0L;
 
     private java.lang.Object dateOfBirth_ = "";
     /**
-     * <code>string dateOfBirth = 5;</code>
+     * <code>string dateOfBirth = 6;</code>
      * @return The dateOfBirth.
      */
     public java.lang.String getDateOfBirth() {
@@ -1065,7 +1202,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string dateOfBirth = 5;</code>
+     * <code>string dateOfBirth = 6;</code>
      * @return The bytes for dateOfBirth.
      */
     public com.google.protobuf.ByteString
@@ -1082,7 +1219,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string dateOfBirth = 5;</code>
+     * <code>string dateOfBirth = 6;</code>
      * @param value The dateOfBirth to set.
      * @return This builder for chaining.
      */
@@ -1097,7 +1234,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string dateOfBirth = 5;</code>
+     * <code>string dateOfBirth = 6;</code>
      * @return This builder for chaining.
      */
     public Builder clearDateOfBirth() {
@@ -1107,7 +1244,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string dateOfBirth = 5;</code>
+     * <code>string dateOfBirth = 6;</code>
      * @param value The bytes for dateOfBirth to set.
      * @return This builder for chaining.
      */
@@ -1125,14 +1262,14 @@ private static final long serialVersionUID = 0L;
 
     private int gender_ = 0;
     /**
-     * <code>.com.gw.user.grpc.Gender gender = 6;</code>
+     * <code>.com.gw.user.grpc.Gender gender = 7;</code>
      * @return The enum numeric value on the wire for gender.
      */
     @java.lang.Override public int getGenderValue() {
       return gender_;
     }
     /**
-     * <code>.com.gw.user.grpc.Gender gender = 6;</code>
+     * <code>.com.gw.user.grpc.Gender gender = 7;</code>
      * @param value The enum numeric value on the wire for gender to set.
      * @return This builder for chaining.
      */
@@ -1143,7 +1280,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.com.gw.user.grpc.Gender gender = 6;</code>
+     * <code>.com.gw.user.grpc.Gender gender = 7;</code>
      * @return The gender.
      */
     @java.lang.Override
@@ -1153,7 +1290,7 @@ private static final long serialVersionUID = 0L;
       return result == null ? com.gw.user.grpc.Gender.UNRECOGNIZED : result;
     }
     /**
-     * <code>.com.gw.user.grpc.Gender gender = 6;</code>
+     * <code>.com.gw.user.grpc.Gender gender = 7;</code>
      * @param value The gender to set.
      * @return This builder for chaining.
      */
@@ -1167,7 +1304,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.com.gw.user.grpc.Gender gender = 6;</code>
+     * <code>.com.gw.user.grpc.Gender gender = 7;</code>
      * @return This builder for chaining.
      */
     public Builder clearGender() {
@@ -1179,7 +1316,7 @@ private static final long serialVersionUID = 0L;
 
     private java.lang.Object homeCountry_ = "";
     /**
-     * <code>string homeCountry = 7;</code>
+     * <code>string homeCountry = 8;</code>
      * @return The homeCountry.
      */
     public java.lang.String getHomeCountry() {
@@ -1195,7 +1332,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string homeCountry = 7;</code>
+     * <code>string homeCountry = 8;</code>
      * @return The bytes for homeCountry.
      */
     public com.google.protobuf.ByteString
@@ -1212,7 +1349,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string homeCountry = 7;</code>
+     * <code>string homeCountry = 8;</code>
      * @param value The homeCountry to set.
      * @return This builder for chaining.
      */
@@ -1227,7 +1364,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string homeCountry = 7;</code>
+     * <code>string homeCountry = 8;</code>
      * @return This builder for chaining.
      */
     public Builder clearHomeCountry() {
@@ -1237,7 +1374,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>string homeCountry = 7;</code>
+     * <code>string homeCountry = 8;</code>
      * @param value The bytes for homeCountry to set.
      * @return This builder for chaining.
      */

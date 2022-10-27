@@ -15,6 +15,7 @@ public class UserBuilder {
     private String username = randomAlphabetic(10);
     private String firstName = randomAlphabetic(10);
     private String lastName = randomAlphabetic(10);
+    private String salt = randomAlphabetic(10);
     private String dateOfBirth = "10/10/2010";
     private Gender gender = Gender.FEMALE;
     private String homeCountry = "AUS";
@@ -36,6 +37,7 @@ public class UserBuilder {
         userBuilder.lastName = currentUser.lastName();
         userBuilder.password = currentUser.password();
         userBuilder.authority = currentUser.role();
+        userBuilder.salt = currentUser.salt();
 
         return userBuilder;
     }
@@ -50,12 +52,18 @@ public class UserBuilder {
         return this;
     }
 
+    public UserBuilder withSalt(String salt) {
+        this.salt = salt;
+        return this;
+    }
+
     public User build() {
         return new User.UserBuilder().setId(this.id)
                 .setFirstName(this.firstName)
                 .setLastName(this.lastName)
                 .setUsername(this.username)
                 .setPassword(this.password)
+                .setSalt(this.salt)
                 .setDateOfBirth(this.dateOfBirth)
                 .setGender(this.gender)
                 .setHomeCountry(this.homeCountry)
@@ -71,6 +79,7 @@ public class UserBuilder {
                 .setDateOfBirth(user.dateOfBirth())
                 .setGender(toGrpcGender(user.gender()))
                 .setPassword(user.password())
+                .setSalt(user.salt())
                 .setHomeCountry(user.homeCountry())
                 .build();
     }
