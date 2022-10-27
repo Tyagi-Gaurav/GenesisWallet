@@ -2,7 +2,7 @@ package com.gw.user.resource;
 
 import com.gw.common.domain.User;
 import com.gw.common.exception.ApplicationAuthenticationException;
-import com.gw.common.util.DataEncoder;
+import com.gw.security.util.DataEncoder;
 import com.gw.common.util.TokenManager;
 import com.gw.user.resource.domain.LoginRequestDTO;
 import com.gw.user.resource.domain.UserCreateRequestDTO;

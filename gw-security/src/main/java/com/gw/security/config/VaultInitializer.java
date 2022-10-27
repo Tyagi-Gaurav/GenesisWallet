@@ -1,4 +1,4 @@
-package com.gw.vault.config;
+package com.gw.security.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

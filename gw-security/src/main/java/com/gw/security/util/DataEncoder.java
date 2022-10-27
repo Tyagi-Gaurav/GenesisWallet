@@ -1,4 +1,4 @@
-package com.gw.common.util;
+package com.gw.security.util;
 
 import java.io.IOException;
 

@@ -1,7 +1,7 @@
-package com.gw.common.config;
+package com.gw.security.config;
 
-import com.gw.common.util.DataEncoder;
-import com.gw.common.util.DataEncoderImpl;
+import com.gw.security.util.DataEncoder;
+import com.gw.security.util.DataEncoderImpl;
 import org.bouncycastle.util.encoders.HexEncoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

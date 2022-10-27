@@ -1,6 +1,6 @@
 package com.gw.user.config;
 
-import com.gw.vault.config.VaultInitializer;
+import com.gw.security.config.VaultInitializer;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import io.r2dbc.postgresql.PostgresqlConnectionConfiguration;
 import io.r2dbc.postgresql.PostgresqlConnectionFactory;

@@ -1,4 +1,4 @@
-package com.gw.common.util;
+package com.gw.security.util;
 
 import org.bouncycastle.util.encoders.Encoder;
 import org.junit.jupiter.api.BeforeEach;
