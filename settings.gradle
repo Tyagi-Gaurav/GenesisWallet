@@ -1,11 +1,11 @@
 rootProject.name = 'GenesisWallet'
 include 'functionalTest'
-include 'api-gateway'
+include 'gw-api-gateway'
 include 'user'
 include 'grpc-schema'
 include 'common'
 include 'user-client'
 include 'test-common'
 include 'grpc-common'
-include 'vault'
+include 'gw-security'
 
