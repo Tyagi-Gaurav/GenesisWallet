@@ -10,7 +10,7 @@ dependencies {
     implementation "io.jsonwebtoken:jjwt-jackson:0.11.5"
     implementation "org.bouncycastle:bcprov-jdk15on:1.70"
 
-    api "org.hibernate.validator:hibernate-validator:6.0.13.Final" //With latest version - javax.validation constraints do not work.
+    api "org.hibernate.validator:hibernate-validator:8.0.0.Final" //With latest version - javax.validation constraints do not work.
     api group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
     api group: 'jakarta.el', name: 'jakarta.el-api', version: '5.0.1'
     api group: 'org.glassfish.expressly', name: 'expressly', version: '5.0.0'
