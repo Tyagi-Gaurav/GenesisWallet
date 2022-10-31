@@ -2,13 +2,12 @@ package com.gw.user.resource;
 
 import com.gw.common.domain.User;
 import com.gw.common.exception.ApplicationAuthenticationException;
-import com.gw.security.util.DataEncoder;
 import com.gw.common.util.TokenManager;
+import com.gw.security.util.PasswordEncryptor;
 import com.gw.user.resource.domain.LoginRequestDTO;
 import com.gw.user.resource.domain.UserCreateRequestDTO;
 import com.gw.user.service.UserService;
 import com.gw.user.testutils.DtoBuilder;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,7 +17,6 @@ import org.mockito.stubbing.Answer;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
@@ -32,21 +30,18 @@ class UserCreateResourceTest {
 
     @Mock
     private TokenManager tokenManager;
-
     @Mock
     private UserService userService;
     @Mock
-    private DataEncoder dataEncoder;
+    private PasswordEncryptor dataEncoder;
     @InjectMocks
     private UserCreateResource userCreateResource;
 
-    @BeforeEach
-    void setUp() throws IOException {
-        when(dataEncoder.encode(any(String.class))).thenAnswer((Answer<String>) invocation -> invocation.getArgument(0));
-    }
-
     @Test
-    void createUser() throws IOException {
+    void createUser() {
+        when(dataEncoder.encrypt(any(String.class), any(String.class)))
+                .thenAnswer((Answer<String>) invocation -> invocation.getArgument(0));
+
         UserCreateRequestDTO userCreateRequestDTO = DtoBuilder.testAccountCreateRequestDTO();
         when(userService.addUser(any(User.class))).thenReturn(Mono.empty());
 
@@ -55,7 +50,7 @@ class UserCreateResourceTest {
     }
 
     @Test
-    void login() throws IOException {
+    void login() {
         User user = aUser().build();
         String expectedToken = "dummyToken";
         LoginRequestDTO loginRequestDTO = DtoBuilder.testLoginRequestDTO();
@@ -73,7 +68,7 @@ class UserCreateResourceTest {
     }
 
     @Test
-    void login_whenNoUserFound() throws IOException {
+    void login_whenNoUserFound() {
         LoginRequestDTO loginRequestDTO = DtoBuilder.testLoginRequestDTO();
 
         when(userService.authenticateUser(loginRequestDTO.userName(), loginRequestDTO.password()))

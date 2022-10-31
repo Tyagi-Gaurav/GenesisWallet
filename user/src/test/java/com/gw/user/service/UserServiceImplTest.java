@@ -1,6 +1,7 @@
 package com.gw.user.service;
 
 import com.gw.common.domain.User;
+import com.gw.security.util.PasswordEncryptor;
 import com.gw.user.repo.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,6 +21,9 @@ import static org.mockito.Mockito.when;
 class UserServiceImplTest {
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private PasswordEncryptor passwordEncryptor;
 
     @InjectMocks
     private UserServiceImpl userService;
@@ -48,11 +52,13 @@ class UserServiceImplTest {
 
     @Test
     void authenticateUser() {
-        User user = aUser().build();
+        String password = "password";
+        User user = aUser().withPassword(password).build();
 
         when(userRepository.findUserByName(user.username())).thenReturn(Mono.just(user));
+        when(passwordEncryptor.encrypt(user.password(), user.salt())).thenReturn(user.password());
 
-        StepVerifier.create(userService.authenticateUser(user.username(), user.password()))
+        StepVerifier.create(userService.authenticateUser(user.username(), password))
                 .expectNext(user)
                 .verifyComplete();
     }
@@ -62,6 +68,7 @@ class UserServiceImplTest {
         User user = aUser().build();
         User otherUser = copyOf(user).withPassword("testPassword").build();
 
+        when(passwordEncryptor.encrypt(user.password(), user.salt())).thenReturn("encryptedUserPassword");
         when(userRepository.findUserByName(user.username())).thenReturn(Mono.just(otherUser));
 
         StepVerifier.create(userService.authenticateUser(user.username(), user.password()))
