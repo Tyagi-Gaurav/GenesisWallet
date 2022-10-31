@@ -18,10 +18,6 @@ public class TestLoginResource extends AbstractResource {
     private ResponseHolder responseHolder;
 
     public void doLogin(TestLoginRequestDTO testLoginRequestDTO) {
-        loginUsingRest(testLoginRequestDTO);
-    }
-
-    public void loginUsingRest(TestLoginRequestDTO testLoginRequestDTO) {
         String fullUrl = getSecuredUrl(apiGatewayConfig.host().trim(),
                 apiGatewayConfig.userContextPath(),
                 "/user/login", apiGatewayConfig.securedPort());
@@ -36,4 +32,5 @@ public class TestLoginResource extends AbstractResource {
             responseHolder.storeUserId(testLoginResponseDTO.id());
         }
     }
+
 }

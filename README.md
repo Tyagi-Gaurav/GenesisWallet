@@ -57,6 +57,7 @@
     * Rate Limiting on Client
 * Documentation
   * Swagger for APIs (https://github.com/Tyagi-Gaurav/GenesisWallet/issues/44)
+    * Local URL (Use Safari): https://localhost/api/user/swagger-ui/# 
   * Information dashboard for application
     * Current Version in prod
     * HealthCheck panel
