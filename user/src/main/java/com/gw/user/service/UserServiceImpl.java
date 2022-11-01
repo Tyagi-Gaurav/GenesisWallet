@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
                 .filter(user -> {
                     String encryptedPassword = passwordEncryptor.encrypt(password, user.salt());
                     return user.password().equals(encryptedPassword);
-                }) //TODO Get Salt and then encode
+                })
                 .switchIfEmpty(Mono.defer(Mono::empty));
     }
 

@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import javax.crypto.SecretKeyFactory;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 
 @Configuration
 public class EncryptionFactory {
@@ -26,5 +27,10 @@ public class EncryptionFactory {
     @Bean
     SecretKeyFactory factory() throws NoSuchAlgorithmException {
         return SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+    }
+
+    @Bean
+    SecureRandom secureRandom() throws NoSuchAlgorithmException {
+        return SecureRandom.getInstanceStrong();
     }
 }

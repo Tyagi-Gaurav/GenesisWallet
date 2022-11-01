@@ -9,8 +9,6 @@ import com.gw.user.resource.domain.LoginResponseDTO;
 import com.gw.user.resource.domain.UserCreateRequestDTO;
 import com.gw.user.service.UserService;
 import com.gw.user.service.domain.Role;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,25 +17,33 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
+import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.UUID;
 
 @RestController
 public class UserCreateResource {
+    private final UserService userService;
+    private final TokenManager tokenManager;
+    private final PasswordEncryptor passwordEncryptor;
+    private final SecureRandom secureRandom;
 
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private TokenManager tokenManager;
-    @Autowired
-    private PasswordEncryptor passwordEncryptor;
+    public UserCreateResource(UserService userService,
+                              TokenManager tokenManager,
+                              PasswordEncryptor passwordEncryptor,
+                              SecureRandom secureRandom) {
+        this.userService = userService;
+        this.tokenManager = tokenManager;
+        this.passwordEncryptor = passwordEncryptor;
+        this.secureRandom = secureRandom;
+    }
 
     @PostMapping(consumes = "application/vnd+user.create.v1+json",
             produces = "application/vnd+user.create.v1+json",
             path = "/user/create")
     @ResponseStatus(code = HttpStatus.CREATED)
     public Mono<Void> createUser(@Valid @RequestBody UserCreateRequestDTO userCreateRequestDTO) {
-        var salt = RandomStringUtils.randomAscii(10);
+        var salt = userCreateRequestDTO.lastName() + secureRandom.nextLong() + userCreateRequestDTO.firstName();
         return userService.addUser(new User(
                 UUID.randomUUID(),
                 userCreateRequestDTO.firstName(),
