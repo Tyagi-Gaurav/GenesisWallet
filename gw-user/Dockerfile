@@ -1,6 +1,6 @@
 FROM openjdk:17
 
-ADD build/libs/user.jar /data/application.jar
+ADD build/libs/gw-user.jar /data/application.jar
 
 COPY ./startup.sh /data/startup.sh
 

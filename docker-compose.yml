@@ -1,9 +1,9 @@
 version: '3.7'
 services:
-  user-app:
+  gw-user-app:
     container_name: local.user-app
     build:
-      context: user
+      context: gw-user
     depends_on:
       - postgres
       - gw-security
@@ -12,14 +12,13 @@ services:
       - "9090:9090"
     environment:
       - "DB_NAME=testUserDB"
-      - "DEPLOY_ENV=dev" #Only needed for Dev
     networks:
       - overlay
 
   gw-api-gateway:
     container_name: local.api-gateway
     depends_on:
-      - user-app
+      - gw-user-app
     build:
       context: gw-api-gateway
     ports:

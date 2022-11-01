@@ -27,7 +27,7 @@ public class DatabaseBeanFactory {
     private static final String PASSWORD = "password";
     private static final String HOST = "host";
     private static final String PORT = "port";
-    private static final String VAULT_DB_SERVICE_NAME = "postgres/service_1";
+    private static final String VAULT_DB_SERVICE_NAME = "postgres/user_service";
 
     @Bean
     public VaultTemplate dbCredentials(VaultInitializer vaultInitializer) {

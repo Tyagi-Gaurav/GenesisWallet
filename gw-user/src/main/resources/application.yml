@@ -59,4 +59,4 @@ vault:
   host: "local.vault"
   port: 8200
   httpScheme: "http"
-  appRole: "pg_service_1"
+  appRole: "user_service"

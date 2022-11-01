@@ -17,15 +17,15 @@ public class VaultInitializer extends AbstractVaultConfiguration {
 
     @Override
     public VaultEndpoint vaultEndpoint() {
-        final VaultEndpoint vaultEndpoint = VaultEndpoint.create(vaultProperties.host(), vaultProperties.port());
+        var vaultEndpoint = VaultEndpoint.create(vaultProperties.host(), vaultProperties.port());
         vaultEndpoint.setScheme(vaultProperties.httpScheme());
         return vaultEndpoint;
     }
 
     @Override
     public ClientAuthentication clientAuthentication() {
-        final VaultToken initialToken = VaultToken.of(vaultProperties.token());
-        final AppRoleAuthenticationOptions options = AppRoleAuthenticationOptions
+        var initialToken = VaultToken.of(vaultProperties.token());
+        AppRoleAuthenticationOptions options = AppRoleAuthenticationOptions
                 .builder()
                 .appRole(vaultProperties.appRole())
                 .roleId(AppRoleAuthenticationOptions.RoleId.pull(initialToken))

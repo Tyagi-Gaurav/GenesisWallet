@@ -27,22 +27,21 @@ path "database/*" {
 }
 EOF
 
+# Create the policy named database using contents from file
 vault policy write database database-policy.hcl
 
-# database-init-token.hcl
+# app-init-token.hcl
 # policy for initial token
-tee database-init-token.hcl <<"EOF"
+tee app-init-token.hcl <<"EOF"
 path "auth/approle/*" {
   capabilities = [ "create", "read", "update" ]
 }
 EOF
 
-vault policy write database-init-token database-init-token.hcl
+# write approle for user_service with policy:database, jwt and ttl:3h
+vault write auth/approle/role/user_service policies="database" token_ttl=3h
 
-# write approle for pg_service_1 with policy:database and ttl:3h
-vault write auth/approle/role/pg_service_1 policies="database" token_ttl=3h
-
-# Store kv data
+# Store kv data for user service database
 tee postgres.txt <<"EOF"
 {
   "username": "user",
@@ -52,15 +51,16 @@ tee postgres.txt <<"EOF"
 }
 EOF
 
-vault kv put database/postgres/service_1 @postgres.txt
+# Store database payload in the key
+vault kv put database/postgres/user_service @postgres.txt
 
 # Generate init token for APP, valid for 3h
-TOKEN_OUTPUT=$(vault token create -policy=database-init-token -ttl=3h -format=json)
+TOKEN_OUTPUT=$(vault token create -policy=app-init-token -ttl=3h -format=json)
 echo "$TOKEN_OUTPUT"
 TOKEN=$(echo "$TOKEN_OUTPUT" | jq '.auth.client_token')
 echo "Token: $TOKEN"
 mkdir -p /var/public
-echo "$TOKEN" > /var/public/database_init_token
+echo "$TOKEN" > /var/public/app_init_token
 
 jobs -l
 
