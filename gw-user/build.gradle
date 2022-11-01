@@ -23,8 +23,8 @@ configurations {
 }
 
 dependencies {
-    implementation project(":grpc-schema")
-    implementation project(":grpc-common")
+    implementation project(":gw-grpc-schema")
+    implementation project(":gw-grpc-common")
     implementation project(":gw-common")
     implementation project(":gw-security")
     implementation("org.springframework.boot:spring-boot-starter-actuator") {
@@ -52,7 +52,7 @@ dependencies {
     implementation "io.springfox:springfox-boot-starter:3.0.0"
     implementation "io.springfox:springfox-swagger-ui:3.0.0"
 
-    testImplementation project(":test-common").sourceSets.test.output
+    testImplementation project(":gw-test-common").sourceSets.test.output
     testImplementation "io.grpc:grpc-testing:1.50.2"
     testImplementation "org.testcontainers:junit-jupiter:1.17.5"
     testImplementation "org.springframework.boot:spring-boot-starter-test"

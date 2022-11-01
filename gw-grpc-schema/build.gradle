@@ -24,7 +24,7 @@ dependencies {
 }
 
 processResources {
-    dependsOn(":grpc-schema:generateProto")
+    dependsOn(":gw-grpc-schema:generateProto")
 }
 
 test {
