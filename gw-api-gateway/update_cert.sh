@@ -3,11 +3,14 @@
 VAULT_TOKEN=root
 VAULT_ADDRESS=local.vault:8200
 
+echo "Waiting for 10 seconds before downloading cert and private key"
+sleep 10
+
 RAW_PRIVATE_KEY=$(curl -s --header "X-Vault-Token: ${VAULT_TOKEN}" \
     --request GET \
     http://"${VAULT_ADDRESS}"/v1/api_gateway/data/pk | jq )
 
-echo "RAW_PRIVATE_KEY : $(RAW_PRIVATE_KEY)"
+echo "RAW_PRIVATE_KEY : ${RAW_PRIVATE_KEY}"
 
 PRIVATE_KEY=$(curl -s --header "X-Vault-Token: ${VAULT_TOKEN}" \
     --request GET \

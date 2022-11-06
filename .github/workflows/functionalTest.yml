@@ -41,11 +41,8 @@ jobs:
       run: docker ps
 
       #   Enable below only for DEBUG
-    - name: Show api-gateway logs
-      run: docker logs local.api-gateway
-
-    - name: Show vault logs
-      run: docker logs local.vault
+    - name: Show container logs
+      run: docker logs local.api-gateway local.vault
 
     - name: Run test suite
       run: ./gradlew remoteFunctional --info
