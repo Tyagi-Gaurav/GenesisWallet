@@ -42,7 +42,7 @@ jobs:
 
       #   Enable below only for DEBUG
     - name: Show container logs
-      run: docker logs local.user-app
+      run: docker logs local.api-gateway
 
     - name: Run test suite
       run: ./gradlew remoteFunctional --info
