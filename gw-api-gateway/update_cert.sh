@@ -3,9 +3,21 @@
 VAULT_TOKEN=root
 VAULT_ADDRESS=local.vault:8200
 
+RAW_PRIVATE_KEY=$(curl -s --header "X-Vault-Token: ${VAULT_TOKEN}" \
+    --request GET \
+    http://"${VAULT_ADDRESS}"/v1/api_gateway/data/pk | jq )
+
+echo "RAW_PRIVATE_KEY : $(RAW_PRIVATE_KEY)"
+
 PRIVATE_KEY=$(curl -s --header "X-Vault-Token: ${VAULT_TOKEN}" \
     --request GET \
     http://"${VAULT_ADDRESS}"/v1/api_gateway/data/pk | jq '.data.data.private_key')
+
+RAW_CERT=$(curl -s --header "X-Vault-Token: ${VAULT_TOKEN}" \
+    --request GET \
+    http://"${VAULT_ADDRESS}"/v1/api_gateway/data/cert | jq )
+
+echo "RAW_CERT: ${RAW_CERT}"
 
 CERT=$(curl -s --header "X-Vault-Token: ${VAULT_TOKEN}" \
     --request GET \
