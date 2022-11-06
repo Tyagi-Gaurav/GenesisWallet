@@ -44,5 +44,10 @@ jobs:
     - name: Show container logs
       run: docker logs local.api-gateway
 
+    - name: Sleep
+      uses: jakejarvis/wait-action@master
+      with:
+        time: '10s'
+
     - name: Run test suite
       run: ./gradlew remoteFunctional --info
