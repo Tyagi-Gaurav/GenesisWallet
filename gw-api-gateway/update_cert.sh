@@ -11,9 +11,9 @@ CERT=$(curl -s --header "X-Vault-Token: ${VAULT_TOKEN}" \
     --request GET \
     http://"${VAULT_ADDRESS}"/v1/api_gateway/data/cert | jq '.data.data.cert')
 
-echo "Writing certs to /etc/ssl/certs/wallet.crt"
+echo "Writing certs to /etc/ssl/certs/wallet.crt. $(echo "$CERT" | tr -d '"')"
 echo "$CERT" | tr -d '"' > /etc/ssl/certs/wallet.crt
-echo "Writing private key to /etc/ssl/private/wallet.key"
+echo "Writing private key to /etc/ssl/private/wallet.key $(echo "$PRIVATE_KEY" | tr -d '"')"
 echo "$PRIVATE_KEY" | tr -d '"' > /etc/ssl/private/wallet.key
 
 #Verify certs and private_key

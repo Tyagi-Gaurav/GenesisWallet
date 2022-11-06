@@ -24,9 +24,7 @@ services:
       context: gw-api-gateway
     environment:
       - "VAULT_ADDRESS=local.vault:8200"
-      - "CERT_COMMON_NAME=test.genesis.com"
       - "VAULT_TOKEN=root"
-      - "VAULT_ROLE_NAME=genesis-dot-com"
     command: [nginx-debug, '-g', 'daemon off;']
     ports:
       - "8080:8080"
