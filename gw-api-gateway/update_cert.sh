@@ -32,5 +32,5 @@ echo "Writing private key to /etc/ssl/private/wallet.key $(echo "$PRIVATE_KEY" |
 echo "$PRIVATE_KEY" | tr -d '"' > /etc/ssl/private/wallet.key
 
 #Verify certs and private_key
-openssl x509 -noout -modulus -in /etc/ssl/certs/wallet.crt | openssl md5
-openssl rsa -noout -modulus -in /etc/ssl/private/wallet.key | openssl md5
+#openssl x509 -noout -modulus -in /etc/ssl/certs/wallet.crt | openssl md5
+#openssl rsa -noout -modulus -in /etc/ssl/private/wallet.key | openssl md5
