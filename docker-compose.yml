@@ -1,29 +1,31 @@
 version: '3.7'
 services:
-  user-app:
+  gw-user-app:
     container_name: local.user-app
     build:
-      context: user
+      context: gw-user
     depends_on:
       - postgres
+      - gw-security
     ports:
       - "19090:19090"
       - "9090:9090"
     environment:
-      - "DB_HOST=local.postgres"
-      - "DB_PORT=5432"
-      - "DB_USER=user"
-      - "DB_PWD=password"
       - "DB_NAME=testUserDB"
     networks:
       - overlay
-  
-  api-gateway:
+
+  gw-api-gateway:
     container_name: local.api-gateway
     depends_on:
-      - user-app
+      - gw-user-app
+      - gw-security
     build:
-      context: api-gateway
+      context: gw-api-gateway
+    environment:
+      - "VAULT_ADDRESS=local.vault:8200"
+      - "VAULT_TOKEN=root"
+    command: [nginx-debug, '-g', 'daemon off;']
     ports:
       - "8080:8080"
       - "443:443"
@@ -39,6 +41,17 @@ services:
       - "POSTGRES_USER=user"
       - "POSTGRES_PASSWORD=password"
       - "POSTGRES_DB=testUserDB"
+    networks:
+      - overlay
+
+  gw-security:
+    container_name: local.vault
+    build:
+      context: gw-security
+    environment:
+      - "VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8200"
+    ports:
+      - "8200:8200"
     networks:
       - overlay
 

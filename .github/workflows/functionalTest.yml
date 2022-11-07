@@ -40,11 +40,14 @@ jobs:
     - name: Check running containers
       run: docker ps
 
+      #   Enable below only for DEBUG
+    - name: Show container logs
+      run: docker logs local.api-gateway
+
+    - name: Sleep
+      uses: jakejarvis/wait-action@master
+      with:
+        time: '10s'
+
     - name: Run test suite
       run: ./gradlew remoteFunctional --info
-
-#   Enable below only for DEBUG
-
-#    - name: Show container logs
-#      if: always()
-#      run: docker logs local.movie-app

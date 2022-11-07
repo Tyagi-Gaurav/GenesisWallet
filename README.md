@@ -57,6 +57,7 @@
     * Rate Limiting on Client
 * Documentation
   * Swagger for APIs (https://github.com/Tyagi-Gaurav/GenesisWallet/issues/44)
+    * Local URL (Use Safari): https://localhost/api/user/swagger-ui/# 
   * Information dashboard for application
     * Current Version in prod
     * HealthCheck panel
@@ -64,3 +65,13 @@
 
 # All Diagrams
 https://app.diagrams.net/#G16jsKiOVyKhlBEANwm2DxsQpYRsK9gUgp
+
+# Notes
+* Vault is structured as follows
+  * Give the above role policy to access 
+    * database
+      * Define a path `database/*` which would contain database specific payloads in vault.
+      * Create a policy that has access to above path.
+      * Database path has postgres credentials on `database/postgres/user_service`.
+  * A role for application to access vault `/auth/approle/role/<application_role>`
+    * Give the above role access to database policy
