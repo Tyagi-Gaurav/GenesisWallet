@@ -168,6 +168,40 @@ module "dev-ecs-cluster" {
   }
 }
 
+module "api-gateway-ecs-service" {
+  source           = "../modules/ecs-service"
+  ENV              = var.ENV
+  VPC_ID           = module.main-vpc.vpc_id
+  APPLICATION_NAME = "gw-api-gateway"
+  APPLICATION_PORT = 80
+  PORT_MAPPINGS    = {
+    #Goes directly into task definition
+    port1 = {
+      HOST_PORT        = 80
+      APPLICATION_PORT = 80
+    }
+  }
+  APPLICATION_VERSION = "0.1.0"
+  CLUSTER_ARN         = module.dev-ecs-cluster.cluster_arn
+  SERVICE_ROLE_ARN    = module.dev-ecs-cluster.service_role_arn
+  AWS_REGION          = var.AWS_REGION
+  CPU_RESERVATION     = "256"
+  MEMORY_RESERVATION  = "128"
+  LOG_GROUP           = "${var.ENV}-log-group"
+  DESIRED_COUNT       = 1
+  ECR_REPO_URL        = data.aws_ecr_repository.test_genesis_api_gateway_ecr.repository_url
+  APP_ENV             = tomap({
+    USER_HOST          = "localhost"
+    UI_HOST            = "localhost"
+    UI_ACTUATOR_PORT   = 8081
+    UI_APP_PORT        = 8080
+    USER_APP_PORT      = 9090
+    USER_ACTUATOR_PORT = 9091
+  })
+  HEALTH_CHECK_PATH = "/index.html"
+  HEALTH_CHECK_PORT = 80
+}
+
 module "user-ecs-service" {
   source           = "../modules/ecs-service"
   ENV              = var.ENV
@@ -240,49 +274,23 @@ module "ui-ecs-service" {
   HEALTH_CHECK_PORT = 9091
 }
 
-module "api-gateway-service" {
-  source           = "../modules/ecs-service"
-  ENV              = var.ENV
-  VPC_ID           = module.main-vpc.vpc_id
-  APPLICATION_NAME = "gw-api-gateway"
-  APPLICATION_PORT = 80
-  PORT_MAPPINGS    = {
-    #Goes directly into task definition
-    port1 = {
-      HOST_PORT        = 80
-      APPLICATION_PORT = 80
-    }
-  }
-  APPLICATION_VERSION = "0.1.0"
-  CLUSTER_ARN         = module.dev-ecs-cluster.cluster_arn
-  SERVICE_ROLE_ARN    = module.dev-ecs-cluster.service_role_arn
-  AWS_REGION          = var.AWS_REGION
-  CPU_RESERVATION     = "256"
-  MEMORY_RESERVATION  = "128"
-  LOG_GROUP           = "${var.ENV}-log-group"
-  DESIRED_COUNT       = 1
-  ECR_REPO_URL        = data.aws_ecr_repository.test_genesis_api_gateway_ecr.repository_url
-  APP_ENV             = tomap({
-    USER_HOST = "localhost" #For dev, they would all be on same node
-    USER_PORT = 19090
-  })
-  HEALTH_CHECK_PATH = "/actuator/healthcheck/status"
-  HEALTH_CHECK_PORT = 9091
-}
-
 module "alb" {
   ENV         = var.ENV
   source      = "../modules/alb"
   VPC_ID      = module.main-vpc.vpc_id
-  ALB_NAME    = "${var.ENV}-user-alb"
+  ALB_NAME    = "${var.ENV}-alb"
   TARGET_APPS = {
     group1 = {
-      PORT             = 80
+      PORT             = 7070
       TARGET_GROUP_ARN = module.ui-ecs-service.target_group_arn
     },
     group2 = {
-      PORT             = 8080
+      PORT             = 9090
       TARGET_GROUP_ARN = module.user-ecs-service.target_group_arn
+    },
+    group3 = {
+      PORT             = 80
+      TARGET_GROUP_ARN = module.api-gateway-ecs-service.target_group_arn
     }
   }
   DOMAIN            = "${var.ENV}.user.genesis"

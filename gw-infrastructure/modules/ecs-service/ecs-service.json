@@ -1,0 +1,33 @@
+[
+  {
+    "name": "${APPLICATION_NAME}",
+    "image": "${ECR_REPO_ARN}:${APPLICATION_VERSION}",
+    "cpu": ${CPU_RESERVATION},
+    "memoryReservation": ${MEMORY_RESERVATION},
+    "essential": true,
+    "mountPoints": [],
+    "environment": [${APP_ENV_VAR}],
+    "startTimeout": 10,
+    "stopTimeout": 10,
+    "privileged": true,
+    "readonlyRootFilesystem": false,
+    "interactive": true,
+    "pseudoTerminal": true,
+    "ulimits": [
+    {
+      "name": "nice",
+      "softLimit": 0,
+      "hardLimit": 0
+    }
+  ],
+  "portMappings": [${PORT_MAPPINGS}],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${LOG_GROUP}",
+        "awslogs-region": "${AWS_REGION}",
+        "awslogs-stream-prefix": "${ENV_NAME}"
+      }
+    }
+  }
+]

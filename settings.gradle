@@ -8,5 +8,6 @@ include 'gw-user-client'
 include 'gw-test-common'
 include 'gw-grpc-common'
 include 'gw-security'
+include 'gw-infrastructure'
 include 'gw-ui'
 

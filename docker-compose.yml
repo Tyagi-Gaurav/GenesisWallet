@@ -31,7 +31,7 @@ services:
       - UI_APP_PORT=8080
       - USER_APP_PORT=9090
       - USER_ACTUATOR_PORT=9091
-    command: [nginx-debug, '-g', 'daemon off;']
+    command: [nginx, '-g', 'daemon off;']
     ports:
       - "80:80"
       - "443:443"

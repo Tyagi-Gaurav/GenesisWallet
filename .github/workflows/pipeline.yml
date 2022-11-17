@@ -1,0 +1,26 @@
+name: Pipeline
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+
+jobs:
+  FunctionalTest:
+    uses: ./.github/workflows/functionalTest.yml
+
+  Sonar:
+    uses: ./.github/workflows/sonar.yml
+
+  tag_release:
+    needs: [ FunctionalTest, Sonar ]
+    #if: github.ref == 'refs/heads/master'
+    permissions:
+      id-token: write # need this for OIDC
+      contents: read
+    uses: ./.github/workflows/tagAndPush.yaml
+    with:
+      aws-role: "arn:aws:iam::105719046746:role/github-aws-role" #TODO change this to secret before merging
+      ecr-test-repo: "105719046746.dkr.ecr.eu-west-1.amazonaws.com/test_genesis" #TODO change this to environment secret before merging
