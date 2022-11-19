@@ -1,6 +1,7 @@
 package com.gw.user.grpc;
 
 import com.google.protobuf.Empty;
+import com.gw.common.domain.ExternalUser;
 import com.gw.common.domain.Gender;
 import com.gw.common.domain.User;
 import com.gw.user.grpc.UserServiceGrpc.UserServiceImplBase;
@@ -22,11 +23,12 @@ public class UserServiceGrpcImpl extends UserServiceImplBase {
 
     @Override
     public void fetchUsersById(FetchUserDetailsByIdGrpcRequestDTO request, StreamObserver<UserDetailsGrpcResponseDTO> responseObserver) {
+        LOG.info("Inside GRPC fetch Users By Id");
         userService.findUserBy(UUID.fromString(request.getId()))
                 .map(user -> UserDetailsGrpcResponseDTO.newBuilder()
                         .setFirstName(user.firstName())
                         .setLastName(user.lastName())
-                        .setUserName(user.username())
+                        .setUserName(user.email())
                         .setDateOfBirth(user.dateOfBirth())
                         .setHomeCountry(user.homeCountry())
                         .setId(user.id().toString())
@@ -39,14 +41,30 @@ public class UserServiceGrpcImpl extends UserServiceImplBase {
     }
 
     @Override
-    public void createUser(UserCreateGrpcRequestDTO request, StreamObserver<Empty> responseObserver) {
+    public void createUser(UserCreateGrpcRequestDTO request, StreamObserver<UserCreateGrpcResponseDTO> responseObserver) {
         LOG.info("Inside GRPC create user");
         userService.addUser(createUserFrom(request))
                 .map(v -> Empty.getDefaultInstance())
                 .switchIfEmpty(Mono.defer(() -> Mono.just(Empty.getDefaultInstance())))
                 .doOnError(responseObserver::onError)
                 .subscribe(v -> {
-                    responseObserver.onNext(Empty.newBuilder().build());
+                    responseObserver.onNext(UserCreateGrpcResponseDTO.newBuilder()
+                            .setCreated(true)
+                            .build());
+                    responseObserver.onCompleted();
+                });
+    }
+
+    @Override
+    public void createExternalUser(ExternalUserCreateGrpcRequestDTO request, StreamObserver<ExternalUserCreateGrpcResponseDTO> responseObserver) {
+        LOG.info("Inside GRPC create external user");
+        userService.addExternalUser(createExternalUserFrom(request))
+                .map(v -> Empty.getDefaultInstance())
+                .switchIfEmpty(Mono.defer(() -> Mono.just(Empty.getDefaultInstance())))
+                .doOnError(responseObserver::onError)
+                .subscribe(v -> {
+                    responseObserver.onNext(ExternalUserCreateGrpcResponseDTO.newBuilder()
+                            .build());
                     responseObserver.onCompleted();
                 });
     }
@@ -57,11 +75,27 @@ public class UserServiceGrpcImpl extends UserServiceImplBase {
                 request.getLastName(),
                 request.getUserName(),
                 request.getPassword(),
-                request.getSalt(),
+                null,
                 request.getDateOfBirth(),
                 toDomainGender(request.getGender()),
                 request.getHomeCountry(),
                 "REGISTERED_USER");
+    }
+
+    private ExternalUser createExternalUserFrom(ExternalUserCreateGrpcRequestDTO request) {
+        return new ExternalUser(UUID.randomUUID(),
+                request.getEmail(),
+                request.getLocale(),
+                request.getPictureUrl(),
+                request.getFirstName(),
+                request.getLastName(),
+                request.getTokenValue(),
+                request.getTokenType(),
+                request.getTokenExpiryTime(),
+                request.getExternalSystem(),
+                request.getDateOfBirth(),
+                toDomainGender(request.getGender()),
+                request.getHomeCountry());
     }
 
     private Gender toDomainGender(com.gw.user.grpc.Gender gender) {

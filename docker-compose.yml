@@ -27,8 +27,22 @@ services:
       - "VAULT_TOKEN=root"
     command: [nginx-debug, '-g', 'daemon off;']
     ports:
-      - "8080:8080"
+      - "80:80"
       - "443:443"
+    networks:
+      - overlay
+
+  gw-ui:
+    container_name: local.gw-ui
+    build:
+      context: gw-ui
+    depends_on:
+      - gw-api-gateway
+    ports:
+      - "7070:8080"
+      - "7080:8090"
+#    env_file:
+#      - ~/.secret/env.file
     networks:
       - overlay
 

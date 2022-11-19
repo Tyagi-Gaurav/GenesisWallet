@@ -1,20 +1,27 @@
 package com.gw.user.service;
 
+import com.gw.common.domain.ExternalUser;
 import com.gw.common.domain.User;
 import com.gw.security.util.PasswordEncryptor;
 import com.gw.user.repo.UserRepository;
+import com.gw.user.testutils.ExternalUserBuilder;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.security.SecureRandom;
 import java.util.UUID;
 
 import static com.gw.user.testutils.UserBuilder.aUser;
 import static com.gw.user.testutils.UserBuilder.copyOf;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -25,8 +32,14 @@ class UserServiceImplTest {
     @Mock
     private PasswordEncryptor passwordEncryptor;
 
-    @InjectMocks
+    private final SecureRandom secureRandom = new SecureRandom();
+
     private UserServiceImpl userService;
+
+    @BeforeEach
+    void setUp() {
+        userService = new UserServiceImpl(userRepository, passwordEncryptor, secureRandom);
+    }
 
     @Test
     void findUserBy_shouldReturnUser() {
@@ -44,21 +57,47 @@ class UserServiceImplTest {
     void addUser() {
         User user = aUser().build();
 
-        when(userRepository.addUser(user)).thenReturn(Mono.empty());
+        when(passwordEncryptor.encrypt(eq(user.password()), anyString())).thenReturn(user.password());
+        when(userRepository.addUser(eq(user), eq(user.password()), anyString())).thenReturn(Mono.empty());
 
         StepVerifier.create(userService.addUser(user))
                 .verifyComplete();
     }
 
     @Test
+    void addExternalUser() {
+        ExternalUser externalUser = ExternalUserBuilder.aExternalUser().build();
+
+        when(userRepository.findExternalUserByEmail(externalUser.email())).thenReturn(Mono.empty());
+        when(userRepository.addExternalUser(externalUser)).thenReturn(Mono.empty());
+
+        StepVerifier.create(userService.addExternalUser(externalUser))
+                .expectNext(externalUser)
+                .verifyComplete();
+    }
+
+    @Test
+    void addExternalUser_whenUserPresentThenReturnExisting() {
+        ExternalUser externalUser = ExternalUserBuilder.aExternalUser().build();
+
+        when(userRepository.findExternalUserByEmail(externalUser.email())).thenReturn(Mono.just(externalUser));
+
+        StepVerifier.create(userService.addExternalUser(externalUser))
+                .expectNext(externalUser)
+                .verifyComplete();
+
+        verify(userRepository, times(0)).addExternalUser(externalUser);
+    }
+
+    @Test
     void authenticateUser() {
-        String password = "password";
+        String password = "encryptedPassword";
         User user = aUser().withPassword(password).build();
 
-        when(userRepository.findUserByName(user.username())).thenReturn(Mono.just(user));
-        when(passwordEncryptor.encrypt(user.password(), user.salt())).thenReturn(user.password());
+        when(userRepository.findUserByEmail(user.email())).thenReturn(Mono.just(user));
+        when(passwordEncryptor.encrypt(eq(user.password()), anyString())).thenReturn("encryptedPassword");
 
-        StepVerifier.create(userService.authenticateUser(user.username(), password))
+        StepVerifier.create(userService.authenticateUser(user.email(), password))
                 .expectNext(user)
                 .verifyComplete();
     }
@@ -69,9 +108,9 @@ class UserServiceImplTest {
         User otherUser = copyOf(user).withPassword("testPassword").build();
 
         when(passwordEncryptor.encrypt(user.password(), user.salt())).thenReturn("encryptedUserPassword");
-        when(userRepository.findUserByName(user.username())).thenReturn(Mono.just(otherUser));
+        when(userRepository.findUserByEmail(user.email())).thenReturn(Mono.just(otherUser));
 
-        StepVerifier.create(userService.authenticateUser(user.username(), user.password()))
+        StepVerifier.create(userService.authenticateUser(user.email(), user.password()))
                 .verifyComplete();
     }
 
@@ -79,9 +118,9 @@ class UserServiceImplTest {
     void authenticateUser_returnFalseWhenUserNotFound() {
         User user = aUser().build();
 
-        when(userRepository.findUserByName(user.username())).thenReturn(Mono.empty());
+        when(userRepository.findUserByEmail(user.email())).thenReturn(Mono.empty());
 
-        StepVerifier.create(userService.authenticateUser(user.username(), user.password()))
+        StepVerifier.create(userService.authenticateUser(user.email(), user.password()))
                 .verifyComplete();
     }
 }

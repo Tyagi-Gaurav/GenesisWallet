@@ -10,13 +10,30 @@ import java.util.UUID;
 public record User(UUID id,
                    String firstName,
                    String lastName,
-                   String username,
+                   String email,
                    String password,
                    String salt,
                    String dateOfBirth,
                    Gender gender,
                    String homeCountry,
                    String role) {
+
+
+    public User(UUID id,
+                String firstName,
+                String lastName,
+                String username,
+                String password,
+                String dateOfBirth,
+                Gender gender,
+                String homeCountry,
+                String role) {
+        this(id, firstName, lastName, username, password, null, dateOfBirth, gender, homeCountry, role);
+    }
+
+    public String generateSalt(long randomVal) {
+        return lastName + randomVal + firstName;
+    }
 
     public static class UserBuilder {
         private UUID id;
@@ -45,7 +62,7 @@ public record User(UUID id,
             return this;
         }
 
-        public UserBuilder setUsername(String username) {
+        public UserBuilder setEmail(String username) {
             this.username = username;
             return this;
         }

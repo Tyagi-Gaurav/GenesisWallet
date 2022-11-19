@@ -1,4 +1,29 @@
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Tyagi-Gaurav_GenesisWallet&metric=bugs)](https://sonarcloud.io/summary/new_code?id=Tyagi-Gaurav_GenesisWallet)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Tyagi-Gaurav_GenesisWallet&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Tyagi-Gaurav_GenesisWallet)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Tyagi-Gaurav_GenesisWallet&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=Tyagi-Gaurav_GenesisWallet)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=Tyagi-Gaurav_GenesisWallet&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=Tyagi-Gaurav_GenesisWallet)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Tyagi-Gaurav_GenesisWallet&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Tyagi-Gaurav_GenesisWallet)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Tyagi-Gaurav_GenesisWallet&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=Tyagi-Gaurav_GenesisWallet)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Tyagi-Gaurav_GenesisWallet&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Tyagi-Gaurav_GenesisWallet)
+
 # GenesisWallet
+
+# Local Setup
+
+## Spin up stack locally
+`docker-compose up -d --build --remove-orphans`
+
+## Connecting to database
+```
+docker exec -it local.postgres bash
+psql -h localhost -p 5432 -U user -d testUserDB
+```
+To List tables: `\dt USER_SCHEMA.*`
+
+# Services
+* API Gateway (80)
+* User (9090/19090)
+* UI (8080)
 
 # Functional Features
 * User Creation
@@ -65,6 +90,7 @@
 
 # All Diagrams
 https://app.diagrams.net/#G16jsKiOVyKhlBEANwm2DxsQpYRsK9gUgp
+https://swimlanes.io/u/mcghmm30h
 
 # Notes
 * Vault is structured as follows
