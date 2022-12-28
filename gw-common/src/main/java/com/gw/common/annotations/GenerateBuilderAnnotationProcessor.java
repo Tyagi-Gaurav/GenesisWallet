@@ -31,43 +31,16 @@ public class GenerateBuilderAnnotationProcessor extends AbstractProcessor {
                 JavaFileObject sourceFile = processingEnv.getFiler().createSourceFile(e.getSimpleName() + "Builder");
                 processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE,
                         "Creating Builder for " + e.getSimpleName());
+                String builderName = e.getSimpleName()+"Builder";
                 try (var w = sourceFile.openWriter();
                      var pw = new PrintWriter(w)) {
                     var classBuilder = new StringBuilder();
                     classBuilder.append("package ").append(clazz).append(";\n")
-                            .append("public class ").append(e.getSimpleName()).append("Builder {").append("\n\n");
+                            .append("public class ").append(builderName).append(" {").append("\n\n");
 
-                    //Create field
-                    for (Element childElements : e.getEnclosedElements()) {
-                        if (childElements.getKind() == ElementKind.FIELD) {
-                            TypeMirror type = childElements.asType();
-                            var name = childElements.getSimpleName().toString();
-                            classBuilder.append("private ").append(type).append(" ").append(name).append(";\n");
-
-                            //Create setter for the fields
-                            classBuilder.append("public void set").append(capitalize(name))
-                                    .append("(").append(type).append(" ").append("new").append(name).append(") {\n")
-                                    .append("this.").append(name).append("=").append("new").append(name).append(";\n")
-                                    .append("}\n");
-                        }
-                    }
-
-                    //Create final builder method
-                    classBuilder.append("public ").append(e.getSimpleName()).append(" build() {\n");
-                    classBuilder.append("return new ").append(e.getSimpleName()).append("(\n");
-                    List<? extends Element> enclosedElements = e.getEnclosedElements();
-                    var fieldCreated = false;
-                    for (Element childElements : enclosedElements) {
-                        if (childElements.getKind() == ElementKind.FIELD) {
-                            var name = childElements.getSimpleName().toString();
-                            if (fieldCreated) {
-                                classBuilder.append(",\n");
-                            }
-                            classBuilder.append(name);
-                            fieldCreated = true;
-                        }
-                    }
-                    classBuilder.append(");\n").append("} ").append("\n");
+                    addNewInstanceCreationMethod(e, classBuilder, builderName);
+                    addFieldAndMethods(e, classBuilder);
+                    addFinalBuilderMethod(e, classBuilder);
 
                     classBuilder.append("}");
                     pw.println(classBuilder);
@@ -79,6 +52,46 @@ public class GenerateBuilderAnnotationProcessor extends AbstractProcessor {
             }
         }
         return true;
+    }
+
+    private void addNewInstanceCreationMethod(Element e, StringBuilder classBuilder, String builderName) {
+        classBuilder.append("public static ").append(builderName).append(" newBuilder() {\n");
+        classBuilder.append("return new ").append(builderName).append("();\n");
+        classBuilder.append("}");
+    }
+
+    private void addFinalBuilderMethod(Element e, StringBuilder classBuilder) {
+        classBuilder.append("public ").append(e.getSimpleName()).append(" build() {\n");
+        classBuilder.append("return new ").append(e.getSimpleName()).append("(\n");
+        List<? extends Element> enclosedElements = e.getEnclosedElements();
+        var fieldCreated = false;
+        for (Element childElements : enclosedElements) {
+            if (childElements.getKind() == ElementKind.FIELD) {
+                var name = childElements.getSimpleName().toString();
+                if (fieldCreated) {
+                    classBuilder.append(",\n");
+                }
+                classBuilder.append(name);
+                fieldCreated = true;
+            }
+        }
+        classBuilder.append(");\n").append("} ").append("\n");
+    }
+
+    private void addFieldAndMethods(Element e, StringBuilder classBuilder) {
+        for (Element childElements : e.getEnclosedElements()) {
+            if (childElements.getKind() == ElementKind.FIELD) {
+                TypeMirror type = childElements.asType();
+                var name = childElements.getSimpleName().toString();
+                classBuilder.append("private ").append(type).append(" ").append(name).append(";\n");
+
+                //Create setter for the fields
+                classBuilder.append("public void set").append(capitalize(name))
+                        .append("(").append(type).append(" ").append("new").append(name).append(") {\n")
+                        .append("this.").append(name).append("=").append("new").append(name).append(";\n")
+                        .append("}\n");
+            }
+        }
     }
 
     private static String capitalize(String name) {
