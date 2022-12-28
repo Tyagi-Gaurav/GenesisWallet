@@ -4,6 +4,7 @@ import com.gw.common.domain.Gender;
 import com.gw.user.e2e.function.Login;
 import com.gw.user.e2e.function.UserCreate;
 import com.gw.user.resource.domain.LoginRequestDTO;
+import com.gw.user.resource.domain.LoginRequestDTOBuilder;
 import com.gw.user.resource.domain.LoginResponseDTO;
 import com.gw.user.resource.domain.UserCreateRequestDTO;
 import com.gw.user.e2e.domain.UserDetailsResponseDTO;

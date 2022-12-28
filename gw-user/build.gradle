@@ -26,6 +26,7 @@ dependencies {
     implementation project(":gw-grpc-schema")
     implementation project(":gw-grpc-common")
     implementation project(":gw-common")
+    annotationProcessor project(":gw-common")
     implementation project(":gw-security")
     implementation("org.springframework.boot:spring-boot-starter-actuator") {
         exclude group: "ch.qos.logback"
