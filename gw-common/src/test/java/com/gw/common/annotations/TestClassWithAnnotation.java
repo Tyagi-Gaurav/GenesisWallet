@@ -1,4 +1,4 @@
 package com.gw.common.annotations;
 
 @GenerateBuilder
-public record TestRecord(String abc) {}
+public class TestClassWithAnnotation {}

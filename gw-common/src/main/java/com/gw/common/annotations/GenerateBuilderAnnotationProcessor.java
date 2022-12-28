@@ -23,7 +23,7 @@ public class GenerateBuilderAnnotationProcessor extends AbstractProcessor {
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         for (Element e : roundEnv.getElementsAnnotatedWith(GenerateBuilder.class)) {
             if (e.getKind() != ElementKind.RECORD) {
-                processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "Can only be used on a record", e);
+                processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING, "Annotaion @GenerateBuilder can only be used on a record", e);
                 continue;
             }
             var clazz = e.getEnclosingElement();
@@ -38,7 +38,7 @@ public class GenerateBuilderAnnotationProcessor extends AbstractProcessor {
                     classBuilder.append("package ").append(clazz).append(";\n")
                             .append("public class ").append(builderName).append(" {").append("\n\n");
 
-                    addNewInstanceCreationMethod(e, classBuilder, builderName);
+                    addNewInstanceCreationMethod(classBuilder, builderName);
                     addFieldAndMethods(e, classBuilder);
                     addFinalBuilderMethod(e, classBuilder);
 
@@ -54,7 +54,7 @@ public class GenerateBuilderAnnotationProcessor extends AbstractProcessor {
         return true;
     }
 
-    private void addNewInstanceCreationMethod(Element e, StringBuilder classBuilder, String builderName) {
+    private void addNewInstanceCreationMethod(StringBuilder classBuilder, String builderName) {
         classBuilder.append("public static ").append(builderName).append(" newBuilder() {\n");
         classBuilder.append("return new ").append(builderName).append("();\n");
         classBuilder.append("}");
