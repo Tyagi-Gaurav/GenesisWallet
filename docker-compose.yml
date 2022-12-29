@@ -41,8 +41,6 @@ services:
     ports:
       - "7070:8080"
       - "7080:8090"
-#    env_file:
-#      - ~/.secret/env.file
     networks:
       - overlay
 

@@ -23,14 +23,14 @@ public class UserRepositoryImpl implements UserRepository {
     private static final String ADD_EXTERNAL_USER = "INSERT INTO USER_SCHEMA.EXTERNAL_USER_TABLE (ID, EMAIL, FIRST_NAME, LAST_NAME, LOCALE, " +
             "PICTURE_URL, TOKEN_VALUE, TOKEN_TYPE, TOKEN_EXPIRY_TIME, EXTERNAL_SYSTEM, GENDER, DATE_OF_BIRTH, HOME_COUNTRY) " +
             "values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)";
-    private final String EMAIL = "EMAIL";;
-    private final String PASSWORD = "PASSWORD";
-    private final String FIRST_NAME = "FIRST_NAME";
-    private final String LAST_NAME = "LAST_NAME";
-    private final String DATE_OF_BIRTH = "DATE_OF_BIRTH";
-    private final String HOME_COUNTRY = "HOME_COUNTRY";
-    private final String GENDER = "GENDER";
-    private final String ROLE = "ROLE";
+    private static final String EMAIL = "EMAIL";
+    private static final String PASSWORD = "PASSWORD";
+    private static final String FIRST_NAME = "FIRST_NAME";
+    private static final String LAST_NAME = "LAST_NAME";
+    private static final String DATE_OF_BIRTH = "DATE_OF_BIRTH";
+    private static final String HOME_COUNTRY = "HOME_COUNTRY";
+    private static final String GENDER = "GENDER";
+    private static final String ROLE = "ROLE";
 
     public UserRepositoryImpl(DatabaseClient databaseClient) {
         this.databaseClient = databaseClient;
@@ -102,7 +102,7 @@ public class UserRepositoryImpl implements UserRepository {
                 .setFirstName(row.get(FIRST_NAME, String.class))
                 .setLastName(row.get(LAST_NAME, String.class))
                 .setDateOfBirth(row.get(DATE_OF_BIRTH, String.class))
-                .setHomeCountry(row.get("HOME_COUNTRY", String.class))
+                .setHomeCountry(row.get(HOME_COUNTRY, String.class))
                 .setGender(Gender.from(row.get(GENDER, String.class)))
                 .setRole(row.get(ROLE, String.class))
                 .createUser();
@@ -122,7 +122,7 @@ public class UserRepositoryImpl implements UserRepository {
                 row.get("EXTERNAL_SYSTEM", String.class),
                 row.get(DATE_OF_BIRTH, String.class),
                 Gender.from(row.get(GENDER, String.class)),
-                row.get("HOME_COUNTRY", String.class));
+                row.get(HOME_COUNTRY, String.class));
     }
 
     private User toFullModel(Row row) {

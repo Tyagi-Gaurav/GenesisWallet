@@ -42,7 +42,7 @@ jobs:
 
       #   Enable below only for DEBUG
     - name: Show container logs
-      run: docker logs local.api-gateway
+      run: docker logs local.gw-ui
 
     - name: Sleep
       uses: jakejarvis/wait-action@master
