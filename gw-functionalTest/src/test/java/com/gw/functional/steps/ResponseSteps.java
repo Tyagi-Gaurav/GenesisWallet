@@ -16,11 +16,6 @@ public class ResponseSteps implements En {
             assertThat(responseHolder.getResponseCode()).isEqualTo(responseCode);
         });
 
-        And("^the response should be a success status response$", () -> {
-            String response = responseHolder.readResponse(String.class);
-            assertThat(response).isEqualTo("OK");
-        });
-
         And("^the user login response contains an authorisation token in the response", () -> {
             TestLoginResponseDTO testLoginResponseDTO = responseHolder.readResponse(TestLoginResponseDTO.class);
             assertThat(testLoginResponseDTO.token()).isNotEmpty();
@@ -28,6 +23,11 @@ public class ResponseSteps implements En {
 
         And("^the response contains the (.*) header in response$", (String headerName) -> {
             assertThat(responseHolder.getHeaders()).containsKey(headerName);
+        });
+
+        Then("^the response should be a success status$", () -> {
+            String response = responseHolder.readResponse(String.class);
+            assertThat(response).isEqualTo("{\"status\":\"UP\"}");
         });
     }
 }

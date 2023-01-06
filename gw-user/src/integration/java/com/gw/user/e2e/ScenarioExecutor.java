@@ -3,6 +3,7 @@ package com.gw.user.e2e;
 import com.gw.common.domain.Gender;
 import com.gw.user.e2e.builder.LoginRequestBuilder;
 import com.gw.user.e2e.domain.UserDetailsResponseDTO;
+import com.gw.user.e2e.function.AccessStatus;
 import com.gw.user.e2e.function.Login;
 import com.gw.user.e2e.function.UserCreate;
 import com.gw.user.resource.domain.LoginRequestDTO;
@@ -73,7 +74,7 @@ public class ScenarioExecutor {
     }
 
     public ScenarioExecutor retrieveUserFromDatabase(String userName) {
-        UserDetailsResponseDTO userDetailsResponseDTO = databaseClient.sql("SELECT * FROM USER_SCHEMA.USER_TABLE WHERE EMAIL = :email")
+        var userDetailsResponseDTO = databaseClient.sql("SELECT * FROM USER_SCHEMA.USER_TABLE WHERE EMAIL = :email")
                 .bind("email", userName)
                 .map(this::toModel)
                 .one()
@@ -115,6 +116,11 @@ public class ScenarioExecutor {
     }
 
     public ScenarioExecutor thenUserRegistrationCounterIsIncremented() {
+        return this;
+    }
+
+    public ScenarioExecutor accessStatusEndpoint() {
+        this.responseSpec = new AccessStatus().apply(webTestClient);
         return this;
     }
 }

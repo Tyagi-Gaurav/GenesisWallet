@@ -15,6 +15,7 @@ accessible:
   endpoints:
     "[GET-/api/status]": ${GET_STATUS:true}
     "[POST-/api/user/create]": ${CREATE_USER:true}
+    "[GET-/actuator/info]": ${ACTUATOR_INFO:true}
     "[POST-/api/user/login]": ${LOGIN_USER:true}
     "[GET-/actuator/metrics]": ${GET_METRICS:true}
     "[GET-/api/v2/api-docs]": ${GET_SWAGGER_JSON:true}
@@ -23,6 +24,7 @@ accessible:
   endpointsRegex:
     "[GET-/api/swagger-resources/.*]": ${GET_SWAGGER_RESOURCES:true}
     "[GET-/api/swagger-ui/.*]": ${GET_SWAGGER_UI_RESOURCES:true}
+    "[GET-/actuator/healthcheck/.*]": ${ACTUATOR_HEALTH_CUSTOM:true}
 
 management:
   server.port: ${SERVER_MGT_PORT:9091}
