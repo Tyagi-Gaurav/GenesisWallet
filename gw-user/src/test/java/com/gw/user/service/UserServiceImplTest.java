@@ -2,6 +2,7 @@ package com.gw.user.service;
 
 import com.gw.common.domain.ExternalUser;
 import com.gw.common.domain.User;
+import com.gw.common.metrics.UserRegistrationCounter;
 import com.gw.security.util.PasswordEncryptor;
 import com.gw.user.repo.UserRepository;
 import com.gw.user.testutils.ExternalUserBuilder;
@@ -32,13 +33,16 @@ class UserServiceImplTest {
     @Mock
     private PasswordEncryptor passwordEncryptor;
 
+    @Mock
+    private UserRegistrationCounter userRegistrationCounter;
+
     private final SecureRandom secureRandom = new SecureRandom();
 
     private UserServiceImpl userService;
 
     @BeforeEach
     void setUp() {
-        userService = new UserServiceImpl(userRepository, passwordEncryptor, secureRandom);
+        userService = new UserServiceImpl(userRepository, passwordEncryptor, secureRandom, userRegistrationCounter);
     }
 
     @Test
@@ -65,6 +69,19 @@ class UserServiceImplTest {
     }
 
     @Test
+    void incrementRegistrationMetricOnAddUser() {
+        User user = aUser().build();
+
+        when(passwordEncryptor.encrypt(eq(user.password()), anyString())).thenReturn(user.password());
+        when(userRepository.addUser(eq(user), eq(user.password()), anyString())).thenReturn(Mono.empty());
+
+        StepVerifier.create(userService.addUser(user))
+                .verifyComplete();
+
+        verify(userRegistrationCounter).increment("WEB", "HOMEPAGE");
+    }
+
+    @Test
     void addExternalUser() {
         ExternalUser externalUser = ExternalUserBuilder.aExternalUser().build();
 
@@ -74,6 +91,20 @@ class UserServiceImplTest {
         StepVerifier.create(userService.addExternalUser(externalUser))
                 .expectNext(externalUser)
                 .verifyComplete();
+    }
+
+    @Test
+    void incremenRegistrationCounterOnAddExternalUser() {
+        ExternalUser externalUser = ExternalUserBuilder.aExternalUser().build();
+
+        when(userRepository.findExternalUserByEmail(externalUser.email())).thenReturn(Mono.empty());
+        when(userRepository.addExternalUser(externalUser)).thenReturn(Mono.empty());
+
+        StepVerifier.create(userService.addExternalUser(externalUser))
+                .expectNext(externalUser)
+                .verifyComplete();
+
+        verify(userRegistrationCounter).increment("WEB", externalUser.externalSystem());
     }
 
     @Test

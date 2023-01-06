@@ -55,8 +55,8 @@ database:
     blocking-warmup: true
 
 vault:
-  token: "${VAULT_ACCESS_TOKEN:root}"
-  host: "local.vault"
-  port: 8200
+  token: ${VAULT_ACCESS_TOKEN:root}
+  host: ${VAULT_HOST:local.vault}
+  port: ${VAULT_PORT:8200}
   httpScheme: "http"
   appRole: "user_service"
