@@ -4,6 +4,7 @@ import com.gw.user.Application;
 import com.gw.user.e2e.security.TestContainerVaultInitializer;
 import com.gw.user.repo.TestContainerDatabaseInitializer;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
         "user.host=localhost",
         "user.port=${wiremock.server.port}"
 })
-public class ActuatorTest {
+public class MonitoringTest {
     private ScenarioExecutor scenarioExecutor;
 
     @Autowired
@@ -49,6 +50,13 @@ public class ActuatorTest {
     void shouldBeAbleToAccessStatusEndpoint() {
         scenarioExecutor
                 .accessStatusEndpoint()
+                .then().expectReturnCode(200);
+    }
+
+    @Disabled
+    void shouldBeAbleToAccessMetricsEndpoint() {
+        scenarioExecutor
+                .accessMetricsEndpoint()
                 .then().expectReturnCode(200);
     }
 }

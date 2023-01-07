@@ -8,17 +8,24 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TestActuatorResource extends AbstractResource {
+public class TestMonitoringResource extends AbstractResource {
     @Autowired
     private ApiGatewayConfig apiGatewayConfig;
 
     @Autowired
     private ResponseHolder responseHolder;
 
-    public void accessUserMetrics() {
+    public void accessUserStatus() {
         String fullUrl = getSecuredUrl(apiGatewayConfig.host().trim(),
                 apiGatewayConfig.userContextPath(),
                 "/user/private/healthcheck/status", apiGatewayConfig.securedPort());
+        responseHolder.setResponse(this.get(fullUrl, new HttpEntity(HttpHeaders.EMPTY), String.class));
+    }
+
+    public void accessMetrics() {
+        String fullUrl = getSecuredUrl(apiGatewayConfig.host().trim(),
+                apiGatewayConfig.userContextPath(),
+                "/user/private/prometheus", apiGatewayConfig.securedPort());
         responseHolder.setResponse(this.get(fullUrl, new HttpEntity(HttpHeaders.EMPTY), String.class));
     }
 }

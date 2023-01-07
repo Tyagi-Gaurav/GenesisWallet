@@ -13,6 +13,7 @@ import org.springframework.web.reactive.config.EnableWebFlux;
         "com.gw.user.security",
         "com.gw.user.service",
         "com.gw.common",
+        "com.gw.common.config",
         "com.gw.security.config"})
 @EnableWebFlux
 public class Application {

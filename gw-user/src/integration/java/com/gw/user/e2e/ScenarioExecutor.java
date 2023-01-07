@@ -5,6 +5,7 @@ import com.gw.user.e2e.builder.LoginRequestBuilder;
 import com.gw.user.e2e.domain.UserDetailsResponseDTO;
 import com.gw.user.e2e.function.AccessStatus;
 import com.gw.user.e2e.function.Login;
+import com.gw.user.e2e.function.MetricStatus;
 import com.gw.user.e2e.function.UserCreate;
 import com.gw.user.resource.domain.LoginRequestDTO;
 import com.gw.user.resource.domain.LoginResponseDTO;
@@ -121,6 +122,11 @@ public class ScenarioExecutor {
 
     public ScenarioExecutor accessStatusEndpoint() {
         this.responseSpec = new AccessStatus().apply(webTestClient);
+        return this;
+    }
+
+    public ScenarioExecutor accessMetricsEndpoint() {
+        this.responseSpec = new MetricStatus().apply(webTestClient);
         return this;
     }
 }

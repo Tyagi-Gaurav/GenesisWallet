@@ -15,9 +15,9 @@ accessible:
   endpoints:
     "[GET-/api/status]": ${GET_STATUS:true}
     "[POST-/api/user/create]": ${CREATE_USER:true}
-    "[GET-/actuator/info]": ${ACTUATOR_INFO:true}
     "[POST-/api/user/login]": ${LOGIN_USER:true}
-    "[GET-/actuator/metrics]": ${GET_METRICS:true}
+    "[GET-/actuator/info]": ${ACTUATOR_INFO:true}
+    "[GET-/actuator/prometheus]": ${GET_METRICS:true}
     "[GET-/api/v2/api-docs]": ${GET_SWAGGER_JSON:true}
     "[GET-/api/swagger-ui/]": ${GET_SWAGGER_UI:true}
     "[GET-/api/swagger-resources]": ${GET_SWAGGER_RESOURCES:true}
@@ -33,7 +33,7 @@ management:
       show-details: always
   endpoints:
     web:
-      exposure.include: health, mappings, metrics, configprops
+      exposure.include: health, mappings, metrics, prometheus, configprops
       path-mapping:
         health: healthcheck
         configprops: config
