@@ -2,12 +2,14 @@ package com.gw.user.repo;
 
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.annotation.Order;
 import org.springframework.test.context.support.TestPropertySourceUtils;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.utility.DockerImageName;
 
 import static org.testcontainers.containers.PostgreSQLContainer.POSTGRESQL_PORT;
 
+@Order(0)
 public class TestContainerDatabaseInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
     static PostgreSQLContainer postgres;

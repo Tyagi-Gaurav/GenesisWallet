@@ -23,6 +23,7 @@ import java.util.Optional;
 @Configuration
 public class DatabaseBeanFactory {
     private static final Logger LOG = LoggerFactory.getLogger(DatabaseBeanFactory.class);
+
     private static final String USER_NAME = "username";
     private static final String PASSWORD = "password";
     private static final String HOST = "host";
@@ -30,12 +31,15 @@ public class DatabaseBeanFactory {
     private static final String VAULT_DB_SERVICE_NAME = "postgres/user_service";
 
     @Bean
-    public VaultTemplate dbCredentials(VaultInitializer vaultInitializer) {
+    public VaultTemplate vaultTemplate(VaultInitializer vaultInitializer) {
         VaultToken login = vaultInitializer.clientAuthentication().login();
         return new VaultTemplate(vaultInitializer.vaultEndpoint(),
                 new TokenAuthentication(login.getToken()));
     }
 
+    /*
+    This bean is needed for Liquibase. LiquibaseAutoConfiguration looks for a DataSource bean as a pre-condition.
+     */
     @Bean
     public DataSource dataSource(DatabaseConfig databaseConfig,
                                  VaultTemplate vaultTemplate) {

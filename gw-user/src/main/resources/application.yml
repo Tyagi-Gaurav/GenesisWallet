@@ -16,13 +16,15 @@ accessible:
     "[GET-/api/status]": ${GET_STATUS:true}
     "[POST-/api/user/create]": ${CREATE_USER:true}
     "[POST-/api/user/login]": ${LOGIN_USER:true}
-    "[GET-/actuator/metrics]": ${GET_METRICS:true}
+    "[GET-/actuator/info]": ${ACTUATOR_INFO:true}
+    "[GET-/actuator/prometheus]": ${GET_METRICS:true}
     "[GET-/api/v2/api-docs]": ${GET_SWAGGER_JSON:true}
     "[GET-/api/swagger-ui/]": ${GET_SWAGGER_UI:true}
     "[GET-/api/swagger-resources]": ${GET_SWAGGER_RESOURCES:true}
   endpointsRegex:
     "[GET-/api/swagger-resources/.*]": ${GET_SWAGGER_RESOURCES:true}
     "[GET-/api/swagger-ui/.*]": ${GET_SWAGGER_UI_RESOURCES:true}
+    "[GET-/actuator/healthcheck/.*]": ${ACTUATOR_HEALTH_CUSTOM:true}
 
 management:
   server.port: ${SERVER_MGT_PORT:9091}
@@ -31,7 +33,7 @@ management:
       show-details: always
   endpoints:
     web:
-      exposure.include: health, mappings, metrics, configprops
+      exposure.include: health, mappings, metrics, prometheus, configprops
       path-mapping:
         health: healthcheck
         configprops: config
@@ -55,8 +57,8 @@ database:
     blocking-warmup: true
 
 vault:
-  token: "${VAULT_ACCESS_TOKEN:root}"
-  host: "local.vault"
-  port: 8200
+  token: ${VAULT_ACCESS_TOKEN:root}
+  host: ${VAULT_HOST:local.vault}
+  port: ${VAULT_PORT:8200}
   httpScheme: "http"
   appRole: "user_service"

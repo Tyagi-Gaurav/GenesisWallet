@@ -2,7 +2,6 @@ package com.gw.common.metrics;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -11,8 +10,11 @@ public class EndpointRequestCounter {
     private static final String PATH_TAG = "path";
     private static final String INFRA_REQUEST_COUNT = "request_count";
 
-    @Autowired
-    private MeterRegistry meterRegistry;
+    private final MeterRegistry meterRegistry;
+
+    public EndpointRequestCounter(MeterRegistry meterRegistry) {
+        this.meterRegistry = meterRegistry;
+    }
 
     public void increment(String method, String path) {
         Counter requestCount = Counter.builder(INFRA_REQUEST_COUNT)

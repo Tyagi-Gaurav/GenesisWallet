@@ -2,7 +2,9 @@ package com.gw.common.metrics;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ExceptionCounter {
     private static final String STATUS_TAG = "status";
     private final MeterRegistry meterRegistry;

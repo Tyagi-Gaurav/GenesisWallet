@@ -3,7 +3,6 @@ package com.gw.user.resource;
 import com.gw.common.domain.User;
 import com.gw.common.exception.ApplicationAuthenticationException;
 import com.gw.common.util.TokenManager;
-import com.gw.security.util.PasswordEncryptor;
 import com.gw.user.resource.domain.LoginRequestDTO;
 import com.gw.user.resource.domain.LoginResponseDTO;
 import com.gw.user.resource.domain.UserCreateRequestDTO;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
-import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.UUID;
 
@@ -25,17 +23,11 @@ import java.util.UUID;
 public class UserCreateResource {
     private final UserService userService;
     private final TokenManager tokenManager;
-    private final PasswordEncryptor passwordEncryptor;
-    private final SecureRandom secureRandom;
 
     public UserCreateResource(UserService userService,
-                              TokenManager tokenManager,
-                              PasswordEncryptor passwordEncryptor,
-                              SecureRandom secureRandom) {
+                              TokenManager tokenManager) {
         this.userService = userService;
         this.tokenManager = tokenManager;
-        this.passwordEncryptor = passwordEncryptor;
-        this.secureRandom = secureRandom;
     }
 
     @PostMapping(consumes = "application/vnd+user.create.v1+json",
@@ -43,14 +35,12 @@ public class UserCreateResource {
             path = "/user/create")
     @ResponseStatus(code = HttpStatus.CREATED)
     public Mono<Void> createUser(@Valid @RequestBody UserCreateRequestDTO userCreateRequestDTO) {
-        var salt = userCreateRequestDTO.lastName() + secureRandom.nextLong() + userCreateRequestDTO.firstName();
         return userService.addUser(new User(
                 UUID.randomUUID(),
                 userCreateRequestDTO.firstName(),
                 userCreateRequestDTO.lastName(),
                 userCreateRequestDTO.userName(),
-                passwordEncryptor.encrypt(userCreateRequestDTO.password(), salt),
-                salt,
+                userCreateRequestDTO.password(),
                 userCreateRequestDTO.dateOfBirth(),
                 userCreateRequestDTO.gender(),
                 userCreateRequestDTO.homeCountry(),

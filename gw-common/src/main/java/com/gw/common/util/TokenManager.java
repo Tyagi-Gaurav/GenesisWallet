@@ -45,7 +45,7 @@ public class TokenManager {
     public String generateToken(User user,
                                 Duration tokenDuration) {
         Map<String, Object> claims = addClaimsV2(user.role());
-        return doGenerateToken(claims, user.username(), user.id(), tokenDuration);
+        return doGenerateToken(claims, user.email(), user.id(), tokenDuration);
     }
 
     public static class Token {

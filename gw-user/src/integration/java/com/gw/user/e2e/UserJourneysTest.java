@@ -2,9 +2,10 @@ package com.gw.user.e2e;
 
 import com.gw.user.Application;
 import com.gw.user.e2e.builder.UserCreateRequestBuilder;
+import com.gw.user.e2e.domain.UserDetailsResponseDTO;
+import com.gw.user.e2e.security.TestContainerVaultInitializer;
 import com.gw.user.repo.TestContainerDatabaseInitializer;
 import com.gw.user.resource.domain.LoginResponseDTO;
-import com.gw.user.e2e.domain.UserDetailsResponseDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,9 +29,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = Application.class,
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ContextConfiguration(initializers = TestContainerDatabaseInitializer.class)
+@ContextConfiguration(initializers = {TestContainerDatabaseInitializer.class, TestContainerVaultInitializer.class})
 @AutoConfigureWebFlux
-@ActiveProfiles("AccountCreateIT")
+@ActiveProfiles("UserJourneysTest")
 @AutoConfigureWireMock(port = 0)
 @TestPropertySource(properties = {
         "user.host=localhost",
@@ -48,7 +49,7 @@ public class UserJourneysTest {
     @BeforeEach
     void setUp() {
         String baseUrl = "http://localhost:" + serverPort + "/api";
-        WebTestClient webTestClient = WebTestClient.bindToServer().baseUrl(baseUrl).build();
+        var webTestClient = WebTestClient.bindToServer().baseUrl(baseUrl).build();
         scenarioExecutor = new ScenarioExecutor(webTestClient, databaseClient);
     }
 
@@ -70,6 +71,7 @@ public class UserJourneysTest {
         var userCreateRequestDTO = UserCreateRequestBuilder.userCreateRequest().build();
 
         scenarioExecutor
+                .captureMetrics()
                 .userIsCreatedFor(userCreateRequestDTO)
                 .then().expectReturnCode(201)
                 .retrieveUserFromDatabase(userCreateRequestDTO.userName())
@@ -81,7 +83,9 @@ public class UserJourneysTest {
                     assertThat(userDetailsResponse.dateOfBirth()).isEqualTo(userCreateRequestDTO.dateOfBirth());
                     assertThat(userDetailsResponse.gender()).isEqualTo(userCreateRequestDTO.gender());
                     assertThat(userDetailsResponse.homeCountry()).isEqualTo(userCreateRequestDTO.homeCountry());
-                }, UserDetailsResponseDTO.class);
+                }, UserDetailsResponseDTO.class)
+                .whenWeRetrieveMetricsFromService()
+                .thenUserRegistrationCounterIsIncremented();
     }
 
     @Test
@@ -91,8 +95,8 @@ public class UserJourneysTest {
         scenarioExecutor
                 .when().userIsCreatedFor(userCreateRequestDTO).expectReturnCode(201)
                 .userLoginsWith(userCreateRequestDTO).expectReturnCode(200)
-                .thenAssertThat(loginResponse -> {
-                    assertThat(loginResponse.token()).isNotEmpty();
-                }, LoginResponseDTO.class);
+                .thenAssertThat(loginResponse ->
+                    assertThat(loginResponse.token()).isNotEmpty()
+                , LoginResponseDTO.class);
     }
 }

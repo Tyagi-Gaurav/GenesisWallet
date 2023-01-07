@@ -1,14 +1,15 @@
 package com.gw.user.e2e;
 
 import com.gw.common.domain.Gender;
+import com.gw.user.e2e.builder.LoginRequestBuilder;
+import com.gw.user.e2e.domain.UserDetailsResponseDTO;
+import com.gw.user.e2e.function.AccessStatus;
 import com.gw.user.e2e.function.Login;
+import com.gw.user.e2e.function.MetricStatus;
 import com.gw.user.e2e.function.UserCreate;
 import com.gw.user.resource.domain.LoginRequestDTO;
-import com.gw.user.resource.domain.LoginRequestDTOBuilder;
 import com.gw.user.resource.domain.LoginResponseDTO;
 import com.gw.user.resource.domain.UserCreateRequestDTO;
-import com.gw.user.e2e.domain.UserDetailsResponseDTO;
-import com.gw.user.e2e.builder.LoginRequestBuilder;
 import io.r2dbc.spi.Row;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -74,8 +75,8 @@ public class ScenarioExecutor {
     }
 
     public ScenarioExecutor retrieveUserFromDatabase(String userName) {
-        UserDetailsResponseDTO userDetailsResponseDTO = databaseClient.sql("SELECT * FROM USER_SCHEMA.USER_TABLE WHERE USER_NAME = :userName")
-                .bind("userName", userName)
+        var userDetailsResponseDTO = databaseClient.sql("SELECT * FROM USER_SCHEMA.USER_TABLE WHERE EMAIL = :email")
+                .bind("email", userName)
                 .map(this::toModel)
                 .one()
                 .switchIfEmpty(Mono.defer(Mono::empty))
@@ -90,7 +91,7 @@ public class ScenarioExecutor {
 
     private UserDetailsResponseDTO toModel(Row row) {
         return new UserDetailsResponseDTO(
-                row.get("USER_NAME", String.class),
+                row.get("EMAIL", String.class),
                 row.get("FIRST_NAME", String.class),
                 row.get("LAST_NAME", String.class),
                 row.get("ROLE", String.class),
@@ -104,6 +105,28 @@ public class ScenarioExecutor {
     public ScenarioExecutor responseHeaderContains(String expectedHeaderKey) {
         this.responseSpec.expectHeader()
                 .exists(expectedHeaderKey);
+        return this;
+    }
+
+    public ScenarioExecutor captureMetrics() {
+        return this;
+    }
+
+    public ScenarioExecutor whenWeRetrieveMetricsFromService() {
+        return this;
+    }
+
+    public ScenarioExecutor thenUserRegistrationCounterIsIncremented() {
+        return this;
+    }
+
+    public ScenarioExecutor accessStatusEndpoint() {
+        this.responseSpec = new AccessStatus().apply(webTestClient);
+        return this;
+    }
+
+    public ScenarioExecutor accessMetricsEndpoint() {
+        this.responseSpec = new MetricStatus().apply(webTestClient);
         return this;
     }
 }

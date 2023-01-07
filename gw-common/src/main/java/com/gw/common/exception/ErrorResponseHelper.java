@@ -4,8 +4,10 @@ import com.gw.common.domain.ErrorResponse;
 import com.gw.common.metrics.ExceptionCounter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
+@Component
 public class ErrorResponseHelper {
     private static final Logger LOG = LoggerFactory.getLogger(ErrorResponseHelper.class);
 

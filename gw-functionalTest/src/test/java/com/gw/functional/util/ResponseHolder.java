@@ -10,22 +10,21 @@ import javax.annotation.PreDestroy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Component
 public class ResponseHolder {
-    private List<ResponseEntity> previousResponses = new ArrayList<>();
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final List<ResponseEntity> previousResponses = new ArrayList<>();
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private String token;
     private String userId;
-    private UUID movieId;
+    private String metrics;
 
     public void setResponse(ResponseEntity entity) {
         previousResponses.add(0, entity);
     }
 
     public int getResponseCode() {
-        return getLastResponse().getStatusCode().value();
+        return Optional.ofNullable(getLastResponse()).map(resp -> resp.getStatusCode().value()).orElse(-1);
     }
 
     public <T> T readResponse(Class<T> clazz) {
@@ -57,7 +56,7 @@ public class ResponseHolder {
     }
 
     private ResponseEntity getLastResponse() {
-        return previousResponses.get(0);
+        return previousResponses.size() > 0 ? previousResponses.get(0) : null;
     }
 
     @PreDestroy
@@ -69,10 +68,6 @@ public class ResponseHolder {
         this.token = token;
     }
 
-    public String getToken() {
-        return token;
-    }
-
     public void storeUserId(String userId) {
         this.userId = userId;
     }
@@ -81,11 +76,11 @@ public class ResponseHolder {
         return userId;
     }
 
-    public void setMovieId(UUID movieId) {
-        this.movieId = movieId;
+    public void storeMetrics(String readResponse) {
+        this.metrics = readResponse;
     }
 
-    public UUID getMovieId() {
-        return movieId;
+    public String getMetrics() {
+        return metrics;
     }
 }

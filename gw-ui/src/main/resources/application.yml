@@ -1,0 +1,36 @@
+spring:
+  active: prod
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: ${OAUTH_CLIENT_ID_GOOGLE:google_client_id}
+            clientSecret: ${OAUTH_CLIENT_SECRET_GOOGLE:google_client_secret}
+            scope:
+              - email
+              - profile
+
+  webflux:
+    base-path: /gw-ui
+
+debug: true
+
+server:
+  port: ${SERVER_PORT:8080}
+
+management:
+  server.port: ${SERVER_MGT_PORT:8081}
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure.include: health, mappings, metrics
+      path-mapping:
+        health: healthcheck
+
+user:
+  host: ${USER_HOST:local.user-app}
+  port: ${USER_PORT:19090}
+  timeoutInMs: 5000

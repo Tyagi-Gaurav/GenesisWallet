@@ -5,7 +5,11 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.gw.grpc.common.CorrelationIdInterceptor;
 import com.gw.test.common.grpc.GrpcExtension;
+import com.gw.user.grpc.ExternalUserCreateGrpcRequestDTO;
+import com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO;
 import com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO;
+import com.gw.user.grpc.UserCreateGrpcRequestDTO;
+import com.gw.user.grpc.UserCreateGrpcResponseDTO;
 import com.gw.user.grpc.UserDetailsGrpcResponseDTO;
 import com.gw.user.grpc.UserServiceGrpc;
 import io.grpc.ClientInterceptor;
@@ -102,6 +106,129 @@ class UserGrpcClientTest {
                 assertThat(result.getGender()).isEqualTo(expectedResult.getGender());
                 assertThat(result.getHomeCountry()).isEqualTo(expectedResult.getHomeCountry());
                 assertThat(result.getId()).isEqualTo(expectedResult.getId());
+                hasGotResponse.set(true);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                fail("Got exception", t);
+            }
+        }, Executors.newSingleThreadExecutor());
+
+        Awaitility.await("Receive response").atMost(Duration.ofMillis(300))
+                .until(hasGotResponse::get);
+    }
+
+    @Test
+    void createUserSync() {
+        AtomicBoolean successCall = new AtomicBoolean(false);
+        UserCreateGrpcRequestDTO userCreateGrpcRequestDTO = UserCreateGrpcRequestDTO.newBuilder()
+                .setUserName("username")
+                .setPassword("password")
+                .setDateOfBirth("01/01/2000")
+                .setFirstName("firstName")
+                .setLastName("lastName")
+                .setHomeCountry("UK")
+                .build();
+
+        doAnswer(invocation -> {
+            successCall.set(true);
+            StreamObserver<UserCreateGrpcResponseDTO> streamObserver = invocation.getArgument(1);
+            streamObserver.onNext(UserCreateGrpcResponseDTO.getDefaultInstance());
+            streamObserver.onCompleted();
+            return null;
+        }).when(bindableService).createUser(eq(userCreateGrpcRequestDTO), any(StreamObserver.class));
+
+        userGrpcClient.createUserSync(userCreateGrpcRequestDTO);
+        assertThat(successCall).isTrue();
+    }
+
+    @Test
+    void createUserASync() {
+        UserCreateGrpcRequestDTO userCreateGrpcRequestDTO = UserCreateGrpcRequestDTO.newBuilder()
+                .setUserName("username")
+                .setPassword("password")
+                .setDateOfBirth("01/01/2000")
+                .setFirstName("firstName")
+                .setLastName("lastName")
+                .setHomeCountry("UK")
+                .build();
+        doAnswer(invocation -> {
+            StreamObserver<UserCreateGrpcResponseDTO> streamObserver = invocation.getArgument(1);
+            streamObserver.onNext(UserCreateGrpcResponseDTO.newBuilder()
+                            .setCreated(true)
+                    .build());
+            streamObserver.onCompleted();
+            return null;
+        }).when(bindableService).createUser(eq(userCreateGrpcRequestDTO), any(StreamObserver.class));
+
+        ListenableFuture<UserCreateGrpcResponseDTO> emptyListenableFuture =
+                userGrpcClient.createUserAsync(userCreateGrpcRequestDTO);
+
+        AtomicBoolean hasGotResponse = new AtomicBoolean(false);
+        Futures.addCallback(emptyListenableFuture, new FutureCallback<>() {
+            @Override
+            public void onSuccess(UserCreateGrpcResponseDTO result) {
+                hasGotResponse.set(result.getCreated());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                fail("Got exception", t);
+            }
+        }, Executors.newSingleThreadExecutor());
+
+        Awaitility.await("Receive response").atMost(Duration.ofMillis(300))
+                .until(hasGotResponse::get);
+    }
+
+    @Test
+    void createExternalUserSync() {
+        AtomicBoolean successCall = new AtomicBoolean(false);
+        ExternalUserCreateGrpcRequestDTO externalUserCreateGrpcRequestDTO = ExternalUserCreateGrpcRequestDTO.newBuilder()
+                .setEmail("test@test.com")
+                .setDateOfBirth("01/01/2000")
+                .setFirstName("firstName")
+                .setLastName("lastName")
+                .setHomeCountry("UK")
+                .build();
+
+        doAnswer(invocation -> {
+            successCall.set(true);
+            StreamObserver<ExternalUserCreateGrpcResponseDTO> streamObserver = invocation.getArgument(1);
+            streamObserver.onNext(ExternalUserCreateGrpcResponseDTO.getDefaultInstance());
+            streamObserver.onCompleted();
+            return null;
+        }).when(bindableService).createExternalUser(eq(externalUserCreateGrpcRequestDTO), any(StreamObserver.class));
+
+        userGrpcClient.createExternalUserSync(externalUserCreateGrpcRequestDTO);
+        assertThat(successCall).isTrue();
+    }
+
+    @Test
+    void createExternalUserASync() {
+        ExternalUserCreateGrpcRequestDTO externalUserCreateGrpcRequestDTO = ExternalUserCreateGrpcRequestDTO.newBuilder()
+                .setEmail("test@test.com")
+                .setDateOfBirth("01/01/2000")
+                .setFirstName("firstName")
+                .setLastName("lastName")
+                .setHomeCountry("UK")
+                .build();
+        doAnswer(invocation -> {
+            StreamObserver<ExternalUserCreateGrpcResponseDTO> streamObserver = invocation.getArgument(1);
+            streamObserver.onNext(ExternalUserCreateGrpcResponseDTO.newBuilder()
+                    .build());
+            streamObserver.onCompleted();
+            return null;
+        }).when(bindableService).createExternalUser(eq(externalUserCreateGrpcRequestDTO), any(StreamObserver.class));
+
+        ListenableFuture<ExternalUserCreateGrpcResponseDTO> emptyListenableFuture =
+                userGrpcClient.createExternalUserAsync(externalUserCreateGrpcRequestDTO);
+
+        AtomicBoolean hasGotResponse = new AtomicBoolean(false);
+        Futures.addCallback(emptyListenableFuture, new FutureCallback<>() {
+            @Override
+            public void onSuccess(ExternalUserCreateGrpcResponseDTO result) {
                 hasGotResponse.set(true);
             }
 

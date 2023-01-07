@@ -1,7 +1,9 @@
 package com.gw.user.testutils;
 
+import com.gw.common.domain.ExternalUser;
 import com.gw.common.domain.Gender;
 import com.gw.common.domain.User;
+import com.gw.user.grpc.ExternalUserCreateGrpcRequestDTO;
 import com.gw.user.grpc.UserCreateGrpcRequestDTO;
 
 import java.util.UUID;
@@ -32,7 +34,7 @@ public class UserBuilder {
         UserBuilder userBuilder = new UserBuilder();
 
         userBuilder.id = currentUser.id();
-        userBuilder.username = currentUser.username();
+        userBuilder.username = currentUser.email();
         userBuilder.firstName = currentUser.firstName();
         userBuilder.lastName = currentUser.lastName();
         userBuilder.password = currentUser.password();
@@ -61,7 +63,7 @@ public class UserBuilder {
         return new User.UserBuilder().setId(this.id)
                 .setFirstName(this.firstName)
                 .setLastName(this.lastName)
-                .setUsername(this.username)
+                .setEmail(this.username)
                 .setPassword(this.password)
                 .setSalt(this.salt)
                 .setDateOfBirth(this.dateOfBirth)
@@ -73,14 +75,23 @@ public class UserBuilder {
 
     public static UserCreateGrpcRequestDTO userCreateGrpcRequestDTOBuilder(User user) {
         return UserCreateGrpcRequestDTO.newBuilder()
-                .setUserName(user.username())
+                .setUserName(user.email())
                 .setFirstName(user.firstName())
                 .setLastName(user.lastName())
                 .setDateOfBirth(user.dateOfBirth())
                 .setGender(toGrpcGender(user.gender()))
                 .setPassword(user.password())
-                .setSalt(user.salt())
                 .setHomeCountry(user.homeCountry())
+                .build();
+    }
+
+    public static ExternalUserCreateGrpcRequestDTO externalUserCreateGrpcRequestDTOBuilder(ExternalUser externalUser) {
+        return ExternalUserCreateGrpcRequestDTO.newBuilder()
+                .setFirstName(externalUser.firstName())
+                .setLastName(externalUser.lastName())
+                .setGender(toGrpcGender(externalUser.gender()))
+                .setEmail(externalUser.email())
+                .setExternalSystem(externalUser.externalSystem())
                 .build();
     }
 

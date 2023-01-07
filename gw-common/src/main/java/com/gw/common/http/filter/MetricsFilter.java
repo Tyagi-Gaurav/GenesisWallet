@@ -4,7 +4,6 @@ import com.gw.common.metrics.EndpointHistogram;
 import com.gw.common.metrics.EndpointRequestCounter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
@@ -20,11 +19,14 @@ public class MetricsFilter implements WebFilter {
 
     private static final Logger LOG = LoggerFactory.getLogger(MetricsFilter.class);
 
-    @Autowired
-    private EndpointRequestCounter endpointRequestCounter;
+    private final EndpointRequestCounter endpointRequestCounter;
 
-    @Autowired
-    private EndpointHistogram endpointHistogram;
+    private final EndpointHistogram endpointHistogram;
+
+    public MetricsFilter(EndpointRequestCounter endpointRequestCounter, EndpointHistogram endpointHistogram) {
+        this.endpointRequestCounter = endpointRequestCounter;
+        this.endpointHistogram = endpointHistogram;
+    }
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {

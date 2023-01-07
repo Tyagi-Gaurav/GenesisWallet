@@ -32,71 +32,59 @@ public interface UserCreateGrpcRequestDTOOrBuilder extends
       getPasswordBytes();
 
   /**
-   * <code>string salt = 3;</code>
-   * @return The salt.
-   */
-  java.lang.String getSalt();
-  /**
-   * <code>string salt = 3;</code>
-   * @return The bytes for salt.
-   */
-  com.google.protobuf.ByteString
-      getSaltBytes();
-
-  /**
-   * <code>string firstName = 4;</code>
+   * <code>string firstName = 3;</code>
    * @return The firstName.
    */
   java.lang.String getFirstName();
   /**
-   * <code>string firstName = 4;</code>
+   * <code>string firstName = 3;</code>
    * @return The bytes for firstName.
    */
   com.google.protobuf.ByteString
       getFirstNameBytes();
 
   /**
-   * <code>string lastName = 5;</code>
+   * <code>string lastName = 4;</code>
    * @return The lastName.
    */
   java.lang.String getLastName();
   /**
-   * <code>string lastName = 5;</code>
+   * <code>string lastName = 4;</code>
    * @return The bytes for lastName.
    */
   com.google.protobuf.ByteString
       getLastNameBytes();
 
   /**
-   * <code>string dateOfBirth = 6;</code>
+   * <code>string dateOfBirth = 5;</code>
    * @return The dateOfBirth.
    */
   java.lang.String getDateOfBirth();
   /**
-   * <code>string dateOfBirth = 6;</code>
+   * <code>string dateOfBirth = 5;</code>
    * @return The bytes for dateOfBirth.
    */
   com.google.protobuf.ByteString
       getDateOfBirthBytes();
 
   /**
-   * <code>.com.gw.user.grpc.Gender gender = 7;</code>
+   * <code>.com.gw.user.grpc.Gender gender = 6;</code>
    * @return The enum numeric value on the wire for gender.
    */
   int getGenderValue();
   /**
-   * <code>.com.gw.user.grpc.Gender gender = 7;</code>
+   * <code>.com.gw.user.grpc.Gender gender = 6;</code>
    * @return The gender.
    */
   com.gw.user.grpc.Gender getGender();
 
   /**
-   * <code>string homeCountry = 8;</code>
+   * <code>string homeCountry = 7;</code>
    * @return The homeCountry.
    */
   java.lang.String getHomeCountry();
   /**
-   * <code>string homeCountry = 8;</code>
+   * <code>string homeCountry = 7;</code>
    * @return The bytes for homeCountry.
    */
   com.google.protobuf.ByteString

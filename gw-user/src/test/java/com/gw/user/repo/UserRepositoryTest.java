@@ -1,5 +1,6 @@
 package com.gw.user.repo;
 
+import com.gw.common.domain.ExternalUser;
 import com.gw.common.domain.User;
 import com.gw.user.testutils.DatabaseTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,9 +15,11 @@ import org.springframework.test.context.ContextConfiguration;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.sql.SQLException;
-
-import static com.gw.user.repo.DBTestUtils.*;
+import static com.gw.user.repo.DBTestUtils.addToDatabase;
+import static com.gw.user.repo.DBTestUtils.clearDatabase;
+import static com.gw.user.repo.DBTestUtils.getExternalUser;
+import static com.gw.user.repo.DBTestUtils.getUser;
+import static com.gw.user.testutils.ExternalUserBuilder.aExternalUser;
 import static com.gw.user.testutils.UserBuilder.aUser;
 import static com.gw.user.testutils.UserBuilder.copyOf;
 
@@ -32,7 +35,7 @@ class UserRepositoryTest extends DatabaseTest {
     private DatabaseClient databaseClient;
 
     @BeforeEach
-    void setUp() throws SQLException {
+    void setUp() {
         clearDatabase(databaseClient);
     }
 
@@ -63,7 +66,9 @@ class UserRepositoryTest extends DatabaseTest {
         User expectedUser = copyOf(userToAdd).build();
 
         //when
-        StepVerifier.create(userRepository.addUser(userToAdd))
+        StepVerifier.create(userRepository.addUser(userToAdd,
+                        userToAdd.password(),
+                        userToAdd.salt()))
                 .verifyComplete();
 
         //then
@@ -74,13 +79,29 @@ class UserRepositoryTest extends DatabaseTest {
     }
 
     @Test
+    void shouldAddExternalUser() {
+        //given
+        ExternalUser userToAdd = aExternalUser().build();
+
+        //when
+        StepVerifier.create(userRepository.addExternalUser(userToAdd))
+                .verifyComplete();
+
+        //then
+        Mono<ExternalUser> userFromDB = getExternalUser(userToAdd.id(), databaseClient);
+        StepVerifier.create(userFromDB)
+                .expectNext(userToAdd)
+                .verifyComplete();
+    }
+
+    @Test
     void shouldFindUserByName() {
         //given
         User userInDatabase = aUser().build();
         addToDatabase(userInDatabase, databaseClient);
 
         //when
-        Mono<User> actualUser = userRepository.findUserByName(userInDatabase.username());
+        Mono<User> actualUser = userRepository.findUserByEmail(userInDatabase.email());
 
         //then
         StepVerifier.create(actualUser)
@@ -89,13 +110,13 @@ class UserRepositoryTest extends DatabaseTest {
     }
 
     @Test
-    void shouldFindUserByName_WhenUserDoesNoExist() {
+    void shouldFindExternalUser() {
         //given
-        User userInDatabase = aUser().build();
+        ExternalUser userInDatabase = aExternalUser().build();
         addToDatabase(userInDatabase, databaseClient);
 
         //when
-        Mono<User> actualUser = userRepository.findUserByName(userInDatabase.username());
+        Mono<ExternalUser> actualUser = userRepository.findExternalUserByEmail(userInDatabase.email());
 
         //then
         StepVerifier.create(actualUser)

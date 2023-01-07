@@ -1,14 +1,11 @@
 package com.gw.user.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gw.common.exception.ErrorResponseHelper;
 import com.gw.common.http.filter.LoggingFilter;
 import com.gw.common.http.filter.MetricsFilter;
 import com.gw.common.http.filter.RequestIdFilter;
-import com.gw.common.metrics.ExceptionCounter;
 import com.gw.common.util.TokenManager;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
@@ -47,16 +44,6 @@ public class BeanFactory implements WebFluxConfigurer {
         return WebClient.builder()
                 .baseUrl(String.format("http://%s:%d", userConfig.host(), userConfig.port()))
                 .build();
-    }
-
-    @Bean
-    public ErrorResponseHelper errorResponseHelper(ExceptionCounter exceptionCounter) {
-        return new ErrorResponseHelper(exceptionCounter);
-    }
-
-    @Bean
-    public ExceptionCounter exceptionCounter(MeterRegistry meterRegistry) {
-        return new ExceptionCounter(meterRegistry);
     }
 
     @Bean

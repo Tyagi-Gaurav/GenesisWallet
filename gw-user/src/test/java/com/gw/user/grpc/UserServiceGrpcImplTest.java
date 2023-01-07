@@ -1,10 +1,11 @@
 package com.gw.user.grpc;
 
-import com.google.protobuf.Empty;
+import com.gw.common.domain.ExternalUser;
 import com.gw.common.domain.User;
 import com.gw.grpc.common.CorrelationIdInterceptor;
 import com.gw.test.common.grpc.GrpcExtension;
 import com.gw.user.service.UserService;
+import com.gw.user.testutils.ExternalUserBuilder;
 import io.grpc.ServerInterceptor;
 import io.grpc.StatusRuntimeException;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,8 +49,22 @@ class UserServiceGrpcImplTest {
         User user = aUser().build();
         UserCreateGrpcRequestDTO userCreateGrpcRequestDTO = userCreateGrpcRequestDTOBuilder(user);
 
-        Empty user1 = userServiceBlockingStub.createUser(userCreateGrpcRequestDTO);
-        assertThat(user1).isNotNull();
+        UserCreateGrpcResponseDTO userCreateGrpcResponseDTO = userServiceBlockingStub.createUser(userCreateGrpcRequestDTO);
+        assertThat(userCreateGrpcResponseDTO).isNotNull();
+        assertThat(userCreateGrpcResponseDTO.getCreated()).isTrue();
+    }
+
+    @Test
+    void createExternalUser()  {
+        when(userService.addExternalUser(any(ExternalUser.class))).thenReturn(Mono.empty());
+
+        ExternalUser externalUser = ExternalUserBuilder.aExternalUser().build();
+        ExternalUserCreateGrpcRequestDTO externalUserCreateGrpcRequestDTO =
+                externalUserCreateGrpcRequestDTOBuilder(externalUser);
+
+        ExternalUserCreateGrpcResponseDTO externalUserCreateGrpcResponseDTO =
+                userServiceBlockingStub.createExternalUser(externalUserCreateGrpcRequestDTO);
+        assertThat(externalUserCreateGrpcResponseDTO).isNotNull();
     }
 
     @Test
@@ -75,7 +90,7 @@ class UserServiceGrpcImplTest {
         UserDetailsGrpcResponseDTO userDetailsGrpcResponseDTO =
                 userServiceBlockingStub.fetchUsersById(fetchUserDetailsByIdGrpcRequestDTO);
 
-        assertThat(userDetailsGrpcResponseDTO.getUserName()).isEqualTo(user.username());
+        assertThat(userDetailsGrpcResponseDTO.getUserName()).isEqualTo(user.email());
         assertThat(userDetailsGrpcResponseDTO.getDateOfBirth()).isEqualTo(user.dateOfBirth());
         assertThat(userDetailsGrpcResponseDTO.getFirstName()).isEqualTo(user.firstName());
         assertThat(userDetailsGrpcResponseDTO.getLastName()).isEqualTo(user.lastName());
