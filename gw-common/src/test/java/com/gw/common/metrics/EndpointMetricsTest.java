@@ -4,6 +4,10 @@ import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
+
+import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class EndpointMetricsTest {
@@ -18,8 +22,8 @@ class EndpointMetricsTest {
 
         //when
         request_latency.start();
-        Thread.sleep(100);
-        request_latency.observe();
+        await().atLeast(100, TimeUnit.MILLISECONDS).untilAsserted(request_latency::observe);
+//        request_latency.observe();
 
         //then
         assertNotNull(meterRegistry.get("request_latency").meter());

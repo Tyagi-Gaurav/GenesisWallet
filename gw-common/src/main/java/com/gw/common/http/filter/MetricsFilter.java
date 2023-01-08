@@ -2,8 +2,6 @@ package com.gw.common.http.filter;
 
 import com.gw.common.metrics.EndpointMetrics;
 import com.gw.common.metrics.EndpointRequestCounter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
@@ -12,12 +10,8 @@ import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
-import java.time.Instant;
-
 @Component
 public class MetricsFilter implements WebFilter {
-
-    private static final Logger LOG = LoggerFactory.getLogger(MetricsFilter.class);
 
     private final EndpointRequestCounter endpointRequestCounter;
 

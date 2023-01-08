@@ -22,12 +22,12 @@ public class MetricsInterceptor implements ClientInterceptor, ServerInterceptor 
     private static final Logger LOG = LoggerFactory.getLogger(MetricsInterceptor.class);
 
     private static final String CORRELATION_ID = "X-REQUEST_ID";
-    private final EndpointMetrics.Histogram clientGrpcDuration;
     private final EndpointMetrics.Histogram serverGrpcDuration;
+    private final EndpointMetrics endpointMetrics;
 
     public MetricsInterceptor(EndpointMetrics endpointMetrics) {
-        clientGrpcDuration = endpointMetrics.createHistogramFor("grpc_client_request_duration");
         serverGrpcDuration = endpointMetrics.createHistogramFor("grpc_server_request_duration");
+        this.endpointMetrics = endpointMetrics;
     }
 
 
@@ -38,6 +38,7 @@ public class MetricsInterceptor implements ClientInterceptor, ServerInterceptor 
         return new ForwardingClientCall.SimpleForwardingClientCall<>(channel.newCall(method, callOptions)) {
             @Override
             public void start(Listener<RespT> responseListener, Metadata headers) {
+                var clientGrpcDuration = endpointMetrics.createHistogramFor("grpc_client_request_duration", "serviceName", method.getServiceName());
                 clientGrpcDuration.start();
                 super.start(responseListener, headers);
                 clientGrpcDuration.observe();
@@ -56,7 +57,6 @@ public class MetricsInterceptor implements ClientInterceptor, ServerInterceptor 
         }
         serverGrpcDuration.start();
         ServerCall.Listener<ReqT> reqTListener = next.startCall(serverCall, metadata);
-//        LOG.debug("Incoming request latency was : {} milli seconds", duration);
         serverGrpcDuration.observe();
         return reqTListener;
     }

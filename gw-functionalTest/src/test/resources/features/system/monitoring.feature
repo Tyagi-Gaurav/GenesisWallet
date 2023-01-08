@@ -9,7 +9,6 @@ Feature: Observability & Monitoring Scenarios - healthchecks, metrics, status.
     When the user service is requested for metrics
     And the response should be received with HTTP status code 200
     Then the response should contain following metrics
-      | jvm_memory_used_bytes        |
-      | http_server_requests_seconds |
-      | grpc_client_request_duration |
-      | grpc_server_request_duration |
+      | jvm_memory_used_bytes                                  |
+      | http_server_requests_seconds                           |
+      | grpc_server_request_duration                           |
