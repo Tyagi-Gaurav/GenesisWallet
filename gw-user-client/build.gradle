@@ -7,6 +7,7 @@ plugins {
 dependencies {
     implementation project(":gw-grpc-schema")
     implementation project(":gw-grpc-common")
+    implementation project(":gw-common")
     implementation "io.grpc:grpc-stub:1.50.2"
     implementation "io.grpc:grpc-protobuf:1.50.2"
     implementation "io.grpc:grpc-netty-shaded:1.50.2"

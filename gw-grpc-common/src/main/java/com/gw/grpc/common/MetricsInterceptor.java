@@ -38,7 +38,7 @@ public class MetricsInterceptor implements ClientInterceptor, ServerInterceptor 
         return new ForwardingClientCall.SimpleForwardingClientCall<>(channel.newCall(method, callOptions)) {
             @Override
             public void start(Listener<RespT> responseListener, Metadata headers) {
-                var clientGrpcDuration = endpointMetrics.createHistogramFor("grpc_client_request_duration", "serviceName", method.getServiceName());
+                var clientGrpcDuration = endpointMetrics.createHistogramFor("grpc_client_request_duration", "fullMethod", method.getFullMethodName());
                 clientGrpcDuration.start();
                 super.start(responseListener, headers);
                 clientGrpcDuration.observe();

@@ -1,6 +1,8 @@
 package com.gw.ui.config;
 
 import com.gw.common.http.filter.LoggingFilter;
+import com.gw.grpc.common.CorrelationIdInterceptor;
+import com.gw.grpc.common.MetricsInterceptor;
 import com.gw.user.client.UserGrpcClient;
 import com.gw.user.client.UserGrpcClientConfig;
 import org.springframework.beans.factory.BeanInitializationException;
@@ -20,6 +22,7 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
+import java.util.List;
 
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
@@ -59,8 +62,11 @@ public class AppConfig implements WebFluxConfigurer {
     }
 
     @Bean
-    public UserGrpcClient userGrpcClient(UserGrpcConfig userGrpcConfig) {
+    public UserGrpcClient userGrpcClient(UserGrpcConfig userGrpcConfig,
+                                         CorrelationIdInterceptor correlationIdInterceptor,
+                                         MetricsInterceptor metricsInterceptor) {
         return new UserGrpcClient(
-                new UserGrpcClientConfig(userGrpcConfig.host(), userGrpcConfig.port(), userGrpcConfig.timeoutInMs()));
+                new UserGrpcClientConfig(userGrpcConfig.host(), userGrpcConfig.port(), userGrpcConfig.timeoutInMs()),
+                List.of(correlationIdInterceptor, metricsInterceptor));
     }
 }
