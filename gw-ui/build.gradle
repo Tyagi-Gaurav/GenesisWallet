@@ -8,6 +8,7 @@ dependencies {
     implementation project(":gw-common")
     implementation project(":gw-user-client")
     implementation project(":gw-grpc-schema")
+    implementation project(":gw-grpc-common")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-client:2.7.4") {
         exclude group: "ch.qos.logback"
     }

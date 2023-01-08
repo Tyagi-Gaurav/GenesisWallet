@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -36,11 +37,15 @@ public class GrpcExtension implements AfterEachCallback {
     }
 
     public ServiceDetails createGrpcServerFor(BindableService bindableService,
-                                              ServerInterceptor correlationIdInterceptor) throws IOException {
+                                              ServerInterceptor... serverInterceptors) throws IOException {
         var serverName = InProcessServerBuilder.generateName();
-        Server server = InProcessServerBuilder.forName(serverName)
-                .directExecutor()
-                .intercept(correlationIdInterceptor)
+        InProcessServerBuilder inProcessServerBuilder = InProcessServerBuilder.forName(serverName)
+                .directExecutor();
+
+        Arrays.stream(serverInterceptors)
+                .forEach(inProcessServerBuilder::intercept);
+
+        Server server = inProcessServerBuilder
                 .addService(bindableService)
                 .build().start();
 

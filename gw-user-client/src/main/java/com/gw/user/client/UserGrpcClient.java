@@ -19,15 +19,15 @@ public class UserGrpcClient {
     private final UserServiceGrpc.UserServiceFutureStub userServiceFutureStub;
     private final UserGrpcClientConfig userGrpcClientConfig;
 
-    public UserGrpcClient(UserGrpcClientConfig userGrpcClientConfig) {
+    public UserGrpcClient(UserGrpcClientConfig userGrpcClientConfig, List<ClientInterceptor> clientInterceptorList) {
         this(ManagedChannelBuilder.forAddress(userGrpcClientConfig.serviceName(), userGrpcClientConfig.port())
                 .usePlaintext()
                 .build(),
                 userGrpcClientConfig,
-                List.of());
+                clientInterceptorList);
     }
 
-    public  UserGrpcClient(ManagedChannel managedChannel, UserGrpcClientConfig userGrpcClientConfig,
+    public UserGrpcClient(ManagedChannel managedChannel, UserGrpcClientConfig userGrpcClientConfig,
                    List<ClientInterceptor> clientInterceptorList) {
         this.userGrpcClientConfig = userGrpcClientConfig;
         LOG.debug("GRPC Client Config: {}", userGrpcClientConfig );
