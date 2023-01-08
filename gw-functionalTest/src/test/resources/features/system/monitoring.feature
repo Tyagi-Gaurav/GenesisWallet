@@ -11,3 +11,5 @@ Feature: Observability & Monitoring Scenarios - healthchecks, metrics, status.
     Then the response should contain following metrics
       | jvm_memory_used_bytes        |
       | http_server_requests_seconds |
+      | grpc_client_request_duration |
+      | grpc_server_request_duration |

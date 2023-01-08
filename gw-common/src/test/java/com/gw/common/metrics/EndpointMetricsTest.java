@@ -6,15 +6,20 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class EndpointHistogramTest {
+class EndpointMetricsTest {
     private final MeterRegistry meterRegistry = new SimpleMeterRegistry();
 
-    private final EndpointHistogram endpointHistogram = new EndpointHistogram(meterRegistry);
+    private final EndpointMetrics endpointMetrics = new EndpointMetrics(meterRegistry);
 
     @Test
-    void observe() {
+    void observe() throws InterruptedException {
+        //given
+        EndpointMetrics.Histogram request_latency = endpointMetrics.createHistogramFor("request_latency");
+
         //when
-        endpointHistogram.observe(5);
+        request_latency.start();
+        Thread.sleep(100);
+        request_latency.observe();
 
         //then
         assertNotNull(meterRegistry.get("request_latency").meter());

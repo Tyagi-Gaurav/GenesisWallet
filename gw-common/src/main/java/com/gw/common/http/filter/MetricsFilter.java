@@ -1,6 +1,6 @@
 package com.gw.common.http.filter;
 
-import com.gw.common.metrics.EndpointHistogram;
+import com.gw.common.metrics.EndpointMetrics;
 import com.gw.common.metrics.EndpointRequestCounter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,11 +21,11 @@ public class MetricsFilter implements WebFilter {
 
     private final EndpointRequestCounter endpointRequestCounter;
 
-    private final EndpointHistogram endpointHistogram;
+    private final EndpointMetrics.Histogram endpointRequestLatency;
 
-    public MetricsFilter(EndpointRequestCounter endpointRequestCounter, EndpointHistogram endpointHistogram) {
+    public MetricsFilter(EndpointRequestCounter endpointRequestCounter, EndpointMetrics endpointMetrics) {
         this.endpointRequestCounter = endpointRequestCounter;
-        this.endpointHistogram = endpointHistogram;
+        endpointRequestLatency = endpointMetrics.createHistogramFor("request_latency");
     }
 
     @Override
@@ -35,14 +35,10 @@ public class MetricsFilter implements WebFilter {
         HttpMethod method = request.getMethod();
         String path = request.getURI().getPath();
         endpointRequestCounter.increment(String.valueOf(method), path);
-        var startTime = Instant.now();
 
+        endpointRequestLatency.start();
         Mono<Void> result = chain.filter(exchange);
-
-        long duration = Instant.now().toEpochMilli() - startTime.toEpochMilli();
-
-        LOG.info("Duration of request was : {} milli seconds", duration);
-        endpointHistogram.observe(duration);
+        endpointRequestLatency.observe();
 
         return result;
     }

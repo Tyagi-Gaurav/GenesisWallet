@@ -1,6 +1,7 @@
 package com.gw.user.config;
 
 import com.gw.grpc.common.CorrelationIdInterceptor;
+import com.gw.grpc.common.MetricsInterceptor;
 import com.gw.user.grpc.UserServiceGrpcImpl;
 import com.gw.user.service.UserService;
 import io.grpc.Server;
@@ -18,11 +19,14 @@ public class GrpcServerFactory {
 
     @Bean(destroyMethod = "shutdown")
     public Server grpcServer(UserServiceGrpcImpl userServiceGrpcImpl,
-                             GrpcConfig grpcConfig) throws IOException {
+                             GrpcConfig grpcConfig,
+                             MetricsInterceptor metricsInterceptor,
+                             CorrelationIdInterceptor correlationIdInterceptor) throws IOException {
         LOG.info("Starting GRPC server on port {}", grpcConfig.port());
         var grpcServer = ServerBuilder.forPort(grpcConfig.port())
                 .addService(userServiceGrpcImpl)
-                .intercept(new CorrelationIdInterceptor())
+                .intercept(correlationIdInterceptor)
+                .intercept(metricsInterceptor)
                 .build();
 
         return grpcServer.start();
