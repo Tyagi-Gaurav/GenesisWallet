@@ -2,12 +2,16 @@ package com.gw.user.grpc;
 
 import com.gw.common.domain.ExternalUser;
 import com.gw.common.domain.User;
+import com.gw.common.metrics.EndpointMetrics;
 import com.gw.grpc.common.CorrelationIdInterceptor;
+import com.gw.grpc.common.MetricsInterceptor;
 import com.gw.test.common.grpc.GrpcExtension;
 import com.gw.user.service.UserService;
 import com.gw.user.testutils.ExternalUserBuilder;
 import io.grpc.ServerInterceptor;
 import io.grpc.StatusRuntimeException;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,15 +34,18 @@ class UserServiceGrpcImplTest {
     @RegisterExtension
     private final GrpcExtension grpcExtension = new GrpcExtension();
     private UserServiceGrpc.UserServiceBlockingStub userServiceBlockingStub;
-
     private UserService userService;
+    private final MeterRegistry meterRegistry = new SimpleMeterRegistry();
+    private final EndpointMetrics endpointMetrics = new EndpointMetrics(meterRegistry);
+    private final MetricsInterceptor metricsInterceptor = new MetricsInterceptor(endpointMetrics);
     private final ServerInterceptor correlationIdInterceptor = new CorrelationIdInterceptor();
 
     @BeforeEach
     void setUp() throws IOException {
         userService = Mockito.mock(UserService.class);
         UserServiceGrpcImpl bindableService = new UserServiceGrpcImpl(userService);
-        GrpcExtension.ServiceDetails serviceDetails = grpcExtension.createGrpcServerFor(bindableService, correlationIdInterceptor);
+        GrpcExtension.ServiceDetails serviceDetails = grpcExtension.createGrpcServerFor(bindableService,
+                correlationIdInterceptor, metricsInterceptor);
         userServiceBlockingStub = UserServiceGrpc.newBlockingStub(serviceDetails.managedChannel());
     }
 
@@ -97,5 +104,16 @@ class UserServiceGrpcImplTest {
         assertThat(userDetailsGrpcResponseDTO.getGender()).isEqualTo(toGrpcGender(user.gender()));
         assertThat(userDetailsGrpcResponseDTO.getHomeCountry()).isEqualTo(user.homeCountry());
         assertThat(userDetailsGrpcResponseDTO.getId()).isEqualTo(user.id().toString());
+    }
+
+    @Test
+    void createUser_shouldRecordMetrics()  {
+        when(userService.addUser(any(User.class))).thenReturn(Mono.empty());
+
+        User user = aUser().build();
+        UserCreateGrpcRequestDTO userCreateGrpcRequestDTO = userCreateGrpcRequestDTOBuilder(user);
+
+        userServiceBlockingStub.createUser(userCreateGrpcRequestDTO);
+        assertThat(meterRegistry.get("grpc_server_request_duration").meter()).isNotNull();
     }
 }

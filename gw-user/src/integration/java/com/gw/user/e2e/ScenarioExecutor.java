@@ -22,7 +22,6 @@ import java.util.function.Consumer;
 
 public class ScenarioExecutor {
     private WebTestClient.ResponseSpec responseSpec;
-    private LoginResponseDTO userLoginResponseDTO;
 
     private final Map<Class, Object> responses = new HashMap<>();
     private final WebTestClient webTestClient;
@@ -57,7 +56,7 @@ public class ScenarioExecutor {
 
     public ScenarioExecutor userLoginsWith(LoginRequestDTO loginRequestDTO) {
         this.responseSpec = new Login().apply(webTestClient, loginRequestDTO);
-        this.userLoginResponseDTO = this.responseSpec.returnResult(LoginResponseDTO.class)
+        LoginResponseDTO userLoginResponseDTO = this.responseSpec.returnResult(LoginResponseDTO.class)
                 .getResponseBody().blockFirst();
         responses.put(LoginResponseDTO.class, userLoginResponseDTO);
         return this;

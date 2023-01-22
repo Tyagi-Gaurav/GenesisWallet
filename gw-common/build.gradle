@@ -9,6 +9,10 @@ dependencies {
     implementation "io.jsonwebtoken:jjwt-impl:0.11.5"
     implementation "io.jsonwebtoken:jjwt-jackson:0.11.5"
 
+    api "io.github.resilience4j:resilience4j-all:2.0.2"
+    api "io.github.resilience4j:resilience4j-circuitbreaker:2.0.2"
+    api "io.github.resilience4j:resilience4j-micrometer:2.0.2"
+
     api "org.hibernate.validator:hibernate-validator:6.0.13.Final" //With latest version - javax.validation constraints do not work.
     api group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
     api group: 'jakarta.el', name: 'jakarta.el-api', version: '5.0.1'
@@ -39,6 +43,7 @@ sonarqube {
     properties {
         property "sonar.coverage.exclusions",
                 "**/com/gw/common/**/LoggingFilter**,**/com/gw/common/**/MetricsFilter**," +
-                        "**/com/gw/common/**/TokenManager**, **/com/gw/common/domain/**"
+                        "**/com/gw/common/**/TokenManager**,**/com/gw/common/domain/**," +
+                        "**/com/gw/common/config/CircuitBreakerConfig**,**/com/gw/common/config/ResilienceConfig**"
     }
 }

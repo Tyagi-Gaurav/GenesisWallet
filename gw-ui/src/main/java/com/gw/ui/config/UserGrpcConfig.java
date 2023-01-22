@@ -5,5 +5,6 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 
 @ConstructorBinding
 @ConfigurationProperties("user")
-public record UserGrpcConfig(String host, int port, long timeoutInMs) {
+public record UserGrpcConfig(String host, int port, long timeoutInMs,
+                             String circuitBreaker) {
 }

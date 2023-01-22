@@ -3,18 +3,18 @@ package com.gw.user.client;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.gw.common.metrics.EndpointMetrics;
 import com.gw.grpc.common.CorrelationIdInterceptor;
+import com.gw.grpc.common.MetricsInterceptor;
 import com.gw.test.common.grpc.GrpcExtension;
-import com.gw.user.grpc.ExternalUserCreateGrpcRequestDTO;
-import com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO;
-import com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO;
-import com.gw.user.grpc.UserCreateGrpcRequestDTO;
-import com.gw.user.grpc.UserCreateGrpcResponseDTO;
-import com.gw.user.grpc.UserDetailsGrpcResponseDTO;
-import com.gw.user.grpc.UserServiceGrpc;
+import com.gw.user.grpc.*;
+import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
+import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
 import io.grpc.ClientInterceptor;
 import io.grpc.ServerInterceptor;
 import io.grpc.stub.StreamObserver;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +25,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -44,14 +45,20 @@ class UserGrpcClientTest {
     private UserGrpcClient userGrpcClient;
     private final ServerInterceptor correlationIdInterceptor = new CorrelationIdInterceptor();
     private final ClientInterceptor clientCorrelationIdInterceptor = new CorrelationIdInterceptor();
+    private final MeterRegistry meterRegistry = new SimpleMeterRegistry();
+    private final EndpointMetrics endpointMetrics = new EndpointMetrics(meterRegistry);
+    private final MetricsInterceptor metricsInterceptor = new MetricsInterceptor(endpointMetrics);
 
     @BeforeEach
     void setUp() throws IOException {
         bindableService = mock(UserServiceGrpc.UserServiceImplBase.class);
-        GrpcExtension.ServiceDetails serviceDetails = grpcExtension.createGrpcServerFor(bindableService, correlationIdInterceptor);
+        GrpcExtension.ServiceDetails serviceDetails = grpcExtension.createGrpcServerFor(bindableService, correlationIdInterceptor,
+                 metricsInterceptor);
         UserGrpcClientConfig userGrpcClientConfig = new UserGrpcClientConfig(serviceDetails.serverName(),
-                0, 300);
-        userGrpcClient = new UserGrpcClient(serviceDetails.managedChannel(), userGrpcClientConfig, List.of(clientCorrelationIdInterceptor));
+                0, 300, "userCircuitBreaker");
+        CircuitBreakerRegistry circuitBreakerRegistry = CircuitBreakerRegistry.of(Map.of("userCircuitBreaker", CircuitBreakerConfig.ofDefaults()));
+        userGrpcClient = new UserGrpcClient(serviceDetails.managedChannel(), userGrpcClientConfig,
+                List.of(clientCorrelationIdInterceptor, metricsInterceptor), circuitBreakerRegistry, meterRegistry);
     }
 
     @Test
@@ -77,6 +84,23 @@ class UserGrpcClientTest {
         assertThat(userDetailsGrpcResponseDTO.getGender()).isEqualTo(expectedResult.getGender());
         assertThat(userDetailsGrpcResponseDTO.getHomeCountry()).isEqualTo(expectedResult.getHomeCountry());
         assertThat(userDetailsGrpcResponseDTO.getId()).isEqualTo(expectedResult.getId());
+    }
+
+    @Test
+    void fetchUsersByIdSync_shouldGenerateClientMetric() {
+        FetchUserDetailsByIdGrpcRequestDTO fetchUserDetailsByIdGrpcRequestDTO = FetchUserDetailsByIdGrpcRequestDTO.newBuilder()
+                .setId(UUID.randomUUID().toString())
+                .build();
+        UserDetailsGrpcResponseDTO expectedResult = UserDetailsGrpcResponseDTO.getDefaultInstance();
+        doAnswer(invocation -> {
+            StreamObserver<UserDetailsGrpcResponseDTO> streamObserver = invocation.getArgument(1);
+            streamObserver.onNext(expectedResult);
+            streamObserver.onCompleted();
+            return null;
+        }).when(bindableService).fetchUsersById(eq(fetchUserDetailsByIdGrpcRequestDTO), any(StreamObserver.class));
+
+        userGrpcClient.fetchUsersByIdSync(fetchUserDetailsByIdGrpcRequestDTO);
+        assertThat(meterRegistry.get("grpc_client_request_duration").tag("fullMethod", "com.gw.user.grpc.UserService/fetchUsersById").meter()).isNotNull();
     }
 
     @Test

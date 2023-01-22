@@ -1,16 +1,20 @@
 package com.gw.user.client;
 
 import com.google.common.util.concurrent.ListenableFuture;
+import com.gw.grpc.common.ResilienceInterceptor;
 import com.gw.user.grpc.*;
+import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
 import io.grpc.ClientInterceptor;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 @Component
 public class UserGrpcClient {
@@ -19,21 +23,32 @@ public class UserGrpcClient {
     private final UserServiceGrpc.UserServiceFutureStub userServiceFutureStub;
     private final UserGrpcClientConfig userGrpcClientConfig;
 
-    public UserGrpcClient(UserGrpcClientConfig userGrpcClientConfig) {
+    public UserGrpcClient(UserGrpcClientConfig userGrpcClientConfig,
+                          List<ClientInterceptor> clientInterceptorList,
+                          CircuitBreakerRegistry circuitBreakerRegistry,
+                          MeterRegistry meterRegistry) {
         this(ManagedChannelBuilder.forAddress(userGrpcClientConfig.serviceName(), userGrpcClientConfig.port())
-                .usePlaintext()
-                .build(),
+                        .usePlaintext()
+                        .build(),
                 userGrpcClientConfig,
-                List.of());
+                clientInterceptorList,
+                circuitBreakerRegistry,
+                meterRegistry);
     }
 
-    public  UserGrpcClient(ManagedChannel managedChannel, UserGrpcClientConfig userGrpcClientConfig,
-                   List<ClientInterceptor> clientInterceptorList) {
+    public UserGrpcClient(ManagedChannel managedChannel, UserGrpcClientConfig userGrpcClientConfig,
+                          List<ClientInterceptor> clientInterceptorList,
+                          CircuitBreakerRegistry circuitBreakerRegistry,
+                          MeterRegistry meterRegistry) {
         this.userGrpcClientConfig = userGrpcClientConfig;
-        LOG.debug("GRPC Client Config: {}", userGrpcClientConfig );
+        LOG.debug("GRPC Client Config: {}", userGrpcClientConfig);
 
+        var resilienceInterceptor = new ResilienceInterceptor(userGrpcClientConfig.circuitBreaker(),
+                circuitBreakerRegistry, meterRegistry);
+        clientInterceptorList = Stream.concat(clientInterceptorList.stream(), Stream.of(resilienceInterceptor)).toList();
         this.userServiceBlockingStub = UserServiceGrpc.newBlockingStub(managedChannel)
                 .withInterceptors(clientInterceptorList.toArray(new ClientInterceptor[0]));
+
         this.userServiceFutureStub = UserServiceGrpc.newFutureStub(managedChannel)
                 .withInterceptors(clientInterceptorList.toArray(new ClientInterceptor[0]));
     }

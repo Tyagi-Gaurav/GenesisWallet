@@ -7,6 +7,8 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @ComponentScan({
         "com.gw.common",
+        "com.gw.common.config",
+        "com.gw.grpc.common",
         "com.gw.ui.config",
         "com.gw.ui.service",
         "com.gw.ui.resource"})
