@@ -43,6 +43,7 @@ sonarqube {
     properties {
         property "sonar.coverage.exclusions",
                 "**/com/gw/common/**/LoggingFilter**,**/com/gw/common/**/MetricsFilter**," +
-                        "**/com/gw/common/**/TokenManager**, **/com/gw/common/domain/**"
+                        "**/com/gw/common/**/TokenManager**,**/com/gw/common/domain/**," +
+                        "**/com/gw/common/config/CircuitBreakerConfig**,**/com/gw/common/config/ResilienceConfig**"
     }
 }
