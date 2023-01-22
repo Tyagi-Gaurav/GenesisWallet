@@ -34,3 +34,12 @@ user:
   host: ${USER_HOST:local.user-app}
   port: ${USER_PORT:19090}
   timeoutInMs: 5000
+  circuitBreaker: user
+  circuitBreakerEnabled: true
+
+resilience:
+  circuitBreaker:
+    user:
+      enabled: true
+      failureRateThreshold: 75
+      slowCallDurationThresholdInMs: 50 #Should be less than timeout

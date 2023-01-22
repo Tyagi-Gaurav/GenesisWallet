@@ -7,13 +7,9 @@ import com.gw.common.metrics.EndpointMetrics;
 import com.gw.grpc.common.CorrelationIdInterceptor;
 import com.gw.grpc.common.MetricsInterceptor;
 import com.gw.test.common.grpc.GrpcExtension;
-import com.gw.user.grpc.ExternalUserCreateGrpcRequestDTO;
-import com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO;
-import com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO;
-import com.gw.user.grpc.UserCreateGrpcRequestDTO;
-import com.gw.user.grpc.UserCreateGrpcResponseDTO;
-import com.gw.user.grpc.UserDetailsGrpcResponseDTO;
-import com.gw.user.grpc.UserServiceGrpc;
+import com.gw.user.grpc.*;
+import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
+import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
 import io.grpc.ClientInterceptor;
 import io.grpc.ServerInterceptor;
 import io.grpc.stub.StreamObserver;
@@ -29,6 +25,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -58,9 +55,10 @@ class UserGrpcClientTest {
         GrpcExtension.ServiceDetails serviceDetails = grpcExtension.createGrpcServerFor(bindableService, correlationIdInterceptor,
                  metricsInterceptor);
         UserGrpcClientConfig userGrpcClientConfig = new UserGrpcClientConfig(serviceDetails.serverName(),
-                0, 300);
+                0, 300, "userCircuitBreaker");
+        CircuitBreakerRegistry circuitBreakerRegistry = CircuitBreakerRegistry.of(Map.of("userCircuitBreaker", CircuitBreakerConfig.ofDefaults()));
         userGrpcClient = new UserGrpcClient(serviceDetails.managedChannel(), userGrpcClientConfig,
-                List.of(clientCorrelationIdInterceptor, metricsInterceptor));
+                List.of(clientCorrelationIdInterceptor, metricsInterceptor), circuitBreakerRegistry, meterRegistry);
     }
 
     @Test

@@ -5,6 +5,8 @@ import com.gw.grpc.common.CorrelationIdInterceptor;
 import com.gw.grpc.common.MetricsInterceptor;
 import com.gw.user.client.UserGrpcClient;
 import com.gw.user.client.UserGrpcClientConfig;
+import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,7 +32,7 @@ import static org.springframework.web.reactive.function.server.ServerResponse.ok
 
 @Configuration
 @EnableAutoConfiguration
-@ConfigurationPropertiesScan(value = {"com.gw.ui.config"})
+@ConfigurationPropertiesScan(value = {"com.gw.ui.config", "com.gw.common.config"})
 public class AppConfig implements WebFluxConfigurer {
     @Autowired
     private LoggingFilter loggingFilter;
@@ -64,9 +66,13 @@ public class AppConfig implements WebFluxConfigurer {
     @Bean
     public UserGrpcClient userGrpcClient(UserGrpcConfig userGrpcConfig,
                                          CorrelationIdInterceptor correlationIdInterceptor,
-                                         MetricsInterceptor metricsInterceptor) {
+                                         MetricsInterceptor metricsInterceptor,
+                                         CircuitBreakerRegistry circuitBreakerRegistry,
+                                         MeterRegistry meterRegistry) {
         return new UserGrpcClient(
-                new UserGrpcClientConfig(userGrpcConfig.host(), userGrpcConfig.port(), userGrpcConfig.timeoutInMs()),
-                List.of(correlationIdInterceptor, metricsInterceptor));
+                new UserGrpcClientConfig(userGrpcConfig.host(), userGrpcConfig.port(),
+                        userGrpcConfig.timeoutInMs(), userGrpcConfig.circuitBreaker()),
+                List.of(correlationIdInterceptor, metricsInterceptor),
+                circuitBreakerRegistry, meterRegistry);
     }
 }
