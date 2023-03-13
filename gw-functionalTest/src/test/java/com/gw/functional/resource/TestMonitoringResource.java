@@ -22,6 +22,13 @@ public class TestMonitoringResource extends AbstractResource {
         responseHolder.setResponse(this.get(fullUrl, new HttpEntity(HttpHeaders.EMPTY), String.class));
     }
 
+    public void accessUIStatus() {
+        String fullUrl = getSecuredUrl(apiGatewayConfig.host().trim(),
+                apiGatewayConfig.uiContextPath(),
+                "/private/healthcheck/status", apiGatewayConfig.securedPort());
+        responseHolder.setResponse(this.get(fullUrl, new HttpEntity(HttpHeaders.EMPTY), String.class));
+    }
+
     public void accessMetrics() {
         String fullUrl = getSecuredUrl(apiGatewayConfig.host().trim(),
                 apiGatewayConfig.userContextPath(),

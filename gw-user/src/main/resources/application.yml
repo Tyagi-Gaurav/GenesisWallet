@@ -13,7 +13,6 @@ grpc:
 
 accessible:
   endpoints:
-    "[GET-/api/status]": ${GET_STATUS:true}
     "[POST-/api/user/create]": ${CREATE_USER:true}
     "[POST-/api/user/login]": ${LOGIN_USER:true}
     "[GET-/actuator/info]": ${ACTUATOR_INFO:true}

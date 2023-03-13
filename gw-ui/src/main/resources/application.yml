@@ -26,9 +26,10 @@ management:
       show-details: always
   endpoints:
     web:
-      exposure.include: health, mappings, metrics
+      exposure.include: health, mappings, metrics, prometheus, configprops
       path-mapping:
         health: healthcheck
+        configprops: config
 
 user:
   host: ${USER_HOST:local.user-app}

@@ -48,6 +48,9 @@ public class MonitoringSteps implements En {
 
             assertThat(user_registration_count_new - user_registration_count_old).isEqualTo(1.0);
         });
+        When("^the UI service is requested for status$", () -> {
+            testMonitoringResource.accessUIStatus();
+        });
     }
 
     private Double getValue(String metricsStream, String metricName, String... tags) {

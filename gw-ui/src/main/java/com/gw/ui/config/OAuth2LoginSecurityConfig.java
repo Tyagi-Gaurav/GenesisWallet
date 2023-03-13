@@ -19,7 +19,7 @@ public class OAuth2LoginSecurityConfig {
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         return http
                 .authorizeExchange(authorize -> authorize
-                        .pathMatchers("/connect/google","/","/index.html", "/error", "/webjars/**")
+                        .pathMatchers("/connect/google","/","/index.html", "/error", "/webjars/**", "/actuator/**")
                         .permitAll()
                         .anyExchange()
                         .authenticated())

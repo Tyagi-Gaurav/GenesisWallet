@@ -9,4 +9,5 @@ public record ApiGatewayConfig(String host,
                                int securedPort,
                                int nonSecuredPort,
                                String contentUploadContextPath,
-                               String userContextPath) {}
+                               String userContextPath,
+                               String uiContextPath) {}

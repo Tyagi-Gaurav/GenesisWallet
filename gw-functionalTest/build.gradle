@@ -61,6 +61,11 @@ dependencies {
     testImplementation "com.jayway.jsonpath:json-path:${jsonPathVersion}"
 }
 
+task localFunctional(type: Test) {
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+}
+
 task remoteFunctional(type: Test) {
     testClassesDirs = sourceSets.test.output.classesDirs
     classpath = sourceSets.test.runtimeClasspath
