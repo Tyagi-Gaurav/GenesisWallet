@@ -7,4 +7,4 @@ WAIT_TIME=30
 echo "Waiting for ${WAIT_TIME} seconds for container to come up"
 sleep ${WAIT_TIME}
 
-./gradlew remoteFunctional
+./gradlew localFunctional

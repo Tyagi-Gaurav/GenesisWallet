@@ -67,6 +67,10 @@ task localFunctional(type: Test) {
 }
 
 task remoteFunctional(type: Test) {
+    environment "API_GATEWAY_HOST", "localhost"
+    environment "API_GATEWAY_NON_SECURED_PORT", "80"
+    environment "ENABLE_SECURITY", "false"
+    environment "USER_CONTEXT_PATH", "/user"
     testClassesDirs = sourceSets.test.output.classesDirs
     classpath = sourceSets.test.runtimeClasspath
 }

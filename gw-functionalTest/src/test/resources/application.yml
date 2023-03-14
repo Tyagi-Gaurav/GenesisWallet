@@ -3,10 +3,11 @@ spring:
 
 api-gateway:
   host: ${API_GATEWAY_HOST:localhost}
-  securedPort: ${API_GATEWAY_SECURED_PORT:443}
+  securedPort: ${API_GATEWAY_SECURED_PORT:80}
   nonSecuredPort: ${API_GATEWAY_NON_SECURED_PORT:80}
-  userContextPath: "/api"
-  uiContextPath: "/gw-ui"
+  enableSecurity: ${ENABLE_SECURITY:false}
+  userContextPath: ${USER_CONTEXT_PATH:/api}
+  uiContextPath: ${UI_CONTEXT_PATH:/gw-ui}
 
 admin-credentials:
   userName: admin

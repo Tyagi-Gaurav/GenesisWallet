@@ -8,6 +8,11 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 public record ApiGatewayConfig(String host,
                                int securedPort,
                                int nonSecuredPort,
+                               boolean enableSecurity,
                                String contentUploadContextPath,
                                String userContextPath,
-                               String uiContextPath) {}
+                               String uiContextPath) {
+    public int port() {
+        return enableSecurity ? securedPort : nonSecuredPort;
+    }
+}

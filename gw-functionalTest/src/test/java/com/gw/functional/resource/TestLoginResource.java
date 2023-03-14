@@ -18,9 +18,9 @@ public class TestLoginResource extends AbstractResource {
     private ResponseHolder responseHolder;
 
     public void doLogin(TestLoginRequestDTO testLoginRequestDTO) {
-        String fullUrl = getSecuredUrl(apiGatewayConfig.host().trim(),
+        String fullUrl = getUrl(apiGatewayConfig.host().trim(),
                 apiGatewayConfig.userContextPath(),
-                "/user/login", apiGatewayConfig.securedPort());
+                "/user/login", apiGatewayConfig.port());
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.CONTENT_TYPE, "application/vnd.login.v1+json");
         HttpEntity<TestLoginRequestDTO> request = new HttpEntity<>(testLoginRequestDTO, headers);
