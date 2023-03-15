@@ -1,58 +1,5 @@
 data aws_caller_identity "current" {}
 
-data "aws_ecr_repository" "test_genesis_user_ecr" {
-  name = "test_genesis/gw-user"
-}
-
-data "aws_ecr_repository" "test_genesis_ui_ecr" {
-  name = "test_genesis/gw-ui"
-}
-
-data "aws_ecr_repository" "test_genesis_api_gateway_ecr" {
-  name = "test_genesis/gw-api-gateway"
-}
-
-resource "aws_ecr_repository_policy" "test_genesis_user_ecr_policy" {
-  repository = data.aws_ecr_repository.test_genesis_user_ecr.name
-
-  policy = <<EOF
-  {
-      "Version": "2012-10-17",
-      "Statement": [
-          {
-              "Sid": "AllowPushPullFromRepository",
-              "Effect": "Allow",
-              "Principal": {
-                  "AWS" : [
-                      "arn:aws:iam::${var.AWS_ACCOUNT_ID}:user/terraform-gt-user",
-                      "arn:aws:iam::${var.AWS_ACCOUNT_ID}:root",
-                      "arn:aws:iam::${var.AWS_ACCOUNT_ID}:role/dev-ecs-cluster-ec2-role",
-                      "arn:aws:iam::${var.AWS_ACCOUNT_ID}:role/dev-ecs-cluster-ecs-role"
-                  ]
-              },
-              "Action": [
-                  "ecr:GetDownloadUrlForLayer",
-                  "ecr:BatchGetImage",
-                  "ecr:BatchCheckLayerAvailability",
-                  "ecr:PutImage",
-                  "ecr:InitiateLayerUpload",
-                  "ecr:UploadLayerPart",
-                  "ecr:CompleteLayerUpload",
-                  "ecr:DescribeRepositories",
-                  "ecr:GetRepositoryPolicy",
-                  "ecr:ListImages",
-                  "ecr:DeleteRepository",
-                  "ecr:BatchDeleteImage",
-                  "ecr:SetRepositoryPolicy",
-                  "ecr:DeleteRepositoryPolicy",
-                  "ecr:GetAuthorizationToken"
-              ]
-          }
-      ]
-  }
-EOF
-}
-
 resource "tls_private_key" "dev_private_key" {
   algorithm = "RSA"
   rsa_bits  = 4096
@@ -140,29 +87,34 @@ module "dev-ecs-cluster" {
   ]
   ACCESSIBLE_PORTS = {
     #Required for ALB to be able to access the ECS cluster ports
-    port1 = {
+    port1 = {#User-App
       FROM_PORT      = 9090
       TO_PORT        = 9090
       SECURITY_GROUP = module.alb.alb_security_group_id
     },
-    port2 = {
+    port2 = {#User-Actuator
       FROM_PORT      = 9091
       TO_PORT        = 9091
       SECURITY_GROUP = module.alb.alb_security_group_id
     },
-    port3 = {
+    port3 = {#UI->User GRPC
       FROM_PORT      = 19090
       TO_PORT        = 19090
       SECURITY_GROUP = module.alb.alb_security_group_id
     },
-    port4 = {
+    port4 = {#UI_App
       FROM_PORT      = 7070
       TO_PORT        = 7070
       SECURITY_GROUP = module.alb.alb_security_group_id
     },
-    port5 = {
-      FROM_PORT      = 7080
-      TO_PORT        = 7080
+    port5 = {#UI_Actuator
+      FROM_PORT      = 8081
+      TO_PORT        = 8081
+      SECURITY_GROUP = module.alb.alb_security_group_id
+    },
+    port6 = {#Api-Gateway
+      FROM_PORT      = 80
+      TO_PORT        = 80
       SECURITY_GROUP = module.alb.alb_security_group_id
     }
   }
@@ -193,8 +145,8 @@ module "api-gateway-ecs-service" {
   APP_ENV             = tomap({
     USER_HOST          = "localhost"
     UI_HOST            = "localhost"
-    UI_ACTUATOR_PORT   = 8081
-    UI_APP_PORT        = 8080
+    UI_APP_PORT        = 7070
+    UI_ACTUATOR_PORT   = 7071
     USER_APP_PORT      = 9090
     USER_ACTUATOR_PORT = 9091
   })
@@ -249,11 +201,11 @@ module "ui-ecs-service" {
   PORT_MAPPINGS    = {
     #Goes directly into task definition
     port1 = {
-      HOST_PORT        = 7070
+      HOST_PORT        = 8080
       APPLICATION_PORT = 8080
     },
     port2 = {
-      HOST_PORT        = 7080
+      HOST_PORT        = 8081
       APPLICATION_PORT = 8081
     }
   }
@@ -271,7 +223,7 @@ module "ui-ecs-service" {
     USER_PORT = 19090
   })
   HEALTH_CHECK_PATH = "/actuator/healthcheck/status"
-  HEALTH_CHECK_PORT = 9091
+  HEALTH_CHECK_PORT = 8081
 }
 
 module "alb" {
@@ -281,7 +233,7 @@ module "alb" {
   ALB_NAME    = "${var.ENV}-alb"
   TARGET_APPS = {
     group1 = {
-      PORT             = 7070
+      PORT             = 8080
       TARGET_GROUP_ARN = module.ui-ecs-service.target_group_arn
     },
     group2 = {
