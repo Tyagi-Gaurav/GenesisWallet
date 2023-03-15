@@ -21,11 +21,16 @@ services:
     depends_on:
       - gw-user-app
       - gw-security
+      - gw-ui
     build:
       context: gw-api-gateway
     environment:
-      - "VAULT_ADDRESS=local.vault:8200"
-      - "VAULT_TOKEN=root"
+      - USER_HOST=local.user-app
+      - UI_HOST=local.gw-ui
+      - UI_ACTUATOR_PORT=8081
+      - UI_APP_PORT=8080
+      - USER_APP_PORT=9090
+      - USER_ACTUATOR_PORT=9091
     command: [nginx-debug, '-g', 'daemon off;']
     ports:
       - "80:80"
@@ -37,11 +42,9 @@ services:
     container_name: local.gw-ui
     build:
       context: gw-ui
-    depends_on:
-      - gw-api-gateway
     ports:
-      - "7070:8080"
-      - "7080:8090"
+      - "8080:8080"
+      - "8081:8081"
     networks:
       - overlay
 
