@@ -41,7 +41,7 @@ jobs:
       run: docker ps
 
       #   Enable below only for DEBUG
-    - name: Show container logs
+    - name: Show single container logs
       run: docker logs local.api-gateway
 
     - name: Sleep
