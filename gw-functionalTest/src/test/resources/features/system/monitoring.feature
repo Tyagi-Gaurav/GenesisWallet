@@ -5,6 +5,11 @@ Feature: Observability & Monitoring Scenarios - healthchecks, metrics, status.
     And the response should be received with HTTP status code 200
     Then the response should be a success status
 
+  Scenario: UI service should expose status endpoint
+    When the UI service is requested for status
+    And the response should be received with HTTP status code 200
+    Then the response should be a success status
+
   Scenario: User service should expose metrics endpoint
     When the user service is requested for metrics
     And the response should be received with HTTP status code 200

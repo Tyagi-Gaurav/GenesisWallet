@@ -41,8 +41,8 @@ jobs:
       run: docker ps
 
       #   Enable below only for DEBUG
-    - name: Show container logs
-      run: docker logs local.gw-ui
+    - name: Show single container logs
+      run: docker logs local.api-gateway
 
     - name: Sleep
       uses: jakejarvis/wait-action@master
@@ -50,4 +50,4 @@ jobs:
         time: '10s'
 
     - name: Run test suite
-      run: ./gradlew remoteFunctional --info
+      run: ./gradlew localFunctional --info

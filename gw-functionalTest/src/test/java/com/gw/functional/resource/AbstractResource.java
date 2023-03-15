@@ -24,8 +24,8 @@ public class AbstractResource {
     @Autowired
     protected RestTemplate restTemplate;
 
-    protected String getSecuredUrl(String hostName, String contextPath, String path, int port) {
-        return getFullUrlWithScheme("https", hostName, contextPath, path, port);
+    protected String getUrl(String hostName, String contextPath, String path, int port) {
+        return getFullUrlWithScheme("http", hostName, contextPath, path, port);
     }
 
     protected String getFullUrlWithScheme(String scheme, String hostName, String contextPath, String path, int port) {
