@@ -52,40 +52,6 @@ module "single_db_instance" {
   ALLOWED_SECURITY_GROUP_IDS = [module.dev-user-ecs-cluster.cluster_sg_id]
 }
 
-#module "user_ec2" {
-#  source                  = "../modules/ec2-instance"
-#  ALLOWED_SECURITY_GROUPS = {
-#    port1 = {
-#      #EC2-Cluster->UserApp (HTTP)
-#      FROM_PORT      = 9090
-#      TO_PORT        = 9091
-#      SECURITY_GROUP = module.dev-ecs-cluster.cluster_sg_id
-#    },
-#    port2 = {
-#      #EC2-Cluster->UserApp (GRPC)
-#      FROM_PORT      = 19090
-#      TO_PORT        = 19090
-#      SECURITY_GROUP = module.dev-ecs-cluster.cluster_sg_id
-#    }
-#  }
-#  ECR_REPO_ARNS = [data.aws_ecr_repository.test_genesis_user_ecr.arn]
-#  APP_NAME            = "user"
-#  ENV                 = var.ENV
-#  SECURITY_GROUP_NAME = "user-sg"
-#  SUBNET_ID           = element(module.main-vpc.public_subnets, 0)
-#  VPC_ID              = module.main-vpc.vpc_id
-#  ENABLE_SSH          = true
-#  ACCESS_KEY_NAME     = module.allow_cluster_access.ssh_key_pair_name
-#  APP_ENV             = tomap({
-#    VAULT_HOST   = module.vault_instance.vault_ec2_public_ip
-#    ECR_REPO_URL = data.aws_ecr_repository.test_genesis_user_ecr.arn
-#  })
-#  APP_IMAGE_NAME = data.aws_ecr_repository.test_genesis_user_ecr.repository_url
-#  APP_IMAGE_TAG  = "0.1.0"
-#  AWS_ACCOUNT_ID = var.AWS_ACCOUNT_ID
-#  AWS_REGION     = var.AWS_REGION
-#}
-
 output "vault_host" {
   value = module.vault_instance.vault_ec2_private_ip
 }

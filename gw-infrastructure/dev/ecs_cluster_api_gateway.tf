@@ -13,7 +13,7 @@ module "api_gateway_alb" {
       TARGET_GROUP_ARN = module.api-gateway-ecs-service.target_group_arn
     }
   }
-  DOMAIN            = "${var.ENV}.user.genesis"
+  DOMAIN            = "${var.ENV}.api-gateway.genesis"
   INTERNAL          = false
   ECS_SG            = module.dev-api-gateway-ecs-cluster.cluster_sg_id
   VPC_SUBNETS       = join(",", module.main-vpc.public_subnets)

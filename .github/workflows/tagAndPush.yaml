@@ -2,13 +2,11 @@ name: Tag release and push docker images to ECR
 
 on:
   workflow_call:
-    inputs:
+    secrets:
       aws-role:
         required: true
-        type: string
       ecr-test-repo:
         required: true
-        type: string
 
 jobs:
   release:
@@ -28,8 +26,8 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-#      - name: Create a release
-#        run: ./gradlew release
+      - name: Create a release
+        run: ./gradlew release
 
       - name: Get latest tag
         id: fetch_tag
