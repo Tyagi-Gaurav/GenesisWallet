@@ -49,216 +49,49 @@ module "single_db_instance" {
   SUBNET_IDS                 = module.main-vpc.private_subnets
   USERNAME                   = "devuser"
   VPC_ID                     = module.main-vpc.vpc_id
-  ALLOWED_SECURITY_GROUP_IDS = [module.dev-ecs-cluster.cluster_sg_id]
+  ALLOWED_SECURITY_GROUP_IDS = [module.dev-user-ecs-cluster.cluster_sg_id]
 }
 
-module "vault_instance" {
-  source                  = "../modules/vault"
-  ENV                     = var.ENV
-  SUBNET_ID               = element(module.main-vpc.public_subnets, 0)
-  VPC_ID                  = module.main-vpc.vpc_id
-  DB_HOST                 = module.single_db_instance.host
-  DB_PORT                 = module.single_db_instance.port
-  DB_USER                 = module.single_db_instance.username
-  DB_PASSWORD             = module.single_db_instance.password
-  ALLOWED_SECURITY_GROUPS = {
-    group1 = module.allow_cluster_access.ssh_security_group_id,
-    group2 = module.dev-ecs-cluster.cluster_sg_id
-  }
-  ACCESS_KEY_NAME = module.allow_cluster_access.ssh_key_pair_name
-}
-
-module "dev-ecs-cluster" {
-  ENV                = var.ENV
-  source             = "../modules/ecs-cluster"
-  VPC_ID             = module.main-vpc.vpc_id
-  CLUSTER_NAME       = "${var.ENV}-ecs-cluster"
-  INSTANCE_TYPE      = "t2.small"
-  VPC_SUBNETS        = join(",", module.main-vpc.public_subnets) #For debug. Change to private subnet later.
-  ENABLE_SSH         = true #Disable for prod
-  SSH_SECURITY_GROUP = module.allow_cluster_access.ssh_security_group_id
-  LOG_GROUP          = "${var.ENV}-log-group"
-  AWS_ACCOUNT_ID     = data.aws_caller_identity.current.account_id
-  AWS_REGION         = var.AWS_REGION
-  ACCESS_KEY_NAME    = module.allow_cluster_access.ssh_key_pair_name
-  ECR_REPO_ARNS      = [
-    data.aws_ecr_repository.test_genesis_user_ecr.arn,
-    data.aws_ecr_repository.test_genesis_ui_ecr.arn
-  ]
-  ACCESSIBLE_PORTS = {
-    #Required for ALB to be able to access the ECS cluster ports
-    port1 = {#User-App
-      FROM_PORT      = 9090
-      TO_PORT        = 9090
-      SECURITY_GROUP = module.alb.alb_security_group_id
-    },
-    port2 = {#User-Actuator
-      FROM_PORT      = 9091
-      TO_PORT        = 9091
-      SECURITY_GROUP = module.alb.alb_security_group_id
-    },
-    port3 = {#UI->User GRPC
-      FROM_PORT      = 19090
-      TO_PORT        = 19090
-      SECURITY_GROUP = module.alb.alb_security_group_id
-    },
-    port4 = {#UI_App
-      FROM_PORT      = 7070
-      TO_PORT        = 7070
-      SECURITY_GROUP = module.alb.alb_security_group_id
-    },
-    port5 = {#UI_Actuator
-      FROM_PORT      = 8081
-      TO_PORT        = 8081
-      SECURITY_GROUP = module.alb.alb_security_group_id
-    },
-    port6 = {#Api-Gateway
-      FROM_PORT      = 80
-      TO_PORT        = 80
-      SECURITY_GROUP = module.alb.alb_security_group_id
-    }
-  }
-}
-
-module "api-gateway-ecs-service" {
-  source           = "../modules/ecs-service"
-  ENV              = var.ENV
-  VPC_ID           = module.main-vpc.vpc_id
-  APPLICATION_NAME = "gw-api-gateway"
-  APPLICATION_PORT = 80
-  PORT_MAPPINGS    = {
-    #Goes directly into task definition
-    port1 = {
-      HOST_PORT        = 80
-      APPLICATION_PORT = 80
-    }
-  }
-  APPLICATION_VERSION = "0.1.0"
-  CLUSTER_ARN         = module.dev-ecs-cluster.cluster_arn
-  SERVICE_ROLE_ARN    = module.dev-ecs-cluster.service_role_arn
-  AWS_REGION          = var.AWS_REGION
-  CPU_RESERVATION     = "256"
-  MEMORY_RESERVATION  = "128"
-  LOG_GROUP           = "${var.ENV}-log-group"
-  DESIRED_COUNT       = 1
-  ECR_REPO_URL        = data.aws_ecr_repository.test_genesis_api_gateway_ecr.repository_url
-  APP_ENV             = tomap({
-    USER_HOST          = "localhost"
-    UI_HOST            = "localhost"
-    UI_APP_PORT        = 7070
-    UI_ACTUATOR_PORT   = 7071
-    USER_APP_PORT      = 9090
-    USER_ACTUATOR_PORT = 9091
-  })
-  HEALTH_CHECK_PATH = "/index.html"
-  HEALTH_CHECK_PORT = 80
-}
-
-module "user-ecs-service" {
-  source           = "../modules/ecs-service"
-  ENV              = var.ENV
-  VPC_ID           = module.main-vpc.vpc_id
-  APPLICATION_NAME = "gw-user"
-  APPLICATION_PORT = 9090
-  PORT_MAPPINGS    = {
-    #Goes directly into task definition
-    port1 = {
-      HOST_PORT        = 9090
-      APPLICATION_PORT = 9090
-    },
-    port2 = {
-      HOST_PORT        = 9091
-      APPLICATION_PORT = 9091
-    },
-    port3 = {
-      HOST_PORT        = 19090
-      APPLICATION_PORT = 19090
-    },
-  }
-  APPLICATION_VERSION = "0.1.0"
-  CLUSTER_ARN         = module.dev-ecs-cluster.cluster_arn
-  SERVICE_ROLE_ARN    = module.dev-ecs-cluster.service_role_arn
-  AWS_REGION          = var.AWS_REGION
-  CPU_RESERVATION     = "256"
-  MEMORY_RESERVATION  = "128"
-  LOG_GROUP           = "${var.ENV}-log-group"
-  DESIRED_COUNT       = 1
-  ECR_REPO_URL        = data.aws_ecr_repository.test_genesis_user_ecr.repository_url
-  APP_ENV             = tomap({
-    VAULT_HOST = module.vault_instance.vault_ec2_private_ip
-    DB_NAME    = module.single_db_instance.dbname
-  })
-  HEALTH_CHECK_PATH = "/actuator/healthcheck/status"
-  HEALTH_CHECK_PORT = 9091
-}
-
-module "ui-ecs-service" {
-  source           = "../modules/ecs-service"
-  ENV              = var.ENV
-  VPC_ID           = module.main-vpc.vpc_id
-  APPLICATION_NAME = "gw-ui"
-  APPLICATION_PORT = 8080
-  PORT_MAPPINGS    = {
-    #Goes directly into task definition
-    port1 = {
-      HOST_PORT        = 8080
-      APPLICATION_PORT = 8080
-    },
-    port2 = {
-      HOST_PORT        = 8081
-      APPLICATION_PORT = 8081
-    }
-  }
-  APPLICATION_VERSION = "0.1.0"
-  CLUSTER_ARN         = module.dev-ecs-cluster.cluster_arn
-  SERVICE_ROLE_ARN    = module.dev-ecs-cluster.service_role_arn
-  AWS_REGION          = var.AWS_REGION
-  CPU_RESERVATION     = "256"
-  MEMORY_RESERVATION  = "128"
-  LOG_GROUP           = "${var.ENV}-log-group"
-  DESIRED_COUNT       = 1
-  ECR_REPO_URL        = data.aws_ecr_repository.test_genesis_ui_ecr.repository_url
-  APP_ENV             = tomap({
-    USER_HOST = "localhost" #For dev, they would all be on same node
-    USER_PORT = 19090
-  })
-  HEALTH_CHECK_PATH = "/actuator/healthcheck/status"
-  HEALTH_CHECK_PORT = 8081
-}
-
-module "alb" {
-  ENV         = var.ENV
-  source      = "../modules/alb"
-  VPC_ID      = module.main-vpc.vpc_id
-  ALB_NAME    = "${var.ENV}-alb"
-  TARGET_APPS = {
-    group1 = {
-      PORT             = 8080
-      TARGET_GROUP_ARN = module.ui-ecs-service.target_group_arn
-    },
-    group2 = {
-      PORT             = 9090
-      TARGET_GROUP_ARN = module.user-ecs-service.target_group_arn
-    },
-    group3 = {
-      PORT             = 80
-      TARGET_GROUP_ARN = module.api-gateway-ecs-service.target_group_arn
-    }
-  }
-  DOMAIN            = "${var.ENV}.user.genesis"
-  INTERNAL          = false
-  ECS_SG            = module.dev-ecs-cluster.cluster_sg_id
-  VPC_SUBNETS       = join(",", module.main-vpc.public_subnets)
-  CERTIFICATE_ARN   = aws_acm_certificate.alb_cert.arn
-  DELETE_PROTECTION = false #So that we can delete the alb
-}
+#module "user_ec2" {
+#  source                  = "../modules/ec2-instance"
+#  ALLOWED_SECURITY_GROUPS = {
+#    port1 = {
+#      #EC2-Cluster->UserApp (HTTP)
+#      FROM_PORT      = 9090
+#      TO_PORT        = 9091
+#      SECURITY_GROUP = module.dev-ecs-cluster.cluster_sg_id
+#    },
+#    port2 = {
+#      #EC2-Cluster->UserApp (GRPC)
+#      FROM_PORT      = 19090
+#      TO_PORT        = 19090
+#      SECURITY_GROUP = module.dev-ecs-cluster.cluster_sg_id
+#    }
+#  }
+#  ECR_REPO_ARNS = [data.aws_ecr_repository.test_genesis_user_ecr.arn]
+#  APP_NAME            = "user"
+#  ENV                 = var.ENV
+#  SECURITY_GROUP_NAME = "user-sg"
+#  SUBNET_ID           = element(module.main-vpc.public_subnets, 0)
+#  VPC_ID              = module.main-vpc.vpc_id
+#  ENABLE_SSH          = true
+#  ACCESS_KEY_NAME     = module.allow_cluster_access.ssh_key_pair_name
+#  APP_ENV             = tomap({
+#    VAULT_HOST   = module.vault_instance.vault_ec2_public_ip
+#    ECR_REPO_URL = data.aws_ecr_repository.test_genesis_user_ecr.arn
+#  })
+#  APP_IMAGE_NAME = data.aws_ecr_repository.test_genesis_user_ecr.repository_url
+#  APP_IMAGE_TAG  = "0.1.0"
+#  AWS_ACCOUNT_ID = var.AWS_ACCOUNT_ID
+#  AWS_REGION     = var.AWS_REGION
+#}
 
 output "vault_host" {
   value = module.vault_instance.vault_ec2_private_ip
 }
 
-output "alb_dns_host" {
-  value = module.alb.dns_name
+output "api_gateway_alb_dns_host" {
+  value = module.api_gateway_alb.dns_name
 }
 
 output "dev_ecr_arn" {
@@ -267,4 +100,8 @@ output "dev_ecr_arn" {
 
 output "dev_ecr_repository_url" {
   value = data.aws_ecr_repository.test_genesis_user_ecr.repository_url
+}
+
+output "user_public_dns" {
+  value = module.user-alb.dns_name
 }

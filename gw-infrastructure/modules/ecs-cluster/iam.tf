@@ -84,6 +84,7 @@ resource "aws_iam_instance_profile" "cluster-ec2-role-instance-profile" {
   }
 }
 
+#Allows cluster to perform the following Actions on all resources
 resource "aws_iam_role_policy" "cluster-ecs-iam-role-policy" {
   name = "${var.CLUSTER_NAME}-ecs-iam-role-policy"
   role = aws_iam_role.cluster-iam-role.id

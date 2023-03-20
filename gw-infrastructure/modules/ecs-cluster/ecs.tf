@@ -40,7 +40,7 @@ resource "aws_launch_configuration" "ecs_cluster_launch_config" {
   iam_instance_profile = aws_iam_instance_profile.cluster-ec2-role-instance-profile.id
   security_groups = [aws_security_group.cluster_sg.id]
   user_data = data.template_file.ecs_init.rendered
-  associate_public_ip_address = true #TODO For debugging
+  associate_public_ip_address = true #Disabling this fails to bring up ECS cluster.
   key_name = var.ACCESS_KEY_NAME
 
   lifecycle {
