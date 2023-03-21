@@ -13,6 +13,8 @@ jobs:
 
   Sonar:
     uses: ./.github/workflows/sonar.yml
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_CLOUD_TOKEN }}
 
   tag_release:
     if: github.ref == 'refs/heads/master'
@@ -22,5 +24,5 @@ jobs:
       contents: read
     uses: ./.github/workflows/tagAndPush.yaml
     secrets:
-      aws-role: ${{ secrets.GHA_AWS_ROLE }}
-      ecr-test-repo: ${{ secrets.ECR_TEST_REPO }}
+      AWS-ROLE: ${{ secrets.GHA_AWS_ROLE }}
+      ECR-TEST-REPO: ${{ secrets.ECR_TEST_REPO }}
