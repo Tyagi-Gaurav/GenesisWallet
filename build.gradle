@@ -26,6 +26,14 @@ sonarqube {
     }
 }
 
+task release {
+    dependsOn loadGitHubToken
+}
+
+task loadGitHubToken << {
+    scmVersion.repository.customUsername.set(System.getenv('GITHUB_TOKEN'))
+}
+
 subprojects {
     repositories {
         mavenCentral()

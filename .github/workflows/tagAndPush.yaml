@@ -27,6 +27,8 @@ jobs:
         run: chmod +x gradlew
 
       - name: Create a release
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         run: ./gradlew release
 
       - name: Get latest tag
