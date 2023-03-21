@@ -31,6 +31,7 @@ jobs:
       - name: Create a release
         env:
           CUSTOM_TOKEN: ${{ secrets.ALL_ACCESS_TOKEN }}
+          GH_TOKEN: ${{ secrets.ALL_ACCESS_TOKEN }}
           OWNER: ${{ github.repository_owner }}
           REPO: ${{ github.repository }}
         run: ./scripts/release-project.sh
