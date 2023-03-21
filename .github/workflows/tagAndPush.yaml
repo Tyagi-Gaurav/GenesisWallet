@@ -12,8 +12,6 @@ on:
 
 jobs:
   release:
-    permissions: #Provide all permissions for gh to create a release
-      contents: write
     name: create release
     runs-on: ubuntu-latest
     outputs:
