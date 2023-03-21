@@ -26,6 +26,16 @@ sonarqube {
     }
 }
 
+scmVersion {
+    hooks {
+        pre {
+            context -> {
+                scmVersion.repository.customUsername.set(System.getenv('GITHUB_TOKEN'))
+            }
+        }
+    }
+}
+
 subprojects {
     repositories {
         mavenCentral()
