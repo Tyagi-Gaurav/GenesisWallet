@@ -1,7 +1,7 @@
 #!/bin/sh
 
 VAULT_TOKEN=root
-VAULT_ADDRESS=local.vault:8200
+VAULT_ADDRESS=${VAULT_HOST}:8200
 
 echo "Waiting for 10 seconds before downloading cert and private key"
 sleep 10

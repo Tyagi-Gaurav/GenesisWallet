@@ -1,0 +1,112 @@
+name: Tag release and push docker images to ECR
+
+on:
+  workflow_call:
+    secrets:
+      AWS-ROLE:
+        required: true
+      ECR-TEST-REPO:
+        required: true
+
+jobs:
+  release:
+    name: create release
+    runs-on: ubuntu-latest
+    outputs:
+      release_tag: ${{ steps.fetch_tag.outputs.LATEST_TAG }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Create a release
+        run: ./gradlew release
+
+      - name: Get latest tag
+        id: fetch_tag
+        shell: bash
+        run: |
+          LATEST_TAG=`git describe --tags $(git rev-list --tags --max-count=1)`
+          echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_OUTPUT
+
+  validate-microservices:
+    name: Retrieve service list
+    runs-on: ubuntu-latest
+    needs: [ release ]
+    if: "needs.release.outputs.release_tag != ''"
+    outputs:
+      microservices: ${{ steps.get-microservices.outputs.MICROSERVICES }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+
+      - name: Get service list for creating tags
+        id: get-microservices
+        env:
+          FILE: ./.github/services.yml
+        run: |
+          echo "Release tag is ${{ needs.release.outputs.release_tag }}"  >> $GITHUB_STEP_SUMMARY
+          MICROSERVICES=$(yq -o=json -I=0 $FILE | jq -c '.microservice') 
+          echo "List of Microservices: $MICROSERVICES"  >> $GITHUB_STEP_SUMMARY
+          echo "MICROSERVICES=$MICROSERVICES" >> $GITHUB_OUTPUT
+
+  build-and-push-image:
+    name: Build image for microservices
+    runs-on: ubuntu-latest
+    needs: [ release, validate-microservices ]
+    if: "needs.validate-microservices.outputs.microservices != ''"
+    strategy:
+      matrix:
+        microservice: ${{ fromJson(needs.validate-microservices.outputs.microservices) }}
+        region:
+          - eu-west-1
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle without the test
+        run: |
+          echo "Microservice: ${{ matrix.region }}" >> $GITHUB_STEP_SUMMARY
+          ./gradlew clean build --info -x test -x integrationTest
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ${{ matrix.region }}
+          role-to-assume: ${{ secrets.AWS-ROLE }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build Image for service
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ needs.release.outputs.release_tag }}
+        run: |
+          echo "Building image for service: ${{ matrix.microservice }}" >> $GITHUB_STEP_SUMMARY
+          echo "Current Working Directory: `pwd`" >> $GITHUB_STEP_SUMMARY
+          cd ${{ matrix.microservice }}
+          docker build -t ${{ matrix.microservice }}:$IMAGE_TAG .
+          docker tag ${{ matrix.microservice }}:$IMAGE_TAG ${{ secrets.ECR-TEST-REPO }}/${{ matrix.microservice }}:$IMAGE_TAG
+          echo "Pushing image push ${{ secrets.ECR-TEST-REPO }}/${{ matrix.microservice }}:$IMAGE_TAG to ECR..." >> $GITHUB_STEP_SUMMARY
+          docker push ${{ secrets.ECR-TEST-REPO }}/${{ matrix.microservice }}:$IMAGE_TAG
+
+

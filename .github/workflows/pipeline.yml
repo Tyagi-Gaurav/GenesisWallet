@@ -1,0 +1,28 @@
+name: Pipeline
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+
+jobs:
+  FunctionalTest:
+    uses: ./.github/workflows/functionalTest.yml
+
+  Sonar:
+    uses: ./.github/workflows/sonar.yml
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_CLOUD_TOKEN }}
+
+  tag_release:
+    if: github.ref == 'refs/heads/master'
+    needs: [ FunctionalTest, Sonar ]
+    permissions:
+      id-token: write # need this for OIDC
+      contents: read
+    uses: ./.github/workflows/tagAndPush.yaml
+    secrets:
+      AWS-ROLE: ${{ secrets.GHA_AWS_ROLE }}
+      ECR-TEST-REPO: ${{ secrets.ECR_TEST_REPO }}

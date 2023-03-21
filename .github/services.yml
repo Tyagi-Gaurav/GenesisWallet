@@ -1,0 +1,4 @@
+microservice:
+  - gw-api-gateway
+  - gw-user
+  - gw-ui

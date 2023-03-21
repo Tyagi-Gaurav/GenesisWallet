@@ -1,6 +1,8 @@
 #!/usr/bin/env sh
 
 set -a
+docker-compose down --rmi all
+./gradlew clean build
 
 docker-compose down --rmi all
 ./gradlew clean build
