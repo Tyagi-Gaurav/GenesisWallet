@@ -26,3 +26,4 @@ jobs:
     secrets:
       AWS-ROLE: ${{ secrets.GHA_AWS_ROLE }}
       ECR-TEST-REPO: ${{ secrets.ECR_TEST_REPO }}
+      ALL_ACCESS_TOKEN: ${{ secrets.ALL_ACCESS_TOKEN }}
