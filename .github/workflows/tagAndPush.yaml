@@ -29,7 +29,7 @@ jobs:
       - name: Create a release
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-        run: ./gradlew release
+        run: ./scripts/release-project.sh
 
       - name: Get latest tag
         id: fetch_tag

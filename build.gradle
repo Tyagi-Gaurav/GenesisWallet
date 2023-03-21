@@ -9,10 +9,7 @@ buildscript {
 
 plugins {
     id "org.sonarqube" version "3.4.0.2513"
-    id 'pl.allegro.tech.build.axion-release' version '1.14.0'
 }
-
-project.version = scmVersion.version
 
 sonarqube {
     properties {
@@ -23,16 +20,6 @@ sonarqube {
         property "sonar.dynamicAnalysis", "reuseReports"
         property "sonar.sourceEncoding", "UTF-8"
         property "sonar.jacoco.reportPaths", "$projectDir/build/jacoco"
-    }
-}
-
-scmVersion {
-    hooks {
-        pre {
-            context -> {
-                scmVersion.repository.customUsername.set(System.getenv('GITHUB_TOKEN'))
-            }
-        }
     }
 }
 
