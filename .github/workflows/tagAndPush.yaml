@@ -7,11 +7,11 @@ on:
         required: true
       ECR-TEST-REPO:
         required: true
+      ALL_ACCESS_TOKEN:
+        required: true
 
 jobs:
   release:
-    permissions: #Provide all permissions for gh to create a release
-      contents: write
     name: create release
     runs-on: ubuntu-latest
     outputs:
@@ -30,7 +30,9 @@ jobs:
 
       - name: Create a release
         env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          CUSTOM_TOKEN: ${{ secrets.ALL_ACCESS_TOKEN }}
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.repository }}
         run: ./scripts/release-project.sh
 
       - name: Get latest tag
