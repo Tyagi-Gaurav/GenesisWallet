@@ -26,12 +26,14 @@ sonarqube {
     }
 }
 
-task release {
-    dependsOn loadGitHubToken
-}
-
-task loadGitHubToken << {
-    scmVersion.repository.customUsername.set(System.getenv('GITHUB_TOKEN'))
+scmVersion {
+    hooks {
+        pre {
+            context -> {
+                scmVersion.repository.customUsername.set(System.getenv('GITHUB_TOKEN'))
+            }
+        }
+    }
 }
 
 subprojects {
