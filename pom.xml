@@ -14,6 +14,7 @@
         <module>gw-annotations</module>
         <module>gw-security</module>
         <module>gw-grpc-common</module>
+        <module>gw-infrastructure</module>
     </modules>
 
     <properties>
