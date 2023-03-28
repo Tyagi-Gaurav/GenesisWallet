@@ -44,7 +44,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CREATED_FIELD_NUMBER = 1;
-  private boolean created_;
+  private boolean created_ = false;
   /**
    * <code>bool created = 1;</code>
    * @return The created.
@@ -243,8 +243,8 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       created_ = false;
-
       return this;
     }
 
@@ -271,9 +271,16 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.gw.user.grpc.UserCreateGrpcResponseDTO buildPartial() {
       com.gw.user.grpc.UserCreateGrpcResponseDTO result = new com.gw.user.grpc.UserCreateGrpcResponseDTO(this);
-      result.created_ = created_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
+    }
+
+    private void buildPartial0(com.gw.user.grpc.UserCreateGrpcResponseDTO result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.created_ = created_;
+      }
     }
 
     @java.lang.Override
@@ -351,7 +358,7 @@ private static final long serialVersionUID = 0L;
               break;
             case 8: {
               created_ = input.readBool();
-
+              bitField0_ |= 0x00000001;
               break;
             } // case 8
             default: {
@@ -369,6 +376,7 @@ private static final long serialVersionUID = 0L;
       } // finally
       return this;
     }
+    private int bitField0_;
 
     private boolean created_ ;
     /**
@@ -387,6 +395,7 @@ private static final long serialVersionUID = 0L;
     public Builder setCreated(boolean value) {
       
       created_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -395,7 +404,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearCreated() {
-      
+      bitField0_ = (bitField0_ & ~0x00000001);
       created_ = false;
       onChanged();
       return this;

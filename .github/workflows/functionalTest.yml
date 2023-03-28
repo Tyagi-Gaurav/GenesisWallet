@@ -19,6 +19,9 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
+    - name: Install Protoc on the box
+      run: apt install -y protobuf-compiler
+
     - name: Build with Gradle
       run: ./gradlew clean build --info
 

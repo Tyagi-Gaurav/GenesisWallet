@@ -15,6 +15,7 @@
         <module>gw-security</module>
         <module>gw-grpc-common</module>
         <module>gw-infrastructure</module>
+        <module>gw-grpc-schema</module>
     </modules>
 
     <properties>
@@ -31,6 +32,7 @@
         <mockito-junit-jupiter.version>2.17.0</mockito-junit-jupiter.version>
         <awaitility.version>4.2.0</awaitility.version>
         <grpc.version>1.50.2</grpc.version>
+        <protobuf-java.version>3.22.2</protobuf-java.version>
     </properties>
 
     <build>
@@ -119,6 +121,11 @@
                 <groupId>io.grpc</groupId>
                 <artifactId>grpc-netty-shaded</artifactId>
                 <version>${grpc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.protobuf</groupId>
+                <artifactId>protobuf-java</artifactId>
+                <version>${protobuf-java.version}</version>
             </dependency>
             <!-- GRPC Dependencies : END -->
 

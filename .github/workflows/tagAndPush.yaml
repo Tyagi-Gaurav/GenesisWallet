@@ -88,6 +88,9 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - name: Install Protoc on the box
+        run: apt install -y protobuf-compiler
+
       - name: Build with Gradle without the test
         run: |
           echo "Microservice: ${{ matrix.region }}" >> $GITHUB_STEP_SUMMARY

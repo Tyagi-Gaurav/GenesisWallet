@@ -35,6 +35,9 @@ jobs:
         run: |
           echo "Sonar Token Secrets: ${{ secrets.SONAR_TOKEN }}"
 
+      - name: Install Protoc on the box
+        run: apt install -y protobuf-compiler
+
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

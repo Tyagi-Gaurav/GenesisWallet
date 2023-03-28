@@ -55,7 +55,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int EMAIL_FIELD_NUMBER = 1;
-  private volatile java.lang.Object email_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object email_ = "";
   /**
    * <code>string email = 1;</code>
    * @return The email.
@@ -93,7 +94,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LOCALE_FIELD_NUMBER = 2;
-  private volatile java.lang.Object locale_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object locale_ = "";
   /**
    * <code>string locale = 2;</code>
    * @return The locale.
@@ -131,7 +133,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PICTUREURL_FIELD_NUMBER = 3;
-  private volatile java.lang.Object pictureUrl_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object pictureUrl_ = "";
   /**
    * <code>string pictureUrl = 3;</code>
    * @return The pictureUrl.
@@ -169,7 +172,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FIRSTNAME_FIELD_NUMBER = 4;
-  private volatile java.lang.Object firstName_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object firstName_ = "";
   /**
    * <code>string firstName = 4;</code>
    * @return The firstName.
@@ -207,7 +211,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LASTNAME_FIELD_NUMBER = 5;
-  private volatile java.lang.Object lastName_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object lastName_ = "";
   /**
    * <code>string lastName = 5;</code>
    * @return The lastName.
@@ -245,7 +250,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TOKENVALUE_FIELD_NUMBER = 6;
-  private volatile java.lang.Object tokenValue_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object tokenValue_ = "";
   /**
    * <code>string tokenValue = 6;</code>
    * @return The tokenValue.
@@ -283,7 +289,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TOKENTYPE_FIELD_NUMBER = 7;
-  private volatile java.lang.Object tokenType_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object tokenType_ = "";
   /**
    * <code>string tokenType = 7;</code>
    * @return The tokenType.
@@ -321,7 +328,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TOKENEXPIRYTIME_FIELD_NUMBER = 8;
-  private long tokenExpiryTime_;
+  private long tokenExpiryTime_ = 0L;
   /**
    * <code>int64 tokenExpiryTime = 8;</code>
    * @return The tokenExpiryTime.
@@ -332,7 +339,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int EXTERNALSYSTEM_FIELD_NUMBER = 10;
-  private volatile java.lang.Object externalSystem_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object externalSystem_ = "";
   /**
    * <code>string externalSystem = 10;</code>
    * @return The externalSystem.
@@ -370,7 +378,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DATEOFBIRTH_FIELD_NUMBER = 11;
-  private volatile java.lang.Object dateOfBirth_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object dateOfBirth_ = "";
   /**
    * <code>string dateOfBirth = 11;</code>
    * @return The dateOfBirth.
@@ -408,7 +417,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int GENDER_FIELD_NUMBER = 12;
-  private int gender_;
+  private int gender_ = 0;
   /**
    * <code>.com.gw.user.grpc.Gender gender = 12;</code>
    * @return The enum numeric value on the wire for gender.
@@ -421,13 +430,13 @@ private static final long serialVersionUID = 0L;
    * @return The gender.
    */
   @java.lang.Override public com.gw.user.grpc.Gender getGender() {
-    @SuppressWarnings("deprecation")
-    com.gw.user.grpc.Gender result = com.gw.user.grpc.Gender.valueOf(gender_);
+    com.gw.user.grpc.Gender result = com.gw.user.grpc.Gender.forNumber(gender_);
     return result == null ? com.gw.user.grpc.Gender.UNRECOGNIZED : result;
   }
 
   public static final int HOMECOUNTRY_FIELD_NUMBER = 13;
-  private volatile java.lang.Object homeCountry_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object homeCountry_ = "";
   /**
    * <code>string homeCountry = 13;</code>
    * @return The homeCountry.
@@ -763,30 +772,19 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       email_ = "";
-
       locale_ = "";
-
       pictureUrl_ = "";
-
       firstName_ = "";
-
       lastName_ = "";
-
       tokenValue_ = "";
-
       tokenType_ = "";
-
       tokenExpiryTime_ = 0L;
-
       externalSystem_ = "";
-
       dateOfBirth_ = "";
-
       gender_ = 0;
-
       homeCountry_ = "";
-
       return this;
     }
 
@@ -813,20 +811,49 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.gw.user.grpc.ExternalUserCreateGrpcRequestDTO buildPartial() {
       com.gw.user.grpc.ExternalUserCreateGrpcRequestDTO result = new com.gw.user.grpc.ExternalUserCreateGrpcRequestDTO(this);
-      result.email_ = email_;
-      result.locale_ = locale_;
-      result.pictureUrl_ = pictureUrl_;
-      result.firstName_ = firstName_;
-      result.lastName_ = lastName_;
-      result.tokenValue_ = tokenValue_;
-      result.tokenType_ = tokenType_;
-      result.tokenExpiryTime_ = tokenExpiryTime_;
-      result.externalSystem_ = externalSystem_;
-      result.dateOfBirth_ = dateOfBirth_;
-      result.gender_ = gender_;
-      result.homeCountry_ = homeCountry_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
+    }
+
+    private void buildPartial0(com.gw.user.grpc.ExternalUserCreateGrpcRequestDTO result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.email_ = email_;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.locale_ = locale_;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.pictureUrl_ = pictureUrl_;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.firstName_ = firstName_;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.lastName_ = lastName_;
+      }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.tokenValue_ = tokenValue_;
+      }
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.tokenType_ = tokenType_;
+      }
+      if (((from_bitField0_ & 0x00000080) != 0)) {
+        result.tokenExpiryTime_ = tokenExpiryTime_;
+      }
+      if (((from_bitField0_ & 0x00000100) != 0)) {
+        result.externalSystem_ = externalSystem_;
+      }
+      if (((from_bitField0_ & 0x00000200) != 0)) {
+        result.dateOfBirth_ = dateOfBirth_;
+      }
+      if (((from_bitField0_ & 0x00000400) != 0)) {
+        result.gender_ = gender_;
+      }
+      if (((from_bitField0_ & 0x00000800) != 0)) {
+        result.homeCountry_ = homeCountry_;
+      }
     }
 
     @java.lang.Override
@@ -875,30 +902,37 @@ private static final long serialVersionUID = 0L;
       if (other == com.gw.user.grpc.ExternalUserCreateGrpcRequestDTO.getDefaultInstance()) return this;
       if (!other.getEmail().isEmpty()) {
         email_ = other.email_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (!other.getLocale().isEmpty()) {
         locale_ = other.locale_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (!other.getPictureUrl().isEmpty()) {
         pictureUrl_ = other.pictureUrl_;
+        bitField0_ |= 0x00000004;
         onChanged();
       }
       if (!other.getFirstName().isEmpty()) {
         firstName_ = other.firstName_;
+        bitField0_ |= 0x00000008;
         onChanged();
       }
       if (!other.getLastName().isEmpty()) {
         lastName_ = other.lastName_;
+        bitField0_ |= 0x00000010;
         onChanged();
       }
       if (!other.getTokenValue().isEmpty()) {
         tokenValue_ = other.tokenValue_;
+        bitField0_ |= 0x00000020;
         onChanged();
       }
       if (!other.getTokenType().isEmpty()) {
         tokenType_ = other.tokenType_;
+        bitField0_ |= 0x00000040;
         onChanged();
       }
       if (other.getTokenExpiryTime() != 0L) {
@@ -906,10 +940,12 @@ private static final long serialVersionUID = 0L;
       }
       if (!other.getExternalSystem().isEmpty()) {
         externalSystem_ = other.externalSystem_;
+        bitField0_ |= 0x00000100;
         onChanged();
       }
       if (!other.getDateOfBirth().isEmpty()) {
         dateOfBirth_ = other.dateOfBirth_;
+        bitField0_ |= 0x00000200;
         onChanged();
       }
       if (other.gender_ != 0) {
@@ -917,6 +953,7 @@ private static final long serialVersionUID = 0L;
       }
       if (!other.getHomeCountry().isEmpty()) {
         homeCountry_ = other.homeCountry_;
+        bitField0_ |= 0x00000800;
         onChanged();
       }
       this.mergeUnknownFields(other.getUnknownFields());
@@ -947,62 +984,62 @@ private static final long serialVersionUID = 0L;
               break;
             case 10: {
               email_ = input.readStringRequireUtf8();
-
+              bitField0_ |= 0x00000001;
               break;
             } // case 10
             case 18: {
               locale_ = input.readStringRequireUtf8();
-
+              bitField0_ |= 0x00000002;
               break;
             } // case 18
             case 26: {
               pictureUrl_ = input.readStringRequireUtf8();
-
+              bitField0_ |= 0x00000004;
               break;
             } // case 26
             case 34: {
               firstName_ = input.readStringRequireUtf8();
-
+              bitField0_ |= 0x00000008;
               break;
             } // case 34
             case 42: {
               lastName_ = input.readStringRequireUtf8();
-
+              bitField0_ |= 0x00000010;
               break;
             } // case 42
             case 50: {
               tokenValue_ = input.readStringRequireUtf8();
-
+              bitField0_ |= 0x00000020;
               break;
             } // case 50
             case 58: {
               tokenType_ = input.readStringRequireUtf8();
-
+              bitField0_ |= 0x00000040;
               break;
             } // case 58
             case 64: {
               tokenExpiryTime_ = input.readInt64();
-
+              bitField0_ |= 0x00000080;
               break;
             } // case 64
             case 82: {
               externalSystem_ = input.readStringRequireUtf8();
-
+              bitField0_ |= 0x00000100;
               break;
             } // case 82
             case 90: {
               dateOfBirth_ = input.readStringRequireUtf8();
-
+              bitField0_ |= 0x00000200;
               break;
             } // case 90
             case 96: {
               gender_ = input.readEnum();
-
+              bitField0_ |= 0x00000400;
               break;
             } // case 96
             case 106: {
               homeCountry_ = input.readStringRequireUtf8();
-
+              bitField0_ |= 0x00000800;
               break;
             } // case 106
             default: {
@@ -1020,6 +1057,7 @@ private static final long serialVersionUID = 0L;
       } // finally
       return this;
     }
+    private int bitField0_;
 
     private java.lang.Object email_ = "";
     /**
@@ -1062,11 +1100,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setEmail(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       email_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1075,8 +1111,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearEmail() {
-      
       email_ = getDefaultInstance().getEmail();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -1087,12 +1123,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setEmailBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       email_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1138,11 +1172,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setLocale(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       locale_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1151,8 +1183,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearLocale() {
-      
       locale_ = getDefaultInstance().getLocale();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -1163,12 +1195,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setLocaleBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       locale_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1214,11 +1244,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setPictureUrl(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       pictureUrl_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1227,8 +1255,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearPictureUrl() {
-      
       pictureUrl_ = getDefaultInstance().getPictureUrl();
+      bitField0_ = (bitField0_ & ~0x00000004);
       onChanged();
       return this;
     }
@@ -1239,12 +1267,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setPictureUrlBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       pictureUrl_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1290,11 +1316,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setFirstName(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       firstName_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1303,8 +1327,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearFirstName() {
-      
       firstName_ = getDefaultInstance().getFirstName();
+      bitField0_ = (bitField0_ & ~0x00000008);
       onChanged();
       return this;
     }
@@ -1315,12 +1339,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setFirstNameBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       firstName_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1366,11 +1388,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setLastName(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       lastName_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1379,8 +1399,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearLastName() {
-      
       lastName_ = getDefaultInstance().getLastName();
+      bitField0_ = (bitField0_ & ~0x00000010);
       onChanged();
       return this;
     }
@@ -1391,12 +1411,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setLastNameBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       lastName_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1442,11 +1460,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setTokenValue(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       tokenValue_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1455,8 +1471,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearTokenValue() {
-      
       tokenValue_ = getDefaultInstance().getTokenValue();
+      bitField0_ = (bitField0_ & ~0x00000020);
       onChanged();
       return this;
     }
@@ -1467,12 +1483,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setTokenValueBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       tokenValue_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1518,11 +1532,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setTokenType(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       tokenType_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -1531,8 +1543,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearTokenType() {
-      
       tokenType_ = getDefaultInstance().getTokenType();
+      bitField0_ = (bitField0_ & ~0x00000040);
       onChanged();
       return this;
     }
@@ -1543,12 +1555,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setTokenTypeBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       tokenType_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -1570,6 +1580,7 @@ private static final long serialVersionUID = 0L;
     public Builder setTokenExpiryTime(long value) {
       
       tokenExpiryTime_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -1578,7 +1589,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearTokenExpiryTime() {
-      
+      bitField0_ = (bitField0_ & ~0x00000080);
       tokenExpiryTime_ = 0L;
       onChanged();
       return this;
@@ -1625,11 +1636,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setExternalSystem(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       externalSystem_ = value;
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -1638,8 +1647,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearExternalSystem() {
-      
       externalSystem_ = getDefaultInstance().getExternalSystem();
+      bitField0_ = (bitField0_ & ~0x00000100);
       onChanged();
       return this;
     }
@@ -1650,12 +1659,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setExternalSystemBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       externalSystem_ = value;
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -1701,11 +1708,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setDateOfBirth(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       dateOfBirth_ = value;
+      bitField0_ |= 0x00000200;
       onChanged();
       return this;
     }
@@ -1714,8 +1719,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearDateOfBirth() {
-      
       dateOfBirth_ = getDefaultInstance().getDateOfBirth();
+      bitField0_ = (bitField0_ & ~0x00000200);
       onChanged();
       return this;
     }
@@ -1726,12 +1731,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setDateOfBirthBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       dateOfBirth_ = value;
+      bitField0_ |= 0x00000200;
       onChanged();
       return this;
     }
@@ -1750,8 +1753,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setGenderValue(int value) {
-      
       gender_ = value;
+      bitField0_ |= 0x00000400;
       onChanged();
       return this;
     }
@@ -1761,8 +1764,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.gw.user.grpc.Gender getGender() {
-      @SuppressWarnings("deprecation")
-      com.gw.user.grpc.Gender result = com.gw.user.grpc.Gender.valueOf(gender_);
+      com.gw.user.grpc.Gender result = com.gw.user.grpc.Gender.forNumber(gender_);
       return result == null ? com.gw.user.grpc.Gender.UNRECOGNIZED : result;
     }
     /**
@@ -1774,7 +1776,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
         throw new NullPointerException();
       }
-      
+      bitField0_ |= 0x00000400;
       gender_ = value.getNumber();
       onChanged();
       return this;
@@ -1784,7 +1786,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearGender() {
-      
+      bitField0_ = (bitField0_ & ~0x00000400);
       gender_ = 0;
       onChanged();
       return this;
@@ -1831,11 +1833,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setHomeCountry(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       homeCountry_ = value;
+      bitField0_ |= 0x00000800;
       onChanged();
       return this;
     }
@@ -1844,8 +1844,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearHomeCountry() {
-      
       homeCountry_ = getDefaultInstance().getHomeCountry();
+      bitField0_ = (bitField0_ & ~0x00000800);
       onChanged();
       return this;
     }
@@ -1856,12 +1856,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setHomeCountryBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       homeCountry_ = value;
+      bitField0_ |= 0x00000800;
       onChanged();
       return this;
     }
