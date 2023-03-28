@@ -12,6 +12,7 @@
         <module>gw-api-gateway</module>
         <module>gw-common</module>
         <module>gw-annotations</module>
+        <module>gw-security</module>
     </modules>
 
     <properties>
