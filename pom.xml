@@ -13,6 +13,7 @@
         <module>gw-common</module>
         <module>gw-annotations</module>
         <module>gw-security</module>
+        <module>gw-grpc-common</module>
     </modules>
 
     <properties>
@@ -28,6 +29,7 @@
         <mockito.version>5.2.0</mockito.version>
         <mockito-junit-jupiter.version>2.17.0</mockito-junit-jupiter.version>
         <awaitility.version>4.2.0</awaitility.version>
+        <grpc.version>1.50.2</grpc.version>
     </properties>
 
     <build>
@@ -101,7 +103,30 @@
             </dependency>
             <!-- Reactor Dependencies : END -->
 
+            <!-- GRPC Dependencies -->
+            <dependency>
+                <groupId>io.grpc</groupId>
+                <artifactId>grpc-stub</artifactId>
+                <version>${grpc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.grpc</groupId>
+                <artifactId>grpc-protobuf</artifactId>
+                <version>${grpc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.grpc</groupId>
+                <artifactId>grpc-netty-shaded</artifactId>
+                <version>${grpc.version}</version>
+            </dependency>
+            <!-- GRPC Dependencies : END -->
+
             <!-- Test Dependencies -->
+            <dependency>
+                <groupId>io.grpc</groupId>
+                <artifactId>grpc-testing</artifactId>
+                <version>${grpc.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-core</artifactId>
