@@ -4,7 +4,6 @@ import com.google.protobuf.Empty;
 import com.gw.common.domain.ExternalUser;
 import com.gw.common.domain.Gender;
 import com.gw.common.domain.User;
-import com.gw.user.grpc.UserServiceGrpc.UserServiceImplBase;
 import com.gw.user.service.UserService;
 import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
@@ -13,7 +12,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
-public class UserServiceGrpcImpl extends UserServiceImplBase {
+public class UserServiceGrpcImpl extends UserServiceGrpc.UserServiceImplBase {
     private static final Logger LOG = LoggerFactory.getLogger(UserServiceGrpcImpl.class);
     private final UserService userService;
 

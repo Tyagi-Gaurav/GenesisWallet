@@ -16,6 +16,8 @@
         <module>gw-grpc-common</module>
         <module>gw-infrastructure</module>
         <module>gw-grpc-schema</module>
+        <module>gw-user</module>
+        <module>gw-test-common</module>
     </modules>
 
     <properties>
@@ -32,7 +34,13 @@
         <mockito-junit-jupiter.version>2.17.0</mockito-junit-jupiter.version>
         <awaitility.version>4.2.0</awaitility.version>
         <grpc.version>1.50.2</grpc.version>
-        <protobuf-java.version>3.22.2</protobuf-java.version>
+        <protobuf-java.version>3.21.9</protobuf-java.version>
+        <spring-data-r2dbc.version>1.5.5</spring-data-r2dbc.version>
+        <c3p0.version>0.9.5.5</c3p0.version>
+        <r2dbc-postgresql.version>0.8.13.RELEASE</r2dbc-postgresql.version>
+        <swagger.version>3.0.0</swagger.version>
+        <postgresql.testcontainer.version>1.17.6</postgresql.testcontainer.version>
+        <vault.testcontainer.version>1.17.6</vault.testcontainer.version>
     </properties>
 
     <build>
@@ -67,7 +75,69 @@
                 <artifactId>spring-boot-starter-actuator</artifactId>
                 <version>${spring.boot.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-autoconfigure</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-webflux</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-security</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-r2dbc</artifactId>
+                <version>${spring-data-r2dbc.version}</version>
+            </dependency>
             <!-- Spring Dependencies : END -->
+
+            <!-- Swagger Dependencies -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-boot-starter</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+            <!-- Swagger Dependencies : END -->
+
+            <!-- Database -->
+            <dependency>
+                <groupId>com.mchange</groupId>
+                <artifactId>c3p0</artifactId>
+                <version>${c3p0.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.r2dbc</groupId>
+                <artifactId>r2dbc-postgresql</artifactId>
+                <version>${r2dbc-postgresql.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>io.projectreactor</groupId>
+                        <artifactId>reactor</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>io.projectreactor.netty</groupId>
+                        <artifactId>reactor-netty</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <!-- Database : END -->
 
             <!-- Apache Commons Dependencies -->
             <dependency>
@@ -166,11 +236,6 @@
                 <version>${mockito-junit-jupiter.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-test</artifactId>
-                <version>${spring.boot.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>io.projectreactor</groupId>
                 <artifactId>reactor-test</artifactId>
                 <version>${reactor.version}</version>
@@ -180,7 +245,16 @@
                 <artifactId>awaitility</artifactId>
                 <version>${awaitility.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql.testcontainer.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>vault</artifactId>
+                <version>${vault.testcontainer.version}</version>
+            </dependency>
             <!-- Test Dependencies : END -->
         </dependencies>
     </dependencyManagement>

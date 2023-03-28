@@ -12,6 +12,11 @@
     <artifactId>gw-grpc-schema</artifactId>
     <packaging>jar</packaging>
 
+    <properties>
+        <protoc.version>3.21.9</protoc.version>
+        <protobuf-maven-plugin.pluginArtifact.version>1.50.2</protobuf-maven-plugin.pluginArtifact.version>
+    </properties>
+
     <dependencies>
         <!-- Module Dependencies -->
         <dependency>
@@ -50,12 +55,28 @@
     <build>
         <plugins>
             <plugin>
+                <!-- Needed to determing os specific variables as listed below -->
+                <groupId>kr.motd.maven</groupId>
+                <artifactId>os-maven-plugin</artifactId>
+                <version>1.6.2</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>detect</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.xolstice.maven.plugins</groupId>
                 <artifactId>protobuf-maven-plugin</artifactId>
                 <version>0.6.1</version>
                 <configuration>
                     <goal>compile</goal>
-                    <protocExecutable>/usr/local/bin/protoc</protocExecutable>
+                    <protocArtifact>com.google.protobuf:protoc:${protoc.version}:exe:${os.detected.classifier}</protocArtifact>
+                    <pluginId>grpc-java</pluginId>
+                    <pluginArtifact>io.grpc:protoc-gen-grpc-java:${protobuf-maven-plugin.pluginArtifact.version}:exe:${os.detected.classifier}</pluginArtifact>
                     <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
                     <clearOutputDirectory>false</clearOutputDirectory>
                 </configuration>
@@ -63,7 +84,7 @@
                     <execution>
                         <goals>
                             <goal>compile</goal>
-                            <goal>test-compile</goal>
+                            <goal>compile-custom</goal>
                         </goals>
                     </execution>
                 </executions>

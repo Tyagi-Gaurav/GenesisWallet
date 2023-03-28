@@ -27,38 +27,19 @@ dependencies {
     implementation project(":gw-grpc-common")
     implementation project(":gw-common")
     annotationProcessor project(":gw-common")
-    implementation project(":gw-security")
     implementation("org.springframework.boot:spring-boot-starter-actuator") {
         exclude group: "ch.qos.logback"
     }
 
-    implementation "io.grpc:grpc-stub:1.50.2"
-    implementation "io.grpc:grpc-protobuf:1.50.2"
-    implementation "io.grpc:grpc-netty-shaded:1.50.2"
     implementation "org.liquibase:liquibase-core:4.17.1"
     implementation "io.jsonwebtoken:jjwt-api:0.11.5"
     implementation "io.jsonwebtoken:jjwt-impl:0.11.5"
     implementation "io.jsonwebtoken:jjwt-jackson:0.11.5"
     implementation "org.springframework:spring-jdbc:5.3.23" //For liquibase to work
-    implementation "org.springframework.data:spring-data-r2dbc:1.5.5"
     implementation "org.springframework.boot:spring-boot-starter-data-r2dbc:2.7.5"
-    implementation "org.springframework.boot:spring-boot-autoconfigure:2.7.4"
     implementation "org.springframework.vault:spring-vault-core:2.3.2"
-    implementation("io.r2dbc:r2dbc-postgresql:0.8.13.RELEASE") {
-        exclude group: "io.projectreactor"
-        exclude group: "io.projectreactor.netty"
-    }
-    implementation "com.mchange:c3p0:0.9.5.5"
-    implementation "org.postgresql:postgresql:42.5.0"
-    implementation "io.springfox:springfox-boot-starter:3.0.0"
-    implementation "io.springfox:springfox-swagger-ui:3.0.0"
 
     testImplementation project(":gw-test-common").sourceSets.test.output
-    testImplementation "io.grpc:grpc-testing:1.50.2"
-    testImplementation "org.testcontainers:junit-jupiter:1.17.5"
-    testImplementation "org.springframework.boot:spring-boot-starter-test"
-    testImplementation "org.testcontainers:postgresql:1.17.5"
-    testImplementation "org.testcontainers:vault:1.17.6"
 
 }
 
