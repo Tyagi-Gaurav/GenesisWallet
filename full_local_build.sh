@@ -4,7 +4,7 @@
 # Set Variables                                            #
 ############################################################
 REMOVE_ORPHANS=""
-BUILD='./gradlew clean build'
+BUILD='mvn clean package'
 SKIP_TEST=''
 
 ############################################################
@@ -36,7 +36,7 @@ while getopts :obht flag ; do
         b)
           BUILD="";;
         t)
-          SKIP_TEST='-x test -x integrationTest' ;;
+          SKIP_TEST='-D skipTest=true' ;;
         h)
           Usage
           exit;;
@@ -48,14 +48,13 @@ done
 
 FULL_BUILD_COMMAND="$BUILD $SKIP_TEST"
 
-set -a
+set -e #Fail on error
 docker-compose down --rmi all
 eval "$FULL_BUILD_COMMAND"
 
-set -e #Fail on error
 docker-compose --env-file ~/.secret/env.file up -d --build $REMOVE_ORPHANS
 WAIT_TIME=15
 echo "Waiting for ${WAIT_TIME} seconds for container to come up"
 sleep ${WAIT_TIME}
 
-./gradlew localFunctional
+mvn test -DskipTests=false -pl gw-functionalTest

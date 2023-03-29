@@ -26,16 +26,17 @@ class WebExchangeBindExceptionHandlerTest {
     @BeforeEach
     void setUp() {
         webExchangeBindExceptionHandler = new WebExchangeBindExceptionHandler(errorResponseHelper);
+    }
+
+    @Test
+    void shouldHandleException()  {
         when(errorResponseHelper.errorResponse(anyInt(), anyString()))
                 .thenAnswer((Answer<Mono<ErrorResponse>>) invocation -> {
                     int statusCode = invocation.getArgument(0);
                     String argument = invocation.getArgument(1);
                     return Mono.just(new ErrorResponse(statusCode, argument));
                 });
-    }
 
-    @Test
-    void shouldHandleException()  {
         WebExchangeBindException mockException = Mockito.mock(WebExchangeBindException.class);
         when(mockException.getMessage()).thenReturn("Validation error occurred");
 

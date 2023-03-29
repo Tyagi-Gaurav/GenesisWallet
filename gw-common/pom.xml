@@ -15,7 +15,7 @@
     <properties>
         <jwt-api.version>0.11.5</jwt-api.version>
         <resilience-4j.version>2.0.2</resilience-4j.version>
-        <hibernate.validator.version>6.0.13.Final</hibernate.validator.version>
+        <hibernate.validator.version>8.0.0.Final</hibernate.validator.version>
         <javax.validator.version>2.0.1.Final</javax.validator.version>
         <jakarta.el.version>5.0.1</jakarta.el.version>
         <glassfish.expressly.version>5.0.0</glassfish.expressly.version>
@@ -52,7 +52,9 @@
             </plugin>
         </plugins>
     </build>
+
     <dependencies>
+        <!-- JSon WebToken Dependencies -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
@@ -68,6 +70,9 @@
             <artifactId>jjwt-jackson</artifactId>
             <version>${jwt-api.version}</version>
         </dependency>
+        <!-- JSon WebToken Dependencies : END -->
+
+        <!-- Resilience4J Dependencies -->
         <dependency>
             <groupId>io.github.resilience4j</groupId>
             <artifactId>resilience4j-all</artifactId>
@@ -83,15 +88,16 @@
             <artifactId>resilience4j-micrometer</artifactId>
             <version>${resilience-4j.version}</version>
         </dependency>
+        <!-- Resilience4J Dependencies : END -->
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>${hibernate.validator.version}</version>
         </dependency>
         <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>${javax.validator.version}</version>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <version>3.0.2</version>
         </dependency>
         <dependency>
             <groupId>jakarta.el</groupId>
@@ -112,8 +118,8 @@
             <artifactId>spring-boot</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.genesis</groupId>
+        <version>DEV-SNAPSHOT</version>
+        <artifactId>genesis</artifactId>
+    </parent>
+
+    <artifactId>gw-ui</artifactId>
+    <packaging>jar</packaging>
+
+<!--    implementation "io.grpc:grpc-stub:1.50.2"-->
+<!--    implementation "io.grpc:grpc-protobuf:1.50.2"-->
+<!--    implementation "io.grpc:grpc-netty-shaded:1.50.2"-->
+<!--    implementation "org.webjars:jquery:3.6.1"-->
+<!--    implementation "org.webjars:bootstrap:5.2.3"-->
+<!--    implementation "org.webjars:webjars-locator-core:0.52"-->
+<!--    implementation "org.webjars:js-cookie:2.2.1"-->
+
+<!--    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'-->
+<!--    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'-->
+    <dependencies>
+        <!-- Module Dependencies -->
+        <dependency>
+            <groupId>com.genesis</groupId>
+            <artifactId>gw-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.genesis</groupId>
+            <artifactId>gw-user-client</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.genesis</groupId>
+            <artifactId>gw-grpc-schema</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.genesis</groupId>
+            <artifactId>gw-grpc-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- Module Dependencies : END -->
+
+        <!-- Spring Dependencies -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-client</artifactId>
+        </dependency>
+        <!-- Spring Dependencies : END -->
+
+        <!-- Test Dependencies -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- Test Dependencies : END -->
+    </dependencies>
+</project>

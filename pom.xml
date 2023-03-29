@@ -19,9 +19,12 @@
         <module>gw-user</module>
         <module>gw-test-common</module>
         <module>gw-user-client</module>
+        <module>gw-functionalTest</module>
+        <module>gw-ui</module>
     </modules>
 
     <properties>
+        <!-- Production Version -->
         <spring.boot.version>2.7.4</spring.boot.version>
         <spring.version>5.3.23</spring.version>
         <apache.commons.version>3.12.0</apache.commons.version>
@@ -29,19 +32,27 @@
         <micrometer-core.version>1.9.4</micrometer-core.version>
         <micrometer-registry-prometheus.version>1.10.2</micrometer-registry-prometheus.version>
         <reactor.version>3.4.23</reactor.version>
-        <assertj.version>3.20.2</assertj.version>
-        <junit.version>5.9.1</junit.version>
-        <mockito.version>5.2.0</mockito.version>
-        <mockito-junit-jupiter.version>2.17.0</mockito-junit-jupiter.version>
-        <awaitility.version>4.2.0</awaitility.version>
         <grpc.version>1.50.2</grpc.version>
         <protobuf-java.version>3.21.9</protobuf-java.version>
-        <spring-data-r2dbc.version>1.5.5</spring-data-r2dbc.version>
+        <spring-data-r2dbc.version>2.7.5</spring-data-r2dbc.version>
         <c3p0.version>0.9.5.5</c3p0.version>
         <r2dbc-postgresql.version>0.8.13.RELEASE</r2dbc-postgresql.version>
         <swagger.version>3.0.0</swagger.version>
         <postgresql.testcontainer.version>1.17.6</postgresql.testcontainer.version>
         <vault.testcontainer.version>1.17.6</vault.testcontainer.version>
+        <apache.httpclient.version>4.5.14</apache.httpclient.version>
+        <spring-security-test.version>5.8.1</spring-security-test.version>
+        <spring-cloud-contract-stub.version>3.1.4</spring-cloud-contract-stub.version>
+        <liquibase-core.version>4.17.1</liquibase-core.version>
+        <postgresql.version>42.5.0</postgresql.version>
+
+        <!-- Test Version -->
+        <assertj.version>3.20.2</assertj.version>
+        <junit.version>5.9.1</junit.version>
+        <mockito.version>5.2.0</mockito.version>
+        <mockito-junit-jupiter.version>2.17.0</mockito-junit-jupiter.version>
+        <awaitility.version>4.2.0</awaitility.version>
+        <wiremock.version>2.33.2</wiremock.version>
     </properties>
 
     <build>
@@ -55,6 +66,16 @@
                         <target>17</target>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.0.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>3.0.0</version>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
@@ -67,14 +88,15 @@
                 <version>${spring.boot.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-web</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-actuator</artifactId>
                 <version>${spring.boot.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>ch.qos.logback</groupId>
+                        <artifactId>logback-classic</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -90,6 +112,17 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-webflux</artifactId>
                 <version>${spring.boot.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>ch.qos.logback</groupId>
+                        <artifactId>logback-classic</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>${spring.boot.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -97,9 +130,30 @@
                 <version>${spring.boot.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.springframework.data</groupId>
-                <artifactId>spring-data-r2dbc</artifactId>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-r2dbc</artifactId>
                 <version>${spring-data-r2dbc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-oauth2-client</artifactId>
+                <version>${spring.boot.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>ch.qos.logback</groupId>
+                        <artifactId>logback-classic</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-test</artifactId>
+                <version>${spring-security-test.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-jdbc</artifactId>
+                <version>${spring.version}</version>
             </dependency>
             <!-- Spring Dependencies : END -->
 
@@ -137,16 +191,25 @@
                     </exclusion>
                 </exclusions>
             </dependency>
-
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql.version}</version>
+            </dependency>
             <!-- Database : END -->
 
-            <!-- Apache Commons Dependencies -->
+            <!-- Apache Dependencies -->
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${apache.commons.version}</version>
             </dependency>
-            <!-- Apache Commons Dependencies : END -->
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${apache.httpclient.version}</version>
+            </dependency>
+            <!-- Apache Dependencies : END -->
 
             <!-- Logging Dependencies -->
             <dependency>
@@ -256,7 +319,25 @@
                 <artifactId>vault</artifactId>
                 <version>${vault.testcontainer.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.github.tomakehurst</groupId>
+                <artifactId>wiremock-jre8</artifactId>
+                <version>${wiremock.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-contract-stub-runner</artifactId>
+                <version>${spring-cloud-contract-stub.version}</version>
+            </dependency>
             <!-- Test Dependencies : END -->
+
+            <!-- Liquibase Dependencies -->
+            <dependency>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-core</artifactId>
+                <version>${liquibase-core.version}</version>
+            </dependency>
+            <!-- Liquibase Dependencies : END -->
         </dependencies>
     </dependencyManagement>
 </project>

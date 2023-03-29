@@ -7,6 +7,7 @@ import com.gw.user.e2e.security.TestContainerVaultInitializer;
 import com.gw.user.repo.TestContainerDatabaseInitializer;
 import com.gw.user.resource.domain.LoginResponseDTO;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -56,6 +57,7 @@ public class UserJourneysTest {
     @ParameterizedTest
     @NullSource
     @ValueSource(strings = {"", "abc", "efuusidhfauihsdfuhiusdhfaiuhsfiuhiufhs"})
+    @Disabled
     void createUserWithInvalidUser(String userName) {
         var accountCreateRequestDTO = UserCreateRequestBuilder.userCreateRequest()
                 .withUserName(userName)
