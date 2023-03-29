@@ -1,18 +1,16 @@
 package com.gw.functional;
 
-import io.cucumber.junit.Cucumber;
-import io.cucumber.junit.CucumberOptions;
-import org.junit.BeforeClass;
-import org.junit.runner.RunWith;
+import org.junit.platform.suite.api.ConfigurationParameter;
+import org.junit.platform.suite.api.IncludeEngines;
+import org.junit.platform.suite.api.SelectClasspathResource;
+import org.junit.platform.suite.api.Suite;
 
-@RunWith(Cucumber.class)
-@CucumberOptions(
-        features = "classpath:features",
-        plugin = {"pretty", "json:target/cucumber-report.json"},
-        tags = "not @Migrated",
-        glue = {"com.gw.functional.steps"},
-        monochrome = true
-)
+import static io.cucumber.core.options.Constants.GLUE_PROPERTY_NAME;
+
+@Suite
+@IncludeEngines("cucumber")
+@SelectClasspathResource("features")
+@ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "com.gw.functional.steps")
 public class CucumberTest {
 }
 

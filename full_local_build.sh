@@ -36,7 +36,13 @@ while getopts :obht flag ; do
         b)
           BUILD="";;
         t)
-          SKIP_TEST='-D skipTest=true' ;;
+          #If BUILD is null, then SKIP_TEST should also be null
+          if [ -z "$BUILD" ] ; then
+            SKIP_TEST=""
+          else
+            SKIP_TEST='-DskipTests=true'
+          fi
+          ;;
         h)
           Usage
           exit;;
