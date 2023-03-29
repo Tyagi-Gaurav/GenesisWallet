@@ -29,19 +29,19 @@ updates:
     directory: "/gw-security" # Location of package manifests
     schedule:
       interval: "daily"
-  - package-ecosystem: "gw-test-common"
-    directory: "/user-client" # Location of package manifests
+  - package-ecosystem: "maven"
+    directory: "/gw-test-common" # Location of package manifests
     schedule:
       interval: "daily"
-  - package-ecosystem: "gw-ui"
-    directory: "/user-client" # Location of package manifests
+  - package-ecosystem: "maven"
+    directory: "/gw-ui" # Location of package manifests
     schedule:
       interval: "daily"
-  - package-ecosystem: "gw-user"
-    directory: "/user-client" # Location of package manifests
+  - package-ecosystem: "maven"
+    directory: "/gw-user" # Location of package manifests
     schedule:
       interval: "daily"
-  - package-ecosystem: "gw-user-client"
-    directory: "/user-client" # Location of package manifests
+  - package-ecosystem: "maven"
+    directory: "/gw-user-client" # Location of package manifests
     schedule:
       interval: "daily"

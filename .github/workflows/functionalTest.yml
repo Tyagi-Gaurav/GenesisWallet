@@ -19,7 +19,7 @@ jobs:
     - name: Grant execute permission for mvnw
       run: chmod +x mvnw
 
-    - name: Build with Gradle
+    - name: Build
       run: ./mvnw clean package
 
     - name: Build the docker-compose stack
