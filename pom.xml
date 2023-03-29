@@ -18,6 +18,7 @@
         <module>gw-grpc-schema</module>
         <module>gw-user</module>
         <module>gw-test-common</module>
+        <module>gw-user-client</module>
     </modules>
 
     <properties>
