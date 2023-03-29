@@ -91,10 +91,10 @@ jobs:
       - name: Install Protoc on the box
         run: apt install -y protobuf-compiler
 
-      - name: Build with Gradle without the test
+      - name: Build without the test
         run: |
           echo "Microservice: ${{ matrix.region }}" >> $GITHUB_STEP_SUMMARY
-          ./gradlew clean build --info -x test -x integrationTest
+          ./mvnw clean package -DskipTests=true
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
