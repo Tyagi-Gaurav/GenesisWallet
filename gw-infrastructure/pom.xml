@@ -11,4 +11,8 @@
 
     <artifactId>gw-infrastructure</artifactId>
     <packaging>pom</packaging>
+
+    <properties>
+        <sonar.skip>true</sonar.skip>
+    </properties>
 </project>
