@@ -2,7 +2,7 @@
 #$(@F) - Returns only the file portion of the value
 #- at the beginning of a line ignores errors.
 
-.PHONY: protogen api-gateway user
+.PHONY: protogen api-gateway user full
 
 #USERS := $(shell find user -type f -name '*.go')
 BINARY_NAME := users_app
@@ -25,10 +25,13 @@ gw-user:
 api-gateway:
 	docker build -f api-gateway/Dockerfile ./api-gateway
 
-compose:
-	docker-compose up -d --build
+full:
+	./full_local_build.sh
 
-compose-down:
+full_quick:
+	./full_local_build.sh -t
+
+down:
 	docker-compose down --rmi all
 
 help:
