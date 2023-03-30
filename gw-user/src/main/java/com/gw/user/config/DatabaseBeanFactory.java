@@ -1,6 +1,5 @@
 package com.gw.user.config;
 
-import com.gw.security.config.VaultInitializer;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import io.r2dbc.postgresql.PostgresqlConnectionConfiguration;
 import io.r2dbc.postgresql.PostgresqlConnectionFactory;
@@ -10,11 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.r2dbc.core.DatabaseClient;
-import org.springframework.vault.authentication.TokenAuthentication;
 import org.springframework.vault.core.VaultKeyValueOperationsSupport;
 import org.springframework.vault.core.VaultTemplate;
 import org.springframework.vault.support.VaultResponseSupport;
-import org.springframework.vault.support.VaultToken;
 
 import javax.sql.DataSource;
 import java.util.Map;
@@ -30,12 +27,12 @@ public class DatabaseBeanFactory {
     private static final String PORT = "port";
     private static final String VAULT_DB_SERVICE_NAME = "postgres/user_service";
 
-    @Bean
-    public VaultTemplate vaultTemplate(VaultInitializer vaultInitializer) {
-        VaultToken login = vaultInitializer.clientAuthentication().login();
-        return new VaultTemplate(vaultInitializer.vaultEndpoint(),
-                new TokenAuthentication(login.getToken()));
-    }
+//    @Bean
+//    public VaultTemplate vaultTemplate(VaultInitializer vaultInitializer) {
+//        VaultToken login = vaultInitializer.clientAuthentication().login();
+//        return new VaultTemplate(vaultInitializer.vaultEndpoint(),
+//                new TokenAuthentication(login.getToken()));
+//    }
 
     /*
     This bean is needed for Liquibase. LiquibaseAutoConfiguration looks for a DataSource bean as a pre-condition.
