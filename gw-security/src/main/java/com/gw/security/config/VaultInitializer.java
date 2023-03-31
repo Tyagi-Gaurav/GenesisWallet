@@ -17,7 +17,6 @@ public class VaultInitializer extends AbstractVaultConfiguration {
 
     @Override
     public VaultEndpoint vaultEndpoint() {
-        System.out.println("vaultEndpoint Properties: " + vaultProperties);
         var vaultEndpoint = VaultEndpoint.create(vaultProperties.host(), vaultProperties.port());
         vaultEndpoint.setScheme(vaultProperties.httpScheme());
         return vaultEndpoint;
@@ -25,7 +24,6 @@ public class VaultInitializer extends AbstractVaultConfiguration {
 
     @Override
     public ClientAuthentication clientAuthentication() {
-        System.out.println("ClientAuthentication Properties: " + vaultProperties);
         var initialToken = VaultToken.of(vaultProperties.token());
         AppRoleAuthenticationOptions options = AppRoleAuthenticationOptions
                 .builder()
@@ -36,11 +34,4 @@ public class VaultInitializer extends AbstractVaultConfiguration {
 
         return new AppRoleAuthentication(options, this.restOperations());
     }
-
-//    @Bean
-//    public VaultTemplate vaultTemplate(VaultInitializer vaultInitializer) {
-//        VaultToken login = vaultInitializer.clientAuthentication().login();
-//        return new VaultTemplate(vaultInitializer.vaultEndpoint(),
-//                new TokenAuthentication(login.getToken()));
-//    }
 }

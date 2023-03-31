@@ -27,13 +27,6 @@ public class DatabaseBeanFactory {
     private static final String PORT = "port";
     private static final String VAULT_DB_SERVICE_NAME = "postgres/user_service";
 
-//    @Bean
-//    public VaultTemplate vaultTemplate(VaultInitializer vaultInitializer) {
-//        VaultToken login = vaultInitializer.clientAuthentication().login();
-//        return new VaultTemplate(vaultInitializer.vaultEndpoint(),
-//                new TokenAuthentication(login.getToken()));
-//    }
-
     /*
     This bean is needed for Liquibase. LiquibaseAutoConfiguration looks for a DataSource bean as a pre-condition.
      */

@@ -8,14 +8,15 @@ import com.gw.user.resource.domain.LoginResponseDTO;
 import com.gw.user.resource.domain.UserCreateRequestDTO;
 import com.gw.user.service.UserService;
 import com.gw.user.service.domain.Role;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
+import javax.validation.Valid;
 import java.time.Duration;
 import java.util.UUID;
 
@@ -34,7 +35,7 @@ public class UserCreateResource {
             produces = "application/vnd+user.create.v1+json",
             path = "/user/create")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Mono<Void> createUser(@Valid @RequestBody UserCreateRequestDTO userCreateRequestDTO) {
+    public Mono<Void> createUser(@Validated @RequestBody UserCreateRequestDTO userCreateRequestDTO) {
         return userService.addUser(new User(
                 UUID.randomUUID(),
                 userCreateRequestDTO.firstName(),
