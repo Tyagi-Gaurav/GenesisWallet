@@ -57,7 +57,6 @@ public class UserJourneysTest {
     @ParameterizedTest
     @NullSource
     @ValueSource(strings = {"", "abc", "efuusidhfauihsdfuhiusdhfaiuhsfiuhiufhs"})
-    @Disabled
     void createUserWithInvalidUser(String userName) {
         var accountCreateRequestDTO = UserCreateRequestBuilder.userCreateRequest()
                 .withUserName(userName)
