@@ -17,6 +17,7 @@ accessible:
     "[POST-/api/user/login]": ${LOGIN_USER:true}
     "[GET-/actuator/info]": ${ACTUATOR_INFO:true}
     "[GET-/actuator/prometheus]": ${GET_METRICS:true}
+    "[GET-/actuator/mappings]": ${GET_MAPPINGS:true}
     "[GET-/api/v2/api-docs]": ${GET_SWAGGER_JSON:true}
     "[GET-/api/swagger-ui/]": ${GET_SWAGGER_UI:true}
     "[GET-/api/swagger-resources]": ${GET_SWAGGER_RESOURCES:true}

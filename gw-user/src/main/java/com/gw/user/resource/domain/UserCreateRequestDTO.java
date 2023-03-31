@@ -6,14 +6,16 @@ import com.gw.common.domain.Gender;
 import com.gw.common.validator.AlphaNumeric;
 import com.gw.common.validator.MaxLength;
 import com.gw.common.validator.MinLength;
+import org.springframework.validation.annotation.Validated;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+
 @JsonSerialize
 @JsonDeserialize
-@Valid
+//@Valid
+@Validated
 public record UserCreateRequestDTO(
         @NotNull @MinLength(4) @MaxLength(20) String userName,
         @AlphaNumeric @MinLength(6) @MaxLength(15) String password,

@@ -1,14 +1,12 @@
 package com.gw.security.util;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.bouncycastle.util.encoders.Encoder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 

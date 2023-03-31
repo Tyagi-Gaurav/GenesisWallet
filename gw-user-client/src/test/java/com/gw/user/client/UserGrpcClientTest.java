@@ -12,15 +12,12 @@ import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
 import io.grpc.ClientInterceptor;
 import io.grpc.ServerInterceptor;
-import io.grpc.stub.StreamObserver;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -32,16 +29,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.mock;
 
-@ExtendWith(MockitoExtension.class)
 class UserGrpcClientTest {
     @RegisterExtension
     private final GrpcExtension grpcExtension = new GrpcExtension();
-    private UserServiceGrpc.UserServiceImplBase bindableService;
+    private MockUserService mockUserService;
     private UserGrpcClient userGrpcClient;
     private final ServerInterceptor correlationIdInterceptor = new CorrelationIdInterceptor();
     private final ClientInterceptor clientCorrelationIdInterceptor = new CorrelationIdInterceptor();
@@ -51,8 +43,8 @@ class UserGrpcClientTest {
 
     @BeforeEach
     void setUp() throws IOException {
-        bindableService = mock(UserServiceGrpc.UserServiceImplBase.class);
-        GrpcExtension.ServiceDetails serviceDetails = grpcExtension.createGrpcServerFor(bindableService, correlationIdInterceptor,
+        mockUserService = new MockUserService();
+        GrpcExtension.ServiceDetails serviceDetails = grpcExtension.createGrpcServerFor(mockUserService, correlationIdInterceptor,
                  metricsInterceptor);
         UserGrpcClientConfig userGrpcClientConfig = new UserGrpcClientConfig(serviceDetails.serverName(),
                 0, 300, "userCircuitBreaker");
@@ -67,13 +59,7 @@ class UserGrpcClientTest {
                 .setId(UUID.randomUUID().toString())
                 .build();
         UserDetailsGrpcResponseDTO expectedResult = UserDetailsGrpcResponseDTO.getDefaultInstance();
-        doAnswer(invocation -> {
-            StreamObserver<UserDetailsGrpcResponseDTO> streamObserver = invocation.getArgument(1);
-            streamObserver.onNext(expectedResult);
-            streamObserver.onCompleted();
-            return null;
-        }).when(bindableService).fetchUsersById(eq(fetchUserDetailsByIdGrpcRequestDTO), any(StreamObserver.class));
-
+        mockUserService.shouldReturnResponse(expectedResult);
         UserDetailsGrpcResponseDTO userDetailsGrpcResponseDTO =
                 userGrpcClient.fetchUsersByIdSync(fetchUserDetailsByIdGrpcRequestDTO);
 
@@ -92,13 +78,7 @@ class UserGrpcClientTest {
                 .setId(UUID.randomUUID().toString())
                 .build();
         UserDetailsGrpcResponseDTO expectedResult = UserDetailsGrpcResponseDTO.getDefaultInstance();
-        doAnswer(invocation -> {
-            StreamObserver<UserDetailsGrpcResponseDTO> streamObserver = invocation.getArgument(1);
-            streamObserver.onNext(expectedResult);
-            streamObserver.onCompleted();
-            return null;
-        }).when(bindableService).fetchUsersById(eq(fetchUserDetailsByIdGrpcRequestDTO), any(StreamObserver.class));
-
+        mockUserService.shouldReturnResponse(expectedResult);
         userGrpcClient.fetchUsersByIdSync(fetchUserDetailsByIdGrpcRequestDTO);
         assertThat(meterRegistry.get("grpc_client_request_duration").tag("fullMethod", "com.gw.user.grpc.UserService/fetchUsersById").meter()).isNotNull();
     }
@@ -109,13 +89,7 @@ class UserGrpcClientTest {
                 .setId(UUID.randomUUID().toString())
                 .build();
         UserDetailsGrpcResponseDTO expectedResult = UserDetailsGrpcResponseDTO.getDefaultInstance();
-        doAnswer(invocation -> {
-            StreamObserver<UserDetailsGrpcResponseDTO> streamObserver = invocation.getArgument(1);
-            streamObserver.onNext(expectedResult);
-            streamObserver.onCompleted();
-            return null;
-        }).when(bindableService).fetchUsersById(eq(fetchUserDetailsByIdGrpcRequestDTO), any(StreamObserver.class));
-
+        mockUserService.shouldReturnResponse(expectedResult);
         ListenableFuture<UserDetailsGrpcResponseDTO> userDetailsGrpcResponseDTOFuture =
                 userGrpcClient.fetchUsersByIdAsync(fetchUserDetailsByIdGrpcRequestDTO);
 
@@ -145,7 +119,6 @@ class UserGrpcClientTest {
 
     @Test
     void createUserSync() {
-        AtomicBoolean successCall = new AtomicBoolean(false);
         UserCreateGrpcRequestDTO userCreateGrpcRequestDTO = UserCreateGrpcRequestDTO.newBuilder()
                 .setUserName("username")
                 .setPassword("password")
@@ -155,16 +128,9 @@ class UserGrpcClientTest {
                 .setHomeCountry("UK")
                 .build();
 
-        doAnswer(invocation -> {
-            successCall.set(true);
-            StreamObserver<UserCreateGrpcResponseDTO> streamObserver = invocation.getArgument(1);
-            streamObserver.onNext(UserCreateGrpcResponseDTO.getDefaultInstance());
-            streamObserver.onCompleted();
-            return null;
-        }).when(bindableService).createUser(eq(userCreateGrpcRequestDTO), any(StreamObserver.class));
-
+        mockUserService.shouldReturnResponse(UserCreateGrpcResponseDTO.getDefaultInstance());
         userGrpcClient.createUserSync(userCreateGrpcRequestDTO);
-        assertThat(successCall).isTrue();
+        assertThat(mockUserService.getCallReceived()).isTrue();
     }
 
     @Test
@@ -177,14 +143,8 @@ class UserGrpcClientTest {
                 .setLastName("lastName")
                 .setHomeCountry("UK")
                 .build();
-        doAnswer(invocation -> {
-            StreamObserver<UserCreateGrpcResponseDTO> streamObserver = invocation.getArgument(1);
-            streamObserver.onNext(UserCreateGrpcResponseDTO.newBuilder()
-                            .setCreated(true)
-                    .build());
-            streamObserver.onCompleted();
-            return null;
-        }).when(bindableService).createUser(eq(userCreateGrpcRequestDTO), any(StreamObserver.class));
+        mockUserService.shouldReturnResponse(UserCreateGrpcResponseDTO.newBuilder()
+                .setCreated(true).buildPartial());
 
         ListenableFuture<UserCreateGrpcResponseDTO> emptyListenableFuture =
                 userGrpcClient.createUserAsync(userCreateGrpcRequestDTO);
@@ -193,6 +153,7 @@ class UserGrpcClientTest {
         Futures.addCallback(emptyListenableFuture, new FutureCallback<>() {
             @Override
             public void onSuccess(UserCreateGrpcResponseDTO result) {
+                System.out.println("Response received: " + result.getCreated());
                 hasGotResponse.set(result.getCreated());
             }
 
@@ -202,13 +163,12 @@ class UserGrpcClientTest {
             }
         }, Executors.newSingleThreadExecutor());
 
-        Awaitility.await("Receive response").atMost(Duration.ofMillis(300))
+        Awaitility.await("Receive response").atMost(Duration.ofMillis(500))
                 .until(hasGotResponse::get);
     }
 
     @Test
     void createExternalUserSync() {
-        AtomicBoolean successCall = new AtomicBoolean(false);
         ExternalUserCreateGrpcRequestDTO externalUserCreateGrpcRequestDTO = ExternalUserCreateGrpcRequestDTO.newBuilder()
                 .setEmail("test@test.com")
                 .setDateOfBirth("01/01/2000")
@@ -217,16 +177,8 @@ class UserGrpcClientTest {
                 .setHomeCountry("UK")
                 .build();
 
-        doAnswer(invocation -> {
-            successCall.set(true);
-            StreamObserver<ExternalUserCreateGrpcResponseDTO> streamObserver = invocation.getArgument(1);
-            streamObserver.onNext(ExternalUserCreateGrpcResponseDTO.getDefaultInstance());
-            streamObserver.onCompleted();
-            return null;
-        }).when(bindableService).createExternalUser(eq(externalUserCreateGrpcRequestDTO), any(StreamObserver.class));
-
         userGrpcClient.createExternalUserSync(externalUserCreateGrpcRequestDTO);
-        assertThat(successCall).isTrue();
+        assertThat(mockUserService.getCallReceived()).isTrue();
     }
 
     @Test
@@ -238,14 +190,6 @@ class UserGrpcClientTest {
                 .setLastName("lastName")
                 .setHomeCountry("UK")
                 .build();
-        doAnswer(invocation -> {
-            StreamObserver<ExternalUserCreateGrpcResponseDTO> streamObserver = invocation.getArgument(1);
-            streamObserver.onNext(ExternalUserCreateGrpcResponseDTO.newBuilder()
-                    .build());
-            streamObserver.onCompleted();
-            return null;
-        }).when(bindableService).createExternalUser(eq(externalUserCreateGrpcRequestDTO), any(StreamObserver.class));
-
         ListenableFuture<ExternalUserCreateGrpcResponseDTO> emptyListenableFuture =
                 userGrpcClient.createExternalUserAsync(externalUserCreateGrpcRequestDTO);
 

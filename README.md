@@ -8,37 +8,15 @@
 
 # GenesisWallet
 
-# How to Setup Dev environment (Automate as much as possible)?
-  * Create AWS account and create a user which has programmatic admin access.
-  * Get Access key and Secret
-  * Install AWS CLI (Use the following link)
-      * https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
-  * run `aws configure`
-      * Provide access keys and secret
-      * Region: `eu-west-1`
-  * Create S3 bucket in the EU region (To be automated)
-    * Enable Encryption
-    * Enable bucket versioning
-  * From gw-infrastructure, execute
-    * `terraform init`
-    * `terraform plan`
-    * `terraform apply`
-
-# Local Setup
-
 ## Spin up stack locally
 `docker-compose up -d --build --remove-orphans`
 
-## Connecting to database
+## Connecting to database locally on docker
 ```
 docker exec -it local.postgres bash
 psql -h localhost -p 5432 -U user -d testUserDB
 ```
 To List tables: `\dt USER_SCHEMA.*`
-
-## How to create keystore for functional tests?
-
-## How to create keystore for dev functional tests?
 
 ## How to create keypair using ssh-keygen?
 ```
@@ -49,6 +27,7 @@ ssh-keygen -t ed25519 -q -N "" -f ./ssh_key
 * API Gateway (80)
 * User (9090/19090)
 * UI (8080)
+* Vault
 
 # Functional Features
 * User Creation

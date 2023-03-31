@@ -1,0 +1,31 @@
+scalar TimeStamp
+# When the exclamation point comes after the closing square bracket, it means that the field itself is non-nullable.
+# When the exclamation point comes before the closing square bracket, it means that the values contained in the list are non-nullable.
+type User {
+    id: ID!
+    firstName: String!,
+    lastName: String!,
+    email: String!,
+    password: String,
+    salt: String,
+    dateOfBirth: String,
+    gender: String,
+    homeCountry: String,
+    role: String!,
+    googleAttributes: GoogleAttributes,
+    lastLoginTime: TimeStamp!,
+    creationTimestamp: TimeStamp!,
+    modificationTimestamp: TimeStamp!
+}
+
+type GoogleAttributes {
+    googleId: ID!
+    locale: String!,
+    pictureUrl: String!,
+    tokenValue: String!,
+    tokenType: String!,
+    tokenExpiryTime: Int!,
+    creationTimestamp: TimeStamp!,
+    modificationTimestamp: TimeStamp!
+    parent: User!
+}

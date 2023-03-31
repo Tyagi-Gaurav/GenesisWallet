@@ -25,8 +25,8 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+      - name: Grant execute permission for mvnw
+        run: chmod +x mvnw
 
       - name: Create a release
         env:
@@ -88,10 +88,13 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build with Gradle without the test
+      - name: Install Protoc on the box
+        run: apt install -y protobuf-compiler
+
+      - name: Build without the test
         run: |
           echo "Microservice: ${{ matrix.region }}" >> $GITHUB_STEP_SUMMARY
-          ./gradlew clean build --info -x test -x integrationTest
+          ./mvnw clean package -DskipTests=true
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1

@@ -23,7 +23,7 @@ public class GenerateBuilderAnnotationProcessor extends AbstractProcessor {
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         for (Element e : roundEnv.getElementsAnnotatedWith(GenerateBuilder.class)) {
             if (e.getKind() != ElementKind.RECORD) {
-                processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING, "Annotaion @GenerateBuilder can only be used on a record", e);
+                processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING, "Annotation @GenerateBuilder can only be used on a record", e);
                 continue;
             }
             var clazz = e.getEnclosingElement();

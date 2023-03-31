@@ -2,36 +2,36 @@
 #$(@F) - Returns only the file portion of the value
 #- at the beginning of a line ignores errors.
 
-.PHONY: protogen api-gateway user
+.PHONY: protogen api-gateway user full
 
-USERS := $(shell find user -type f -name '*.go')
-GOCMD := go
+#USERS := $(shell find user -type f -name '*.go')
 BINARY_NAME := users_app
 MICROSERVICES:= user api-gateway
 
-protogen:
-	protoc --go-grpc_out=./user --go_out=./user ./user/proto/user_service.proto
+#protogen:
+#	protoc --go-grpc_out=./user --go_out=./user ./user/proto/user_service.proto
 
-#Download dependencies and put them into vendor
-vendor:
-	$(GOCMD) mod vendor
+mcp:
+	./mvnw clean package
 
-clean:
-	-rm -f out/*
-	-rmdir out
+mcpnt:
+	./mvnw clean package -DskipTests=true
 
-pre-process: clean protogen 
+pre-process: clean
 
-user: pre-process
-	docker build -f user/Dockerfile .
+gw-user:
+	docker build -f gw-user/Dockerfile .
 
 api-gateway:
 	docker build -f api-gateway/Dockerfile ./api-gateway
 
-compose:
-	docker-compose up -d --build
+full:
+	./full_local_build.sh
 
-compose-down:
+full_quick:
+	./full_local_build.sh -t
+
+down:
 	docker-compose down --rmi all
 
 help:

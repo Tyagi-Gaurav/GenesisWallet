@@ -1,6 +1,6 @@
 FROM openjdk:17
 
-ADD build/libs/gw-ui.war /data/ui.war
+ADD target/gw-ui-DEV-SNAPSHOT.jar /data/ui.jar
 
 COPY ./startup.sh /data/startup.sh
 
