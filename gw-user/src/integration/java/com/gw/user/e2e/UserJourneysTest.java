@@ -38,7 +38,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         "user.host=localhost",
         "user.port=${wiremock.server.port}"
 })
-public class UserJourneysTest {
+class UserJourneysTest {
     private ScenarioExecutor scenarioExecutor;
 
     @Autowired
