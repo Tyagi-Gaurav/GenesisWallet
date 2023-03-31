@@ -44,7 +44,7 @@
         <apache.httpclient.version>4.5.14</apache.httpclient.version>
         <spring-security-test.version>5.8.1</spring-security-test.version>
         <spring-cloud-contract-stub.version>3.1.4</spring-cloud-contract-stub.version>
-        <liquibase-core.version>4.17.1</liquibase-core.version>
+        <liquibase-core.version>4.20.0</liquibase-core.version>
         <postgresql.version>42.6.0</postgresql.version>
 
         <!-- Test Version -->
