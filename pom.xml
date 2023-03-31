@@ -44,11 +44,11 @@
         <apache.httpclient.version>4.5.14</apache.httpclient.version>
         <spring-security-test.version>5.8.1</spring-security-test.version>
         <spring-cloud-contract-stub.version>3.1.4</spring-cloud-contract-stub.version>
-        <liquibase-core.version>4.17.1</liquibase-core.version>
+        <liquibase-core.version>4.20.0</liquibase-core.version>
         <postgresql.version>42.6.0</postgresql.version>
 
         <!-- Test Version -->
-        <assertj.version>3.20.2</assertj.version>
+        <assertj.version>3.24.2</assertj.version>
         <junit.version>5.9.2</junit.version>
         <mockito.version>5.2.0</mockito.version>
         <mockito-junit-jupiter.version>2.17.0</mockito-junit-jupiter.version>
