@@ -19,7 +19,7 @@
         <module>gw-user</module>
         <module>gw-test-common</module>
         <module>gw-user-client</module>
-        <module>gw-functionalTest</module>
+        <module>api-functionalTest</module>
         <module>gw-ui</module>
     </modules>
 

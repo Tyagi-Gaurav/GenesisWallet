@@ -14,7 +14,7 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "maven"
-    directory: "/gw-functionalTest" # Location of package manifests
+    directory: "/api-functionalTest" # Location of package manifests
     schedule:
       interval: "weekly"
   - package-ecosystem: "maven"
