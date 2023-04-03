@@ -16,7 +16,7 @@
         <dependencies.cucumber.version>7.11.2</dependencies.cucumber.version>
         <skipTests>true</skipTests>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <sonar.exclusions>com/gw/functional/CucumberTest.java</sonar.exclusions>
+        <sonar.exclusions>**/com/gw/functional/CucumberTest.java</sonar.exclusions>
     </properties>
 
     <build>
