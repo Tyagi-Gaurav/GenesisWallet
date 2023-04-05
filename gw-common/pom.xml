@@ -20,7 +20,7 @@
         <jakarta.el.version>5.0.1</jakarta.el.version>
         <glassfish.expressly.version>5.0.0</glassfish.expressly.version>
         <!-- The version of jakarta validation should be same as what spring starter validator introduces.  -->
-        <jakarta.validation-api.version>2.0.2</jakarta.validation-api.version>
+        <jakarta.validation-api.version>3.0.2</jakarta.validation-api.version>
     </properties>
 
     <build>
