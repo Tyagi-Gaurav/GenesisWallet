@@ -42,6 +42,9 @@ services:
     container_name: local.gw-ui
     build:
       context: gw-ui
+    environment:
+      - OAUTH_CLIENT_ID_GOOGLE=${OAUTH_CLIENT_ID_GOOGLE}
+      - OAUTH_CLIENT_SECRET_GOOGLE=${OAUTH_CLIENT_SECRET_GOOGLE}
     ports:
       - "8080:8080"
       - "8081:8081"
