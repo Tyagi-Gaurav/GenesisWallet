@@ -40,7 +40,7 @@
         <c3p0.version>0.9.5.5</c3p0.version>
         <r2dbc-postgresql.version>0.8.13.RELEASE</r2dbc-postgresql.version>
         <swagger.version>3.0.0</swagger.version>
-        <postgresql.testcontainer.version>1.17.6</postgresql.testcontainer.version>
+        <postgresql.testcontainer.version>1.18.0</postgresql.testcontainer.version>
         <vault.testcontainer.version>1.18.0</vault.testcontainer.version>
         <apache.httpclient.version>4.5.14</apache.httpclient.version>
         <spring-security-test.version>6.0.2</spring-security-test.version>
