@@ -19,8 +19,9 @@
         <module>gw-user</module>
         <module>gw-test-common</module>
         <module>gw-user-client</module>
-        <module>gw-functionalTest</module>
+        <module>api-functional-test</module>
         <module>gw-ui</module>
+        <module>ui-functional-test</module>
     </modules>
 
     <properties>
