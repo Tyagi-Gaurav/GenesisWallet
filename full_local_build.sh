@@ -64,3 +64,4 @@ echo "Waiting for ${WAIT_TIME} seconds for container to come up"
 sleep ${WAIT_TIME}
 
 mvn test -DskipTests=false -pl api-functional-test
+mvn test -DskipTests=false -pl ui-functional-test

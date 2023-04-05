@@ -47,6 +47,6 @@ class OauthTest {
         WebElement element = driver.findElement(By.linkText("Sign-In with Google"));
         element.click();
 
-        assertThat(driver.getTitle()).isEqualTo("Sign in - Google accounts");
+        assertThat(driver.getTitle()).isEqualTo("Sign in – Google accounts");
     }
 }
