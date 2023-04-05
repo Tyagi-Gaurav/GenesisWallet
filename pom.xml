@@ -36,7 +36,7 @@
         <reactor.version>3.4.23</reactor.version>
         <grpc.version>1.54.0</grpc.version>
         <protobuf-java.version>3.22.2</protobuf-java.version>
-        <spring-data-r2dbc.version>2.7.5</spring-data-r2dbc.version>
+        <spring-data-r2dbc.version>3.0.5</spring-data-r2dbc.version>
         <c3p0.version>0.9.5.5</c3p0.version>
         <r2dbc-postgresql.version>0.8.13.RELEASE</r2dbc-postgresql.version>
         <swagger.version>3.0.0</swagger.version>
