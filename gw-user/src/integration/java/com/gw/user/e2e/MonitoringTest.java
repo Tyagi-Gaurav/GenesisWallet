@@ -30,7 +30,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
         "user.host=localhost",
         "user.port=${wiremock.server.port}"
 })
-public class MonitoringTest {
+class MonitoringTest {
     private ScenarioExecutor scenarioExecutor;
 
     @Autowired
@@ -57,6 +57,7 @@ public class MonitoringTest {
     void shouldBeAbleToAccessMetricsEndpoint() {
         scenarioExecutor
                 .accessMetricsEndpoint()
-                .then().expectReturnCode(200);
+                .then()
+                .expectReturnCode(200);
     }
 }
