@@ -1,14 +1,12 @@
 package com.gw.common.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.ConstructorBinding;
 
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @ConfigurationProperties("accessible")
-@ConstructorBinding
 public record AccessibleEndpointConfig(Map<String, Boolean> endpoints,
                                        Map<String, Boolean> endpointsRegex) {
 
