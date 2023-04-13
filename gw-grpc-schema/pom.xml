@@ -16,6 +16,7 @@
         <protoc.version>3.21.9</protoc.version>
         <sonar.skip>true</sonar.skip>
         <protobuf-maven-plugin.pluginArtifact.version>1.50.2</protobuf-maven-plugin.pluginArtifact.version>
+        <javax.annotation-api.version>1.3.2</javax.annotation-api.version>
     </properties>
 
     <dependencies>
@@ -46,11 +47,20 @@
         </dependency>
         <!-- GRPC Dependencies : END -->
 
+        <!-- javax Annotation Dependencies -->
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>${javax.annotation-api.version}</version>
+        </dependency>
+        <!-- javax Annotation Dependencies : END -->
+
         <!-- Test Dependencies -->
         <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-testing</artifactId>
         </dependency>
+        <!-- Test Dependencies : END -->
     </dependencies>
 
     <build>

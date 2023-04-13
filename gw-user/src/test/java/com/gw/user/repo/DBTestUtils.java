@@ -3,7 +3,7 @@ package com.gw.user.repo;
 import com.gw.common.domain.ExternalUser;
 import com.gw.common.domain.Gender;
 import com.gw.common.domain.User;
-import io.r2dbc.spi.Row;
+import io.r2dbc.spi.Readable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.r2dbc.core.DatabaseClient;
@@ -23,7 +23,7 @@ public class DBTestUtils {
         LOG.info("Adding user {}: ", user);
         String query = "INSERT INTO USER_SCHEMA.USER_TABLE (ID, EMAIL, FIRST_NAME, LAST_NAME, PASSWORD, SALT, DATE_OF_BIRTH, GENDER, HOME_COUNTRY, ROLE) " +
                 "values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)";
-        Mono<Integer> result = databaseClient.sql(query)
+        Mono<Long> result = databaseClient.sql(query)
                 .bind(0, user.id().toString())
                 .bind(1, user.email())
                 .bind(2, user.firstName())
@@ -37,7 +37,7 @@ public class DBTestUtils {
                 .fetch()
                 .rowsUpdated();
 
-        StepVerifier.create(result).expectNext(1).verifyComplete();
+        StepVerifier.create(result).expectNext(1L).verifyComplete();
         if (LOG.isInfoEnabled()) {
             LOG.info("User added with Id {}", user.id());
         }
@@ -49,7 +49,7 @@ public class DBTestUtils {
                 "PICTURE_URL, TOKEN_VALUE, TOKEN_TYPE, TOKEN_EXPIRY_TIME, EXTERNAL_SYSTEM, GENDER, DATE_OF_BIRTH, HOME_COUNTRY) " +
                 "values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)";
 
-        Mono<Integer> result = databaseClient.sql(query)
+        Mono<Long> result = databaseClient.sql(query)
                 .bind(0, user.id().toString())
                 .bind(1, user.email())
                 .bind(2, user.firstName())
@@ -66,7 +66,7 @@ public class DBTestUtils {
                 .fetch()
                 .rowsUpdated();
 
-        StepVerifier.create(result).expectNext(1).verifyComplete();
+        StepVerifier.create(result).expectNext(1L).verifyComplete();
         if (LOG.isInfoEnabled()) {
             LOG.info("External User added with Id {}", user.id());
         }
@@ -92,7 +92,7 @@ public class DBTestUtils {
                 .one();
     }
 
-    private static User toUserModel(Row row) {
+    private static User toUserModel(Readable row) {
         return new User.UserBuilder()
                 .setId(UUID.fromString(row.get("ID", String.class)))
                 .setEmail(row.get("EMAIL", String.class))
@@ -107,7 +107,7 @@ public class DBTestUtils {
                 .createUser();
     }
 
-    private static ExternalUser toExternalUserModel(Row row) {
+    private static ExternalUser toExternalUserModel(Readable row) {
         return new ExternalUser(
                 UUID.fromString(row.get("ID", String.class)),
                 row.get("EMAIL", String.class),
@@ -125,7 +125,7 @@ public class DBTestUtils {
     }
 
     public static void clearDatabase(DatabaseClient databaseClient) {
-        Mono<Integer> result = databaseClient.sql(DELETE_ALL_USERS)
+        Mono<Long> result = databaseClient.sql(DELETE_ALL_USERS)
                 .fetch()
                 .rowsUpdated();
 

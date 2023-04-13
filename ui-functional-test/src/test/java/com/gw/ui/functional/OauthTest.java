@@ -47,6 +47,6 @@ class OauthTest {
         WebElement element = driver.findElement(By.linkText("Sign-In with Google"));
         element.click();
 
-        assertThat(driver.getTitle()).contains("Sign in").contains("Google Accounts");
+        assertThat(driver.getTitle()).contains("Sign in").containsIgnoringCase("Google accounts");
     }
 }

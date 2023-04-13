@@ -1,9 +1,8 @@
 package com.gw.common.validator;
 
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import org.apache.commons.lang3.EnumUtils;
-
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 
 public class EnumValidator implements ConstraintValidator<ValidEnum, String> {
     private Class<? extends Enum> enumClass;
