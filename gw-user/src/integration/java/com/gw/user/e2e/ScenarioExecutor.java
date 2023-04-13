@@ -10,7 +10,7 @@ import com.gw.user.e2e.function.UserCreate;
 import com.gw.user.resource.domain.LoginRequestDTO;
 import com.gw.user.resource.domain.LoginResponseDTO;
 import com.gw.user.resource.domain.UserCreateRequestDTO;
-import io.r2dbc.spi.Row;
+import io.r2dbc.spi.Readable;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
@@ -88,7 +88,7 @@ public class ScenarioExecutor {
         return this;
     }
 
-    private UserDetailsResponseDTO toModel(Row row) {
+    private UserDetailsResponseDTO toModel(Readable row) {
         return new UserDetailsResponseDTO(
                 row.get("EMAIL", String.class),
                 row.get("FIRST_NAME", String.class),
