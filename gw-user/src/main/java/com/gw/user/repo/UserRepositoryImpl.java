@@ -3,7 +3,7 @@ package com.gw.user.repo;
 import com.gw.common.domain.ExternalUser;
 import com.gw.common.domain.Gender;
 import com.gw.common.domain.User;
-import io.r2dbc.spi.Row;
+import io.r2dbc.spi.Readable;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
@@ -40,6 +40,7 @@ public class UserRepositoryImpl implements UserRepository {
     public Mono<User> findUserById(UUID id) {
         return databaseClient.sql(FIND_USER_BY_ID)
                 .bind("id", id.toString())
+                //.map(this::toUserModel)
                 .map(this::toUserModel)
                 .one();
     }
@@ -95,7 +96,7 @@ public class UserRepositoryImpl implements UserRepository {
                 .one();
     }
 
-    private User toUserModel(Row row) {
+    private User toUserModel(Readable row) {
         return new User.UserBuilder()
                 .setId(UUID.fromString(row.get("ID", String.class)))
                 .setEmail(row.get(EMAIL, String.class))
@@ -108,7 +109,7 @@ public class UserRepositoryImpl implements UserRepository {
                 .createUser();
     }
 
-    private ExternalUser toExternalUserModel(Row row) {
+    private ExternalUser toExternalUserModel(Readable row) {
         return new ExternalUser(
                 UUID.fromString(row.get("ID", String.class)),
                 row.get("EMAIl", String.class),
@@ -125,7 +126,7 @@ public class UserRepositoryImpl implements UserRepository {
                 row.get(HOME_COUNTRY, String.class));
     }
 
-    private User toFullModel(Row row) {
+    private User toFullModel(Readable row) {
         return new User.UserBuilder()
                 .setId(UUID.fromString(row.get("ID", String.class)))
                 .setEmail(row.get(EMAIL, String.class))

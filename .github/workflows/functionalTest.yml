@@ -45,5 +45,8 @@ jobs:
       with:
         time: '10s'
 
-    - name: Run test suite
-      run: ./mvnw test -DskipTests=false -pl gw-functionalTest
+    - name: Run API test suite
+      run: ./mvnw test -DskipTests=false -pl api-functional-test
+
+    - name: Run UI test suite
+      run: ./mvnw test -DskipTests=false -pl ui-functional-test

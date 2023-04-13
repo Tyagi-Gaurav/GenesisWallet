@@ -6,10 +6,9 @@ import com.gw.common.domain.Gender;
 import com.gw.common.validator.AlphaNumeric;
 import com.gw.common.validator.MaxLength;
 import com.gw.common.validator.MinLength;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import org.springframework.validation.annotation.Validated;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 
 @JsonSerialize

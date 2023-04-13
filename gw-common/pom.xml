@@ -16,11 +16,10 @@
         <jwt-api.version>0.11.5</jwt-api.version>
         <resilience-4j.version>2.0.2</resilience-4j.version>
         <hibernate.validator.version>8.0.0.Final</hibernate.validator.version>
-        <javax.validator.version>2.0.1.Final</javax.validator.version>
         <jakarta.el.version>5.0.1</jakarta.el.version>
         <glassfish.expressly.version>5.0.0</glassfish.expressly.version>
-        <!-- The version of jakarta validation should be same as what spring starter validator introduces.  -->
-        <jakarta.validation-api.version>2.0.2</jakarta.validation-api.version>
+        <!-- The version of jakarta validation should be same as what spring starter validator introduces. -->
+        <jakarta.validation-api.version>3.0.2</jakarta.validation-api.version>
     </properties>
 
     <build>

@@ -71,5 +71,13 @@ services:
     networks:
       - overlay
 
+  selenium-chrome:
+    container_name: selenium-chrome
+    image: selenium/standalone-chrome:111.0
+    ports:
+      - "4444:4444"
+    networks:
+      - overlay
+
 networks:
   overlay:
