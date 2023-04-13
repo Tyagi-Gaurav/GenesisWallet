@@ -33,7 +33,7 @@
         <slf4j.version>2.0.7</slf4j.version>
         <micrometer-core.version>1.10.5</micrometer-core.version>
         <micrometer-registry-prometheus.version>1.10.5</micrometer-registry-prometheus.version>
-        <reactor.version>3.5.0</reactor.version>
+        <reactor.version>3.5.5</reactor.version>
         <grpc.version>1.54.0</grpc.version>
         <protobuf-java.version>3.22.2</protobuf-java.version>
         <spring-data-r2dbc.version>3.0.5</spring-data-r2dbc.version>
