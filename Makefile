@@ -14,6 +14,9 @@ MICROSERVICES:= user api-gateway
 mcp:
 	./mvnw clean package
 
+mci:
+	./mvnw clean install
+
 mcpnt:
 	./mvnw clean package -DskipTests=true
 
