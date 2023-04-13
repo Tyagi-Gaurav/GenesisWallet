@@ -27,7 +27,7 @@
     <properties>
         <!-- Production Version -->
         <spring.boot.version>3.0.5</spring.boot.version>
-        <spring.version>6.0.7</spring.version>
+        <spring.version>6.0.8</spring.version>
         <spring.vault.version>3.0.2</spring.vault.version>
         <apache.commons.version>3.12.0</apache.commons.version>
         <slf4j.version>2.0.7</slf4j.version>
