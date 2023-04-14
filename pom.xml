@@ -11,7 +11,7 @@
     <modules>
         <module>gw-api-gateway</module>
         <module>gw-common</module>
-        <module>gw-annotations</module>
+        <module>common-annotations</module>
         <module>gw-security</module>
         <module>gw-grpc-common</module>
         <module>gw-infrastructure</module>
