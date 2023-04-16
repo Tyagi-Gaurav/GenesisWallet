@@ -2,6 +2,7 @@ package com.gw.api.functional.resource;
 
 import com.gw.api.functional.config.ApiGatewayConfig;
 import com.gw.api.functional.domain.TestLoginRequestDTO;
+import com.gw.api.functional.domain.TestLoginResponseDTO;
 import com.gw.api.functional.util.ResponseHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -24,12 +25,11 @@ public class TestLoginResource extends AbstractResource {
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.CONTENT_TYPE, "application/vnd.login.v1+json");
         HttpEntity<TestLoginRequestDTO> request = new HttpEntity<>(testLoginRequestDTO, headers);
-        responseHolder.setResponse(this.post(fullUrl, request, String.class));
+        responseHolder.addResponse(this.post(fullUrl, request, String.class), TestLoginResponseDTO.class);
 
         if (responseHolder.getResponseCode() == 200) {
-            TestLoginResponseDTO testLoginResponseDTO = responseHolder.readResponse(TestLoginResponseDTO.class);
+            TestLoginResponseDTO testLoginResponseDTO = responseHolder.getResponse(TestLoginResponseDTO.class);
             responseHolder.storeUserToken(testLoginResponseDTO.token());
-            responseHolder.storeUserId(testLoginResponseDTO.id());
         }
     }
 

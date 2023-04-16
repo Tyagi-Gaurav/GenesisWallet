@@ -21,6 +21,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 import static com.gw.user.testutils.UserBuilder.aUser;
+import static java.util.UUID.fromString;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.refEq;
 import static org.mockito.Mockito.when;
@@ -42,8 +43,9 @@ class UserCreateResourceTest {
     @Test
     void createUser() {
         UserCreateRequestDTO userCreateRequestDTO = DtoBuilder.testAccountCreateRequestDTO();
+        UUID userId = UUID.randomUUID();
         User user = new User(
-                UUID.randomUUID(),
+                userId,
                 userCreateRequestDTO.firstName(),
                 userCreateRequestDTO.lastName(),
                 userCreateRequestDTO.userName(),
@@ -53,9 +55,13 @@ class UserCreateResourceTest {
                 userCreateRequestDTO.homeCountry(),
                 Role.REGISTERED_USER.name());
 
-        when(userService.addUser(refEq(user, "id"))).thenReturn(Mono.empty());
+        when(userService.addUser(refEq(user, "id")))
+                .thenReturn(Mono.empty());
 
         StepVerifier.create(userCreateResource.createUser(userCreateRequestDTO))
+                .consumeNextWith(responseDto -> {
+                    fromString(responseDto.userId());
+                })
                 .verifyComplete();
     }
 

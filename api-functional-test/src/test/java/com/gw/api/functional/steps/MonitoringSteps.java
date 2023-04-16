@@ -28,19 +28,19 @@ public class MonitoringSteps implements En {
         });
 
         Then("the response should contain following metrics", (DataTable metrics) -> {
-            String metricsFromServer = responseHolder.readResponse(String.class);
+            String metricsFromServer = responseHolder.getResponse(String.class);
             assertThat(metrics.asList().stream()
                     .allMatch(metricsFromServer::contains)).isTrue();
         });
 
         Given("^that metrics are captured$", () -> {
             testMonitoringResource.accessMetrics();
-            responseHolder.storeMetrics(responseHolder.readResponse(String.class));
+            responseHolder.storeMetrics(responseHolder.getResponse(String.class));
         });
 
         Then("^total registration metrics is incremented by (\\d+)$", (Integer increment) -> {
             String oldMetrics = responseHolder.getMetrics();
-            String newMetrics = responseHolder.readResponse(String.class);
+            String newMetrics = responseHolder.getResponse(String.class);
 
             Double user_registration_count_old = getValue(oldMetrics, "user_registration_count_total", "source", "WEB", "type", "HOMEPAGE");
             Double user_registration_count_new = getValue(newMetrics, "user_registration_count_total");

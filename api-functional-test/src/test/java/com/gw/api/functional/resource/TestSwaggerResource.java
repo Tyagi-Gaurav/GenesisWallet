@@ -20,6 +20,6 @@ public class TestSwaggerResource extends AbstractResource {
         String fullUrl = getUrl(apiGatewayConfig.host().trim(),
                 apiGatewayConfig.userContextPath(),
                 "/user/swagger-ui", apiGatewayConfig.port());
-        responseHolder.setResponse(this.get(fullUrl, new HttpEntity(HttpHeaders.EMPTY), String.class));
+        responseHolder.addResponse(this.get(fullUrl, new HttpEntity(HttpHeaders.EMPTY), String.class));
     }
 }

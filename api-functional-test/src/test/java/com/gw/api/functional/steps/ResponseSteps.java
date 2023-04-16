@@ -1,11 +1,14 @@
 package com.gw.api.functional.steps;
 
+import com.gw.api.functional.domain.TestAccountCreateResponseDTO;
 import com.gw.api.functional.domain.TestLoginResponseDTO;
 import com.gw.api.functional.util.ResponseHolder;
 import io.cucumber.java8.En;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static java.util.UUID.fromString;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 
 public class ResponseSteps implements En {
     @Autowired
@@ -17,7 +20,7 @@ public class ResponseSteps implements En {
         });
 
         And("^the user login response contains an authorisation token in the response", () -> {
-            TestLoginResponseDTO testLoginResponseDTO = responseHolder.readResponse(TestLoginResponseDTO.class);
+            TestLoginResponseDTO testLoginResponseDTO = responseHolder.getResponse(TestLoginResponseDTO.class);
             assertThat(testLoginResponseDTO.token()).isNotEmpty();
         });
 
@@ -26,8 +29,14 @@ public class ResponseSteps implements En {
         });
 
         Then("^the response should be a success status$", () -> {
-            String response = responseHolder.readResponse(String.class);
+            String response = responseHolder.getResponse(String.class);
             assertThat(response).isEqualTo("{\"status\":\"UP\"}");
+        });
+
+        And("^the userId is received in the response$", () -> {
+            TestAccountCreateResponseDTO response = responseHolder.getResponse(TestAccountCreateResponseDTO.class);
+            assertThat(response.userId()).isNotNull();
+            assertThatNoException().isThrownBy(() -> fromString(response.userId()));
         });
     }
 }

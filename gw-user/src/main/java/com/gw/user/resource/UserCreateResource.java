@@ -6,6 +6,7 @@ import com.gw.common.util.TokenManager;
 import com.gw.user.resource.domain.LoginRequestDTO;
 import com.gw.user.resource.domain.LoginResponseDTO;
 import com.gw.user.resource.domain.UserCreateRequestDTO;
+import com.gw.user.resource.domain.UserCreateResponseDTO;
 import com.gw.user.service.UserService;
 import com.gw.user.service.domain.Role;
 import jakarta.validation.Valid;
@@ -35,9 +36,10 @@ public class UserCreateResource {
             produces = "application/vnd+user.create.v1+json",
             path = "/user/create")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Mono<Void> createUser(@Validated @RequestBody UserCreateRequestDTO userCreateRequestDTO) {
+    public Mono<UserCreateResponseDTO> createUser(@Validated @RequestBody UserCreateRequestDTO userCreateRequestDTO) {
+        UUID userId = UUID.randomUUID();
         return userService.addUser(new User(
-                UUID.randomUUID(),
+                userId,
                 userCreateRequestDTO.firstName(),
                 userCreateRequestDTO.lastName(),
                 userCreateRequestDTO.userName(),
@@ -45,7 +47,8 @@ public class UserCreateResource {
                 userCreateRequestDTO.dateOfBirth(),
                 userCreateRequestDTO.gender(),
                 userCreateRequestDTO.homeCountry(),
-                Role.REGISTERED_USER.name()));
+                Role.REGISTERED_USER.name()))
+                .thenReturn(new UserCreateResponseDTO(userId.toString()));
     }
 
     @PostMapping(consumes = "application/vnd.login.v1+json",

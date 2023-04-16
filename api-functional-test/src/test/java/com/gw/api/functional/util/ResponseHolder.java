@@ -2,33 +2,43 @@ package com.gw.api.functional.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.annotation.PreDestroy;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Component
 public class ResponseHolder {
-    private final List<ResponseEntity> previousResponses = new ArrayList<>();
+
+    private ResponseEntity responseEntity;
+    private final Map<String, Responses> responseMap = new HashMap<>();
     private final ObjectMapper objectMapper = new ObjectMapper();
     private String token;
     private String userId;
     private String metrics;
 
-    public void setResponse(ResponseEntity entity) {
-        previousResponses.add(0, entity);
+    public <T> void addResponse(ResponseEntity entity, Class<T> clazz) {
+        this.responseEntity = entity;
+        if (entity.getStatusCode().is2xxSuccessful()) {
+            T response = read(entity, clazz);
+            responseMap.put(clazz.getSimpleName(), new Responses(entity.getHeaders(), response));
+        }
+    }
+
+    public void addResponse(ResponseEntity entity) {
+        responseEntity = entity;
     }
 
     public int getResponseCode() {
-        return Optional.ofNullable(getLastResponse()).map(resp -> resp.getStatusCode().value()).orElse(-1);
+        return Optional.ofNullable(responseEntity).map(resp -> resp.getStatusCode().value()).orElseThrow(IllegalStateException::new);
     }
 
-    public <T> T readResponse(Class<T> clazz) {
-        return read(getLastResponse(), clazz);
+    public <T> T getResponse(Class<T> clazz) {
+        var responses = responseMap.get(clazz.getSimpleName());
+        return (T) responses.bodyObject();
     }
 
     private <T> T read(ResponseEntity responseEntity, Class<T> clazz) {
@@ -46,22 +56,7 @@ public class ResponseHolder {
     }
 
     public HttpHeaders getHeaders() {
-        return getLastResponse().getHeaders();
-    }
-
-    public <T> T getPreviousResponse(int index, Class<T> clazz) {
-        Optional<ResponseEntity> previousResponseEntity = Optional.ofNullable(previousResponses.get(index));
-        ResponseEntity responseEntity = previousResponseEntity.orElseThrow(IllegalStateException::new);
-        return read(responseEntity, clazz);
-    }
-
-    private ResponseEntity getLastResponse() {
-        return previousResponses.size() > 0 ? previousResponses.get(0) : null;
-    }
-
-    @PreDestroy
-    public void clearResponses() {
-        previousResponses.clear();
+        return responseEntity.getHeaders();
     }
 
     public void storeUserToken(String token) {
@@ -83,4 +78,6 @@ public class ResponseHolder {
     public String getMetrics() {
         return metrics;
     }
+
+    private record Responses(HttpHeaders httpHeaders, Object bodyObject) {}
 }

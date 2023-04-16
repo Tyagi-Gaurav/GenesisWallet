@@ -5,6 +5,7 @@ import com.gw.api.functional.domain.TestAccountCreateRequestDTO;
 import com.gw.api.functional.domain.TestGender;
 import com.gw.api.functional.domain.TestLoginRequestDTO;
 import com.gw.api.functional.resource.TestAccountCreateResource;
+import com.gw.api.functional.resource.TestAccountDetailsRequestResource;
 import com.gw.api.functional.resource.TestLoginResource;
 import com.gw.api.functional.util.ResponseHolder;
 import io.cucumber.java8.En;
@@ -17,6 +18,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UserSteps implements En {
     @Autowired
     private TestAccountCreateResource testAccountCreateResource;
+    @Autowired
+    private TestAccountDetailsRequestResource testAccountDetailsRequestResource;
     @Autowired
     private ScenarioContext scenarioContext;
     @Autowired
@@ -111,6 +114,10 @@ public class UserSteps implements En {
 
             scenarioContext.storeCredentialsRequest(testAccountCreateRequestDTO);
             testAccountCreateResource.createWithHttp(testAccountCreateRequestDTO);
+        });
+
+        When("^the user service is requested for user details$", () -> {
+            //testAccountDetailsRequestResource.getUserDetails();
         });
     }
 

@@ -13,7 +13,6 @@ import org.springframework.validation.annotation.Validated;
 
 @JsonSerialize
 @JsonDeserialize
-//@Valid
 @Validated
 public record UserCreateRequestDTO(
         @NotNull @MinLength(4) @MaxLength(20) String userName,
