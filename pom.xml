@@ -52,7 +52,7 @@
         <!-- Test Version -->
         <assertj.version>3.24.2</assertj.version>
         <junit.version>5.9.2</junit.version>
-        <mockito.version>5.2.0</mockito.version>
+        <mockito.version>5.3.0</mockito.version>
         <mockito-junit-jupiter.version>5.2.0</mockito-junit-jupiter.version>
         <awaitility.version>4.2.0</awaitility.version>
         <wiremock.version>2.35.0</wiremock.version>
