@@ -6,8 +6,9 @@ import com.gw.user.e2e.domain.UserDetailsResponseDTO;
 import com.gw.user.e2e.security.TestContainerVaultInitializer;
 import com.gw.user.repo.TestContainerDatabaseInitializer;
 import com.gw.user.resource.domain.LoginResponseDTO;
+import com.gw.user.resource.domain.UserCreateResponseDTO;
+import com.gw.user.resource.domain.UserDetailsFetchResponseDTO;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -99,5 +100,21 @@ class UserJourneysTest {
                 .thenAssertThat(loginResponse ->
                     assertThat(loginResponse.token()).isNotEmpty()
                 , LoginResponseDTO.class);
+    }
+
+    @Test
+    void fetchUserDetailsAfterLogin() {
+        var userCreateRequestDTO = UserCreateRequestBuilder.userCreateRequest().build();
+
+        scenarioExecutor
+                .when().userIsCreatedFor(userCreateRequestDTO).expectReturnCode(201)
+                .fetchUserDetailsUsing(UserCreateResponseDTO.class)
+                .thenAssertThat(userFetched -> {
+                    assertThat(userFetched.firstName()).isEqualTo(userCreateRequestDTO.firstName());
+                    assertThat(userFetched.lastName()).isEqualTo(userCreateRequestDTO.lastName());
+                    assertThat(userFetched.gender()).isEqualTo(userCreateRequestDTO.gender());
+                    assertThat(userFetched.dateOfBirth()).isEqualTo(userCreateRequestDTO.dateOfBirth());
+                    assertThat(userFetched.homeCountry()).isEqualTo(userCreateRequestDTO.homeCountry());
+                }, UserDetailsFetchResponseDTO.class);
     }
 }

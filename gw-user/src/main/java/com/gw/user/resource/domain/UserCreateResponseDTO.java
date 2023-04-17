@@ -8,5 +8,5 @@ import org.springframework.validation.annotation.Validated;
 @JsonSerialize
 @JsonDeserialize
 @Validated
-public record UserCreateResponseDTO(String userId) {
+public record UserCreateResponseDTO(String userId) implements WithUserId {
 }

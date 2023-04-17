@@ -3,13 +3,8 @@ package com.gw.user.e2e;
 import com.gw.common.domain.Gender;
 import com.gw.user.e2e.builder.LoginRequestBuilder;
 import com.gw.user.e2e.domain.UserDetailsResponseDTO;
-import com.gw.user.e2e.function.AccessStatus;
-import com.gw.user.e2e.function.Login;
-import com.gw.user.e2e.function.MetricStatus;
-import com.gw.user.e2e.function.UserCreate;
-import com.gw.user.resource.domain.LoginRequestDTO;
-import com.gw.user.resource.domain.LoginResponseDTO;
-import com.gw.user.resource.domain.UserCreateRequestDTO;
+import com.gw.user.e2e.function.*;
+import com.gw.user.resource.domain.*;
 import io.r2dbc.spi.Readable;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -47,6 +42,9 @@ public class ScenarioExecutor {
 
     public ScenarioExecutor userIsCreatedFor(UserCreateRequestDTO userCreateRequestDTO) {
         this.responseSpec = new UserCreate().apply(webTestClient, userCreateRequestDTO);
+        UserCreateResponseDTO userCreateResponseDTO = this.responseSpec.returnResult(UserCreateResponseDTO.class)
+                .getResponseBody().blockFirst();
+        responses.put(UserCreateResponseDTO.class, userCreateResponseDTO);
         return this;
     }
 
@@ -126,6 +124,15 @@ public class ScenarioExecutor {
 
     public ScenarioExecutor accessMetricsEndpoint() {
         this.responseSpec = new MetricStatus().apply(webTestClient);
+        return this;
+    }
+
+    public ScenarioExecutor fetchUserDetailsUsing(Class<? extends WithUserId> clazz) {
+        WithUserId userIdProvider = getResponseOfType(clazz);
+        this.responseSpec = new FetchUser().apply(webTestClient, userIdProvider.userId());
+        UserDetailsFetchResponseDTO userDetailsFetchResponseDTO = this.responseSpec.returnResult(UserDetailsFetchResponseDTO.class)
+                .getResponseBody().blockFirst();
+        responses.put(UserDetailsFetchResponseDTO.class, userDetailsFetchResponseDTO);
         return this;
     }
 }

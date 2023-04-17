@@ -25,6 +25,7 @@ accessible:
     "[GET-/api/swagger-resources/.*]": ${GET_SWAGGER_RESOURCES:true}
     "[GET-/api/swagger-ui/.*]": ${GET_SWAGGER_UI_RESOURCES:true}
     "[GET-/actuator/healthcheck/.*]": ${ACTUATOR_HEALTH_CUSTOM:true}
+    "[GET-/api/user/details/.*]": ${FETCH_USER:true}
 
 management:
   server.port: ${SERVER_MGT_PORT:9091}

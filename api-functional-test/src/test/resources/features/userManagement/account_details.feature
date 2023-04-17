@@ -6,9 +6,7 @@ Feature: Users should be able to retrieve their details from the account
       | firstName | lastName | userName | password | dateOfBirth | gender | homeCountry |
       | bcssdf    | defdsfdf | <random> | <random> | 19/03/1972  | MALE   | AUS         |
     And the response should be received with HTTP status code 201
-
-  # TODO
-#    When the user service is requested for user details
-#    Then the following user details are returned in the response
-#      | firstName | lastName | userName | dateOfBirth | gender | homeCountry |
-#      | bcssdf    | defdsfdf | <random> | 19/03/1972  | MALE   | AUS         |
+    When the user service is requested for user details
+    Then the following user details are returned in the response
+      | firstName | lastName | dateOfBirth | gender | homeCountry |
+      | bcssdf    | defdsfdf | 19/03/1972  | MALE   | AUS         |

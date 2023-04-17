@@ -1,9 +1,7 @@
 package com.gw.api.functional.steps;
 
 import com.gw.api.functional.config.ScenarioContext;
-import com.gw.api.functional.domain.TestAccountCreateRequestDTO;
-import com.gw.api.functional.domain.TestGender;
-import com.gw.api.functional.domain.TestLoginRequestDTO;
+import com.gw.api.functional.domain.*;
 import com.gw.api.functional.resource.TestAccountCreateResource;
 import com.gw.api.functional.resource.TestAccountDetailsRequestResource;
 import com.gw.api.functional.resource.TestLoginResource;
@@ -117,7 +115,13 @@ public class UserSteps implements En {
         });
 
         When("^the user service is requested for user details$", () -> {
-            //testAccountDetailsRequestResource.getUserDetails();
+            var accountCreateResponseDTO = responseHolder.getResponse(TestAccountCreateResponseDTO.class);
+            testAccountDetailsRequestResource.getUserDetails(accountCreateResponseDTO.userId());
+        });
+
+        Then("^the following user details are returned in the response$", (TestUserDetailsFetchResponseDTO expectedDetails) -> {
+            var response = responseHolder.getResponse(TestUserDetailsFetchResponseDTO.class);
+            assertThat(response).isEqualTo(expectedDetails);
         });
     }
 

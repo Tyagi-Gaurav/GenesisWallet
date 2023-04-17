@@ -13,7 +13,7 @@ Feature: Users should be able to Login
       | FEMALE      |
       | MALE        |
 
-  # TODO
+# TODO
 #  Scenario: User should be able to login only from single place
 #    Given a user attempts to create a new account with following details
 #      | firstName | lastName | userName | password | dateOfBirth | gender | homeCountry |
