@@ -116,12 +116,18 @@ public class UserSteps implements En {
 
         When("^the user service is requested for user details$", () -> {
             var accountCreateResponseDTO = responseHolder.getResponse(TestAccountCreateResponseDTO.class);
-            testAccountDetailsRequestResource.getUserDetails(accountCreateResponseDTO.userId());
+            var loginResponseDTO = responseHolder.getResponse(TestLoginResponseDTO.class);
+            testAccountDetailsRequestResource.getUserDetails(accountCreateResponseDTO.userId(),
+                    loginResponseDTO.token());
         });
 
         Then("^the following user details are returned in the response$", (TestUserDetailsFetchResponseDTO expectedDetails) -> {
             var response = responseHolder.getResponse(TestUserDetailsFetchResponseDTO.class);
             assertThat(response).isEqualTo(expectedDetails);
+        });
+        When("^the user service is requested for user details without login$", () -> {
+            var accountCreateResponseDTO = responseHolder.getResponse(TestAccountCreateResponseDTO.class);
+            testAccountDetailsRequestResource.getUserDetails(accountCreateResponseDTO.userId(), "");
         });
     }
 

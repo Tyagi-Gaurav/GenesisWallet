@@ -108,7 +108,10 @@ class UserJourneysTest {
 
         scenarioExecutor
                 .when().userIsCreatedFor(userCreateRequestDTO).expectReturnCode(201)
-                .fetchUserDetailsUsing(UserCreateResponseDTO.class)
+                .userLoginsWith(userCreateRequestDTO).expectReturnCode(200)
+                .fetchUserDetailsUsing(
+                        UserCreateResponseDTO.class,
+                        LoginResponseDTO.class).expectReturnCode(200)
                 .thenAssertThat(userFetched -> {
                     assertThat(userFetched.firstName()).isEqualTo(userCreateRequestDTO.firstName());
                     assertThat(userFetched.lastName()).isEqualTo(userCreateRequestDTO.lastName());

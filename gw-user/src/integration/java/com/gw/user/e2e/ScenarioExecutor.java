@@ -127,9 +127,14 @@ public class ScenarioExecutor {
         return this;
     }
 
-    public ScenarioExecutor fetchUserDetailsUsing(Class<? extends WithUserId> clazz) {
-        WithUserId userIdProvider = getResponseOfType(clazz);
-        this.responseSpec = new FetchUser().apply(webTestClient, userIdProvider.userId());
+    public ScenarioExecutor fetchUserDetailsUsing(Class<? extends WithUserId> userIdClazz,
+                                                  Class<? extends WithUserToken> tokenClazz) {
+        WithUserId userIdProvider = getResponseOfType(userIdClazz);
+        WithUserToken tokenProvider = getResponseOfType(tokenClazz);
+        this.responseSpec = new FetchUser(
+                userIdProvider.userId(),
+                tokenProvider.token())
+                .apply(webTestClient);
         UserDetailsFetchResponseDTO userDetailsFetchResponseDTO = this.responseSpec.returnResult(UserDetailsFetchResponseDTO.class)
                 .getResponseBody().blockFirst();
         responses.put(UserDetailsFetchResponseDTO.class, userDetailsFetchResponseDTO);

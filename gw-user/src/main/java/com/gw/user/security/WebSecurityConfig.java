@@ -33,7 +33,10 @@ public class WebSecurityConfig {
         return httpSecurity
                 .csrf().disable()
                 .authorizeExchange()
-                .pathMatchers("/actuator/**", "/v2/**", "/user/**", "/swagger-ui/**", "/swagger-resources/**").permitAll()
+                .pathMatchers("/actuator/**", "/v2/**", "/swagger-ui/**",
+                        "/user/create",
+                        "/user/login",
+                        "/swagger-resources/**").permitAll()
                 .anyExchange().authenticated().and()
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
