@@ -38,19 +38,20 @@ public class TokenManager {
                 .compact();
     }
 
-    private static Map<String, Object> addClaimsV2(String authorities) {
-        return Map.of("Authorities", authorities);
+    private static Map<String, Object> addClaimsV2(String authorities, String userId) {
+        return Map.of("Authorities", authorities,
+                "userId", userId);
     }
 
     public String generateToken(User user,
                                 Duration tokenDuration) {
-        Map<String, Object> claims = addClaimsV2(user.role());
-        return doGenerateToken(claims, user.email(), user.id(), tokenDuration);
+        Map<String, Object> claims = addClaimsV2(user.role(), user.id().toString());
+        return doGenerateToken(claims, user.email(), UUID.randomUUID(), tokenDuration);
     }
 
     public static class Token {
         private final String tokenAsString;
-        private Key signingKey;
+        private final Key signingKey;
 
         public Token(String tokenAsString, Key signingKey) {
             this.tokenAsString = tokenAsString;
@@ -58,16 +59,19 @@ public class TokenManager {
         }
 
         public <T> T getClaimFromToken(Function<Claims, T> claimsResolver) {
-            Claims claims = Jwts.parserBuilder().setSigningKey(signingKey)
+            return claimsResolver.apply(parseClaims());
+        }
+
+        private Claims parseClaims() {
+            return Jwts.parserBuilder().setSigningKey(signingKey)
                     .build()
                     .parseClaimsJws(tokenAsString).getBody();
-            return claimsResolver.apply(claims);
         }
 
         public String getUserId() {
             try {
-                return getClaimFromToken(Claims::getId);
-            } catch(ExpiredJwtException e) {
+                return (String) parseClaims().get("userId");
+            } catch (ExpiredJwtException e) {
                 LOG.warn("Expired user token found");
                 return null;
             }
@@ -90,7 +94,7 @@ public class TokenManager {
             try {
                 getUsernameFromToken();
                 return true;
-            } catch(Exception e) {
+            } catch (Exception e) {
                 return false;
             }
         }

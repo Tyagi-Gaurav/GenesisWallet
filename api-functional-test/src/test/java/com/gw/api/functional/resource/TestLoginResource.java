@@ -26,11 +26,5 @@ public class TestLoginResource extends AbstractResource {
         headers.set(HttpHeaders.CONTENT_TYPE, "application/vnd.login.v1+json");
         HttpEntity<TestLoginRequestDTO> request = new HttpEntity<>(testLoginRequestDTO, headers);
         responseHolder.addResponse(this.post(fullUrl, request, String.class), TestLoginResponseDTO.class);
-
-        if (responseHolder.getResponseCode() == 200) {
-            TestLoginResponseDTO testLoginResponseDTO = responseHolder.getResponse(TestLoginResponseDTO.class);
-            responseHolder.storeUserToken(testLoginResponseDTO.token());
-        }
     }
-
 }

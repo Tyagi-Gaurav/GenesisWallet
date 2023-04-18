@@ -3,6 +3,7 @@ package com.gw.api.functional.util;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +17,7 @@ public class ResponseHolder {
     private ResponseEntity responseEntity;
     private final Map<String, Responses> responseMap = new HashMap<>();
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private String token;
+    private Map<String, String> tokenMap = new HashMap<>();
     private String userId;
     private String metrics;
 
@@ -32,8 +33,8 @@ public class ResponseHolder {
         responseEntity = entity;
     }
 
-    public int getResponseCode() {
-        return Optional.ofNullable(responseEntity).map(resp -> resp.getStatusCode().value()).orElseThrow(IllegalStateException::new);
+    public HttpStatusCode getResponseCode() {
+        return Optional.ofNullable(responseEntity).map(resp -> resp.getStatusCode()).orElseThrow(IllegalStateException::new);
     }
 
     public <T> T getResponse(Class<T> clazz) {
@@ -59,16 +60,12 @@ public class ResponseHolder {
         return responseEntity.getHeaders();
     }
 
-    public void storeUserToken(String token) {
-        this.token = token;
+    public void storeUserToken(String tokenKey, String token) {
+        this.tokenMap.put(tokenKey, token);
     }
 
-    public void storeUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getUserId() {
-        return userId;
+    public String getToken(String tokenKey) {
+        return tokenMap.get(tokenKey);
     }
 
     public void storeMetrics(String readResponse) {

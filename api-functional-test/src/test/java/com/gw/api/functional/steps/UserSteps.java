@@ -66,10 +66,6 @@ public class UserSteps implements En {
                     assertThat(responseHolder.getResponseCode()).isEqualTo(200);
                 });
 
-        And("^the userId for the user is recorded$", () -> {
-            scenarioContext.setUserIdForRegularUser(responseHolder.getUserId());
-        });
-
         When("the authenticated admin user creates another user with user name {string} and role {string}",
                 (String userName, String role) -> {
                     TestAccountCreateRequestDTO testAccountCreateRequestDTO = new TestAccountCreateRequestDTO(
@@ -128,6 +124,20 @@ public class UserSteps implements En {
         When("^the user service is requested for user details without login$", () -> {
             var accountCreateResponseDTO = responseHolder.getResponse(TestAccountCreateResponseDTO.class);
             testAccountDetailsRequestResource.getUserDetails(accountCreateResponseDTO.userId(), "");
+        });
+
+        And("^the token '(.*)' is different from '(.*)'$", (String tokenA, String tokenB) -> {
+            String token1 = responseHolder.getToken(tokenB);
+            String token2 = responseHolder.getToken(tokenA);
+            assertThat(token2).isNotEmpty();
+            assertThat(token1).isNotEmpty();
+            assertThat(token2).isNotEqualTo(token1);
+        });
+
+        When("^the user tries to use '(.*)' to read user details$", (String token) -> {
+            var accountCreateResponseDTO = responseHolder.getResponse(TestAccountCreateResponseDTO.class);
+            testAccountDetailsRequestResource.getUserDetails(accountCreateResponseDTO.userId(),
+                    token);
         });
     }
 

@@ -16,7 +16,7 @@ public class ResponseSteps implements En {
 
     public ResponseSteps() {
         Then("^the response should be received with HTTP status code (\\d+)$", (Integer responseCode) -> {
-            assertThat(responseHolder.getResponseCode()).isEqualTo(responseCode);
+            assertThat(responseHolder.getResponseCode().value()).isEqualTo(responseCode);
         });
 
         And("^the user login response contains an authorisation token in the response", () -> {
@@ -37,6 +37,11 @@ public class ResponseSteps implements En {
             TestAccountCreateResponseDTO response = responseHolder.getResponse(TestAccountCreateResponseDTO.class);
             assertThat(response.userId()).isNotNull();
             assertThatNoException().isThrownBy(() -> fromString(response.userId()));
+        });
+
+        And("^the user token received in the response is recorded as '(.*)'$", (String tokenKey) -> {
+            var loginResponseDTO = responseHolder.getResponse(TestLoginResponseDTO.class);
+            responseHolder.storeUserToken(tokenKey, loginResponseDTO.token());
         });
     }
 }
