@@ -27,6 +27,6 @@ public class TestContainerCacheInitializer implements ApplicationContextInitiali
         RedisServer redisServer = new RedisServer(randomPort);
         redisServer.start();
 
-        applicationContext.registerShutdownHook();
+        Runtime.getRuntime().addShutdownHook(new Thread(redisServer::stop));
     }
 }
