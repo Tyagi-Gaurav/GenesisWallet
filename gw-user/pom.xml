@@ -181,6 +181,13 @@
         </dependency>
         <!-- Liquibase Dependencies : END -->
 
+        <!-- Redis Dependencies -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+        </dependency>
+        <!-- Redis Dependencies : END -->
+
         <!-- Test Dependencies -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -240,6 +247,11 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-contract-stub-runner</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>it.ozimov</groupId>
+            <artifactId>embedded-redis</artifactId>
             <scope>test</scope>
         </dependency>
         <!-- Test Dependencies : END -->

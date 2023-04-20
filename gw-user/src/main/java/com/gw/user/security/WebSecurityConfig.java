@@ -1,6 +1,7 @@
 package com.gw.user.security;
 
 import com.gw.common.util.TokenManager;
+import com.gw.user.cache.CacheManager;
 import com.gw.user.config.AuthenticationManager;
 import com.gw.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class WebSecurityConfig {
 
     @Autowired
     private UserService userDetailsService;
+
+    @Autowired
+    private CacheManager cacheManager;
 
     @Bean
     public UserDetailsRepositoryReactiveAuthenticationManager userDetailsRepositoryReactiveAuthenticationManager() {
@@ -42,7 +46,7 @@ public class WebSecurityConfig {
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and()
                 .securityContextRepository(new SecurityContextRepository(
-                        new AuthenticationManager(userDetailsService, tokenManager)
+                        new AuthenticationManager(userDetailsService, tokenManager, cacheManager)
                 ))
                 .build();
     }

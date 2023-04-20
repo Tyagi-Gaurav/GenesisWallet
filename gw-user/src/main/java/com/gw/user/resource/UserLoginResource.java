@@ -2,6 +2,8 @@ package com.gw.user.resource;
 
 import com.gw.common.exception.ApplicationAuthenticationException;
 import com.gw.common.util.TokenManager;
+import com.gw.user.cache.CacheManager;
+import com.gw.user.config.AuthConfig;
 import com.gw.user.resource.domain.LoginRequestDTO;
 import com.gw.user.resource.domain.LoginResponseDTO;
 import com.gw.user.service.UserService;
@@ -19,10 +21,17 @@ import java.time.Duration;
 public class UserLoginResource {
     private final UserService userService;
     private final TokenManager tokenManager;
+    private final CacheManager cacheManager;
+    private final AuthConfig authConfig;
 
-    public UserLoginResource(UserService userService, TokenManager tokenManager) {
+    public UserLoginResource(UserService userService,
+                             TokenManager tokenManager,
+                             CacheManager cacheManager,
+                             AuthConfig authConfig) {
         this.userService = userService;
         this.tokenManager = tokenManager;
+        this.cacheManager = cacheManager;
+        this.authConfig = authConfig;
     }
 
     @PostMapping(consumes = "application/vnd.login.v1+json",
@@ -31,7 +40,11 @@ public class UserLoginResource {
     @ResponseStatus(code = HttpStatus.OK)
     public Mono<LoginResponseDTO> login(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
         return userService.authenticateUser(loginRequestDTO.userName(), loginRequestDTO.password())
-                .map(value -> new LoginResponseDTO(tokenManager.generateToken(value, Duration.ofMinutes(10))))
+                .map(value -> {
+                    String token = tokenManager.generateToken(value, authConfig.tokenDuration());
+                    cacheManager.updateLoginCache(loginRequestDTO.userName(), token);
+                    return new LoginResponseDTO(token);
+                })
                 .switchIfEmpty(Mono.error(() -> new ApplicationAuthenticationException("No user found [UserName]: " +
                         loginRequestDTO.userName())));
     }

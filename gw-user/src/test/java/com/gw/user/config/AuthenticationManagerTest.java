@@ -3,6 +3,7 @@ package com.gw.user.config;
 import com.gw.common.domain.Gender;
 import com.gw.common.domain.User;
 import com.gw.common.util.TokenManager;
+import com.gw.user.cache.CacheManager;
 import com.gw.user.service.UserService;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,10 +31,10 @@ import static org.testcontainers.shaded.org.awaitility.Awaitility.await;
 class AuthenticationManagerTest {
     @Mock
     private UserService userService;
-
     @Mock
     private PasswordEncoder passwordEncoder;
-
+    @Mock
+    private CacheManager cacheManager;
     private AuthenticationManager authenticationManager;
     private final User user = new User(UUID.randomUUID(),
             "TestFirstName",
@@ -55,7 +56,7 @@ class AuthenticationManagerTest {
         byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(KEY_256_BIT);
         Key signingKey = new SecretKeySpec(apiKeySecretBytes, SignatureAlgorithm.HS256.getJcaName());
         tokenManager = new TokenManager(signingKey);
-        authenticationManager = new AuthenticationManager(userService, tokenManager);
+        authenticationManager = new AuthenticationManager(userService, tokenManager, cacheManager);
         token = tokenManager.generateToken(user, Duration.ofMinutes(1L));
     }
 
@@ -90,7 +91,22 @@ class AuthenticationManagerTest {
     }
 
     @Test
+    void shouldReturnEmptyWhenTokenIsValidButInvalidated() {
+        when(userService.findUserBy(user.id())).thenReturn(Mono.just(user));
+        when(cacheManager.isValidToken(token)).thenReturn(false);
+
+        //when
+        Mono<Authentication> authenticate =
+                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(token, ""));
+
+        StepVerifier.create(authenticate)
+                .expectError(IllegalCallerException.class)
+                .verify();
+    }
+
+    @Test
     void shouldReturnResponseWhenUserFound() {
+        when(cacheManager.isValidToken(token)).thenReturn(true);
         when(userService.findUserBy(user.id())).thenReturn(Mono.just(user));
 
         //when

@@ -9,22 +9,28 @@ import io.r2dbc.spi.Readable;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class ScenarioExecutor {
     private WebTestClient.ResponseSpec responseSpec;
-
     private final Map<Class, Object> responses = new HashMap<>();
     private final WebTestClient webTestClient;
     private final DatabaseClient databaseClient;
+    private final JedisPool jedisPool;
+    private final Map<String, String> tokenMap = new HashMap<>();
 
-    public ScenarioExecutor(WebTestClient webTestClient, DatabaseClient databaseClient) {
+    public ScenarioExecutor(WebTestClient webTestClient, DatabaseClient databaseClient, JedisPool jedisPool) {
         this.webTestClient = webTestClient;
         this.databaseClient = databaseClient;
+        this.jedisPool = jedisPool;
     }
 
     public ScenarioExecutor when() {
@@ -129,15 +135,58 @@ public class ScenarioExecutor {
 
     public ScenarioExecutor fetchUserDetailsUsing(Class<? extends WithUserId> userIdClazz,
                                                   Class<? extends WithUserToken> tokenClazz) {
-        WithUserId userIdProvider = getResponseOfType(userIdClazz);
         WithUserToken tokenProvider = getResponseOfType(tokenClazz);
+        return fetchUserDetailsUsingToken(userIdClazz, tokenProvider.token());
+    }
+
+    public ScenarioExecutor storeLoginTokenUsingKey(String tokenKey) {
+        LoginResponseDTO loginResponse = getResponseOfType(LoginResponseDTO.class);
+        tokenMap.put(tokenKey, loginResponse.token());
+        return this;
+    }
+
+    public ScenarioExecutor fetchUserDetailsUsingTokenKey(Class<? extends WithUserId> userIdClazz, String tokenKey) {
+        String tokenValue = tokenMap.get(tokenKey);
+        return fetchUserDetailsUsingToken(userIdClazz, tokenValue);
+    }
+
+    public ScenarioExecutor fetchUserDetailsUsingToken(Class<? extends WithUserId> userIdClazz, String token) {
+        WithUserId userIdProvider = getResponseOfType(userIdClazz);
         this.responseSpec = new FetchUser(
                 userIdProvider.userId(),
-                tokenProvider.token())
+                token)
                 .apply(webTestClient);
         UserDetailsFetchResponseDTO userDetailsFetchResponseDTO = this.responseSpec.returnResult(UserDetailsFetchResponseDTO.class)
                 .getResponseBody().blockFirst();
         responses.put(UserDetailsFetchResponseDTO.class, userDetailsFetchResponseDTO);
+        return this;
+    }
+
+    private ScenarioExecutor thenUserTokenShouldBePresentInTheCache(String userName, String token) {
+        Jedis resource = jedisPool.getResource();
+        assertThat(resource.hget("login:", userName))
+                .isNotNull()
+                .isEqualTo(token);
+        return this;
+    }
+
+    public ScenarioExecutor theLoginCacheShouldHave(String userName, String tokenKey) {
+        return thenUserTokenShouldBePresentInTheCache(userName, tokenMap.get(tokenKey));
+    }
+
+    public ScenarioExecutor theLoginCacheShouldNOTHave(String userName, String token) {
+        Jedis resource = jedisPool.getResource();
+        assertThat(resource.hget("login:", userName))
+                .isNotNull()
+                .isNotEqualTo(tokenMap.get(token));
+        return this;
+    }
+
+    public ScenarioExecutor theInvalidationCacheShouldHave(String userName, String token) {
+        Jedis resource = jedisPool.getResource();
+        assertThat(resource.get("invalidated:" + tokenMap.get(token)))
+                .isNotNull()
+                .isEqualTo(userName);
         return this;
     }
 }

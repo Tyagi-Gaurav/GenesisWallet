@@ -63,3 +63,7 @@ vault:
   port: ${VAULT_PORT:8200}
   httpScheme: "http"
   appRole: "user_service"
+
+cache:
+  host: ${CACHE_HOST:localhost}
+  port: ${CACHE_PORT:6379}

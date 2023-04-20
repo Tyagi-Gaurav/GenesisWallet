@@ -27,7 +27,6 @@ Feature: Users should be able to Login
     And the user token received in the response is recorded as 'tokenB'
     And the token 'tokenB' is different from 'tokenA'
 
-  @Disabled
   Scenario: User should be able to login only from single session
     Given a user attempts to create a new account with following details
       | firstName | lastName | userName | password | dateOfBirth | gender | homeCountry |

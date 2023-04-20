@@ -2,6 +2,7 @@ package com.gw.user.e2e;
 
 import com.gw.user.Application;
 import com.gw.user.e2e.builder.UserCreateRequestBuilder;
+import com.gw.user.e2e.cache.TestContainerCacheInitializer;
 import com.gw.user.e2e.domain.UserDetailsResponseDTO;
 import com.gw.user.e2e.security.TestContainerVaultInitializer;
 import com.gw.user.repo.TestContainerDatabaseInitializer;
@@ -25,13 +26,17 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import redis.clients.jedis.JedisPool;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = Application.class,
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ContextConfiguration(initializers = {TestContainerDatabaseInitializer.class, TestContainerVaultInitializer.class})
+@ContextConfiguration(initializers = {
+        TestContainerDatabaseInitializer.class,
+        TestContainerVaultInitializer.class,
+        TestContainerCacheInitializer.class})
 @AutoConfigureWebFlux
 @ActiveProfiles("UserJourneysTest")
 @AutoConfigureWireMock(port = 0)
@@ -41,9 +46,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 })
 class UserJourneysTest {
     private ScenarioExecutor scenarioExecutor;
-
     @Autowired
     private DatabaseClient databaseClient;
+    @Autowired
+    private JedisPool jedisPool;
 
     @LocalServerPort
     private int serverPort;
@@ -52,7 +58,7 @@ class UserJourneysTest {
     void setUp() {
         String baseUrl = "http://localhost:" + serverPort + "/api";
         var webTestClient = WebTestClient.bindToServer().baseUrl(baseUrl).build();
-        scenarioExecutor = new ScenarioExecutor(webTestClient, databaseClient);
+        scenarioExecutor = new ScenarioExecutor(webTestClient, databaseClient, jedisPool);
     }
 
     @ParameterizedTest
@@ -98,8 +104,22 @@ class UserJourneysTest {
                 .when().userIsCreatedFor(userCreateRequestDTO).expectReturnCode(201)
                 .userLoginsWith(userCreateRequestDTO).expectReturnCode(200)
                 .thenAssertThat(loginResponse ->
-                    assertThat(loginResponse.token()).isNotEmpty()
-                , LoginResponseDTO.class);
+                                assertThat(loginResponse.token()).isNotEmpty()
+                        , LoginResponseDTO.class);
+    }
+
+    @Test
+    void AfterLoginTheUserTokenShouldBeInTheCache() {
+        var userCreateRequestDTO = UserCreateRequestBuilder.userCreateRequest().build();
+
+        scenarioExecutor
+                .when().userIsCreatedFor(userCreateRequestDTO).expectReturnCode(201)
+                .userLoginsWith(userCreateRequestDTO).expectReturnCode(200)
+                .thenAssertThat(loginResponse ->
+                                assertThat(loginResponse.token()).isNotEmpty()
+                        , LoginResponseDTO.class)
+                .storeLoginTokenUsingKey("tokenA")
+                .theLoginCacheShouldHave(userCreateRequestDTO.userName(), "tokenA");
     }
 
     @Test
@@ -119,5 +139,26 @@ class UserJourneysTest {
                     assertThat(userFetched.dateOfBirth()).isEqualTo(userCreateRequestDTO.dateOfBirth());
                     assertThat(userFetched.homeCountry()).isEqualTo(userCreateRequestDTO.homeCountry());
                 }, UserDetailsFetchResponseDTO.class);
+    }
+
+    @Test
+    void previousUserTokenToBeInvalidatedAfterReLogin() {
+        var userCreateRequestDTO = UserCreateRequestBuilder.userCreateRequest().build();
+
+        scenarioExecutor
+                .when().userIsCreatedFor(userCreateRequestDTO).expectReturnCode(201)
+                .userLoginsWith(userCreateRequestDTO).expectReturnCode(200)
+                .storeLoginTokenUsingKey("tokenA")
+                .fetchUserDetailsUsingTokenKey(
+                        UserCreateResponseDTO.class, "tokenA").expectReturnCode(200)
+                .userLoginsWith(userCreateRequestDTO).expectReturnCode(200)
+                .storeLoginTokenUsingKey("tokenB")
+                .fetchUserDetailsUsingTokenKey(
+                        UserCreateResponseDTO.class,
+                        "tokenA")
+                .theLoginCacheShouldHave(userCreateRequestDTO.userName(), "tokenB")
+                .theLoginCacheShouldNOTHave(userCreateRequestDTO.userName(), "tokenA")
+                .theInvalidationCacheShouldHave(userCreateRequestDTO.userName(), "tokenA")
+                .expectReturnCode(401);
     }
 }

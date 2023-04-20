@@ -25,6 +25,9 @@ public class GlobalExceptionHandler implements WebExceptionHandler {
         if (ex instanceof ResponseStatusException responseStatusException) {
             exchange.getResponse()
                     .setStatusCode(responseStatusException.getStatusCode());
+        } if (ex instanceof IllegalCallerException) {
+            exchange.getResponse()
+                    .setStatusCode(HttpStatus.UNAUTHORIZED);
         } else if (statusCode == null || statusCode.is2xxSuccessful()) {
             LOG.error("No/Invalid status code found for Validation Exception {}", statusCode);
             exchange.getResponse()

@@ -71,4 +71,16 @@ class GlobalExceptionHandlerTest {
         StepVerifier.create(handle).verifyComplete();
         verify(httpResponse).setComplete();
     }
+
+    @Test
+    void handleIllegalCallerException() {
+        when(serverWebExchange.getResponse()).thenReturn(httpResponse);
+        when(httpResponse.setComplete()).thenReturn(Mono.empty());
+
+        Mono<Void> handle = validationExceptionHandler.handle(serverWebExchange, new IllegalCallerException());
+
+        StepVerifier.create(handle).verifyComplete();
+        verify(httpResponse).setStatusCode(HttpStatus.UNAUTHORIZED);
+        verify(httpResponse).setComplete();
+    }
 }

@@ -1,6 +1,7 @@
 package com.gw.user.e2e;
 
 import com.gw.user.Application;
+import com.gw.user.e2e.cache.TestContainerCacheInitializer;
 import com.gw.user.e2e.security.TestContainerVaultInitializer;
 import com.gw.user.repo.TestContainerDatabaseInitializer;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +23,8 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = Application.class,
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ContextConfiguration(initializers = {TestContainerDatabaseInitializer.class, TestContainerVaultInitializer.class})
+@ContextConfiguration(initializers = {TestContainerDatabaseInitializer.class, TestContainerVaultInitializer.class,
+        TestContainerCacheInitializer.class})
 @AutoConfigureWebFlux
 @ActiveProfiles("UserJourneysTest")
 @AutoConfigureWireMock(port = 0)
@@ -43,7 +45,7 @@ class MonitoringTest {
     void setUp() {
         String baseUrl = "http://localhost:" + serverPort;
         var webTestClient = WebTestClient.bindToServer().baseUrl(baseUrl).build();
-        scenarioExecutor = new ScenarioExecutor(webTestClient, databaseClient);
+        scenarioExecutor = new ScenarioExecutor(webTestClient, databaseClient, null);
     }
 
     @Test

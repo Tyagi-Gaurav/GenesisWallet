@@ -63,7 +63,7 @@ public class UserSteps implements En {
                     testAccountCreateResource.create(testAccountCreateRequestDTO);
 
                     loginUsing(scenarioContext.getCredentials());
-                    assertThat(responseHolder.getResponseCode()).isEqualTo(200);
+                    assertThat(responseHolder.getResponseCode().value()).isEqualTo(200);
                 });
 
         When("the authenticated admin user creates another user with user name {string} and role {string}",
@@ -137,7 +137,7 @@ public class UserSteps implements En {
         When("^the user tries to use '(.*)' to read user details$", (String token) -> {
             var accountCreateResponseDTO = responseHolder.getResponse(TestAccountCreateResponseDTO.class);
             testAccountDetailsRequestResource.getUserDetails(accountCreateResponseDTO.userId(),
-                    token);
+                    responseHolder.getToken(token));
         });
     }
 
