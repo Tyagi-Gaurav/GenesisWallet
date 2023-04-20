@@ -6,8 +6,7 @@ import java.util.Random;
 
 public final class PortLookup {
     private static final int MIN_PORT = 1024;
-    private static final int MAX_PORT = 49000;
-
+    private static final int MAX_PORT = 9999;
     private static final int MAX_TRIES = 20;
     private static final Random random = new Random(System.nanoTime());
 
@@ -16,15 +15,23 @@ public final class PortLookup {
         while (tries < MAX_TRIES) {
             int nextPort = generateNextPortNumber();
             try {
-                new ServerSocket(nextPort);
-                return nextPort;
-            } catch (IOException e) {
-                //Already occupied
+                if (isAvailable(nextPort)) {
+                    return nextPort;
+                }
             } finally {
                 ++tries;
             }
         }
         throw new IllegalStateException("No ports available");
+    }
+
+    public static boolean isAvailable(int nextPort) {
+        try {
+            new ServerSocket(nextPort);
+            return true;
+        } catch(IOException e) {
+            return false;
+        }
     }
 
     private static int generateNextPortNumber() {
