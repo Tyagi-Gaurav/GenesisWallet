@@ -1,7 +1,6 @@
 package com.gw.user.e2e;
 
 import com.gw.user.Application;
-import com.gw.user.e2e.cache.TestContainerCacheInitializer;
 import com.gw.user.e2e.security.TestContainerVaultInitializer;
 import com.gw.user.repo.TestContainerDatabaseInitializer;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,8 +22,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = Application.class,
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ContextConfiguration(initializers = {TestContainerDatabaseInitializer.class, TestContainerVaultInitializer.class,
-        TestContainerCacheInitializer.class})
+@ContextConfiguration(initializers = {TestContainerDatabaseInitializer.class, TestContainerVaultInitializer.class})
 @AutoConfigureWebFlux
 @ActiveProfiles("UserJourneysTest")
 @AutoConfigureWireMock(port = 0)
