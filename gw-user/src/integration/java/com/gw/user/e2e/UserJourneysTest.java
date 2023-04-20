@@ -9,6 +9,8 @@ import com.gw.user.repo.TestContainerDatabaseInitializer;
 import com.gw.user.resource.domain.LoginResponseDTO;
 import com.gw.user.resource.domain.UserCreateResponseDTO;
 import com.gw.user.resource.domain.UserDetailsFetchResponseDTO;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,6 +29,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import redis.clients.jedis.JedisPool;
+import redis.embedded.RedisServer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -50,6 +53,19 @@ class UserJourneysTest {
     private DatabaseClient databaseClient;
     @Autowired
     private JedisPool jedisPool;
+
+    private static RedisServer redisServer;
+
+    @BeforeAll
+    static void beforeAll() {
+        redisServer = new RedisServer();
+        redisServer.start();
+    }
+
+    @AfterAll
+    static void afterAll() {
+        redisServer.stop();
+    }
 
     @LocalServerPort
     private int serverPort;
