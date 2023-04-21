@@ -21,9 +21,6 @@ public class WebSecurityConfig {
     @Autowired
     private UserService userDetailsService;
 
-    @Autowired
-    private CacheManager cacheManager;
-
     @Bean
     public UserDetailsRepositoryReactiveAuthenticationManager userDetailsRepositoryReactiveAuthenticationManager() {
         return new UserDetailsRepositoryReactiveAuthenticationManager(userDetailsService);
@@ -33,7 +30,8 @@ public class WebSecurityConfig {
     @Order(Ordered.HIGHEST_PRECEDENCE)
     SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity httpSecurity,
                                                 JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
-                                                TokenManager tokenManager) {
+                                                TokenManager tokenManager,
+                                                CacheManager cacheManager) {
         return httpSecurity
                 .csrf().disable()
                 .authorizeExchange()

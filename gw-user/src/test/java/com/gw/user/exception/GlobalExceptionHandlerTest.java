@@ -16,7 +16,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class GlobalExceptionHandlerTest {
+class GlobaRlExceptionHandlerTest {
     private final GlobalExceptionHandler validationExceptionHandler = new GlobalExceptionHandler();
 
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)

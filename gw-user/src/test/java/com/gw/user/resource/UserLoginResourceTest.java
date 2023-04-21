@@ -63,7 +63,7 @@ class UserLoginResourceTest {
 
         when(tokenManager.generateToken(user, TOKEN_DURATION)).thenReturn(expectedToken);
 
-        doNothing().when(cacheManager).updateLoginCache(eq(loginRequestDTO.userName()), anyString());
+        when(cacheManager.updateLoginCache(eq(loginRequestDTO.userName()), anyString())).thenReturn(1L);
 
         StepVerifier.create(userLoginResource.login(loginRequestDTO))
                 .consumeNextWith(loginResponse ->
