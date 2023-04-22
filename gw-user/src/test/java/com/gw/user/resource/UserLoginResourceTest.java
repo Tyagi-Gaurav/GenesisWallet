@@ -15,8 +15,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
 
 import java.time.Duration;
 
@@ -24,20 +22,14 @@ import static com.gw.user.testutils.UserBuilder.aUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserLoginResourceTest {
-
     @Mock
     private TokenManager tokenManager;
     @Mock
     private UserService userService;
-    @Mock
-    private JedisPool jedisPool;
-    @Mock
-    private Jedis jedis;
     @Mock
     private AuthConfig authConfig;
     @Mock
@@ -63,7 +55,7 @@ class UserLoginResourceTest {
 
         when(tokenManager.generateToken(user, TOKEN_DURATION)).thenReturn(expectedToken);
 
-        when(cacheManager.updateLoginCache(eq(loginRequestDTO.userName()), anyString())).thenReturn(1L);
+        when(cacheManager.updateLoginCache(anyString(), eq(user.id().toString()))).thenReturn(1L);
 
         StepVerifier.create(userLoginResource.login(loginRequestDTO))
                 .consumeNextWith(loginResponse ->

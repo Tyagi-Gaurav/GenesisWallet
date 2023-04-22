@@ -24,6 +24,6 @@ public class TestAccountDetailsRequestResource extends AbstractResource {
         headers.set(HttpHeaders.CONTENT_TYPE, "application/vnd+user.details.v1+json");
         headers.set(HttpHeaders.AUTHORIZATION, "Bearer " + token);
         HttpEntity<Object> getEntityHeaders = new HttpEntity<>(headers);
-        responseHolder.addResponse(this.get(fullUrl, getEntityHeaders, String.class), TestUserDetailsFetchResponseDTO.class);
+        responseHolder.setResponseWithBodyClass(this.get(fullUrl, getEntityHeaders, String.class), TestUserDetailsFetchResponseDTO.class);
     }
 }

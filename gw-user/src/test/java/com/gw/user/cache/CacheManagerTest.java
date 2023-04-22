@@ -38,7 +38,7 @@ class CacheManagerTest {
         when(jedis.hget("login:", "user")).thenReturn(null);
         when(jedis.hset("login:", "user", "token")).thenReturn(1L);
 
-        assertThat(cacheManager.updateLoginCache("user", "token")).isEqualTo(1L);
+        assertThat(cacheManager.updateLoginCache("token", "user")).isEqualTo(1L);
 
     }
 
@@ -48,7 +48,7 @@ class CacheManagerTest {
         when(jedis.hset("login:", "user", "newToken")).thenReturn(1L);
         when(jedis.setex("invalidated:oldToken", TOKEN_DURATION.getSeconds() + 60, "user")).thenReturn("1");
 
-        assertThat(cacheManager.updateLoginCache("user", "newToken")).isEqualTo(1L);;
+        assertThat(cacheManager.updateLoginCache("newToken", "user")).isEqualTo(1L);;
     }
 
     @Test
@@ -63,5 +63,12 @@ class CacheManagerTest {
         when(jedis.get("invalidated:token")).thenReturn("user");
 
         assertThat(cacheManager.isValidToken("token")).isFalse();
+    }
+
+    @Test
+    void invalidateToken() {
+        when(jedis.setex("invalidated:token", TOKEN_DURATION.getSeconds() + 60, "user")).thenReturn("1");
+
+        assertThat(cacheManager.invalidate("token", "user")).isNotNull();
     }
 }

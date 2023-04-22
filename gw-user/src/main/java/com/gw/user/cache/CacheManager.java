@@ -15,19 +15,25 @@ public class CacheManager {
         this.invalidationKeyExpiry = authConfig.tokenDuration().getSeconds() + EXTRA_MINUTE_FOR_INVALIDATION;
     }
 
-    public long updateLoginCache(String userName, String newToken) {
+    public long updateLoginCache(String newToken, String value) {
         try(var jedis = jedisPool.getResource()) {
-            String oldToken = jedis.hget("login:", userName);
+            String oldToken = jedis.hget("login:", value);
             if (oldToken != null) {
-                jedis.setex("invalidated:" + oldToken, invalidationKeyExpiry, userName);
+                jedis.setex("invalidated:" + oldToken, invalidationKeyExpiry, value);
             }
-            return jedis.hset("login:", userName, newToken);
+            return jedis.hset("login:", value, newToken);
         }
     }
 
     public boolean isValidToken(String token) {
         try(var jedis = jedisPool.getResource()) {
             return jedis.get("invalidated:"+token) == null;
+        }
+    }
+
+    public String invalidate(String token, String value) {
+        try(var jedis = jedisPool.getResource()) {
+            return jedis.setex("invalidated:" + token, invalidationKeyExpiry, value);
         }
     }
 }

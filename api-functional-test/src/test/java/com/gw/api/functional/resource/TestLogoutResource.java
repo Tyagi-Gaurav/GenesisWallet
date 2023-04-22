@@ -2,7 +2,6 @@ package com.gw.api.functional.resource;
 
 import com.gw.api.functional.config.ApiGatewayConfig;
 import com.gw.api.functional.domain.TestLoginRequestDTO;
-import com.gw.api.functional.domain.TestLoginResponseDTO;
 import com.gw.api.functional.util.ResponseHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -10,7 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TestLoginResource extends AbstractResource {
+public class TestLogoutResource extends AbstractResource {
 
     @Autowired
     private ApiGatewayConfig apiGatewayConfig;
@@ -18,13 +17,14 @@ public class TestLoginResource extends AbstractResource {
     @Autowired
     private ResponseHolder responseHolder;
 
-    public void doLogin(TestLoginRequestDTO testLoginRequestDTO) {
+    public void doLogout(String token) {
         String fullUrl = getUrl(apiGatewayConfig.host().trim(),
                 apiGatewayConfig.userContextPath(),
-                "/user/login", apiGatewayConfig.port());
+                "/user/logout", apiGatewayConfig.port());
         HttpHeaders headers = new HttpHeaders();
-        headers.set(HttpHeaders.CONTENT_TYPE, "application/vnd.login.v1+json");
-        HttpEntity<TestLoginRequestDTO> request = new HttpEntity<>(testLoginRequestDTO, headers);
-        responseHolder.setResponseWithBodyClass(this.post(fullUrl, request, String.class), TestLoginResponseDTO.class);
+        headers.set(HttpHeaders.CONTENT_TYPE, "application/vnd.logout.v1+json");
+        headers.set(HttpHeaders.AUTHORIZATION, "Bearer " + token);
+        HttpEntity<TestLoginRequestDTO> request = new HttpEntity<>(headers);
+        responseHolder.setResponseWithoutBody(this.post(fullUrl, request, String.class));
     }
 }

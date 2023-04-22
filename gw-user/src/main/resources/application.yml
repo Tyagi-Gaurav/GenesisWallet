@@ -15,6 +15,7 @@ accessible:
   endpoints:
     "[POST-/api/user/create]": ${CREATE_USER:true}
     "[POST-/api/user/login]": ${LOGIN_USER:true}
+    "[POST-/api/user/logout]": ${LOGOUT_USER:true}
     "[GET-/actuator/info]": ${ACTUATOR_INFO:true}
     "[GET-/actuator/prometheus]": ${GET_METRICS:true}
     "[GET-/actuator/mappings]": ${GET_MAPPINGS:true}

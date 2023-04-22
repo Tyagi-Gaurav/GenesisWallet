@@ -24,7 +24,7 @@ public class TestAccountCreateResource extends AbstractResource {
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.CONTENT_TYPE, "application/vnd+user.create.v1+json");
         HttpEntity<TestAccountCreateRequestDTO> request = new HttpEntity<>(accountCreateRequestDTO, headers);
-        responseHolder.addResponse(this.post(fullUrl, request, String.class), TestAccountCreateResponseDTO.class);
+        responseHolder.setResponseWithBodyClass(this.post(fullUrl, request, String.class), TestAccountCreateResponseDTO.class);
     }
 
     public void createWithHttp(TestAccountCreateRequestDTO accountCreateRequestDTO) {
@@ -33,7 +33,7 @@ public class TestAccountCreateResource extends AbstractResource {
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.CONTENT_TYPE, "application/vnd+user.create.v1+json");
         HttpEntity<TestAccountCreateRequestDTO> request = new HttpEntity<>(accountCreateRequestDTO, headers);
-        responseHolder.addResponse(this.post(fullUrl, request, String.class), TestAccountCreateResponseDTO.class);
+        responseHolder.setResponseWithBodyClass(this.post(fullUrl, request, String.class), TestAccountCreateResponseDTO.class);
     }
 
 }

@@ -17,20 +17,20 @@ public class TestMonitoringResource extends AbstractResource {
         String fullUrl = getUrl(apiGatewayConfig.host().trim(),
                 apiGatewayConfig.userContextPath(),
                 "/user/private/healthcheck/status", apiGatewayConfig.port());
-        responseHolder.addResponse(this.get(fullUrl, EMPTY_HTTP_ENTITY, String.class), String.class);
+        responseHolder.setResponseWithBodyClass(this.get(fullUrl, EMPTY_HTTP_ENTITY, String.class), String.class);
     }
 
     public void accessUIStatus() {
         String fullUrl = getUrl(apiGatewayConfig.host().trim(),
                 apiGatewayConfig.uiContextPath(),
                 "/private/healthcheck/status", apiGatewayConfig.port());
-        responseHolder.addResponse(this.get(fullUrl, EMPTY_HTTP_ENTITY, String.class), String.class);
+        responseHolder.setResponseWithBodyClass(this.get(fullUrl, EMPTY_HTTP_ENTITY, String.class), String.class);
     }
 
     public void accessMetrics() {
         String fullUrl = getUrl(apiGatewayConfig.host().trim(),
                 apiGatewayConfig.userContextPath(),
                 "/user/private/prometheus", apiGatewayConfig.port());
-        responseHolder.addResponse(this.get(fullUrl, EMPTY_HTTP_ENTITY, String.class), String.class);
+        responseHolder.setResponseWithBodyClass(this.get(fullUrl, EMPTY_HTTP_ENTITY, String.class), String.class);
     }
 }

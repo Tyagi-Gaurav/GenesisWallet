@@ -170,23 +170,31 @@ public class ScenarioExecutor {
         return this;
     }
 
-    public ScenarioExecutor theLoginCacheShouldHave(String userName, String tokenKey) {
-        return thenUserTokenShouldBePresentInTheCache(userName, tokenMap.get(tokenKey));
+    public ScenarioExecutor theLoginCacheShouldHave(Class<? extends WithUserId> userIdClazz, String tokenKey) {
+        WithUserId userIdProvider = getResponseOfType(userIdClazz);
+        return thenUserTokenShouldBePresentInTheCache(userIdProvider.userId(), tokenMap.get(tokenKey));
     }
 
-    public ScenarioExecutor theLoginCacheShouldNOTHave(String userName, String token) {
+    public ScenarioExecutor theLoginCacheShouldNOTHave(Class<? extends WithUserId> userIdClazz, String token) {
+        WithUserId userIdProvider = getResponseOfType(userIdClazz);
         Jedis resource = jedisPool.getResource();
-        assertThat(resource.hget("login:", userName))
+        assertThat(resource.hget("login:", userIdProvider.userId()))
                 .isNotNull()
                 .isNotEqualTo(tokenMap.get(token));
         return this;
     }
 
-    public ScenarioExecutor theInvalidationCacheShouldHave(String userName, String token) {
+    public ScenarioExecutor theInvalidationCacheShouldHave(Class<? extends WithUserId> userIdClazz, String token) {
+        WithUserId userIdProvider = getResponseOfType(userIdClazz);
         Jedis resource = jedisPool.getResource();
         assertThat(resource.get("invalidated:" + tokenMap.get(token)))
                 .isNotNull()
-                .isEqualTo(userName);
+                .isEqualTo(userIdProvider.userId());
+        return this;
+    }
+
+    public ScenarioExecutor userLogsOutUsingTokenKey(String tokenKey) {
+        this.responseSpec = new Logout(tokenMap.get(tokenKey)).apply(webTestClient);
         return this;
     }
 }

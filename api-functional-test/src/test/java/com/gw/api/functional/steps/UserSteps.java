@@ -5,6 +5,7 @@ import com.gw.api.functional.domain.*;
 import com.gw.api.functional.resource.TestAccountCreateResource;
 import com.gw.api.functional.resource.TestAccountDetailsRequestResource;
 import com.gw.api.functional.resource.TestLoginResource;
+import com.gw.api.functional.resource.TestLogoutResource;
 import com.gw.api.functional.util.ResponseHolder;
 import io.cucumber.java8.En;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -24,6 +25,9 @@ public class UserSteps implements En {
     private ResponseHolder responseHolder;
     @Autowired
     private TestLoginResource testLoginResource;
+
+    @Autowired
+    private TestLogoutResource testLogoutResource;
 
     public UserSteps() {
         Given("^a user attempts to create a new account with following details$",
@@ -138,6 +142,10 @@ public class UserSteps implements En {
             var accountCreateResponseDTO = responseHolder.getResponse(TestAccountCreateResponseDTO.class);
             testAccountDetailsRequestResource.getUserDetails(accountCreateResponseDTO.userId(),
                     responseHolder.getToken(token));
+        });
+
+        And("^the user attempts to logout using '(.*)'$", (String token) -> {
+            testLogoutResource.doLogout(responseHolder.getToken(token));
         });
     }
 

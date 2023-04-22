@@ -77,7 +77,7 @@ public class TokenManager {
             }
         }
 
-        public String getUsernameFromToken() {
+        private String getUsernameFromToken() {
             return getClaimFromToken(Claims::getSubject);
         }
 

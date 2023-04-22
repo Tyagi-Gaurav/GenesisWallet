@@ -21,7 +21,7 @@ public class ResponseHolder {
     private String userId;
     private String metrics;
 
-    public <T> void addResponse(ResponseEntity entity, Class<T> clazz) {
+    public <T> void setResponseWithBodyClass(ResponseEntity entity, Class<T> clazz) {
         this.responseEntity = entity;
         if (entity.getStatusCode().is2xxSuccessful()) {
             T response = read(entity, clazz);
@@ -29,7 +29,7 @@ public class ResponseHolder {
         }
     }
 
-    public void addResponse(ResponseEntity entity) {
+    public void setResponseWithoutBody(ResponseEntity entity) {
         responseEntity = entity;
     }
 

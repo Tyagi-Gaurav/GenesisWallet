@@ -133,7 +133,7 @@ class UserJourneysTest {
                                 assertThat(loginResponse.token()).isNotEmpty()
                         , LoginResponseDTO.class)
                 .storeLoginTokenUsingKey("tokenA")
-                .theLoginCacheShouldHave(userCreateRequestDTO.userName(), "tokenA");
+                .theLoginCacheShouldHave(UserCreateResponseDTO.class, "tokenA");
     }
 
     @Test
@@ -170,9 +170,24 @@ class UserJourneysTest {
                 .fetchUserDetailsUsingTokenKey(
                         UserCreateResponseDTO.class,
                         "tokenA")
-                .theLoginCacheShouldHave(userCreateRequestDTO.userName(), "tokenB")
-                .theLoginCacheShouldNOTHave(userCreateRequestDTO.userName(), "tokenA")
-                .theInvalidationCacheShouldHave(userCreateRequestDTO.userName(), "tokenA")
+                .theLoginCacheShouldHave(UserCreateResponseDTO.class, "tokenB")
+                .theLoginCacheShouldNOTHave(UserCreateResponseDTO.class, "tokenA")
+                .theInvalidationCacheShouldHave(UserCreateResponseDTO.class, "tokenA")
+                .expectReturnCode(401);
+    }
+
+    @Test
+    void postLogoutUserShouldNotBeAbleToAccessUserDetails() {
+        var userCreateRequestDTO = UserCreateRequestBuilder.userCreateRequest().build();
+
+        scenarioExecutor
+                .when().userIsCreatedFor(userCreateRequestDTO).expectReturnCode(201)
+                .userLoginsWith(userCreateRequestDTO).expectReturnCode(200)
+                .storeLoginTokenUsingKey("tokenA")
+                .userLogsOutUsingTokenKey("tokenA").expectReturnCode(200)
+                .fetchUserDetailsUsingTokenKey(
+                        UserCreateResponseDTO.class,
+                        "tokenA")
                 .expectReturnCode(401);
     }
 }
