@@ -6,17 +6,20 @@ import com.gw.user.e2e.domain.UserDetailsResponseDTO;
 import com.gw.user.e2e.function.*;
 import com.gw.user.resource.domain.*;
 import io.r2dbc.spi.Readable;
+import org.awaitility.Awaitility;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
 
+import static java.util.Objects.isNull;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ScenarioExecutor {
@@ -193,8 +196,20 @@ public class ScenarioExecutor {
         return this;
     }
 
+    private boolean isTokenInvalidated(Class<? extends WithUserId> userIdClazz, String token) {
+        Jedis resource = jedisPool.getResource();
+        return isNull(resource.get("invalidated:" + tokenMap.get(token)));
+    }
+
     public ScenarioExecutor userLogsOutUsingTokenKey(String tokenKey) {
         this.responseSpec = new Logout(tokenMap.get(tokenKey)).apply(webTestClient);
         return this;
+    }
+
+    public void theInvalidationCacheShouldNOTHaveTokenAfterWaitTime(Duration tokenInvalidateTime,
+                                                                    Class<UserCreateResponseDTO> userCreateResponseDTOClass,
+                                                                    String tokenA) {
+        Awaitility.await().pollDelay(tokenInvalidateTime)
+                .untilAsserted(() -> assertThat(isTokenInvalidated(userCreateResponseDTOClass, tokenA)).isTrue());
     }
 }

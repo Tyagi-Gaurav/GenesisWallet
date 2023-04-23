@@ -28,7 +28,8 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @AutoConfigureWireMock(port = 0)
 @TestPropertySource(properties = {
         "user.host=localhost",
-        "user.port=${wiremock.server.port}"
+        "user.port=${wiremock.server.port}",
+        "auth.tokenDuration=2s"
 })
 class MonitoringTest {
     private ScenarioExecutor scenarioExecutor;

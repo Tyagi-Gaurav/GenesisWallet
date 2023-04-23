@@ -8,32 +8,33 @@ import redis.clients.jedis.JedisPool;
 public class CacheManager {
     private final JedisPool jedisPool;
     private final long invalidationKeyExpiry;
-    private static final int EXTRA_MINUTE_FOR_INVALIDATION = 60;
+    private static final String INVALIDATE_KEY = "invalidated:";
+    private static final String LOGIN_KEY = "login:";
 
     public CacheManager(JedisPool jedisPool, AuthConfig authConfig) {
         this.jedisPool = jedisPool;
-        this.invalidationKeyExpiry = authConfig.tokenDuration().getSeconds() + EXTRA_MINUTE_FOR_INVALIDATION;
+        this.invalidationKeyExpiry = authConfig.tokenDuration().getSeconds();
     }
 
     public long updateLoginCache(String newToken, String value) {
         try(var jedis = jedisPool.getResource()) {
-            String oldToken = jedis.hget("login:", value);
+            String oldToken = jedis.hget(LOGIN_KEY, value);
             if (oldToken != null) {
-                jedis.setex("invalidated:" + oldToken, invalidationKeyExpiry, value);
+                jedis.setex(INVALIDATE_KEY + oldToken, invalidationKeyExpiry, value);
             }
-            return jedis.hset("login:", value, newToken);
+            return jedis.hset(LOGIN_KEY, value, newToken);
         }
     }
 
     public boolean isValidToken(String token) {
         try(var jedis = jedisPool.getResource()) {
-            return jedis.get("invalidated:"+token) == null;
+            return jedis.get(INVALIDATE_KEY +token) == null;
         }
     }
 
     public String invalidate(String token, String value) {
         try(var jedis = jedisPool.getResource()) {
-            return jedis.setex("invalidated:" + token, invalidationKeyExpiry, value);
+            return jedis.setex(INVALIDATE_KEY + token, 1, value);
         }
     }
 }

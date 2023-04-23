@@ -30,6 +30,8 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import redis.clients.jedis.JedisPool;
 import redis.embedded.RedisServer;
 
+import java.time.Duration;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
@@ -43,7 +45,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureWireMock(port = 0)
 @TestPropertySource(properties = {
         "user.host=localhost",
-        "user.port=${wiremock.server.port}"
+        "user.port=${wiremock.server.port}",
+        "auth.tokenDuration=2s"
 })
 class UserJourneysTest {
     private ScenarioExecutor scenarioExecutor;
@@ -189,5 +192,22 @@ class UserJourneysTest {
                         UserCreateResponseDTO.class,
                         "tokenA")
                 .expectReturnCode(401);
+    }
+
+    @Test
+    void invalidatedTokenShouldBeRemovedAfterTTLExpires() {
+        var userCreateRequestDTO = UserCreateRequestBuilder.userCreateRequest().build();
+
+        scenarioExecutor
+                .when().userIsCreatedFor(userCreateRequestDTO).expectReturnCode(201)
+                .userLoginsWith(userCreateRequestDTO).expectReturnCode(200)
+                .storeLoginTokenUsingKey("tokenA")
+                .userLogsOutUsingTokenKey("tokenA").expectReturnCode(200)
+                .fetchUserDetailsUsingTokenKey(
+                        UserCreateResponseDTO.class,
+                        "tokenA")
+                .expectReturnCode(401)
+                .theInvalidationCacheShouldNOTHaveTokenAfterWaitTime(Duration.ofSeconds(3),
+                        UserCreateResponseDTO.class, "tokenA");
     }
 }
