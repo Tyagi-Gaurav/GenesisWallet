@@ -147,6 +147,14 @@ public class UserSteps implements En {
         And("^the user attempts to logout using '(.*)'$", (String token) -> {
             testLogoutResource.doLogout(responseHolder.getToken(token));
         });
+
+        When("^the user attempts to login using a bad media type$", () -> {
+            TestAccountCreateRequestDTO userCredentialsRequest = scenarioContext.getUserCredentialsRequest();
+            TestLoginRequestDTO testLoginRequestDTO = new TestLoginRequestDTO(
+                    userCredentialsRequest.userName(),
+                    userCredentialsRequest.password());
+            testLoginResource.doLoginUsingBadMediaType(testLoginRequestDTO);
+        });
     }
 
     private void loginUsing(TestAccountCreateRequestDTO userCredentialsRequest) {

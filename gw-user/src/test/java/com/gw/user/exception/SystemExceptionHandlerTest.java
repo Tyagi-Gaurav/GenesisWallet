@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
+import org.springframework.web.server.UnsupportedMediaTypeStatusException;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -56,6 +57,16 @@ class SystemExceptionHandlerTest {
 
         StepVerifier.create(errorResponseMono)
                 .expectNext(new ErrorResponse(500, "Unexpected error occurred"))
+                .verifyComplete();;
+    }
+
+    @Test
+    void shouldHandleUnSupportedMediaTypeStatus() {
+        Mono<ErrorResponse> errorResponseMono =
+                systemExceptionHandler.handleException(new UnsupportedMediaTypeStatusException("UNSUPPORTED_MEDIA_TYPE"));
+
+        StepVerifier.create(errorResponseMono)
+                .expectNext(new ErrorResponse(400, "No resource Found"))
                 .verifyComplete();;
     }
 }

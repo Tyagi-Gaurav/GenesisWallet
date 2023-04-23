@@ -1,6 +1,7 @@
 package com.gw.api.functional.steps;
 
 import com.gw.api.functional.resource.TestMonitoringResource;
+import com.gw.api.functional.resource.TestSystemAccessResource;
 import com.gw.api.functional.util.ResponseHolder;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java8.En;
@@ -14,6 +15,9 @@ public class MonitoringSteps implements En {
 
     @Autowired
     private TestMonitoringResource testMonitoringResource;
+
+    @Autowired
+    private TestSystemAccessResource testSystemAccessResource;
 
     @Autowired
     private ResponseHolder responseHolder;
@@ -47,8 +51,13 @@ public class MonitoringSteps implements En {
 
             assertThat(user_registration_count_new - user_registration_count_old).isEqualTo(1.0);
         });
+
         When("^the UI service is requested for status$", () -> {
             testMonitoringResource.accessUIStatus();
+        });
+
+        Given("^the API is accessed using a non-existent endpoint$", () -> {
+            testSystemAccessResource.nonExistentEndpoint();
         });
     }
 

@@ -27,4 +27,14 @@ public class TestLoginResource extends AbstractResource {
         HttpEntity<TestLoginRequestDTO> request = new HttpEntity<>(testLoginRequestDTO, headers);
         responseHolder.setResponseWithBodyClass(this.post(fullUrl, request, String.class), TestLoginResponseDTO.class);
     }
+
+    public void doLoginUsingBadMediaType(TestLoginRequestDTO testLoginRequestDTO) {
+        String fullUrl = getUrl(apiGatewayConfig.host().trim(),
+                apiGatewayConfig.userContextPath(),
+                "/user/login", apiGatewayConfig.port());
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(HttpHeaders.CONTENT_TYPE, "application/vnd.non-existent.v1+json");
+        HttpEntity<TestLoginRequestDTO> request = new HttpEntity<>(testLoginRequestDTO, headers);
+        responseHolder.setResponseWithBodyClass(this.post(fullUrl, request, String.class), TestLoginResponseDTO.class);
+    }
 }
