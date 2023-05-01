@@ -13,7 +13,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <dependencies.cucumber.version>7.11.2</dependencies.cucumber.version>
+        <dependencies.cucumber.version>7.12.0</dependencies.cucumber.version>
         <skipTests>true</skipTests>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.exclusions>com/gw/api/functional/*.java</sonar.exclusions>
