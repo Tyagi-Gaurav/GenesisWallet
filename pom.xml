@@ -59,6 +59,7 @@
         <junit-platform-suite.version>1.9.3</junit-platform-suite.version>
         <embedded-redis.version>0.7.2</embedded-redis.version>
         <jedis.version>4.3.1</jedis.version>
+        <hamcrest.version>2.2</hamcrest.version>
     </properties>
 
     <build>
@@ -395,6 +396,17 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-contract-stub-runner</artifactId>
                 <version>${spring-cloud-contract-stub.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.hamcrest</groupId>
+                        <artifactId>hamcrest</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.hamcrest</groupId>
+                <artifactId>hamcrest</artifactId>
+                <version>${hamcrest.version}</version>
             </dependency>
             <!-- Test Dependencies : END -->
 
