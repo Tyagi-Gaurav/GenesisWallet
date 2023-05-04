@@ -1,6 +1,10 @@
 package com.gw.user.e2e.test;
 
 import com.gw.common.domain.Gender;
+import com.gw.test.support.framework.DatabaseResponseSpec;
+import com.gw.test.support.framework.HttpResponseSpec;
+import com.gw.test.support.framework.ResponseStep;
+import com.gw.test.support.framework.VoidStep;
 import com.gw.user.e2e.domain.UserDetailsResponseDTO;
 import com.gw.user.e2e.function.FetchUser;
 import com.gw.user.e2e.function.Login;
@@ -24,14 +28,14 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 public class ScenarioExecutor2 {
-    public static ResponseStep aUserIsCreatedWithTheDetails(UserCreateRequestDTO userCreateRequestDTO) {
+    public static ResponseStep aUserIsCreated(UserCreateRequestDTO userCreateRequestDTO) {
         return testContext -> {
             var responseSpec = new UserCreate().apply(testContext.getWebTestClient(), userCreateRequestDTO);
             return new HttpResponseSpec(UserCreateResponseDTO.class, responseSpec);
         };
     }
 
-    public static ResponseStep userLoginsUsing(UserCreateRequestDTO userCreateRequestDTO) {
+    public static ResponseStep userLogins(UserCreateRequestDTO userCreateRequestDTO) {
         return testContext -> {
             var responseSpec = new Login().apply(testContext.getWebTestClient(),
                     new LoginRequestDTO(userCreateRequestDTO.userName(), userCreateRequestDTO.password()));
@@ -39,7 +43,7 @@ public class ScenarioExecutor2 {
         };
     }
 
-    public static VoidStep aHttpResponseIsReceived(Matcher<Integer> statusMatcher) {
+    public static VoidStep aHttpResponse(Matcher<Integer> statusMatcher) {
         return testContext -> {
             if (testContext.getLastResponse() instanceof HttpResponseSpec httpResponseSpec) {
                 httpResponseSpec.matchStatus(statusMatcher);
@@ -99,7 +103,7 @@ public class ScenarioExecutor2 {
         };
     }
 
-    public static VoidStep associateLoginCredentialsWithKey(String key) {
+    public static VoidStep associateLoginCredentials(String key) {
         return testContext -> {
             var loginResponseDTO = testContext.getResponseOfType(LoginResponseDTO.class);
             var userCreateResponseDTO = testContext.getResponseOfType(UserCreateResponseDTO.class);
@@ -107,7 +111,7 @@ public class ScenarioExecutor2 {
         };
     }
 
-    public static VoidStep theLoginCacheShouldHaveTokenAssociateWithKey(String key) {
+    public static VoidStep theLoginCacheShouldHaveTokenAssociate(String key) {
         return testContext -> {
             JedisPool jedisPool = testContext.getJedisPool();
             Jedis resource = jedisPool.getResource();
@@ -119,7 +123,7 @@ public class ScenarioExecutor2 {
         };
     }
 
-    public static ResponseStep fetchUserDetailUsingCredentialKey(String credentialKey) {
+    public static ResponseStep fetchUserDetails(String credentialKey) {
         return testContext -> {
             WebTestClient.ResponseSpec httpResponseSpec =
                     new FetchUser(testContext.getUserIdForCredentialKey(credentialKey), testContext.getTokenForCredentialKey(credentialKey)).apply(testContext.getWebTestClient());
@@ -140,7 +144,7 @@ public class ScenarioExecutor2 {
         );
     }
 
-    public static VoidStep userLogsOutUsingCredentialKey(String credentialKey) {
+    public static VoidStep userLogsOut(String credentialKey) {
         return testContext ->
             new Logout(testContext.getTokenForCredentialKey(credentialKey)).apply(testContext.getWebTestClient());
     }

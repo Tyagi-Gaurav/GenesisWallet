@@ -107,6 +107,12 @@
             <scope>test</scope>
             <type>test-jar</type>
         </dependency>
+        <dependency>
+            <groupId>com.genesis</groupId>
+            <artifactId>integration-test-support</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
         <!-- Module Dependencies : END -->
 
         <!-- Spring Dependencies -->

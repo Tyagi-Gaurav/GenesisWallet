@@ -1,5 +1,6 @@
 package com.gw.user.e2e;
 
+import com.gw.test.support.framework.WithSyntacticSugar;
 import com.gw.user.Application;
 import com.gw.user.e2e.builder.UserCreateRequestBuilder;
 import com.gw.user.e2e.security.TestContainerVaultInitializer;
@@ -26,7 +27,7 @@ import redis.embedded.RedisServer;
 
 import java.time.Duration;
 
-import static com.gw.user.e2e.test.ScenarioBuilder.aScenarioUsing;
+import static com.gw.test.support.ScenarioBuilder.aScenarioUsing;
 import static com.gw.user.e2e.test.ScenarioExecutor2.*;
 
 @ExtendWith(SpringExtension.class)
@@ -43,7 +44,7 @@ import static com.gw.user.e2e.test.ScenarioExecutor2.*;
         "user.port=${wiremock.server.port}",
         "auth.tokenDuration=2s"
 })
-class UserJourneysTest {
+class UserJourneysTest implements WithSyntacticSugar {
     @Autowired
     private DatabaseClient databaseClient;
     @Autowired
@@ -73,8 +74,8 @@ class UserJourneysTest {
                 .build();
 
         aScenarioUsing(applicationContext)
-                .given(aUserIsCreatedWithTheDetails(userCreateRequestDTO))
-                .then(aHttpResponseIsReceived(withStatus(400)))
+                .given(aUserIsCreated(with((userCreateRequestDTO))))
+                .then(aHttpResponse(isReceived(withStatus(400))))
                 .execute();
     }
 
@@ -84,8 +85,8 @@ class UserJourneysTest {
                 .build();
 
         aScenarioUsing(applicationContext)
-                .given(aUserIsCreatedWithTheDetails(userCreateRequestDTO))
-                .then(aHttpResponseIsReceived(withStatus(201)))
+                .given(aUserIsCreated(with(userCreateRequestDTO)))
+                .then(aHttpResponse(isReceived(withStatus(201))))
                 .and(whenUserIsRetrievedFromDatabaseWith(userCreateRequestDTO.userName()))
                 .then(userRetrievedFromDatabaseMatches(userCreateRequestDTO))
                 .execute();
@@ -96,10 +97,10 @@ class UserJourneysTest {
         var userCreateRequestDTO = UserCreateRequestBuilder.userCreateRequest().build();
 
         aScenarioUsing(applicationContext)
-                .given(aUserIsCreatedWithTheDetails(userCreateRequestDTO))
-                .then(aHttpResponseIsReceived(withStatus(201)))
-                .and(userLoginsUsing(userCreateRequestDTO))
-                .then(aHttpResponseIsReceived(withStatus(200)))
+                .given(aUserIsCreated(with(userCreateRequestDTO)))
+                .then(aHttpResponse(isReceived(withStatus(201))))
+                .and(userLogins(using(userCreateRequestDTO)))
+                .then(aHttpResponse(isReceived(withStatus(200))))
                 .and(userTokenIsReceivedInResponse())
                 .execute();
     }
@@ -109,13 +110,13 @@ class UserJourneysTest {
         var userCreateRequestDTO = UserCreateRequestBuilder.userCreateRequest().build();
 
         aScenarioUsing(applicationContext)
-                .given(aUserIsCreatedWithTheDetails(userCreateRequestDTO))
-                .then(aHttpResponseIsReceived(withStatus(201)))
-                .and(userLoginsUsing(userCreateRequestDTO))
-                .then(aHttpResponseIsReceived(withStatus(200)))
+                .given(aUserIsCreated(with(userCreateRequestDTO)))
+                .then(aHttpResponse(isReceived(withStatus(201))))
+                .and(userLogins(using(userCreateRequestDTO)))
+                .then(aHttpResponse(isReceived(withStatus(200))))
                 .and(userTokenIsReceivedInResponse())
-                .when(associateLoginCredentialsWithKey("credentialsA"))
-                .then(theLoginCacheShouldHaveTokenAssociateWithKey("credentialsA"))
+                .when(associateLoginCredentials(with("credentialsA")))
+                .then(theLoginCacheShouldHaveTokenAssociate(with("credentialsA")))
                 .execute();
     }
 
@@ -124,13 +125,13 @@ class UserJourneysTest {
         var userCreateRequestDTO = UserCreateRequestBuilder.userCreateRequest().build();
 
         aScenarioUsing(applicationContext)
-                .given(aUserIsCreatedWithTheDetails(userCreateRequestDTO))
-                .then(aHttpResponseIsReceived(withStatus(201)))
-                .and(userLoginsUsing(userCreateRequestDTO))
-                .and(aHttpResponseIsReceived(withStatus(200)))
-                .and(associateLoginCredentialsWithKey("credentialsA"))
-                .when(fetchUserDetailUsingCredentialKey("credentialsA"))
-                .and(aHttpResponseIsReceived(withStatus(200)))
+                .given(aUserIsCreated(with(userCreateRequestDTO)))
+                .then(aHttpResponse(isReceived(withStatus(201))))
+                .and(userLogins(using(userCreateRequestDTO)))
+                .and(aHttpResponse(isReceived(withStatus(200))))
+                .and(associateLoginCredentials(with("credentialsA")))
+                .when(fetchUserDetails(using("credentialsA")))
+                .and(aHttpResponse(isReceived(withStatus(200))))
                 .then(userFetchedMatchesDetailsIn(userCreateRequestDTO))
                 .execute();
     }
@@ -140,14 +141,14 @@ class UserJourneysTest {
         var userCreateRequestDTO = UserCreateRequestBuilder.userCreateRequest().build();
 
         aScenarioUsing(applicationContext)
-                .given(aUserIsCreatedWithTheDetails(userCreateRequestDTO))
-                .then(aHttpResponseIsReceived(withStatus(201)))
-                .and(userLoginsUsing(userCreateRequestDTO))
-                .and(aHttpResponseIsReceived(withStatus(200)))
-                .and(associateLoginCredentialsWithKey("credentialsA"))
-                .and(userLogsOutUsingCredentialKey("credentialsA"))
-                .when(fetchUserDetailUsingCredentialKey("credentialsA"))
-                .then(aHttpResponseIsReceived(withStatus(401)))
+                .given(aUserIsCreated(with(userCreateRequestDTO)))
+                .then(aHttpResponse(isReceived(withStatus(201))))
+                .and(userLogins(using(userCreateRequestDTO)))
+                .and(aHttpResponse(isReceived(withStatus(200))))
+                .and(associateLoginCredentials(with("credentialsA")))
+                .and(userLogsOut(using("credentialsA")))
+                .when(fetchUserDetails(using("credentialsA")))
+                .then(aHttpResponse(isReceived(withStatus(401))))
                 .and(theInvalidationCacheShouldNOTHaveTokenAfterWaitTimeOf(Duration.ofSeconds(3),"credentialsA"))
                 .execute();
     }
@@ -157,18 +158,18 @@ class UserJourneysTest {
         var userCreateRequestDTO = UserCreateRequestBuilder.userCreateRequest().build();
 
         aScenarioUsing(applicationContext)
-                .given(aUserIsCreatedWithTheDetails(userCreateRequestDTO))
-                .then(aHttpResponseIsReceived(withStatus(201)))
-                .and(userLoginsUsing(userCreateRequestDTO))
-                .and(aHttpResponseIsReceived(withStatus(200)))
-                .and(associateLoginCredentialsWithKey("credentialsA"))
-                .when(fetchUserDetailUsingCredentialKey("credentialsA"))
-                .then(aHttpResponseIsReceived(withStatus(200)))
-                .and(userLoginsUsing(userCreateRequestDTO))
-                .then(aHttpResponseIsReceived(withStatus(200)))
-                .and(associateLoginCredentialsWithKey("credentialsB"))
-                .when(fetchUserDetailUsingCredentialKey("credentialsA"))
-                .then(aHttpResponseIsReceived(withStatus(401)))
+                .given(aUserIsCreated(with(userCreateRequestDTO)))
+                .then(aHttpResponse(isReceived(withStatus(201))))
+                .and(userLogins(using(userCreateRequestDTO)))
+                .and(aHttpResponse(isReceived(withStatus(200))))
+                .and(associateLoginCredentials(with("credentialsA")))
+                .when(fetchUserDetails(using("credentialsA")))
+                .then(aHttpResponse(isReceived(withStatus(200))))
+                .and(userLogins(using(userCreateRequestDTO)))
+                .then(aHttpResponse(isReceived(withStatus(200))))
+                .and(associateLoginCredentials(with("credentialsB")))
+                .when(fetchUserDetails(using("credentialsA")))
+                .then(aHttpResponse(isReceived(withStatus(401))))
                 .and(theLoginCacheShouldHaveCredentialsOf("credentialsB"))
                 .and(theLoginCacheShouldNOTHaveCredentialsOf("credentialsA"))
                 .and(theInvalidationCacheShouldHaveCredentialsOf("credentialsA"))
@@ -180,15 +181,15 @@ class UserJourneysTest {
         var userCreateRequestDTO = UserCreateRequestBuilder.userCreateRequest().build();
 
         aScenarioUsing(applicationContext)
-                .given(aUserIsCreatedWithTheDetails(userCreateRequestDTO))
-                .and(aHttpResponseIsReceived(withStatus(201)))
-                .and(userLoginsUsing(userCreateRequestDTO))
-                .and(aHttpResponseIsReceived(withStatus(200)))
-                .and(associateLoginCredentialsWithKey("credentialsA"))
-                .when(userLogsOutUsingCredentialKey("credentialsA"))
-                .then(aHttpResponseIsReceived(withStatus(200)))
-                .and(fetchUserDetailUsingCredentialKey("credentialsA"))
-                .then(aHttpResponseIsReceived(withStatus(401)))
+                .given(aUserIsCreated(with(userCreateRequestDTO)))
+                .and(aHttpResponse(isReceived(withStatus(201))))
+                .and(userLogins(using(userCreateRequestDTO)))
+                .and(aHttpResponse(isReceived(withStatus(200))))
+                .and(associateLoginCredentials(with("credentialsA")))
+                .when(userLogsOut(using("credentialsA")))
+                .then(aHttpResponse(isReceived(withStatus(200))))
+                .and(fetchUserDetails(using("credentialsA")))
+                .then(aHttpResponse(isReceived(withStatus(401))))
                 .execute();
     }
 }

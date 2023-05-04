@@ -1,6 +1,7 @@
-package com.gw.user.e2e.test;
+package com.gw.test.support;
 
-import org.jetbrains.annotations.Nullable;
+import com.gw.test.support.framework.*;
+import jakarta.annotation.Nullable;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.r2dbc.core.DatabaseClient;
@@ -9,7 +10,6 @@ import redis.clients.jedis.JedisPool;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 public class ScenarioBuilder {
     private final TestContext testContext;

@@ -22,6 +22,7 @@
         <module>api-functional-test</module>
         <module>gw-ui</module>
         <module>ui-functional-test</module>
+        <module>integration-test-support</module>
     </modules>
 
     <properties>

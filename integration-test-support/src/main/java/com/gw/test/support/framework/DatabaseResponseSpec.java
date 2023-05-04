@@ -1,4 +1,4 @@
-package com.gw.user.e2e.test;
+package com.gw.test.support.framework;
 
 public class DatabaseResponseSpec<V> implements TestResponse<V> {
     private final String responseKey;
