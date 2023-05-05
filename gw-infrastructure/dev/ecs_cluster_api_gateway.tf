@@ -6,7 +6,7 @@ module "api_gateway_alb" {
   ENV         = var.ENV
   source      = "../modules/alb"
   VPC_ID      = module.main-vpc.vpc_id
-  ALB_NAME    = "${var.ENV}-${API_GATEWAY}-alb"
+  ALB_NAME    = "${var.ENV}-${var.API_GATEWAY}-alb"
   TARGET_APPS = {
     group1 = {
       PORT             = 80
@@ -25,7 +25,7 @@ module "dev-api-gateway-ecs-cluster" {
   ENV                = var.ENV
   source             = "../modules/ecs-cluster"
   VPC_ID             = module.main-vpc.vpc_id
-  CLUSTER_NAME       = "${var.ENV}-${API_GATEWAY}-ecs-cluster"
+  CLUSTER_NAME       = "${var.ENV}-${var.API_GATEWAY}-ecs-cluster"
   INSTANCE_TYPE      = "t2.small"
   VPC_SUBNETS        = join(",", module.main-vpc.public_subnets) #For debug. Change to private subnet later.
   ENABLE_SSH         = true #Mark false for prod
