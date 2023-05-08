@@ -35,7 +35,7 @@
         <micrometer-registry-prometheus.version>1.10.6</micrometer-registry-prometheus.version>
         <reactor.version>3.5.5</reactor.version>
         <grpc.version>1.54.1</grpc.version>
-        <protobuf-java.version>3.22.3</protobuf-java.version>
+        <protobuf-java.version>3.22.4</protobuf-java.version>
         <spring-data-r2dbc.version>3.0.6</spring-data-r2dbc.version>
         <c3p0.version>0.9.5.5</c3p0.version>
         <r2dbc-postgresql.version>1.0.1.RELEASE</r2dbc-postgresql.version>
