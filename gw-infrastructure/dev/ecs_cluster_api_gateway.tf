@@ -82,3 +82,49 @@ module "api-gateway-ecs-service" {
   HEALTH_CHECK_PATH = "/index.html"
   HEALTH_CHECK_PORT = 80
 }
+
+
+data "aws_ecr_repository" "test_genesis_api_gateway_ecr" {
+  name = "test_genesis/gw-api-gateway"
+}
+
+resource "aws_ecr_repository_policy" "test_genesis_api_gateway_ecr_policy" {
+  repository = data.aws_ecr_repository.test_genesis_api_gateway_ecr.name
+
+  policy = <<EOF
+  {
+      "Version": "2012-10-17",
+      "Statement": [
+          {
+              "Sid": "AllowPushPullFromRepository",
+              "Effect": "Allow",
+              "Principal": {
+                  "AWS" : [
+                      "arn:aws:iam::${var.AWS_ACCOUNT_ID}:user/terraform-gt-user",
+                      "arn:aws:iam::${var.AWS_ACCOUNT_ID}:root",
+                      "arn:aws:iam::${var.AWS_ACCOUNT_ID}:role/${var.ENV}-${var.API_GATEWAY}-ecs-cluster-ecs-role",
+                      "arn:aws:iam::${var.AWS_ACCOUNT_ID}:role/${var.ENV}-${var.API_GATEWAY}-ecs-cluster-ec2-role"
+                  ]
+              },
+              "Action": [
+                  "ecr:GetDownloadUrlForLayer",
+                  "ecr:BatchGetImage",
+                  "ecr:BatchCheckLayerAvailability",
+                  "ecr:PutImage",
+                  "ecr:InitiateLayerUpload",
+                  "ecr:UploadLayerPart",
+                  "ecr:CompleteLayerUpload",
+                  "ecr:DescribeRepositories",
+                  "ecr:GetRepositoryPolicy",
+                  "ecr:ListImages",
+                  "ecr:DeleteRepository",
+                  "ecr:BatchDeleteImage",
+                  "ecr:SetRepositoryPolicy",
+                  "ecr:DeleteRepositoryPolicy",
+                  "ecr:GetAuthorizationToken"
+              ]
+          }
+      ]
+  }
+EOF
+}
