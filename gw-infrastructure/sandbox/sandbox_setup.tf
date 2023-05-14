@@ -6,86 +6,39 @@ module "main-vpc" {
   AWS_REGION = var.AWS_REGION
 }
 
-resource "aws_security_group" "default_vpc_security_group" {
-  vpc_id      = module.main-vpc.vpc_id
-  description = "All security group"
+resource "tls_private_key" "dev_private_key" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
 
-  ingress {
-    from_port = 6379
-    to_port   = 6379
-    protocol  = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+resource "tls_self_signed_cert" "dev_self_signed_cert" {
+  private_key_pem = tls_private_key.dev_private_key.private_key_pem
+
+  subject {
+    common_name  = "${var.ENV}.genesis"
+    organization = "Genesis Inc"
   }
 
-  egress {
-    from_port = 0
-    protocol  = "-1"
-    to_port   = 0
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  validity_period_hours = 1
+
+  allowed_uses = [
+    "key_encipherment",
+    "digital_signature",
+    "server_auth",
+  ]
 }
 
-data "aws_ecr_repository" "test_genesis_ui_ecr" {
-  name = "test_genesis/gw-ui"
+resource "aws_acm_certificate" "alb_cert" {
+  private_key      = tls_private_key.dev_private_key.private_key_pem
+  certificate_body = tls_self_signed_cert.dev_self_signed_cert.cert_pem
 }
 
-data "aws_iam_policy_document" "test_genesis_ui_ecr_policy" {
-  statement {
-    sid    = "AllowPushPullFromRepository"
-    effect = "Allow"
-
-    principals {
-      type        = "AWS"
-      identifiers = [
-        "arn:aws:iam::${var.AWS_ACCOUNT_ID}:user/terraform-gt-user",
-        "arn:aws:iam::${var.AWS_ACCOUNT_ID}:root",
-        "arn:aws:iam::${var.AWS_ACCOUNT_ID}:role/dev-ecs-cluster-ec2-role"
-#        "arn:aws:iam::${var.AWS_ACCOUNT_ID}:role/dev-ecs-cluster-ecs-role"
-      ]
-    }
-
-    actions = [
-      "ecr:GetDownloadUrlForLayer",
-      "ecr:BatchGetImage",
-      "ecr:BatchCheckLayerAvailability",
-      "ecr:PutImage",
-      "ecr:InitiateLayerUpload",
-      "ecr:UploadLayerPart",
-      "ecr:CompleteLayerUpload",
-      "ecr:DescribeRepositories",
-      "ecr:GetRepositoryPolicy",
-      "ecr:ListImages",
-      "ecr:DeleteRepository",
-      "ecr:BatchDeleteImage",
-      "ecr:SetRepositoryPolicy",
-      "ecr:DeleteRepositoryPolicy",
-      "ecr:GetAuthorizationToken"
-    ]
-  }
+module "allow_cluster_access" {
+  source = "../modules/test-access"
+  ENV    = var.ENV
+  VPC_ID = module.main-vpc.vpc_id
 }
 
-resource "aws_ecr_repository_policy" "test_genesis_ui_ecr_policy" {
-  repository = data.aws_ecr_repository.test_genesis_ui_ecr.name
-  policy = data.aws_iam_policy_document.test_genesis_ui_ecr_policy.json
+output "api_gateway_alb_dns_host" {
+  value = module.api_gateway_alb.dns_name
 }
-
-output "vpc_id" {
-  value = module.main-vpc.vpc_id
-}
-
-#module "elasticache_instance" {
-#  source = "../modules/elasticache"
-#  ENV = var.ENV
-#  VPC_ID = module.main-vpc.vpc_id
-#  ALLOWED_SECURITY_GROUP_IDS = [aws_security_group.default_vpc_security_group.id]
-#  SUBNET_IDS = module.main-vpc.public_subnets
-#}
-
-#output "elasticache_host" {
-#  value = module.elasticache_instance.elasticache_cluster_cache_nodes[0].address
-#}
-#
-#output "elasticache_host_config_endpoint" {
-#  value = module.elasticache_instance.elasticache_cluster_configuration_endpoint
-#}
-

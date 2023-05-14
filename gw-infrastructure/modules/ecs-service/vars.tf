@@ -14,7 +14,10 @@ variable "SERVICE_ROLE_ARN" {}
 variable "DESIRED_COUNT" {}
 variable "ECR_REPO_URL" {}
 variable "VPC_ID" {}
-variable "APP_ENV" {}
+variable "APP_ENV" {
+  type = map(string)
+  default = {}
+}
 
 variable "DEPLOYMENT_MIN_HEALTHY_PERCENTAGE" {
   default = 100
