@@ -38,9 +38,9 @@ public class UserLoginResource {
     @ResponseStatus(code = HttpStatus.OK)
     public Mono<LoginResponseDTO> login(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
         return userService.authenticateUser(loginRequestDTO.userName(), loginRequestDTO.password())
-                .map(value -> {
-                    String token = tokenManager.generateToken(value, authConfig.tokenDuration());
-                    cacheManager.updateLoginCache(token, value.id().toString());
+                .map(user -> {
+                    String token = tokenManager.generateToken(user, authConfig.tokenDuration());
+                    cacheManager.updateLoginCache(token, user.id().toString());
                     return new LoginResponseDTO(token);
                 })
                 .switchIfEmpty(Mono.error(() -> new ApplicationAuthenticationException("No user found [UserName]: " +
