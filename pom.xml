@@ -42,7 +42,7 @@
         <swagger.version>3.0.0</swagger.version>
         <spring-doc.version>1.7.0</spring-doc.version>
         <postgresql.testcontainer.version>1.18.0</postgresql.testcontainer.version>
-        <vault.testcontainer.version>1.18.0</vault.testcontainer.version>
+        <vault.testcontainer.version>1.18.1</vault.testcontainer.version>
         <apache.httpclient.version>5.2.1</apache.httpclient.version>
         <spring-security-test.version>6.0.3</spring-security-test.version>
         <spring-cloud-contract-stub.version>4.0.2</spring-cloud-contract-stub.version>
