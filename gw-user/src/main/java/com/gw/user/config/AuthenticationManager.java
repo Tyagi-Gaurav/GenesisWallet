@@ -1,6 +1,7 @@
 package com.gw.user.config;
 
 import com.gw.common.util.TokenManager;
+import com.gw.user.cache.CacheManager;
 import com.gw.user.resource.domain.UserProfile;
 import com.gw.user.service.UserService;
 import org.slf4j.Logger;
@@ -19,15 +20,20 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
 
     private final UserService userService;
     private final TokenManager tokenManager;
+    private final CacheManager cacheManager;
 
-    public AuthenticationManager(UserService userService, TokenManager tokenManager) {
+    public AuthenticationManager(UserService userService,
+                                 TokenManager tokenManager,
+                                 CacheManager cacheManager) {
         this.userService = userService;
         this.tokenManager = tokenManager;
+        this.cacheManager = cacheManager;
     }
 
     @Override
     public Mono<Authentication> authenticate(Authentication authentication) {
-        var token = tokenManager.parse(authentication.getPrincipal().toString());
+        String tokenAsString = authentication.getPrincipal().toString();
+        var token = tokenManager.parse(tokenAsString);
         String userId = token.getUserId();
         LOG.debug("Token: {}", token);
 
@@ -36,6 +42,7 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
 
             return userService.findUserBy(UUID.fromString(userId))
                     .filter(user -> token.isTokenValid())
+                    .filter(user -> cacheManager.isValidToken(tokenAsString))
                     .switchIfEmpty(Mono.error(() -> new IllegalCallerException(userId)))
                     .flatMap(ud -> {
                         // After setting the Authentication in the context, we specify

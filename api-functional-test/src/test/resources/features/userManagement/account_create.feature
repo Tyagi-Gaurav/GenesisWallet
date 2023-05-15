@@ -6,6 +6,7 @@ Feature: Users should be able to create an account
       | firstName | lastName | userName | password | dateOfBirth | gender        | homeCountry |
       | bcssdf    | defdsfdf | <random> | <random> | 19/03/1972  | <GenderValue> | AUS         |
     Then the response should be received with HTTP status code 201
+    And the userId is received in the response
     And the user service is requested for metrics
     Then total registration metrics is incremented by 1
     Examples:

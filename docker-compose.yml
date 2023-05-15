@@ -13,6 +13,7 @@ services:
       - "9091:9091"
     environment:
       - "DB_NAME=testUserDB"
+      - "CACHE_HOST=local.redis"
     networks:
       - overlay
 
@@ -57,6 +58,14 @@ services:
       - "POSTGRES_USER=user"
       - "POSTGRES_PASSWORD=password"
       - "POSTGRES_DB=testUserDB"
+    networks:
+      - overlay
+
+  redis:
+    image: redis:6.0
+    container_name: local.redis
+    ports:
+      - "6379:6379"
     networks:
       - overlay
 

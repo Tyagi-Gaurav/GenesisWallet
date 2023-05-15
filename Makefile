@@ -37,6 +37,10 @@ full_quick:
 down:
 	docker-compose down --rmi all
 
+ft:
+	./mvnw test -DskipTests=false -pl api-functional-test
+	./mvnw test -DskipTests=false -pl ui-functional-test
+
 help:
 	@echo ''
 	@echo 'Available targets:'

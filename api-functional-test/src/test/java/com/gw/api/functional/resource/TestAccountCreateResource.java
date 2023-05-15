@@ -2,6 +2,7 @@ package com.gw.api.functional.resource;
 
 import com.gw.api.functional.config.ApiGatewayConfig;
 import com.gw.api.functional.domain.TestAccountCreateRequestDTO;
+import com.gw.api.functional.domain.TestAccountCreateResponseDTO;
 import com.gw.api.functional.util.ResponseHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -23,7 +24,7 @@ public class TestAccountCreateResource extends AbstractResource {
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.CONTENT_TYPE, "application/vnd+user.create.v1+json");
         HttpEntity<TestAccountCreateRequestDTO> request = new HttpEntity<>(accountCreateRequestDTO, headers);
-        responseHolder.setResponse(this.post(fullUrl, request, String.class));
+        responseHolder.setResponseWithBodyClass(this.post(fullUrl, request, String.class), TestAccountCreateResponseDTO.class);
     }
 
     public void createWithHttp(TestAccountCreateRequestDTO accountCreateRequestDTO) {
@@ -32,7 +33,7 @@ public class TestAccountCreateResource extends AbstractResource {
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.CONTENT_TYPE, "application/vnd+user.create.v1+json");
         HttpEntity<TestAccountCreateRequestDTO> request = new HttpEntity<>(accountCreateRequestDTO, headers);
-        responseHolder.setResponse(this.post(fullUrl, request, String.class));
+        responseHolder.setResponseWithBodyClass(this.post(fullUrl, request, String.class), TestAccountCreateResponseDTO.class);
     }
 
 }

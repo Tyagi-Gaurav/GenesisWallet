@@ -15,6 +15,7 @@ accessible:
   endpoints:
     "[POST-/api/user/create]": ${CREATE_USER:true}
     "[POST-/api/user/login]": ${LOGIN_USER:true}
+    "[POST-/api/user/logout]": ${LOGOUT_USER:true}
     "[GET-/actuator/info]": ${ACTUATOR_INFO:true}
     "[GET-/actuator/prometheus]": ${GET_METRICS:true}
     "[GET-/actuator/mappings]": ${GET_MAPPINGS:true}
@@ -25,6 +26,7 @@ accessible:
     "[GET-/api/swagger-resources/.*]": ${GET_SWAGGER_RESOURCES:true}
     "[GET-/api/swagger-ui/.*]": ${GET_SWAGGER_UI_RESOURCES:true}
     "[GET-/actuator/healthcheck/.*]": ${ACTUATOR_HEALTH_CUSTOM:true}
+    "[GET-/api/user/details/.*]": ${FETCH_USER:true}
 
 management:
   server.port: ${SERVER_MGT_PORT:9091}
@@ -62,3 +64,7 @@ vault:
   port: ${VAULT_PORT:8200}
   httpScheme: "http"
   appRole: "user_service"
+
+cache:
+  host: ${CACHE_HOST:localhost}
+  port: ${CACHE_PORT:6379}

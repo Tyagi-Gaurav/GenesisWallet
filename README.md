@@ -23,6 +23,9 @@ To List tables: `\dt USER_SCHEMA.*`
 ssh-keygen -t ed25519 -q -N "" -f ./ssh_key
 ```
 
+## Local Redis commands
+Refer [here](./Redis.md)
+
 # Services
 * API Gateway (80)
 * User (9090/19090)

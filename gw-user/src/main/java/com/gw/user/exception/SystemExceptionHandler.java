@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.server.UnsupportedMediaTypeStatusException;
 import reactor.core.publisher.Mono;
 
 @ControllerAdvice
@@ -30,5 +31,14 @@ public class SystemExceptionHandler {
             LOG.error(exception.getMessage(), exception);
         }
         return errorResponseHelper.errorResponse(500, UNEXPECTED_ERROR_OCCURRED);
+    }
+
+    @ResponseStatus(code= HttpStatus.NOT_FOUND)
+    @ExceptionHandler(value = {UnsupportedMediaTypeStatusException.class})
+    public Mono<ErrorResponse> handleException(UnsupportedMediaTypeStatusException exception) {
+        if (LOG.isErrorEnabled()) {
+            LOG.error(exception.getMessage(), exception);
+        }
+        return errorResponseHelper.errorResponse(400, "No resource Found");
     }
 }

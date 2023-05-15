@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 public class ScenarioContext {
 
     private TestAccountCreateRequestDTO userCredentialsRequest;
-    private String regularUserId;
     private String lastUserName;
 
     public String getLastUserName() {
@@ -24,10 +23,6 @@ public class ScenarioContext {
 
     public TestAccountCreateRequestDTO getUserCredentialsRequest() {
         return userCredentialsRequest;
-    }
-
-    public void setUserIdForRegularUser(String userId) {
-        this.regularUserId = userId;
     }
 
     public TestAccountCreateRequestDTO getCredentials() {

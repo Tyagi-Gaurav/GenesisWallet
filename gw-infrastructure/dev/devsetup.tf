@@ -52,6 +52,18 @@ module "single_db_instance" {
   ALLOWED_SECURITY_GROUP_IDS = [module.dev-user-ecs-cluster.cluster_sg_id]
 }
 
+module "elasticache_instance" {
+  source = "../modules/elasticache"
+  ENV = var.ENV
+  VPC_ID = module.main-vpc.vpc_id
+  ALLOWED_SECURITY_GROUP_IDS = [module.dev-user-ecs-cluster.cluster_sg_id]
+  SUBNET_IDS = module.main-vpc.public_subnets
+}
+
+output "elasticache_host" {
+  value = module.elasticache_instance.elasticache_cluster_cache_nodes
+}
+
 output "vault_host" {
   value = module.vault_instance.vault_ec2_private_ip
 }

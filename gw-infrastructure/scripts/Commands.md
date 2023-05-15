@@ -10,3 +10,10 @@
   * Create user and attach it to the group
   * Get access key and secret key and use for terraform
 * Create S3 bucket role
+
+# Ping Redis
+* python ping_redis.py <host>
+
+# Troubleshooting
+* Install Redis module for python
+  * `sudo pip install redis`

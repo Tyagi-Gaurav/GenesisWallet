@@ -1,6 +1,7 @@
 package com.gw.api.functional.steps;
 
 import com.gw.api.functional.resource.TestMonitoringResource;
+import com.gw.api.functional.resource.TestSystemAccessResource;
 import com.gw.api.functional.util.ResponseHolder;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java8.En;
@@ -16,6 +17,9 @@ public class MonitoringSteps implements En {
     private TestMonitoringResource testMonitoringResource;
 
     @Autowired
+    private TestSystemAccessResource testSystemAccessResource;
+
+    @Autowired
     private ResponseHolder responseHolder;
 
     public MonitoringSteps() {
@@ -28,27 +32,32 @@ public class MonitoringSteps implements En {
         });
 
         Then("the response should contain following metrics", (DataTable metrics) -> {
-            String metricsFromServer = responseHolder.readResponse(String.class);
+            String metricsFromServer = responseHolder.getResponse(String.class);
             assertThat(metrics.asList().stream()
                     .allMatch(metricsFromServer::contains)).isTrue();
         });
 
         Given("^that metrics are captured$", () -> {
             testMonitoringResource.accessMetrics();
-            responseHolder.storeMetrics(responseHolder.readResponse(String.class));
+            responseHolder.storeMetrics(responseHolder.getResponse(String.class));
         });
 
         Then("^total registration metrics is incremented by (\\d+)$", (Integer increment) -> {
             String oldMetrics = responseHolder.getMetrics();
-            String newMetrics = responseHolder.readResponse(String.class);
+            String newMetrics = responseHolder.getResponse(String.class);
 
             Double user_registration_count_old = getValue(oldMetrics, "user_registration_count_total", "source", "WEB", "type", "HOMEPAGE");
             Double user_registration_count_new = getValue(newMetrics, "user_registration_count_total");
 
             assertThat(user_registration_count_new - user_registration_count_old).isEqualTo(1.0);
         });
+
         When("^the UI service is requested for status$", () -> {
             testMonitoringResource.accessUIStatus();
+        });
+
+        Given("^the API is accessed using a non-existent endpoint$", () -> {
+            testSystemAccessResource.nonExistentEndpoint();
         });
     }
 
