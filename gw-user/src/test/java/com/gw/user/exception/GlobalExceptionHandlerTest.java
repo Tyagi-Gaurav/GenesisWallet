@@ -16,7 +16,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class GlobalExceptionHandlerTest {
+class GlobaRlExceptionHandlerTest {
     private final GlobalExceptionHandler validationExceptionHandler = new GlobalExceptionHandler();
 
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
@@ -69,6 +69,18 @@ class GlobalExceptionHandlerTest {
         Mono<Void> handle = validationExceptionHandler.handle(serverWebExchange, new IllegalArgumentException());
 
         StepVerifier.create(handle).verifyComplete();
+        verify(httpResponse).setComplete();
+    }
+
+    @Test
+    void handleIllegalCallerException() {
+        when(serverWebExchange.getResponse()).thenReturn(httpResponse);
+        when(httpResponse.setComplete()).thenReturn(Mono.empty());
+
+        Mono<Void> handle = validationExceptionHandler.handle(serverWebExchange, new IllegalCallerException());
+
+        StepVerifier.create(handle).verifyComplete();
+        verify(httpResponse).setStatusCode(HttpStatus.UNAUTHORIZED);
         verify(httpResponse).setComplete();
     }
 }

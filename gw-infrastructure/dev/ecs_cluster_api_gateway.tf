@@ -6,7 +6,7 @@ module "api_gateway_alb" {
   ENV         = var.ENV
   source      = "../modules/alb"
   VPC_ID      = module.main-vpc.vpc_id
-  ALB_NAME    = "${var.ENV}-${API_GATEWAY}-alb"
+  ALB_NAME    = "${var.ENV}-${var.API_GATEWAY}-alb"
   TARGET_APPS = {
     group1 = {
       PORT             = 80
@@ -25,7 +25,7 @@ module "dev-api-gateway-ecs-cluster" {
   ENV                = var.ENV
   source             = "../modules/ecs-cluster"
   VPC_ID             = module.main-vpc.vpc_id
-  CLUSTER_NAME       = "${var.ENV}-${API_GATEWAY}-ecs-cluster"
+  CLUSTER_NAME       = "${var.ENV}-${var.API_GATEWAY}-ecs-cluster"
   INSTANCE_TYPE      = "t2.small"
   VPC_SUBNETS        = join(",", module.main-vpc.public_subnets) #For debug. Change to private subnet later.
   ENABLE_SSH         = true #Mark false for prod
@@ -81,4 +81,50 @@ module "api-gateway-ecs-service" {
   })
   HEALTH_CHECK_PATH = "/index.html"
   HEALTH_CHECK_PORT = 80
+}
+
+
+data "aws_ecr_repository" "test_genesis_api_gateway_ecr" {
+  name = "test_genesis/gw-api-gateway"
+}
+
+resource "aws_ecr_repository_policy" "test_genesis_api_gateway_ecr_policy" {
+  repository = data.aws_ecr_repository.test_genesis_api_gateway_ecr.name
+
+  policy = <<EOF
+  {
+      "Version": "2012-10-17",
+      "Statement": [
+          {
+              "Sid": "AllowPushPullFromRepository",
+              "Effect": "Allow",
+              "Principal": {
+                  "AWS" : [
+                      "arn:aws:iam::${var.AWS_ACCOUNT_ID}:user/terraform-gt-user",
+                      "arn:aws:iam::${var.AWS_ACCOUNT_ID}:root",
+                      "arn:aws:iam::${var.AWS_ACCOUNT_ID}:role/${var.ENV}-${var.API_GATEWAY}-ecs-cluster-ecs-role",
+                      "arn:aws:iam::${var.AWS_ACCOUNT_ID}:role/${var.ENV}-${var.API_GATEWAY}-ecs-cluster-ec2-role"
+                  ]
+              },
+              "Action": [
+                  "ecr:GetDownloadUrlForLayer",
+                  "ecr:BatchGetImage",
+                  "ecr:BatchCheckLayerAvailability",
+                  "ecr:PutImage",
+                  "ecr:InitiateLayerUpload",
+                  "ecr:UploadLayerPart",
+                  "ecr:CompleteLayerUpload",
+                  "ecr:DescribeRepositories",
+                  "ecr:GetRepositoryPolicy",
+                  "ecr:ListImages",
+                  "ecr:DeleteRepository",
+                  "ecr:BatchDeleteImage",
+                  "ecr:SetRepositoryPolicy",
+                  "ecr:DeleteRepositoryPolicy",
+                  "ecr:GetAuthorizationToken"
+              ]
+          }
+      ]
+  }
+EOF
 }

@@ -4,7 +4,6 @@ import com.gw.user.Application;
 import com.gw.user.e2e.security.TestContainerVaultInitializer;
 import com.gw.user.repo.TestContainerDatabaseInitializer;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,8 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @AutoConfigureWireMock(port = 0)
 @TestPropertySource(properties = {
         "user.host=localhost",
-        "user.port=${wiremock.server.port}"
+        "user.port=${wiremock.server.port}",
+        "auth.tokenDuration=2s"
 })
 class MonitoringTest {
     private ScenarioExecutor scenarioExecutor;
@@ -43,7 +43,7 @@ class MonitoringTest {
     void setUp() {
         String baseUrl = "http://localhost:" + serverPort;
         var webTestClient = WebTestClient.bindToServer().baseUrl(baseUrl).build();
-        scenarioExecutor = new ScenarioExecutor(webTestClient, databaseClient);
+        scenarioExecutor = new ScenarioExecutor(webTestClient, databaseClient, null);
     }
 
     @Test
@@ -51,13 +51,5 @@ class MonitoringTest {
         scenarioExecutor
                 .accessStatusEndpoint()
                 .then().expectReturnCode(200);
-    }
-
-    @Disabled
-    void shouldBeAbleToAccessMetricsEndpoint() {
-        scenarioExecutor
-                .accessMetricsEndpoint()
-                .then()
-                .expectReturnCode(200);
     }
 }

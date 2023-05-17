@@ -4,6 +4,7 @@
 # Set Variables                                            #
 ############################################################
 REMOVE_ORPHANS=""
+REMOVE_IMAGES=""
 BUILD='mvn clean package'
 SKIP_TEST=''
 
@@ -17,7 +18,7 @@ Usage()
    echo
    echo "Syntax: full_local_build.sh [-o|-h|-b|-t]"
    echo "options:"
-   echo "o    Remove orphan containers."
+   echo "o    Remove orphan containers & images."
    echo "b    Skip build."
    echo "t    Skip test."
    echo "h    Print this Help."
@@ -29,10 +30,11 @@ Usage()
 # Main program                                             #
 ############################################################
 ############################################################
-while getopts :obht flag ; do
+while getopts :obqht flag ; do
     case "${flag}" in
         o)
-           REMOVE_ORPHANS="--remove-orphans";;
+           REMOVE_ORPHANS="--remove-orphans"
+           REMOVE_IMAGES="--rmi all";;
         b)
           BUILD="";;
         t)
@@ -55,7 +57,7 @@ done
 FULL_BUILD_COMMAND="$BUILD $SKIP_TEST"
 
 set -e #Fail on error
-docker-compose down --rmi all
+docker-compose down $REMOVE_IMAGES
 eval "$FULL_BUILD_COMMAND"
 
 docker-compose --env-file ~/.secret/env.file up -d --build $REMOVE_ORPHANS

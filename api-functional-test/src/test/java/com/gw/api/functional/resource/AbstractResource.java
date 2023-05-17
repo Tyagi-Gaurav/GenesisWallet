@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
@@ -18,6 +19,8 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class AbstractResource {
     private static final Logger LOG = LoggerFactory.getLogger(AbstractResource.class);
+
+    protected HttpEntity EMPTY_HTTP_ENTITY = new HttpEntity(HttpHeaders.EMPTY);
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 

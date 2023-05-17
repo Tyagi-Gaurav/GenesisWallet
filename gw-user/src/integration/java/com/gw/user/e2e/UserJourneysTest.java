@@ -1,13 +1,12 @@
 package com.gw.user.e2e;
 
+import com.gw.test.support.framework.WithSyntacticSugar;
 import com.gw.user.Application;
 import com.gw.user.e2e.builder.UserCreateRequestBuilder;
-import com.gw.user.e2e.domain.UserDetailsResponseDTO;
 import com.gw.user.e2e.security.TestContainerVaultInitializer;
 import com.gw.user.repo.TestContainerDatabaseInitializer;
-import com.gw.user.resource.domain.LoginResponseDTO;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,88 +15,181 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebFlux;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
+import org.springframework.context.ApplicationContext;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.reactive.server.WebTestClient;
+import redis.clients.jedis.JedisPool;
+import redis.embedded.RedisServer;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.time.Duration;
+
+import static com.gw.test.support.ScenarioBuilder.aScenarioUsing;
+import static com.gw.user.e2e.test.ScenarioExecutor2.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = Application.class,
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ContextConfiguration(initializers = {TestContainerDatabaseInitializer.class, TestContainerVaultInitializer.class})
+@ContextConfiguration(initializers = {
+        TestContainerDatabaseInitializer.class,
+        TestContainerVaultInitializer.class})
 @AutoConfigureWebFlux
 @ActiveProfiles("UserJourneysTest")
 @AutoConfigureWireMock(port = 0)
 @TestPropertySource(properties = {
         "user.host=localhost",
-        "user.port=${wiremock.server.port}"
+        "user.port=${wiremock.server.port}",
+        "auth.tokenDuration=2s"
 })
-class UserJourneysTest {
-    private ScenarioExecutor scenarioExecutor;
-
+class UserJourneysTest implements WithSyntacticSugar {
     @Autowired
     private DatabaseClient databaseClient;
+    @Autowired
+    private JedisPool jedisPool;
+    @Autowired
+    private ApplicationContext applicationContext;
 
-    @LocalServerPort
-    private int serverPort;
+    private static RedisServer redisServer;
 
-    @BeforeEach
-    void setUp() {
-        String baseUrl = "http://localhost:" + serverPort + "/api";
-        var webTestClient = WebTestClient.bindToServer().baseUrl(baseUrl).build();
-        scenarioExecutor = new ScenarioExecutor(webTestClient, databaseClient);
+    @BeforeAll
+    static void beforeAll() {
+        redisServer = new RedisServer();
+        redisServer.start();
+    }
+
+    @AfterAll
+    static void afterAll() {
+        redisServer.stop();
     }
 
     @ParameterizedTest
     @NullSource
     @ValueSource(strings = {"", "abc", "efuusidhfauihsdfuhiusdhfaiuhsfiuhiufhs"})
     void createUserWithInvalidUser(String userName) {
-        var accountCreateRequestDTO = UserCreateRequestBuilder.userCreateRequest()
+        var userCreateRequestDTO = UserCreateRequestBuilder.userCreateRequest()
                 .withUserName(userName)
                 .build();
 
-        scenarioExecutor
-                .userIsCreatedFor(accountCreateRequestDTO)
-                .then().expectReturnCode(400);
+        aScenarioUsing(applicationContext)
+                .given(aUserIsCreated(with((userCreateRequestDTO))))
+                .then(aHttpResponse(isReceived(withStatus(400))))
+                .execute();
     }
 
     @Test
     void createValidUserTest() {
-        var userCreateRequestDTO = UserCreateRequestBuilder.userCreateRequest().build();
+        var userCreateRequestDTO = UserCreateRequestBuilder.userCreateRequest()
+                .build();
 
-        scenarioExecutor
-                .captureMetrics()
-                .userIsCreatedFor(userCreateRequestDTO)
-                .then().expectReturnCode(201)
-                .retrieveUserFromDatabase(userCreateRequestDTO.userName())
-                .thenAssertThat(userDetailsResponse -> {
-                    assertThat(userDetailsResponse).isNotNull();
-                    assertThat(userDetailsResponse.firstName()).isEqualTo(userCreateRequestDTO.firstName());
-                    assertThat(userDetailsResponse.lastName()).isEqualTo(userCreateRequestDTO.lastName());
-                    assertThat(userDetailsResponse.userName()).isEqualTo(userCreateRequestDTO.userName());
-                    assertThat(userDetailsResponse.dateOfBirth()).isEqualTo(userCreateRequestDTO.dateOfBirth());
-                    assertThat(userDetailsResponse.gender()).isEqualTo(userCreateRequestDTO.gender());
-                    assertThat(userDetailsResponse.homeCountry()).isEqualTo(userCreateRequestDTO.homeCountry());
-                }, UserDetailsResponseDTO.class)
-                .whenWeRetrieveMetricsFromService()
-                .thenUserRegistrationCounterIsIncremented();
+        aScenarioUsing(applicationContext)
+                .given(aUserIsCreated(with(userCreateRequestDTO)))
+                .then(aHttpResponse(isReceived(withStatus(201))))
+                .and(whenUserIsRetrievedFromDatabaseWith(userCreateRequestDTO.userName()))
+                .then(userRetrievedFromDatabaseMatches(userCreateRequestDTO))
+                .execute();
     }
 
     @Test
     void createValidUserAndLogin() {
         var userCreateRequestDTO = UserCreateRequestBuilder.userCreateRequest().build();
 
-        scenarioExecutor
-                .when().userIsCreatedFor(userCreateRequestDTO).expectReturnCode(201)
-                .userLoginsWith(userCreateRequestDTO).expectReturnCode(200)
-                .thenAssertThat(loginResponse ->
-                    assertThat(loginResponse.token()).isNotEmpty()
-                , LoginResponseDTO.class);
+        aScenarioUsing(applicationContext)
+                .given(aUserIsCreated(with(userCreateRequestDTO)))
+                .then(aHttpResponse(isReceived(withStatus(201))))
+                .and(userLogins(using(userCreateRequestDTO)))
+                .then(aHttpResponse(isReceived(withStatus(200))))
+                .and(userTokenIsReceivedInResponse())
+                .execute();
+    }
+
+    @Test
+    void AfterLoginTheUserTokenShouldBeInTheCache() {
+        var userCreateRequestDTO = UserCreateRequestBuilder.userCreateRequest().build();
+
+        aScenarioUsing(applicationContext)
+                .given(aUserIsCreated(with(userCreateRequestDTO)))
+                .then(aHttpResponse(isReceived(withStatus(201))))
+                .and(userLogins(using(userCreateRequestDTO)))
+                .then(aHttpResponse(isReceived(withStatus(200))))
+                .and(userTokenIsReceivedInResponse())
+                .when(associateLoginCredentials(with("credentialsA")))
+                .then(theLoginCacheShouldHaveTokenAssociate(with("credentialsA")))
+                .execute();
+    }
+
+    @Test
+    void fetchUserDetailsAfterLogin() {
+        var userCreateRequestDTO = UserCreateRequestBuilder.userCreateRequest().build();
+
+        aScenarioUsing(applicationContext)
+                .given(aUserIsCreated(with(userCreateRequestDTO)))
+                .then(aHttpResponse(isReceived(withStatus(201))))
+                .and(userLogins(using(userCreateRequestDTO)))
+                .and(aHttpResponse(isReceived(withStatus(200))))
+                .and(associateLoginCredentials(with("credentialsA")))
+                .when(fetchUserDetails(using("credentialsA")))
+                .and(aHttpResponse(isReceived(withStatus(200))))
+                .then(userFetchedMatchesDetailsIn(userCreateRequestDTO))
+                .execute();
+    }
+
+    @Test
+    void invalidatedTokenShouldBeRemovedAfterTTLExpires() {
+        var userCreateRequestDTO = UserCreateRequestBuilder.userCreateRequest().build();
+
+        aScenarioUsing(applicationContext)
+                .given(aUserIsCreated(with(userCreateRequestDTO)))
+                .then(aHttpResponse(isReceived(withStatus(201))))
+                .and(userLogins(using(userCreateRequestDTO)))
+                .and(aHttpResponse(isReceived(withStatus(200))))
+                .and(associateLoginCredentials(with("credentialsA")))
+                .and(userLogsOut(using("credentialsA")))
+                .when(fetchUserDetails(using("credentialsA")))
+                .then(aHttpResponse(isReceived(withStatus(401))))
+                .and(theInvalidationCacheShouldNOTHaveTokenAfterWaitTimeOf(Duration.ofSeconds(3),"credentialsA"))
+                .execute();
+    }
+
+    @Test
+    void previousUserTokenToBeInvalidatedAfterReLogin() {
+        var userCreateRequestDTO = UserCreateRequestBuilder.userCreateRequest().build();
+
+        aScenarioUsing(applicationContext)
+                .given(aUserIsCreated(with(userCreateRequestDTO)))
+                .then(aHttpResponse(isReceived(withStatus(201))))
+                .and(userLogins(using(userCreateRequestDTO)))
+                .and(aHttpResponse(isReceived(withStatus(200))))
+                .and(associateLoginCredentials(with("credentialsA")))
+                .when(fetchUserDetails(using("credentialsA")))
+                .then(aHttpResponse(isReceived(withStatus(200))))
+                .and(userLogins(using(userCreateRequestDTO)))
+                .then(aHttpResponse(isReceived(withStatus(200))))
+                .and(associateLoginCredentials(with("credentialsB")))
+                .when(fetchUserDetails(using("credentialsA")))
+                .then(aHttpResponse(isReceived(withStatus(401))))
+                .and(theLoginCacheShouldHaveCredentialsOf("credentialsB"))
+                .and(theLoginCacheShouldNOTHaveCredentialsOf("credentialsA"))
+                .and(theInvalidationCacheShouldHaveCredentialsOf("credentialsA"))
+                .execute();
+    }
+
+    @Test
+    void postLogoutUserShouldNotBeAbleToAccessUserDetails() {
+        var userCreateRequestDTO = UserCreateRequestBuilder.userCreateRequest().build();
+
+        aScenarioUsing(applicationContext)
+                .given(aUserIsCreated(with(userCreateRequestDTO)))
+                .and(aHttpResponse(isReceived(withStatus(201))))
+                .and(userLogins(using(userCreateRequestDTO)))
+                .and(aHttpResponse(isReceived(withStatus(200))))
+                .and(associateLoginCredentials(with("credentialsA")))
+                .when(userLogsOut(using("credentialsA")))
+                .then(aHttpResponse(isReceived(withStatus(200))))
+                .and(fetchUserDetails(using("credentialsA")))
+                .then(aHttpResponse(isReceived(withStatus(401))))
+                .execute();
     }
 }

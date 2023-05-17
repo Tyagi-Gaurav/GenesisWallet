@@ -1,6 +1,7 @@
 package com.gw.user.security;
 
 import com.gw.common.util.TokenManager;
+import com.gw.user.cache.CacheManager;
 import com.gw.user.config.AuthenticationManager;
 import com.gw.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,17 +30,21 @@ public class WebSecurityConfig {
     @Order(Ordered.HIGHEST_PRECEDENCE)
     SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity httpSecurity,
                                                 JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
-                                                TokenManager tokenManager) {
+                                                TokenManager tokenManager,
+                                                CacheManager cacheManager) {
         return httpSecurity
                 .csrf().disable()
                 .authorizeExchange()
-                .pathMatchers("/actuator/**", "/v2/**", "/user/**", "/swagger-ui/**", "/swagger-resources/**").permitAll()
+                .pathMatchers("/actuator/**", "/v2/**", "/swagger-ui/**",
+                        "/user/create",
+                        "/user/login",
+                        "/swagger-resources/**").permitAll()
                 .anyExchange().authenticated().and()
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and()
                 .securityContextRepository(new SecurityContextRepository(
-                        new AuthenticationManager(userDetailsService, tokenManager)
+                        new AuthenticationManager(userDetailsService, tokenManager, cacheManager)
                 ))
                 .build();
     }

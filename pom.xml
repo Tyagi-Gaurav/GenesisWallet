@@ -11,7 +11,7 @@
     <modules>
         <module>gw-api-gateway</module>
         <module>gw-common</module>
-        <module>gw-annotations</module>
+        <module>common-annotations</module>
         <module>gw-security</module>
         <module>gw-grpc-common</module>
         <module>gw-infrastructure</module>
@@ -22,6 +22,7 @@
         <module>api-functional-test</module>
         <module>gw-ui</module>
         <module>ui-functional-test</module>
+        <module>integration-test-support</module>
     </modules>
 
     <properties>
@@ -34,6 +35,7 @@
         <micrometer-core.version>1.11.0</micrometer-core.version>
         <micrometer-registry-prometheus.version>1.11.0</micrometer-registry-prometheus.version>
         <reactor.version>3.5.6</reactor.version>
+        <reactor.netty.version>1.1.6</reactor.netty.version>
         <grpc.version>1.55.1</grpc.version>
         <protobuf-java.version>3.23.0</protobuf-java.version>
         <spring-data-r2dbc.version>3.0.6</spring-data-r2dbc.version>
@@ -57,6 +59,9 @@
         <awaitility.version>4.2.0</awaitility.version>
         <wiremock.version>2.35.0</wiremock.version>
         <junit-platform-suite.version>1.9.3</junit-platform-suite.version>
+        <embedded-redis.version>0.7.2</embedded-redis.version>
+        <jedis.version>4.3.1</jedis.version>
+        <hamcrest.version>2.2</hamcrest.version>
     </properties>
 
     <build>
@@ -92,12 +97,6 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <executions>
-                    <execution>
-                        <id>prepare-agent</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
                     <execution>
                         <id>report-aggregate</id>
                         <phase>verify</phase>
@@ -290,6 +289,11 @@
                 <artifactId>reactor-core</artifactId>
                 <version>${reactor.version}</version>
             </dependency>
+            <dependency>
+                <groupId>io.projectreactor.netty</groupId>
+                <artifactId>reactor-netty-core</artifactId>
+                <version>${reactor.netty.version}</version>
+            </dependency>
             <!-- Reactor Dependencies : END -->
 
             <!-- GRPC Dependencies -->
@@ -314,6 +318,15 @@
                 <version>${protobuf-java.version}</version>
             </dependency>
             <!-- GRPC Dependencies : END -->
+
+            <!-- Redis Dependencies -->
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>${jedis.version}</version>
+            </dependency>
+            <!-- Redis Dependencies : END -->
+
 
             <!-- Test Dependencies -->
             <dependency>
@@ -372,6 +385,11 @@
                 <version>${postgresql.testcontainer.version}</version>
             </dependency>
             <dependency>
+                <groupId>it.ozimov</groupId>
+                <artifactId>embedded-redis</artifactId>
+                <version>${embedded-redis.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.testcontainers</groupId>
                 <artifactId>vault</artifactId>
                 <version>${vault.testcontainer.version}</version>
@@ -385,6 +403,17 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-contract-stub-runner</artifactId>
                 <version>${spring-cloud-contract-stub.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.hamcrest</groupId>
+                        <artifactId>hamcrest</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.hamcrest</groupId>
+                <artifactId>hamcrest</artifactId>
+                <version>${hamcrest.version}</version>
             </dependency>
             <!-- Test Dependencies : END -->
 

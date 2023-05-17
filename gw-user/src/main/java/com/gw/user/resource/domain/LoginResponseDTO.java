@@ -5,4 +5,4 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @JsonSerialize
 @JsonDeserialize
-public record LoginResponseDTO(String token) {}
+public record LoginResponseDTO(String token) implements WithUserToken {}
