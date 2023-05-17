@@ -23,10 +23,32 @@ jobs:
           LATEST_TAG=`git describe --tags $(git rev-list --tags --max-count=1)`
           echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_OUTPUT
 
+  validate-microservices:
+    name: Retrieve service list
+    runs-on: ubuntu-latest
+    needs: [ get_latest_tag ]
+    if: "needs.get_latest_tag.outputs.release_tag != ''"
+    outputs:
+      microservices: ${{ steps.get-microservices.outputs.MICROSERVICES }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+
+      - name: Get service list for creating tags
+        id: get-microservices
+        env:
+          FILE: ./.github/services.yml
+        run: |
+          echo "Release tag is ${{ needs.get_latest_tag.outputs.release_tag }}"  >> $GITHUB_STEP_SUMMARY
+          MICROSERVICES=$(yq -o=json -I=0 $FILE | jq -c '.microservice') 
+          echo "List of Microservices: $MICROSERVICES"  >> $GITHUB_STEP_SUMMARY
+          echo "MICROSERVICES=$MICROSERVICES" >> $GITHUB_OUTPUT
+
   build-and-push-image:
     name: Build image for microservices
     runs-on: ubuntu-latest
-    needs: [ release, validate-microservices ]
+    needs: [ validate-microservices ]
     if: "needs.validate-microservices.outputs.microservices != ''"
     strategy:
       matrix:
