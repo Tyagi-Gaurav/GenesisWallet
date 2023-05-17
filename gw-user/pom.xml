@@ -115,6 +115,17 @@
         </dependency>
         <!-- Module Dependencies : END -->
 
+        <!-- Reactor Dependencies -->
+        <dependency>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.projectreactor.netty</groupId>
+            <artifactId>reactor-netty-core</artifactId>
+        </dependency>
+        <!-- Reactor Dependencies : END -->
+
         <!-- Spring Dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
