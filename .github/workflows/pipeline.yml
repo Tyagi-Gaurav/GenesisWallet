@@ -22,8 +22,15 @@ jobs:
     permissions:
       id-token: write # need this for OIDC
       contents: read
-    uses: ./.github/workflows/tagAndPush.yaml
+    uses: ./.github/workflows/create_release_tag.yml
     secrets:
       AWS-ROLE: ${{ secrets.GHA_AWS_ROLE }}
       ALL_ACCESS_TOKEN: ${{ secrets.ALL_ACCESS_TOKEN }}
-      ECR-TEST-REPO: ${{ secrets.ECR_TEST_REPO }}
+
+#  publish_test_image:
+#    needs: [ tag_release ]
+#    uses: ./.github/workflows/publish_test_images.yml
+#    secrets:
+#      AWS-ROLE: ${{ secrets.GHA_AWS_ROLE }}
+#      ALL_ACCESS_TOKEN: ${{ secrets.ALL_ACCESS_TOKEN }}
+#      ECR-TEST-REPO: ${{ secrets.ECR_TEST_REPO }}
