@@ -96,6 +96,8 @@ jobs:
         run: |
           echo "Building image for service: ${{ matrix.microservice }}" >> $GITHUB_STEP_SUMMARY
           echo "Current Working Directory: `pwd`" >> $GITHUB_STEP_SUMMARY
+          echo "Using Image tag1: $IMAGE_TAG" >> $GITHUB_STEP_SUMMARY
+          echo "Using Image tag2: ${{ IMAGE_TAG }}" >> $GITHUB_STEP_SUMMARY
           cd ${{ matrix.microservice }}
           docker build -t ${{ matrix.microservice }}:$IMAGE_TAG .
           docker tag ${{ matrix.microservice }}:$IMAGE_TAG ${{ secrets.ECR-TEST-REPO }}/${{ matrix.microservice }}:$IMAGE_TAG
