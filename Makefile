@@ -4,9 +4,7 @@
 
 .PHONY: protogen api-gateway user full
 
-#USERS := $(shell find user -type f -name '*.go')
-BINARY_NAME := users_app
-MICROSERVICES:= user api-gateway
+MICROSERVICES:= user api-gateway ui
 
 #protogen:
 #	protoc --go-grpc_out=./user --go_out=./user ./user/proto/user_service.proto
@@ -17,10 +15,8 @@ mcp:
 mci:
 	./mvnw clean install
 
-mcpnt:
+mcpst:
 	./mvnw clean package -DskipTests=true
-
-pre-process: clean
 
 gw-user:
 	docker build -f gw-user/Dockerfile .
@@ -45,11 +41,15 @@ help:
 	@echo ''
 	@echo 'Available targets:'
 	@echo ''
-	@echo ' clean			Cleans all generated outputs'
-	@echo ' protogen		Generates protobuf using all grpc proto files'
-	@echo ' pre-process		clean and protogen'
-	@echo ' user			Compiles user service with its image'
-	@echo ' api-gateway		Compiles user service with its image'
+	@echo ' mcp					mcn clean package'
+	@echo ' mci					mvn clean install'
+	@echo ' mcpst				mcp and skip test'
+	@echo ' gw-user				Build user image'
+	@echo ' api-gateway			Build API gateway image'
+	@echo ' full				Build full local docker-compose stack'
+	@echo ' full_quick			Build full local docker-compose stack (No tests)'
+	@echo ' ft					Run functional tests'
+	@echo ' down				Destroy local docker-compose stack'
 	@echo ''
 	@echo "Available Microservices:"
 	@echo ''

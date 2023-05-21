@@ -23,6 +23,7 @@
         <module>gw-ui</module>
         <module>ui-functional-test</module>
         <module>integration-test-support</module>
+        <module>ping-app</module>
     </modules>
 
     <properties>

@@ -62,7 +62,7 @@ module "api-gateway-ecs-service" {
       APPLICATION_PORT = 80
     }
   }
-  APPLICATION_VERSION = "0.1.0"
+  APPLICATION_VERSION = "v0.1.6"
   CLUSTER_ARN         = module.dev-api-gateway-ecs-cluster.cluster_arn
   SERVICE_ROLE_ARN    = module.dev-api-gateway-ecs-cluster.service_role_arn
   AWS_REGION          = var.AWS_REGION

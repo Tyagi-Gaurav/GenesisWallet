@@ -65,7 +65,7 @@ module "ui-ecs-service" {
       APPLICATION_PORT = 8081
     }
   }
-  APPLICATION_VERSION = "0.1.0"
+  APPLICATION_VERSION = "v0.1.6"
   CLUSTER_ARN         = module.dev-ui-ecs-cluster.cluster_arn
   SERVICE_ROLE_ARN    = module.dev-ui-ecs-cluster.service_role_arn
   AWS_REGION          = var.AWS_REGION
