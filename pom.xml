@@ -59,7 +59,7 @@
         <awaitility.version>4.2.0</awaitility.version>
         <wiremock.version>2.35.0</wiremock.version>
         <junit-platform-suite.version>1.9.3</junit-platform-suite.version>
-        <embedded-redis.version>0.7.2</embedded-redis.version>
+        <embedded-redis.version>0.7.3</embedded-redis.version>
         <jedis.version>4.4.1</jedis.version>
         <hamcrest.version>2.2</hamcrest.version>
     </properties>
