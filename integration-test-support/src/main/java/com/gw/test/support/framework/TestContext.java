@@ -1,25 +1,21 @@
 package com.gw.test.support.framework;
 
-import org.springframework.r2dbc.core.DatabaseClient;
+import org.springframework.context.ApplicationContext;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import redis.clients.jedis.JedisPool;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class TestContext {
     private final WebTestClient webTestClient;
-    private final DatabaseClient dataSource;
-    private final JedisPool jedisPool;
+    private final ApplicationContext applicationContext;
     Map<String, Object> responseMap = new HashMap<>();
     TestResponse lastResponse;
     private final Map<String, LoginCredentials> tokenMap = new HashMap<>();
 
-    public TestContext(WebTestClient webTestClient, DatabaseClient dataSource, JedisPool jedisPool) {
-
+    public TestContext(WebTestClient webTestClient, ApplicationContext applicationContext) {
         this.webTestClient = webTestClient;
-        this.dataSource = dataSource;
-        this.jedisPool = jedisPool;
+        this.applicationContext = applicationContext;
     }
 
     public void mapResponse(TestResponse response) {
@@ -35,12 +31,8 @@ public class TestContext {
         return webTestClient;
     }
 
-    public DatabaseClient getDataSource() {
-        return dataSource;
-    }
-
-    public JedisPool getJedisPool() {
-        return jedisPool;
+    public <T> T getBeanOfType(Class<T> tClass) {
+        return applicationContext.getBean(tClass);
     }
 
     public <V> V getResponseOfType(Class<V> clazz) {

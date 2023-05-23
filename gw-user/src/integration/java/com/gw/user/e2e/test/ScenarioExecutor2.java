@@ -16,6 +16,7 @@ import org.assertj.core.api.Assertions;
 import org.assertj.core.matcher.AssertionMatcher;
 import org.awaitility.Awaitility;
 import org.hamcrest.Matcher;
+import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 import redis.clients.jedis.Jedis;
@@ -62,7 +63,8 @@ public class ScenarioExecutor2 {
 
     public static ResponseStep whenUserIsRetrievedFromDatabaseWith(String userName) {
         return testContext -> {
-            var userDetailsResponseDTO = testContext.getDataSource()
+            DatabaseClient databaseClient = testContext.getBeanOfType(DatabaseClient.class);
+            var userDetailsResponseDTO = databaseClient
                     .sql("SELECT * FROM USER_SCHEMA.USER_TABLE WHERE EMAIL = :email")
                     .bind("email", userName)
                     .map(ScenarioExecutor2::toModel)
@@ -113,7 +115,7 @@ public class ScenarioExecutor2 {
 
     public static VoidStep theLoginCacheShouldHaveTokenAssociate(String key) {
         return testContext -> {
-            JedisPool jedisPool = testContext.getJedisPool();
+            JedisPool jedisPool = testContext.getBeanOfType(JedisPool.class);
             Jedis resource = jedisPool.getResource();
             Assertions.assertThat(resource.hget("login:", testContext.getUserIdForCredentialKey(key)))
                     .isNotNull()
@@ -153,14 +155,16 @@ public class ScenarioExecutor2 {
         return testContext ->
             Awaitility.await().pollDelay(tokenInvalidationDuration)
                     .untilAsserted(() -> {
-                        Jedis resource = testContext.getJedisPool().getResource();
+                        JedisPool jedisPool = testContext.getBeanOfType(JedisPool.class);
+                        Jedis resource = jedisPool.getResource();
                         assertThat(resource.get("invalidated:" + testContext.getTokenForCredentialKey(credentialKey)), is(nullValue()));
                     });
     }
 
     public static VoidStep theLoginCacheShouldHaveCredentialsOf(String credentialKey) {
         return testContext -> {
-            Jedis resource = testContext.getJedisPool().getResource();
+            JedisPool jedisPool = testContext.getBeanOfType(JedisPool.class);
+            Jedis resource = jedisPool.getResource();
             Assertions.assertThat(resource.hget("login:", testContext.getUserIdForCredentialKey(credentialKey)))
                     .isNotNull()
                     .isEqualTo(testContext.getTokenForCredentialKey(credentialKey));
@@ -169,7 +173,8 @@ public class ScenarioExecutor2 {
 
     public static VoidStep theLoginCacheShouldNOTHaveCredentialsOf(String credentialKey) {
         return testContext -> {
-            Jedis resource = testContext.getJedisPool().getResource();
+            JedisPool jedisPool = testContext.getBeanOfType(JedisPool.class);
+                        Jedis resource = jedisPool.getResource();
             Assertions.assertThat(resource.hget("login:", testContext.getUserIdForCredentialKey(credentialKey)))
                     .isNotEqualTo(testContext.getTokenForCredentialKey(credentialKey));
         };
@@ -177,7 +182,8 @@ public class ScenarioExecutor2 {
 
     public static VoidStep theInvalidationCacheShouldHaveCredentialsOf(String credentialKey) {
         return testContext -> {
-            Jedis resource = testContext.getJedisPool().getResource();
+            JedisPool jedisPool = testContext.getBeanOfType(JedisPool.class);
+                        Jedis resource = jedisPool.getResource();
             Assertions.assertThat(resource.get("invalidated:" + testContext.getTokenForCredentialKey(credentialKey)))
                     .isNotNull()
                     .isEqualTo(testContext.getUserIdForCredentialKey(credentialKey));

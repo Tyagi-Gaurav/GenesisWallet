@@ -9,9 +9,7 @@ import reactor.core.publisher.Mono;
 @RestController
 public class PingResource {
 
-    @GetMapping(consumes = "application/vnd+ping.v1+json",
-            produces = "application/vnd+ping.v1+json",
-            path = "/ping")
+    @GetMapping(path = "/ping")
     @ResponseStatus(code = HttpStatus.OK)
     public Mono<String> ping() {
         return Mono.just("pong");
