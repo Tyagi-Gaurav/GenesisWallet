@@ -6,6 +6,8 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 
 @SpringBootApplication
 @ComponentScan({
+        "com.gw.common",
+        "com.gw.common.config",
         "com.gw.ping.resource"})
 @EnableWebFlux
 public class Application {

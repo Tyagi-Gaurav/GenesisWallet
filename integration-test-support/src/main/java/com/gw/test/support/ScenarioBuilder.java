@@ -25,6 +25,14 @@ public class ScenarioBuilder {
         return new ScenarioBuilder(testContext);
     }
 
+    public static ScenarioBuilder aManagementScenarioUsing(ApplicationContext applicationContext) {
+        String serverPort = getManagementServerPort(applicationContext);
+        String baseUrl = "http://localhost:" + serverPort;
+        var webTestClient = WebTestClient.bindToServer().baseUrl(baseUrl).build();
+        TestContext testContext = new TestContext(webTestClient, applicationContext);
+        return new ScenarioBuilder(testContext);
+    }
+
     public ScenarioBuilder given(ExecutionStep givenBuilder) {
         this.executors.add(givenBuilder);
         return this;
@@ -64,5 +72,11 @@ public class ScenarioBuilder {
     private static String getLocalServerPort(ApplicationContext applicationContext) {
         return applicationContext.getBean(PropertySourcesPlaceholderConfigurer.class)
                 .getAppliedPropertySources().get("environmentProperties").getProperty("local.server.port").toString();
+    }
+
+    @Nullable
+    private static String getManagementServerPort(ApplicationContext applicationContext) {
+        return applicationContext.getBean(PropertySourcesPlaceholderConfigurer.class)
+                .getAppliedPropertySources().get("environmentProperties").getProperty("local.management.port").toString();
     }
 }

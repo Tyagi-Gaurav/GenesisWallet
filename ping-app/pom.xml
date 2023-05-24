@@ -72,6 +72,11 @@
         <!-- Module Dependencies -->
         <dependency>
             <groupId>com.genesis</groupId>
+            <artifactId>gw-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.genesis</groupId>
             <artifactId>gw-test-common</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
