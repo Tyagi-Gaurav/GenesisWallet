@@ -39,6 +39,6 @@ module "allow_cluster_access" {
   VPC_ID = module.main-vpc.vpc_id
 }
 
-output "api_gateway_alb_dns_host" {
-  value = module.api_gateway_alb.dns_name
+output "ping_alb_dns" {
+  value = module.ping-alb.dns_name
 }

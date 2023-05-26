@@ -2,7 +2,7 @@ variable "PING-APP" {
   default = "ping-app"
 }
 
-module "dev-ui-ecs-cluster" {
+module "dev-ping-ecs-cluster" {
   ENV                = var.ENV
   source             = "../modules/ecs-cluster"
   VPC_ID             = module.main-vpc.vpc_id
@@ -16,43 +16,51 @@ module "dev-ui-ecs-cluster" {
   AWS_REGION         = var.AWS_REGION
   ACCESS_KEY_NAME    = module.allow_cluster_access.ssh_key_pair_name
   ECR_REPO_ARNS      = [
-    data.aws_ecr_repository.test_genesis_ui_ecr.arn
+    data.aws_ecr_repository.test_genesis_ping_ecr.arn
   ]
   ACCESSIBLE_PORTS = {
     #Required for ALB to be able to access the ECS cluster ports
     port1 = {
-      #UI_App
+      #Ping_App
       FROM_PORT      = 6060
       TO_PORT        = 6061
-      SECURITY_GROUP = module.ui-alb.alb_security_group_id
+      SECURITY_GROUP = module.ping-alb.alb_security_group_id
     }
   }
 }
 
-module "ui-alb" {
+module "ping-alb" {
   ENV         = var.ENV
   source      = "../modules/alb"
   VPC_ID      = module.main-vpc.vpc_id
   ALB_NAME    = "${var.ENV}-${var.PING-APP}-alb"
   TARGET_APPS = {
     group1 = {
-      PORT             = 8080
-      TARGET_GROUP_ARN = module.ui-ecs-service.target_group_arn
+      PORT             = 6060
+      TARGET_GROUP_ARN = module.ping-ecs-service-2.target_group_arn
     }
   }
   DOMAIN            = "${var.ENV}.${var.PING-APP}.genesis"
   INTERNAL          = false
-  ECS_SG            = module.dev-ui-ecs-cluster.cluster_sg_id
+  ECS_SG            = module.dev-ping-ecs-cluster.cluster_sg_id
   VPC_SUBNETS       = join(",", module.main-vpc.public_subnets)
   CERTIFICATE_ARN   = aws_acm_certificate.alb_cert.arn
   DELETE_PROTECTION = false #So that we can delete the alb
+  ACCESSIBLE_PORTS = {
+    #Required for ALB to be able to access the ECS cluster ports
+    port1 = {
+      #Ping_App
+      FROM_PORT      = 6060
+      TO_PORT        = 6060
+    }
+  }
 }
 
-module "ping-ecs-service" {
+module "ping-ecs-service-2" {
   source           = "../modules/ecs-service"
   ENV              = var.ENV
   VPC_ID           = module.main-vpc.vpc_id
-  APPLICATION_NAME = "gw-ui"
+  APPLICATION_NAME = "ping-app"
   APPLICATION_PORT = 6060
   PORT_MAPPINGS    = {
     #Goes directly into task definition
@@ -65,25 +73,25 @@ module "ping-ecs-service" {
       APPLICATION_PORT = 6061
     }
   }
-  APPLICATION_VERSION = "v0.1.6"
-  CLUSTER_ARN         = module.dev-ui-ecs-cluster.cluster_arn
-  SERVICE_ROLE_ARN    = module.dev-ui-ecs-cluster.service_role_arn
+  APPLICATION_VERSION = "latest"
+  CLUSTER_ARN         = module.dev-ping-ecs-cluster.cluster_arn
+  SERVICE_ROLE_ARN    = module.dev-ping-ecs-cluster.service_role_arn
   AWS_REGION          = var.AWS_REGION
   CPU_RESERVATION     = "256"
   MEMORY_RESERVATION  = "128"
   LOG_GROUP           = "${var.ENV}-${var.PING-APP}-log-group"
   DESIRED_COUNT       = 1
-  ECR_REPO_URL        = data.aws_ecr_repository.test_genesis_ui_ecr.repository_url
+  ECR_REPO_URL        = data.aws_ecr_repository.test_genesis_ping_ecr.repository_url
   HEALTH_CHECK_PATH = "/actuator/healthcheck/status"
-  HEALTH_CHECK_PORT = 8081
+  HEALTH_CHECK_PORT = 6061
 }
 
-data "aws_ecr_repository" "test_genesis_ui_ecr" {
-  name = "test_genesis/gw-ui"
+data "aws_ecr_repository" "test_genesis_ping_ecr" {
+  name = "test_genesis/ping-app"
 }
 
-resource "aws_ecr_repository_policy" "test_genesis_ui_ecr_policy" {
-  repository = data.aws_ecr_repository.test_genesis_ui_ecr.name
+resource "aws_ecr_repository_policy" "test_genesis_ping_ecr_policy" {
+  repository = data.aws_ecr_repository.test_genesis_ping_ecr.name
 
   policy = <<EOF
   {

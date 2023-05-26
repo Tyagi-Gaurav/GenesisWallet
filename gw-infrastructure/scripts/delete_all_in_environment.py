@@ -1,6 +1,23 @@
-import sys
 import boto3
 
+def ec2_instance_cleanup():
+    client = boto3.client('ec2')
+    response = client.describe_instances(Filters=[
+        {
+            'Name': 'instance-state-code',
+            'Values': [
+                '0','16','32' #Get instances that are pending, running or shutting-down
+                #'48' #Get instances that are pending, running or shutting-down
+            ]
+        },
+    ])
+    if response['Reservations']:
+        instances = response['Reservations'][0]['Instances']
+        for instance in instances:
+            print ("Deleting instanceID : " + instance["InstanceId"])
+            client.terminate_instances(InstanceIds=[instance["InstanceId"]])
+    else:
+        print ("No EC2 Instances found to delete.")
 
 def internet_gateway_cleanup():
     #Unmap public IP addresses
@@ -76,7 +93,8 @@ def vpc_cleanup(vpcid):
 
 
 def main(argv=None):
-    internet_gateway_cleanup()
+    ec2_instance_cleanup()
+    #internet_gateway_cleanup()
     #vpc_cleanup("vpc-040467649d9c2302b")
 
 

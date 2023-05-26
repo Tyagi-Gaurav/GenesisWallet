@@ -25,11 +25,12 @@ resource "aws_security_group" "alb_security_group" {
   }
 }
 
-resource "aws_security_group_rule" "cluster-allow-alb" {
-  from_port         = 32768
+resource "aws_security_group_rule" "accessible_ports_sg" {
+  for_each = var.ACCESSIBLE_PORTS
+  security_group_id = aws_security_group.alb_security_group.id
+  from_port         = each.value["FROM_PORT"]
   protocol          = "tcp"
-  security_group_id = var.ECS_SG
-  to_port           = 61000
+  to_port           = each.value["TO_PORT"]
   type              = "ingress"
-  source_security_group_id = aws_security_group.alb_security_group.id
+  cidr_blocks = ["0.0.0.0/0"]
 }

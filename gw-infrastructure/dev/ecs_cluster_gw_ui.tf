@@ -46,6 +46,14 @@ module "ui-alb" {
   VPC_SUBNETS       = join(",", module.main-vpc.public_subnets)
   CERTIFICATE_ARN   = aws_acm_certificate.alb_cert.arn
   DELETE_PROTECTION = false #So that we can delete the alb
+  ACCESSIBLE_PORTS = {
+    #Required for ALB to be able to access the ECS cluster ports
+    port1 = {
+      #Ping_App
+      FROM_PORT      = 8080
+      TO_PORT        = 8080
+    }
+  }
 }
 
 module "ui-ecs-service" {

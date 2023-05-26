@@ -19,3 +19,10 @@ variable "ECS_SG" {
 variable "DELETE_PROTECTION" {
   default = true
 }
+variable "ACCESSIBLE_PORTS" {
+  type = map(object({
+    FROM_PORT      = string
+    TO_PORT        = string
+  }))
+  default = {}
+}
