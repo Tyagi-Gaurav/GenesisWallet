@@ -35,11 +35,6 @@ public class ScenarioExecutor {
         return this;
     }
 
-    private <T> T getResponseOfType(Class<T> clazz) {
-        T response = (T) responses.get(clazz);
-        return response;
-    }
-
     public ScenarioExecutor accessStatusEndpoint() {
         this.responseSpec = new AccessStatus().apply(webTestClient);
         return this;

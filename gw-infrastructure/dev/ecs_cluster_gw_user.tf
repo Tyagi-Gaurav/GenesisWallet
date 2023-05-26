@@ -19,6 +19,14 @@ module "user-alb" {
   VPC_SUBNETS       = join(",", module.main-vpc.public_subnets)
   CERTIFICATE_ARN   = aws_acm_certificate.alb_cert.arn
   DELETE_PROTECTION = false #So that we can delete the alb
+  ACCESSIBLE_PORTS = {
+    #Required for ALB to be able to access the ECS cluster ports
+    port1 = {
+      #Ping_App
+      FROM_PORT      = 9090
+      TO_PORT        = 9090
+    }
+  }
 }
 
 module "dev-user-ecs-cluster" {
@@ -75,7 +83,7 @@ module "user-ecs-service" {
       APPLICATION_PORT = 19090
     },
   }
-  APPLICATION_VERSION = "0.1.0"
+  APPLICATION_VERSION = "v0.1.6"
   CLUSTER_ARN         = module.dev-user-ecs-cluster.cluster_arn
   SERVICE_ROLE_ARN    = module.dev-user-ecs-cluster.service_role_arn
   AWS_REGION          = var.AWS_REGION

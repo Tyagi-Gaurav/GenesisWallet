@@ -1,0 +1,12 @@
+FROM openjdk:17
+
+ADD target/ping-app-DEV-SNAPSHOT.jar /data/application.jar
+
+COPY ./startup.sh /data/startup.sh
+
+CMD ["/bin/bash", "/data/startup.sh"]
+
+#HEALTHCHECK CMD wget --quiet --tries=1 --spider http://localhost:9090/api/status || exit 1
+
+EXPOSE 6060
+EXPOSE 6061

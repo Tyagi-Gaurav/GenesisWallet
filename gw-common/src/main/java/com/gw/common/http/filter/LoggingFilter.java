@@ -24,6 +24,9 @@ public class LoggingFilter implements WebFilter {
 
         LOG.info("Received request for {} - {} with content Type: {}", method, path, request.getHeaders().getContentType());
 
-        return chain.filter(exchange);
+        return chain.filter(exchange)
+                .doOnSuccess(v -> {
+                    LOG.info("Responded with status code: {}", exchange.getResponse().getStatusCode());
+                });
     }
 }

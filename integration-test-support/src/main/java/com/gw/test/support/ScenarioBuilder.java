@@ -4,9 +4,7 @@ import com.gw.test.support.framework.*;
 import jakarta.annotation.Nullable;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import redis.clients.jedis.JedisPool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +18,18 @@ public class ScenarioBuilder {
     }
 
     public static ScenarioBuilder aScenarioUsing(ApplicationContext applicationContext) {
-        var databaseClient = applicationContext.getBean(DatabaseClient.class);
-        var jedisPool = applicationContext.getBean(JedisPool.class);
         String serverPort = getLocalServerPort(applicationContext);
         String baseUrl = "http://localhost:" + serverPort + "/api";
         var webTestClient = WebTestClient.bindToServer().baseUrl(baseUrl).build();
-        TestContext testContext = new TestContext(webTestClient, databaseClient, jedisPool);
+        TestContext testContext = new TestContext(webTestClient, applicationContext);
+        return new ScenarioBuilder(testContext);
+    }
+
+    public static ScenarioBuilder aManagementScenarioUsing(ApplicationContext applicationContext) {
+        String serverPort = getManagementServerPort(applicationContext);
+        String baseUrl = "http://localhost:" + serverPort;
+        var webTestClient = WebTestClient.bindToServer().baseUrl(baseUrl).build();
+        TestContext testContext = new TestContext(webTestClient, applicationContext);
         return new ScenarioBuilder(testContext);
     }
 
@@ -68,5 +72,11 @@ public class ScenarioBuilder {
     private static String getLocalServerPort(ApplicationContext applicationContext) {
         return applicationContext.getBean(PropertySourcesPlaceholderConfigurer.class)
                 .getAppliedPropertySources().get("environmentProperties").getProperty("local.server.port").toString();
+    }
+
+    @Nullable
+    private static String getManagementServerPort(ApplicationContext applicationContext) {
+        return applicationContext.getBean(PropertySourcesPlaceholderConfigurer.class)
+                .getAppliedPropertySources().get("environmentProperties").getProperty("local.management.port").toString();
     }
 }
