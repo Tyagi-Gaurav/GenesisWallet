@@ -7,7 +7,11 @@ import reactor.core.publisher.Mono;
 
 /**
  * This health indicator can be accessed using
- * <code>/actuator/health/status</code>
+ * <code>
+ *     /actuator/health/status
+ * </code>
+ *
+ * because classname is Status, so it gets picked up as "/status"
  */
 @Component
 public class StatusHealthIndicator implements ReactiveHealthIndicator {

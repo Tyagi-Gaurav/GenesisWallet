@@ -140,10 +140,19 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
+
+        <!-- Logging Dependencies -->
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
+            <artifactId>slf4j-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.simplify4u</groupId>
+            <artifactId>slf4j2-mock</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- Logging Dependencies : END -->
+
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-core</artifactId>

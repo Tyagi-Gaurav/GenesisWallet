@@ -16,7 +16,7 @@ public class TestMonitoringResource extends AbstractResource {
     public void accessUserStatus() {
         String fullUrl = getUrl(apiGatewayConfig.host().trim(),
                 apiGatewayConfig.userContextPath(),
-                "/user/private/healthcheck/status", apiGatewayConfig.port());
+                "/user/private/health/status", apiGatewayConfig.port());
         responseHolder.setResponseWithBodyClass(this.get(fullUrl, EMPTY_HTTP_ENTITY, String.class), String.class);
     }
 
