@@ -9,7 +9,7 @@
         <artifactId>genesis</artifactId>
     </parent>
 
-    <artifactId>gw-common</artifactId>
+    <artifactId>common</artifactId>
     <packaging>jar</packaging>
 
     <properties>
