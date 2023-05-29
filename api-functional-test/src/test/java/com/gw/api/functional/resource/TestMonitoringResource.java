@@ -23,7 +23,7 @@ public class TestMonitoringResource extends AbstractResource {
     public void accessUIStatus() {
         String fullUrl = getUrl(apiGatewayConfig.host().trim(),
                 apiGatewayConfig.uiContextPath(),
-                "/private/healthcheck/status", apiGatewayConfig.port());
+                "/private/health/status", apiGatewayConfig.port());
         responseHolder.setResponseWithBodyClass(this.get(fullUrl, EMPTY_HTTP_ENTITY, String.class), String.class);
     }
 
