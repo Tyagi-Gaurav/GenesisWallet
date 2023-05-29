@@ -10,8 +10,6 @@
 
     <modules>
         <module>gw-api-gateway</module>
-        <module>common</module>
-        <module>common-annotations</module>
         <module>gw-security</module>
         <module>gw-grpc-common</module>
         <module>gw-infrastructure</module>
@@ -19,9 +17,11 @@
         <module>gw-user</module>
         <module>gw-test-common</module>
         <module>gw-user-client</module>
-        <module>api-functional-test</module>
         <module>gw-ui</module>
+        <module>api-functional-test</module>
         <module>ui-functional-test</module>
+        <module>common</module>
+        <module>common-annotations</module>
         <module>integration-test-support</module>
         <module>ping-app</module>
     </modules>
