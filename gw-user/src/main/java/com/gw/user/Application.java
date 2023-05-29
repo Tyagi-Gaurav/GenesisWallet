@@ -10,6 +10,7 @@ import org.springframework.web.reactive.config.EnableWebFlux;
         "com.gw.common.config",
         "com.gw.grpc.common",
         "com.gw.security.config",
+        "com.gw.security.health",
         "com.gw.user.config",
         "com.gw.user.health",
         "com.gw.user.cache",
