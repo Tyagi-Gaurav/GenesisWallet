@@ -48,6 +48,8 @@ public class DatabaseBeanFactory {
             var port = Integer.parseInt(dbCredentials.get(PORT).toString());
             var jdbcUrl = String.format("jdbc:postgresql://%s:%d/%s", host, port, databaseConfig.name());
 
+            LOG.info("Datasource JDBC URL: {}", jdbcUrl);
+
             cpds.setJdbcUrl(jdbcUrl);
             cpds.setUser(userName);
             cpds.setPassword(password);
@@ -69,6 +71,11 @@ public class DatabaseBeanFactory {
                 VaultKeyValueOperationsSupport.KeyValueBackend.versioned());
         var dbCredentials = Optional.ofNullable(operations.get(VAULT_DB_SERVICE_NAME))
                 .map(VaultResponseSupport::getData).orElseGet(Map::of);
+
+        LOG.info("R2DBC User: {}", dbCredentials.get(USER_NAME));
+        LOG.info("R2DBC Password: {}", dbCredentials.get(PASSWORD));
+        LOG.info("R2DBC Port: {}", dbCredentials.get(PORT));
+        LOG.info("R2DBC Host: {}", dbCredentials.get(HOST));
 
         return PostgresqlConnectionConfiguration.builder()
                 .database(databaseConfig.name())
