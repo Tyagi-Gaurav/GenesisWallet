@@ -20,7 +20,7 @@
         <glassfish.expressly.version>5.0.0</glassfish.expressly.version>
         <!-- The version of jakarta validation should be same as what spring starter validator introduces. -->
         <jakarta.validation-api.version>3.0.2</jakarta.validation-api.version>
-        <sonar.exclusions>com/gw/common/config/*.java,com/gw/common/domain/*.java</sonar.exclusions>
+        <sonar.exclusions>src/main/java/com/gw/common/config/*.java,src/main/java/com/gw/common/domain/*.java</sonar.exclusions>
     </properties>
 
     <build>
