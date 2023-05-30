@@ -34,8 +34,11 @@ down:
 	docker-compose down --rmi all
 
 ft:
-	./mvnw test -DskipTests=false -pl api-functional-test
+	./mvnw test -DskipTests=false -pl api-functional-test -Dtest=CucumberTest
 	./mvnw test -DskipTests=false -pl ui-functional-test
+
+smoke:
+	./mvnw test -DskipTests=false -pl api-functional-test -Dtest=SmokeTest
 
 help:
 	@echo ''

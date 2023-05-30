@@ -25,7 +25,7 @@ public class AccessibleEndpointFilter implements WebFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         String path = exchange.getRequest().getPath().value();
-        String method = exchange.getRequest().getMethodValue();
+        String method = exchange.getRequest().getMethod().toString();
 
         var methodPathAsString = String.format("%s-%s", method, path);
 

@@ -41,13 +41,13 @@ module "allow_cluster_access" {
 
 module "single_db_instance" {
   source                     = "../modules/single_db_instance"
+  ENV                        = var.ENV
   ALLOCATED_STORAGE          = "20"
   DB_INSTANCE_CLASS          = "db.t3.micro"
   DB_NAME                    = "devDB"
-  ENV                        = var.ENV
+  USERNAME                   = "devuser"
   PASSWORD                   = "dev-password"
   SUBNET_IDS                 = module.main-vpc.private_subnets
-  USERNAME                   = "devuser"
   VPC_ID                     = module.main-vpc.vpc_id
   ALLOWED_SECURITY_GROUP_IDS = [module.dev-user-ecs-cluster.cluster_sg_id]
 }
