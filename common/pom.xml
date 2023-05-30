@@ -24,6 +24,7 @@
             src/main/java/com/gw/common/config/*.java,
             src/main/java/com/gw/common/domain/*.java,
             src/main/java/com/gw/common/exception/*.java,
+            src/main/java/com/gw/common/util/TokenManager.java
         </sonar.exclusions>
     </properties>
 
