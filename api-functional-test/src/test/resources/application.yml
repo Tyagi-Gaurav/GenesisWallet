@@ -2,7 +2,7 @@ spring:
   active: local
 
 api-gateway:
-  host: ${API_GATEWAY_HOST:dev-api-gateway-alb-1159286263.eu-west-1.elb.amazonaws.com}
+  host: ${API_GATEWAY_HOST:localhost}
   securedPort: ${API_GATEWAY_SECURED_PORT:80}
   nonSecuredPort: ${API_GATEWAY_NON_SECURED_PORT:80}
   enableSecurity: ${ENABLE_SECURITY:false}
