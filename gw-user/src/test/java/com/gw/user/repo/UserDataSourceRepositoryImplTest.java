@@ -9,16 +9,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import static com.gw.user.repo.R2dbcDBTestUtils.addToDatabase;
-import static com.gw.user.repo.R2dbcDBTestUtils.clearDatabase;
-import static com.gw.user.repo.R2dbcDBTestUtils.getExternalUser;
-import static com.gw.user.repo.R2dbcDBTestUtils.getUser;
+import javax.sql.DataSource;
+
+import static com.gw.user.repo.DatasourceDBTestUtils.*;
 import static com.gw.user.testutils.ExternalUserBuilder.aExternalUser;
 import static com.gw.user.testutils.UserBuilder.aUser;
 import static com.gw.user.testutils.UserBuilder.copyOf;
@@ -27,23 +25,23 @@ import static com.gw.user.testutils.UserBuilder.copyOf;
 @ContextConfiguration(initializers = TestContainerDatabaseInitializer.class)
 @SpringBootTest(classes = {UserRepository.class, UserRepositoryImpl.class})
 @ExtendWith(MockitoExtension.class)
-class UserRepositoryTest extends DatabaseTest {
+class UserDataSourceRepositoryImplTest extends DatabaseTest {
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
-    private DatabaseClient databaseClient;
+    private DataSource dataSource;
 
     @BeforeEach
     void setUp() {
-        clearDatabase(databaseClient);
+        clearDatabase(dataSource);
     }
 
     @Test
     void shouldFindUserById() {
         //given
         User userInDatabase = aUser().build();
-        addToDatabase(userInDatabase, databaseClient);
+        addToDatabase(userInDatabase, dataSource);
 
         User expectedUser = copyOf(userInDatabase)
                 .withPassword(null)
@@ -72,7 +70,7 @@ class UserRepositoryTest extends DatabaseTest {
                 .verifyComplete();
 
         //then
-        Mono<User> userFromDB = getUser(userToAdd.id(), databaseClient);
+        Mono<User> userFromDB = getUser(userToAdd.id(), dataSource);
         StepVerifier.create(userFromDB)
                 .expectNext(expectedUser)
                 .verifyComplete();
@@ -88,7 +86,7 @@ class UserRepositoryTest extends DatabaseTest {
                 .verifyComplete();
 
         //then
-        Mono<ExternalUser> userFromDB = getExternalUser(userToAdd.id(), databaseClient);
+        Mono<ExternalUser> userFromDB = getExternalUser(userToAdd.id(), dataSource);
         StepVerifier.create(userFromDB)
                 .expectNext(userToAdd)
                 .verifyComplete();
@@ -98,7 +96,7 @@ class UserRepositoryTest extends DatabaseTest {
     void shouldFindUserByName() {
         //given
         User userInDatabase = aUser().build();
-        addToDatabase(userInDatabase, databaseClient);
+        addToDatabase(userInDatabase, dataSource);
 
         //when
         Mono<User> actualUser = userRepository.findUserByEmail(userInDatabase.email());
@@ -113,7 +111,7 @@ class UserRepositoryTest extends DatabaseTest {
     void shouldFindExternalUser() {
         //given
         ExternalUser userInDatabase = aExternalUser().build();
-        addToDatabase(userInDatabase, databaseClient);
+        addToDatabase(userInDatabase, dataSource);
 
         //when
         Mono<ExternalUser> actualUser = userRepository.findExternalUserByEmail(userInDatabase.email());

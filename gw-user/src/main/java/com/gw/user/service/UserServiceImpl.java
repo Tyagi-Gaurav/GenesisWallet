@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
     private final SecureRandom secureRandom;
     private final UserRegistrationCounter userRegistrationCounter;
 
-    public UserServiceImpl(@Qualifier("mySql") UserRepository userRepository, PasswordEncryptor passwordEncryptor, SecureRandom secureRandom, UserRegistrationCounter userRegistrationCounter) {
+    public UserServiceImpl(@Qualifier("datasource") UserRepository userRepository, PasswordEncryptor passwordEncryptor, SecureRandom secureRandom, UserRegistrationCounter userRegistrationCounter) {
         this.userRepository = userRepository;
         this.passwordEncryptor = passwordEncryptor;
         this.secureRandom = secureRandom;

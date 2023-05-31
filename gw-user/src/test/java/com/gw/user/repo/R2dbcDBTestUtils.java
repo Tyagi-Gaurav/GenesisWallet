@@ -12,8 +12,10 @@ import reactor.test.StepVerifier;
 
 import java.util.UUID;
 
-public class DBTestUtils {
-    private static final Logger LOG = LoggerFactory.getLogger(DBTestUtils.class);
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public class R2dbcDBTestUtils {
+    private static final Logger LOG = LoggerFactory.getLogger(R2dbcDBTestUtils.class);
 
     private static final String DELETE_ALL_USERS = "DELETE FROM USER_SCHEMA.USER_TABLE";
     private static final String DELETE_ALL_EXTERNAL_USERS = "DELETE FROM USER_SCHEMA.EXTERNAL_USER_TABLE";
@@ -78,7 +80,7 @@ public class DBTestUtils {
 
         return databaseClient.sql(query)
                 .bind(0, userId.toString())
-                .map(DBTestUtils::toUserModel)
+                .map(R2dbcDBTestUtils::toUserModel)
                 .one();
     }
 
@@ -88,7 +90,7 @@ public class DBTestUtils {
 
         return databaseClient.sql(query)
                 .bind(0, userId.toString())
-                .map(DBTestUtils::toExternalUserModel)
+                .map(R2dbcDBTestUtils::toExternalUserModel)
                 .one();
     }
 
