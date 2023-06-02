@@ -13,14 +13,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
-@Component("mySql")
+@Component("datasource")
 public class UserDataSourceRepositoryImpl implements UserRepository {
     private static final Logger LOG = LoggerFactory.getLogger(UserDataSourceRepositoryImpl.class);
     private final DataSource dataSource;
     private static final String FIND_USER_BY_ID = "SELECT * FROM USER_SCHEMA.USER_TABLE WHERE ID = ?";
     private static final String FIND_USER_BY_EMAIL = "SELECT * FROM USER_SCHEMA.USER_TABLE WHERE EMAIL = ?";
 
-    private static final String FIND_EXTERNAL_USER_BY_USER_NAME = "SELECT * FROM USER_SCHEMA.EXTERNAL_USER_TABLE WHERE EMAIL = :email";
+    private static final String FIND_EXTERNAL_USER_BY_USER_NAME = "SELECT * FROM USER_SCHEMA.EXTERNAL_USER_TABLE WHERE EMAIL = ?";
     private static final String ADD_USER = "INSERT INTO USER_SCHEMA.USER_TABLE (ID, EMAIL, FIRST_NAME, LAST_NAME, PASSWORD, SALT, DATE_OF_BIRTH, GENDER, HOME_COUNTRY, ROLE) " +
             "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -43,17 +43,14 @@ public class UserDataSourceRepositoryImpl implements UserRepository {
     @Override
     public Mono<User> findUserById(UUID id) {
         return Mono.create(sink -> {
-            LOG.info("1 Inside findUserById with " + id);
             try (var connection = dataSource.getConnection();
                  var preparedStatement = connection.prepareStatement(FIND_USER_BY_ID)) {
                 preparedStatement.setString(1, id.toString());
 
                 var resultSet = preparedStatement.executeQuery();
                 if (resultSet.next()) {
-                    LOG.info("1 emitting sink success");
                     sink.success(toUserModel(resultSet));
                 } else {
-                    LOG.info("1 emitting empty sink success");
                     sink.success();
                 }
             } catch (SQLException e) {
@@ -66,7 +63,6 @@ public class UserDataSourceRepositoryImpl implements UserRepository {
     @Override
     public Mono<Void> addUser(User user, String password, String salt) {
         return Mono.create(sink -> {
-            LOG.info("Inside addUser ");
             try (var connection = dataSource.getConnection();
                  var preparedStatement = connection.prepareStatement(ADD_USER)) {
 
@@ -81,7 +77,6 @@ public class UserDataSourceRepositoryImpl implements UserRepository {
                 preparedStatement.setString(9, user.homeCountry());
                 preparedStatement.setString(10, user.role());
                 preparedStatement.execute();
-                LOG.info("2 emitting sink success");
                 sink.success();
             } catch (SQLException e) {
                 LOG.error(e.getMessage(), e);
@@ -93,17 +88,14 @@ public class UserDataSourceRepositoryImpl implements UserRepository {
     @Override
     public Mono<User> findUserByEmail(String email) {
         return Mono.create(sink -> {
-            LOG.info("Inside findUserByEmail");
             try (var connection = dataSource.getConnection();
                  var preparedStatement = connection.prepareStatement(FIND_USER_BY_EMAIL)) {
                 preparedStatement.setString(1, email);
 
                 var resultSet = preparedStatement.executeQuery();
                 if (resultSet.next()) {
-                    LOG.info("3 emitting sink success");
                     sink.success(toFullModel(resultSet));
                 } else {
-                    LOG.info("3 emitting empty");
                     sink.success();
                 }
 
@@ -117,9 +109,9 @@ public class UserDataSourceRepositoryImpl implements UserRepository {
     @Override
     public Mono<Void> addExternalUser(ExternalUser user) {
         return Mono.create(sink -> {
-            LOG.info("Inside addExternalUser ");
             try (var connection = dataSource.getConnection();
                  var preparedStatement = connection.prepareStatement(ADD_EXTERNAL_USER)) {
+
                 preparedStatement.setString(1, user.id().toString());
                 preparedStatement.setString(2, user.email());
                 preparedStatement.setString(3, user.firstName());
@@ -135,7 +127,6 @@ public class UserDataSourceRepositoryImpl implements UserRepository {
                 preparedStatement.setString(13, user.homeCountry());
                 preparedStatement.execute();
 
-                LOG.info("4 emitting empty");
                 sink.success();
             } catch (SQLException e) {
                 sink.error(new RuntimeException(e));
@@ -146,17 +137,15 @@ public class UserDataSourceRepositoryImpl implements UserRepository {
     @Override
     public Mono<ExternalUser> findExternalUserByEmail(String email) {
         return Mono.create(sink -> {
-            LOG.info("Inside findExternalUserByEmail ");
             try (var connection = dataSource.getConnection();
                  var preparedStatement = connection.prepareStatement(FIND_EXTERNAL_USER_BY_USER_NAME)) {
+
                 preparedStatement.setString(1, email);
 
                 var resultSet = preparedStatement.executeQuery();
                 if (resultSet.next()) {
-                    LOG.info("5 emitting success");
                     sink.success(toExternalUserModel(resultSet));
                 } else {
-                    LOG.info("5 emitting empty");
                     sink.success();
                 }
             } catch (SQLException e) {

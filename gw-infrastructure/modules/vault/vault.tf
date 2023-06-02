@@ -32,7 +32,7 @@ resource "aws_instance" "vault" {
   }
 
   user_data                   = data.template_cloudinit_config.vault_init.rendered
-  associate_public_ip_address = true #For debugging only
+  associate_public_ip_address = false
   key_name                    = var.ACCESS_KEY_NAME #Should be allowed for dev only
 }
 
