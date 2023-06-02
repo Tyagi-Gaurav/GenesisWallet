@@ -97,7 +97,7 @@ module "user-ecs-service" {
     DB_NAME    = module.single_db_instance.dbname
     CACHE_HOST = module.elasticache_instance.elasticache_cluster_cache_nodes
   })
-  HEALTH_CHECK_PATH = "/actuator/healthcheck/status"
+  HEALTH_CHECK_PATH = "/actuator/health/status"
   HEALTH_CHECK_PORT = 9091
 }
 
