@@ -45,6 +45,7 @@ module "dev-user-ecs-cluster" {
   ECR_REPO_ARNS      = [
     data.aws_ecr_repository.test_genesis_user_ecr.arn
   ]
+  ASSOCIATE_PUBLIC_IP_ADDRESS = false
   ACCESSIBLE_PORTS = {
     #Required for ALB to be able to access the ECS cluster ports
     port1 = {

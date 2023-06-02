@@ -15,6 +15,7 @@ module "dev-ui-ecs-cluster" {
   AWS_ACCOUNT_ID     = data.aws_caller_identity.current.account_id
   AWS_REGION         = var.AWS_REGION
   ACCESS_KEY_NAME    = module.allow_cluster_access.ssh_key_pair_name
+  ASSOCIATE_PUBLIC_IP_ADDRESS = false
   ECR_REPO_ARNS      = [
     data.aws_ecr_repository.test_genesis_ui_ecr.arn
   ]
