@@ -16,7 +16,7 @@ module "user-alb" {
   DOMAIN            = "${var.ENV}.user.genesis"
   INTERNAL          = true
   ECS_SG            = module.dev-user-ecs-cluster.cluster_sg_id
-  VPC_SUBNETS       = join(",", module.main-vpc.public_subnets)
+  VPC_SUBNETS       = join(",", module.main-vpc.private_subnets)
   CERTIFICATE_ARN   = aws_acm_certificate.alb_cert.arn
   DELETE_PROTECTION = false #So that we can delete the alb
   ACCESSIBLE_PORTS = {
@@ -35,7 +35,7 @@ module "dev-user-ecs-cluster" {
   VPC_ID             = module.main-vpc.vpc_id
   CLUSTER_NAME       = "${var.ENV}-${var.USER_APP}-ecs-cluster"
   INSTANCE_TYPE      = "t2.small"
-  VPC_SUBNETS        = join(",", module.main-vpc.public_subnets) #For debug. Change to private subnet later.
+  VPC_SUBNETS        = join(",", module.main-vpc.private_subnets) #For debug. Change to private subnet later.
   ENABLE_SSH         = false #Disable for prod
   SSH_SECURITY_GROUP = module.allow_cluster_access.ssh_security_group_id
   LOG_GROUP          = "${var.ENV}-${var.USER_APP}-log-group"

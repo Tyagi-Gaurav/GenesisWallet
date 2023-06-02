@@ -41,7 +41,7 @@ module "ui-alb" {
     }
   }
   DOMAIN            = "${var.ENV}.${var.UI-APP}.genesis"
-  INTERNAL          = false
+  INTERNAL          = true
   ECS_SG            = module.dev-ui-ecs-cluster.cluster_sg_id
   VPC_SUBNETS       = join(",", module.main-vpc.private_subnets)
   CERTIFICATE_ARN   = aws_acm_certificate.alb_cert.arn
