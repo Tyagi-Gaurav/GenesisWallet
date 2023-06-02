@@ -1,7 +1,6 @@
 import boto3
 
-def ec2_instance_cleanup():
-    client = boto3.client('ec2')
+def ec2_instance_cleanup(client):
     response = client.describe_instances(Filters=[
         {
             'Name': 'instance-state-code',
@@ -19,83 +18,140 @@ def ec2_instance_cleanup():
     else:
         print ("No EC2 Instances found to delete.")
 
-def internet_gateway_cleanup():
-    #Unmap public IP addresses
-    client = boto3.client('ec2')
-    addresses_dict = client.describe_addresses()
-    print(addresses_dict)
-    for eip_dict in addresses_dict['Addresses']:
-        print(eip_dict['PublicIp'])
+def detach_internet_gateway_from(client, igws, vpcid):
+     # detach and delete all gateways associated with the vpc
+    if igws["InternetGateways"]:
+        for gw in igws["InternetGateways"]:
+            client.detach_internet_gateway(DryRun=False,
+                                           InternetGatewayId=gw["InternetGatewayId"],
+                                           VpcId=vpcid)
+
+def get_vpc_for(client, env):
+    print ("Get VPCs")
+    response = client.describe_vpcs(
+        Filters=[
+            {
+                'Name': 'tag:Environment',
+                'Values': [
+                    env,
+                ]
+            },
+        ])
+    print (response)
+    if (response["Vpcs"]):
+        return response
+    else:
+        print ("No Vpcs Found")
+        return None
+
+def vpc_id_from(vpcs):
+    return vpcs["Vpcs"][0]["VpcId"]
+
+def get_internet_gateways(client):
+    print ("Get Internet Gateways")
+    return client.describe_internet_gateways()
+
+def get_nat_gateways(client):
+    print ("Get NAT Gateways")
+    return client.describe_nat_gateways()
+
+def get_network_interfaces(client):
+    print ("Get Network interfaces")
+    interfaces = client.describe_network_interfaces()
+    print (interfaces)
+    return interfaces
+
+def detach_network_interfaces(client, nwifs):
+    print ("Detach Network interfaces")
+    for nw in nwifs["NetworkInterfaces"]:
+        if nw["Attachment"]["Status"] == 'attached':
+            client.detach_network_interface(AttachmentId=nw["Attachment"]['AttachmentId'])
+
+def describe_load_balancers(client):
+    print ("Describe load balancers")
+    return client.describe_load_balancers()
+
+def delete_load_balancers(client, lobs):
+    print ("Deleting load balancers")
+    for nw in lobs["LoadBalancers"]:
+        print ("Deleting loadbalancer with arn " + nw["LoadBalancerArn"])
+        client.delete_load_balancer(LoadBalancerArn=nw["LoadBalancerArn"])
+
+def delete_ecs_clusters(ecs_client, response):
+    for cluster in response["clusterArns"]:
+        print("Deleting Cluster: " + cluster)
+        ecs_client.delete_cluster(cluster=cluster)
 
 
-def vpc_cleanup(vpcid):
-    """Remove VPC from AWS
-    Set your region/access-key/secret-key from env variables or boto config.
-    :param vpcid: id of vpc to delete
-    """
-    if not vpcid:
-        print ("Nothing to delete")
-        return
-    print('Removing VPC ({}) from AWS'.format(vpcid))
-    ec2 = boto3.resource('ec2')
-    ec2client = ec2.meta.client
-    vpc = ec2.Vpc(vpcid)
-    # detach default dhcp_options if associated with the vpc
-    dhcp_options_default = ec2.DhcpOptions('default')
-    if dhcp_options_default:
-        dhcp_options_default.associate_with_vpc(
-            VpcId=vpc.id
-        )
-    # detach and delete all gateways associated with the vpc
-    for gw in vpc.internet_gateways.all():
-        vpc.detach_internet_gateway(InternetGatewayId=gw.id)
-        gw.delete()
-    # delete all route table associations
-    for rt in vpc.route_tables.all():
-        if not rt.associations:
-            rt.delete()
-        for rta in rt.associations:
-            if not rta.main:
-                rta.delete()
-    # delete any instances
-    for subnet in vpc.subnets.all():
-        for instance in subnet.instances.all():
-            instance.terminate()
-    # delete our endpoints
-    for ep in ec2client.describe_vpc_endpoints(
-            Filters=[{
-                'Name': 'vpc-id',
-                'Values': [vpcid]
-            }])['VpcEndpoints']:
-        ec2client.delete_vpc_endpoints(VpcEndpointIds=[ep['VpcEndpointId']])
-    # delete our security groups
-    for sg in vpc.security_groups.all():
-        if sg.group_name != 'default':
-            sg.delete()
-    # delete any vpc peering connections
-    for vpcpeer in ec2client.describe_vpc_peering_connections(
-            Filters=[{
-                'Name': 'requester-vpc-info.vpc-id',
-                'Values': [vpcid]
-            }])['VpcPeeringConnections']:
-        ec2.VpcPeeringConnection(vpcpeer['VpcPeeringConnectionId']).delete()
-    # delete non-default network acls
-    for netacl in vpc.network_acls.all():
-        if not netacl.is_default:
-            netacl.delete()
-    # delete network interfaces
-    for subnet in vpc.subnets.all():
-        for interface in subnet.network_interfaces.all():
-            interface.delete()
-        subnet.delete()
-    # finally, delete the vpc
-    ec2client.delete_vpc(VpcId=vpcid)
+def list_ecs_clusters(ecs_client):
+    response = ecs_client.list_clusters()
+    print(response["clusterArns"])
+    return response
 
+
+def terminate_ec2_instances(client, response):
+    for reservation in response["Reservations"]:
+        for instance in reservation[0]["Instances"]:
+            print(instance["InstanceId"])
+            client.terminate_instances(InstanceIds=[instance["InstanceId"]])
+
+
+def describe_ec2_instances(client, env):
+    response = client.describe_instances(Filters=[
+        {
+            'Name': 'tag:Environment',
+            'Values': [
+                env,
+            ]
+        },
+    ])
+    return response
 
 def main(argv=None):
-    ec2_instance_cleanup()
-    #internet_gateway_cleanup()
-    #vpc_cleanup("vpc-040467649d9c2302b")
+    env = "dev"
+    ec2_client = boto3.client("ec2")
+    ecs_client = boto3.client("ecs")
+    elbv2_client = client = boto3.client("elbv2")
+
+    vpc = get_vpc_for(ec2_client, env)
+    #vpcid = vpc_id_from(vpc)
+
+    ec2_instances_list = describe_ec2_instances(ec2_client, env)
+    terminate_ec2_instances(ec2_client, ec2_instances_list)
+
+    ecs_clusters_list = list_ecs_clusters(ecs_client)
+    delete_ecs_clusters(ecs_client, ecs_clusters_list)
+
+    nwif = get_network_interfaces(ec2_client)
+    detach_network_interfaces(ec2_client, nwif)
+
+    # response = client.terminate_instances(
+    #     InstanceIds=[
+    #         'string',
+    #     ],
+    #     DryRun=True|False
+    # )
+
+    # natgws = get_nat_gateways()
+    # print(natgws)
+    #
+    # lobs = describe_load_balancers(elbv2_client)
+    # print (lobs)
+    # delete_load_balancers(elbv2_client, lobs)
+    #
+    # client = boto3.client("ec2")
+    # print ("Get routing tables")
+    # response = client.describe_route_tables()
+    # print (response)
+    # for rt in response["RouteTables"]:
+    #     print ("Deleting routing table with ID: " + rt["RouteTableId"])
+    #     client.delete_route_table(RouteTableId=rt["RouteTableId"])
+
+
+    # igws = get_internet_gateways(ec2_client)
+    # print(igws)
+    # detach_internet_gateway_from(igws, vpcid)
+    #ec2_instance_cleanup()
 
 
 if __name__ == '__main__':

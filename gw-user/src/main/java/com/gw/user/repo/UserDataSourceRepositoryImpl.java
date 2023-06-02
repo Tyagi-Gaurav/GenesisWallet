@@ -20,7 +20,7 @@ public class UserDataSourceRepositoryImpl implements UserRepository {
     private static final String FIND_USER_BY_ID = "SELECT * FROM USER_SCHEMA.USER_TABLE WHERE ID = ?";
     private static final String FIND_USER_BY_EMAIL = "SELECT * FROM USER_SCHEMA.USER_TABLE WHERE EMAIL = ?";
 
-    private static final String FIND_EXTERNAL_USER_BY_USER_NAME = "SELECT * FROM USER_SCHEMA.EXTERNAL_USER_TABLE WHERE EMAIL = :email";
+    private static final String FIND_EXTERNAL_USER_BY_USER_NAME = "SELECT * FROM USER_SCHEMA.EXTERNAL_USER_TABLE WHERE EMAIL = ?";
     private static final String ADD_USER = "INSERT INTO USER_SCHEMA.USER_TABLE (ID, EMAIL, FIRST_NAME, LAST_NAME, PASSWORD, SALT, DATE_OF_BIRTH, GENDER, HOME_COUNTRY, ROLE) " +
             "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -111,6 +111,7 @@ public class UserDataSourceRepositoryImpl implements UserRepository {
         return Mono.create(sink -> {
             try (var connection = dataSource.getConnection();
                  var preparedStatement = connection.prepareStatement(ADD_EXTERNAL_USER)) {
+
                 preparedStatement.setString(1, user.id().toString());
                 preparedStatement.setString(2, user.email());
                 preparedStatement.setString(3, user.firstName());
@@ -138,6 +139,7 @@ public class UserDataSourceRepositoryImpl implements UserRepository {
         return Mono.create(sink -> {
             try (var connection = dataSource.getConnection();
                  var preparedStatement = connection.prepareStatement(FIND_EXTERNAL_USER_BY_USER_NAME)) {
+
                 preparedStatement.setString(1, email);
 
                 var resultSet = preparedStatement.executeQuery();
