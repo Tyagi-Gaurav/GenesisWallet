@@ -28,6 +28,27 @@ resource "tls_self_signed_cert" "dev_self_signed_cert" {
   ]
 }
 
+resource "aws_dynamodb_table" "example" {
+  name             = "example"
+  hash_key         = "TestTableHashKey"
+  billing_mode     = "PAY_PER_REQUEST"
+  stream_enabled   = true
+  stream_view_type = "NEW_AND_OLD_IMAGES"
+
+  attribute {
+    name = "TestTableHashKey"
+    type = "S"
+  }
+
+  replica {
+    region_name = "us-east-2"
+  }
+
+  replica {
+    region_name = "us-west-2"
+  }
+}
+
 resource "aws_acm_certificate" "alb_cert" {
   private_key      = tls_private_key.dev_private_key.private_key_pem
   certificate_body = tls_self_signed_cert.dev_self_signed_cert.cert_pem
