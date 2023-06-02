@@ -86,7 +86,7 @@ module "ui-ecs-service" {
     USER_HOST = module.user-alb.dns_name
     USER_PORT = 19090
   })
-  HEALTH_CHECK_PATH = "/actuator/healthcheck/status"
+  HEALTH_CHECK_PATH = "/actuator/health/status"
   HEALTH_CHECK_PORT = 8081
 }
 
