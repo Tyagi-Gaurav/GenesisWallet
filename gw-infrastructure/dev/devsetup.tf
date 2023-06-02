@@ -57,7 +57,7 @@ module "elasticache_instance" {
   ENV = var.ENV
   VPC_ID = module.main-vpc.vpc_id
   ALLOWED_SECURITY_GROUP_IDS = [module.dev-user-ecs-cluster.cluster_sg_id]
-  SUBNET_IDS = module.main-vpc.public_subnets
+  SUBNET_IDS = module.main-vpc.private_subnets
 }
 
 module "vault_instance" {
