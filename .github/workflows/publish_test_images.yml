@@ -1,4 +1,4 @@
-name: Publish latest test images
+name: Manual Publish latest test images
 
 on:
   workflow_dispatch:

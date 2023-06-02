@@ -97,6 +97,7 @@ def terminate_ec2_instances(client, response):
 
 
 def describe_ec2_instances(client, env):
+    print ("Get ECNs")
     response = client.describe_instances(Filters=[
         {
             'Name': 'tag:Environment',
@@ -105,6 +106,7 @@ def describe_ec2_instances(client, env):
             ]
         },
     ])
+    print (response)
     return response
 
 def main(argv=None):
