@@ -7,6 +7,7 @@ import com.gw.security.util.PasswordEncryptor;
 import com.gw.user.repo.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -23,7 +24,7 @@ public class UserServiceImpl implements UserService {
     private final SecureRandom secureRandom;
     private final UserRegistrationCounter userRegistrationCounter;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncryptor passwordEncryptor, SecureRandom secureRandom, UserRegistrationCounter userRegistrationCounter) {
+    public UserServiceImpl(@Qualifier("datasource") UserRepository userRepository, PasswordEncryptor passwordEncryptor, SecureRandom secureRandom, UserRegistrationCounter userRegistrationCounter) {
         this.userRepository = userRepository;
         this.passwordEncryptor = passwordEncryptor;
         this.secureRandom = secureRandom;

@@ -51,6 +51,7 @@ public class DatabaseBeanFactory {
             cpds.setJdbcUrl(jdbcUrl);
             cpds.setUser(userName);
             cpds.setPassword(password);
+            cpds.setPreferredTestQuery("SELECT 1");
         } catch (Exception e) {
             if (LOG.isErrorEnabled()) {
                 LOG.error("Error while initializing database: {}", e.getMessage());

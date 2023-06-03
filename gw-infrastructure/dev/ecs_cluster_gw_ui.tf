@@ -8,13 +8,14 @@ module "dev-ui-ecs-cluster" {
   VPC_ID             = module.main-vpc.vpc_id
   CLUSTER_NAME       = "${var.ENV}-${var.UI-APP}-ecs-cluster"
   INSTANCE_TYPE      = "t2.small"
-  VPC_SUBNETS        = join(",", module.main-vpc.public_subnets) #For debug. Change to private subnet later.
+  VPC_SUBNETS        = join(",", module.main-vpc.private_subnets) #For debug. Change to private subnet later.
   ENABLE_SSH         = false #Disable for prod
   SSH_SECURITY_GROUP = module.allow_cluster_access.ssh_security_group_id
   LOG_GROUP          = "${var.ENV}-${var.UI-APP}-log-group"
   AWS_ACCOUNT_ID     = data.aws_caller_identity.current.account_id
   AWS_REGION         = var.AWS_REGION
   ACCESS_KEY_NAME    = module.allow_cluster_access.ssh_key_pair_name
+  ASSOCIATE_PUBLIC_IP_ADDRESS = false
   ECR_REPO_ARNS      = [
     data.aws_ecr_repository.test_genesis_ui_ecr.arn
   ]
@@ -41,9 +42,9 @@ module "ui-alb" {
     }
   }
   DOMAIN            = "${var.ENV}.${var.UI-APP}.genesis"
-  INTERNAL          = false
+  INTERNAL          = true
   ECS_SG            = module.dev-ui-ecs-cluster.cluster_sg_id
-  VPC_SUBNETS       = join(",", module.main-vpc.public_subnets)
+  VPC_SUBNETS       = join(",", module.main-vpc.private_subnets)
   CERTIFICATE_ARN   = aws_acm_certificate.alb_cert.arn
   DELETE_PROTECTION = false #So that we can delete the alb
   ACCESSIBLE_PORTS = {
@@ -86,7 +87,7 @@ module "ui-ecs-service" {
     USER_HOST = module.user-alb.dns_name
     USER_PORT = 19090
   })
-  HEALTH_CHECK_PATH = "/actuator/healthcheck/status"
+  HEALTH_CHECK_PATH = "/actuator/health/status"
   HEALTH_CHECK_PORT = 8081
 }
 

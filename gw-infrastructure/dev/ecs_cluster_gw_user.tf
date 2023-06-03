@@ -16,7 +16,7 @@ module "user-alb" {
   DOMAIN            = "${var.ENV}.user.genesis"
   INTERNAL          = true
   ECS_SG            = module.dev-user-ecs-cluster.cluster_sg_id
-  VPC_SUBNETS       = join(",", module.main-vpc.public_subnets)
+  VPC_SUBNETS       = join(",", module.main-vpc.private_subnets)
   CERTIFICATE_ARN   = aws_acm_certificate.alb_cert.arn
   DELETE_PROTECTION = false #So that we can delete the alb
   ACCESSIBLE_PORTS = {
@@ -35,7 +35,7 @@ module "dev-user-ecs-cluster" {
   VPC_ID             = module.main-vpc.vpc_id
   CLUSTER_NAME       = "${var.ENV}-${var.USER_APP}-ecs-cluster"
   INSTANCE_TYPE      = "t2.small"
-  VPC_SUBNETS        = join(",", module.main-vpc.public_subnets) #For debug. Change to private subnet later.
+  VPC_SUBNETS        = join(",", module.main-vpc.private_subnets) #For debug. Change to private subnet later.
   ENABLE_SSH         = false #Disable for prod
   SSH_SECURITY_GROUP = module.allow_cluster_access.ssh_security_group_id
   LOG_GROUP          = "${var.ENV}-${var.USER_APP}-log-group"
@@ -45,6 +45,7 @@ module "dev-user-ecs-cluster" {
   ECR_REPO_ARNS      = [
     data.aws_ecr_repository.test_genesis_user_ecr.arn
   ]
+  ASSOCIATE_PUBLIC_IP_ADDRESS = false
   ACCESSIBLE_PORTS = {
     #Required for ALB to be able to access the ECS cluster ports
     port1 = {
@@ -97,7 +98,7 @@ module "user-ecs-service" {
     DB_NAME    = module.single_db_instance.dbname
     CACHE_HOST = module.elasticache_instance.elasticache_cluster_cache_nodes
   })
-  HEALTH_CHECK_PATH = "/actuator/healthcheck/status"
+  HEALTH_CHECK_PATH = "/actuator/health/status"
   HEALTH_CHECK_PORT = 9091
 }
 

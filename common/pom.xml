@@ -9,7 +9,7 @@
         <artifactId>genesis</artifactId>
     </parent>
 
-    <artifactId>gw-common</artifactId>
+    <artifactId>common</artifactId>
     <packaging>jar</packaging>
 
     <properties>
@@ -20,6 +20,12 @@
         <glassfish.expressly.version>5.0.0</glassfish.expressly.version>
         <!-- The version of jakarta validation should be same as what spring starter validator introduces. -->
         <jakarta.validation-api.version>3.0.2</jakarta.validation-api.version>
+        <sonar.exclusions>
+            src/main/java/com/gw/common/config/*.java,
+            src/main/java/com/gw/common/domain/*.java,
+            src/main/java/com/gw/common/exception/*.java,
+            src/main/java/com/gw/common/util/TokenManager.java
+        </sonar.exclusions>
     </properties>
 
     <build>
@@ -140,10 +146,19 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
+
+        <!-- Logging Dependencies -->
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
+            <artifactId>slf4j-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.simplify4u</groupId>
+            <artifactId>slf4j2-mock</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- Logging Dependencies : END -->
+
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-core</artifactId>

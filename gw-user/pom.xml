@@ -12,6 +12,10 @@
     <artifactId>gw-user</artifactId>
     <packaging>jar</packaging>
 
+    <properties>
+        <sonar.exclusions>com/gw/user/e2e/**/*.java</sonar.exclusions>
+    </properties>
+
     <build>
         <plugins>
             <plugin>

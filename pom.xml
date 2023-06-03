@@ -10,8 +10,6 @@
 
     <modules>
         <module>gw-api-gateway</module>
-        <module>gw-common</module>
-        <module>common-annotations</module>
         <module>gw-security</module>
         <module>gw-grpc-common</module>
         <module>gw-infrastructure</module>
@@ -19,9 +17,11 @@
         <module>gw-user</module>
         <module>gw-test-common</module>
         <module>gw-user-client</module>
-        <module>api-functional-test</module>
         <module>gw-ui</module>
+        <module>api-functional-test</module>
         <module>ui-functional-test</module>
+        <module>common</module>
+        <module>common-annotations</module>
         <module>integration-test-support</module>
         <module>ping-app</module>
     </modules>
@@ -33,12 +33,13 @@
         <spring.vault.version>3.0.2</spring.vault.version>
         <apache.commons.version>3.12.0</apache.commons.version>
         <slf4j.version>2.0.7</slf4j.version>
+        <slf4j.mock.version>2.3.0</slf4j.mock.version>
         <micrometer-core.version>1.11.0</micrometer-core.version>
         <micrometer-registry-prometheus.version>1.11.0</micrometer-registry-prometheus.version>
         <reactor.version>3.5.6</reactor.version>
         <reactor.netty.version>1.1.7</reactor.netty.version>
         <grpc.version>1.55.1</grpc.version>
-        <protobuf-java.version>3.23.1</protobuf-java.version>
+        <protobuf-java.version>3.23.2</protobuf-java.version>
         <spring-data-r2dbc.version>3.1.0</spring-data-r2dbc.version>
         <c3p0.version>0.9.5.5</c3p0.version>
         <r2dbc-postgresql.version>1.0.1.RELEASE</r2dbc-postgresql.version>
@@ -268,7 +269,12 @@
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.simplify4u</groupId>
+                <artifactId>slf4j2-mock</artifactId>
+                <version>${slf4j.mock.version}</version>
+                <scope>test</scope>
+            </dependency>
             <!-- Logging Dependencies : END -->
 
             <!-- Observability Dependencies -->

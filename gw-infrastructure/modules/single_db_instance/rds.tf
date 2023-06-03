@@ -10,10 +10,10 @@ resource "aws_db_subnet_group" "database" {
 
 resource "aws_db_instance" "postgresql" {
   allocated_storage    = var.ALLOCATED_STORAGE
-  db_name              = var.DB_NAME
   instance_class       = var.DB_INSTANCE_CLASS #"db.t3.micro"
   engine               = "postgres"
   engine_version       = "15.2"
+  db_name              = var.DB_NAME
   username             = var.USERNAME
   password             = var.PASSWORD
   parameter_group_name = "default.postgres15"

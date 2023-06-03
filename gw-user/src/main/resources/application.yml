@@ -25,7 +25,7 @@ accessible:
   endpointsRegex:
     "[GET-/api/swagger-resources/.*]": ${GET_SWAGGER_RESOURCES:true}
     "[GET-/api/swagger-ui/.*]": ${GET_SWAGGER_UI_RESOURCES:true}
-    "[GET-/actuator/healthcheck/.*]": ${ACTUATOR_HEALTH_CUSTOM:true}
+    "[GET-/actuator/health/.*]": ${ACTUATOR_HEALTH_CUSTOM:true}
     "[GET-/api/user/details/.*]": ${FETCH_USER:true}
 
 management:
@@ -37,7 +37,6 @@ management:
     web:
       exposure.include: health, mappings, metrics, prometheus, configprops
       path-mapping:
-        health: healthcheck
         configprops: config
 
 auth:
