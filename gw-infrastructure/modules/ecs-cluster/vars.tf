@@ -42,3 +42,7 @@ variable "ENABLE_SSH" {
 variable SSH_SECURITY_GROUP {
   default = ""
 }
+
+variable "ASSOCIATE_PUBLIC_IP_ADDRESS" {
+  default = true
+}

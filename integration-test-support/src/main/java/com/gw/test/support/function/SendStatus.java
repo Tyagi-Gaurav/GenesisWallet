@@ -11,7 +11,7 @@ public class SendStatus
     public WebTestClient.ResponseSpec apply(WebTestClient webClient) {
 
         try {
-            return webClient.get().uri("/actuator/healthcheck/status")
+            return webClient.get().uri("/actuator/health/status")
                     .exchange();
         } catch (Exception exception) {
             throw new RuntimeException(exception);

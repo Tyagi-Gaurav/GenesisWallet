@@ -41,13 +41,13 @@ module "allow_cluster_access" {
 
 module "single_db_instance" {
   source                     = "../modules/single_db_instance"
+  ENV                        = var.ENV
   ALLOCATED_STORAGE          = "20"
   DB_INSTANCE_CLASS          = "db.t3.micro"
   DB_NAME                    = "devDB"
-  ENV                        = var.ENV
+  USERNAME                   = "devuser"
   PASSWORD                   = "dev-password"
   SUBNET_IDS                 = module.main-vpc.private_subnets
-  USERNAME                   = "devuser"
   VPC_ID                     = module.main-vpc.vpc_id
   ALLOWED_SECURITY_GROUP_IDS = [module.dev-user-ecs-cluster.cluster_sg_id]
 }
@@ -57,7 +57,22 @@ module "elasticache_instance" {
   ENV = var.ENV
   VPC_ID = module.main-vpc.vpc_id
   ALLOWED_SECURITY_GROUP_IDS = [module.dev-user-ecs-cluster.cluster_sg_id]
-  SUBNET_IDS = module.main-vpc.public_subnets
+  SUBNET_IDS = module.main-vpc.private_subnets
+}
+
+module "vault_instance" {
+  source                  = "../modules/vault"
+  ENV                     = var.ENV
+  SUBNET_ID               = element(module.main-vpc.private_subnets, 0)
+  VPC_ID                  = module.main-vpc.vpc_id
+  DB_HOST                 = module.single_db_instance.host
+  DB_PORT                 = module.single_db_instance.port
+  DB_USER                 = module.single_db_instance.username
+  DB_PASSWORD             = module.single_db_instance.password
+  ALLOWED_SECURITY_GROUPS = {
+    group1 = module.dev-user-ecs-cluster.cluster_sg_id
+  }
+  ACCESS_KEY_NAME = module.allow_cluster_access.ssh_key_pair_name
 }
 
 output "elasticache_host" {

@@ -1,0 +1,30 @@
+name: Manual Publish latest test images
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    name: create release
+    runs-on: ubuntu-latest
+    outputs:
+      release_tag: ${{ steps.fetch_tag.outputs.LATEST_TAG }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Grant execute permission for mvnw
+        run: chmod +x mvnw
+
+      - name: Create a release
+        env:
+          CUSTOM_TOKEN: ${{ secrets.ALL_ACCESS_TOKEN }}
+          GH_TOKEN: ${{ secrets.ALL_ACCESS_TOKEN }}
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.repository }}
+        run: ./scripts/release-project.sh

@@ -99,6 +99,13 @@ Refer [here](./Redis.md)
 https://app.diagrams.net/#G16jsKiOVyKhlBEANwm2DxsQpYRsK9gUgp
 https://swimlanes.io/u/mcghmm30h
 
+# Sample curl commands
+* User Service healthcheck: `curl -i -vvv localhost/api/user/private/health`
+* User Service Status check: `curl -i -vvv localhost/api/user/private/health/status`
+* UI Service Status check: `curl -i -vvv localhost/gw-ui/private/health/status`
+* UI Service Health check: `curl -i -vvv localhost/gw-ui/private/health`
+* API Gateway Status check: `curl -i -q localhost/index.html`
+
 # Notes
 * Vault is structured as follows
   * Give the above role policy to access 

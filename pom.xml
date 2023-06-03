@@ -10,8 +10,6 @@
 
     <modules>
         <module>gw-api-gateway</module>
-        <module>gw-common</module>
-        <module>common-annotations</module>
         <module>gw-security</module>
         <module>gw-grpc-common</module>
         <module>gw-infrastructure</module>
@@ -19,9 +17,11 @@
         <module>gw-user</module>
         <module>gw-test-common</module>
         <module>gw-user-client</module>
-        <module>api-functional-test</module>
         <module>gw-ui</module>
+        <module>api-functional-test</module>
         <module>ui-functional-test</module>
+        <module>common</module>
+        <module>common-annotations</module>
         <module>integration-test-support</module>
         <module>ping-app</module>
     </modules>
@@ -33,6 +33,7 @@
         <spring.vault.version>3.0.2</spring.vault.version>
         <apache.commons.version>3.12.0</apache.commons.version>
         <slf4j.version>2.0.7</slf4j.version>
+        <slf4j.mock.version>2.3.0</slf4j.mock.version>
         <micrometer-core.version>1.11.0</micrometer-core.version>
         <micrometer-registry-prometheus.version>1.11.0</micrometer-registry-prometheus.version>
         <reactor.version>3.5.6</reactor.version>
@@ -48,7 +49,7 @@
         <vault.testcontainer.version>1.18.1</vault.testcontainer.version>
         <apache.httpclient.version>5.2.1</apache.httpclient.version>
         <spring-security-test.version>6.1.0</spring-security-test.version>
-        <spring-cloud-contract-stub.version>4.0.2</spring-cloud-contract-stub.version>
+        <spring-cloud-contract-stub.version>4.0.3</spring-cloud-contract-stub.version>
         <liquibase-core.version>4.22.0</liquibase-core.version>
         <postgresql.version>42.6.0</postgresql.version>
 
@@ -268,7 +269,12 @@
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.simplify4u</groupId>
+                <artifactId>slf4j2-mock</artifactId>
+                <version>${slf4j.mock.version}</version>
+                <scope>test</scope>
+            </dependency>
             <!-- Logging Dependencies : END -->
 
             <!-- Observability Dependencies -->
