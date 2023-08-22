@@ -42,7 +42,7 @@ class OauthTest {
 
     @Test
     void shouldGetLogin() {
-        driver.get("http://local.api-gateway/gw-ui/index.html");
+        driver.get("http://local.api-gateway/gw-ui/login.html");
         assertThat(driver.getTitle()).isEqualTo("Oauth 2 Demo");
         WebElement element = driver.findElement(By.linkText("Sign-In with Google"));
         element.click();

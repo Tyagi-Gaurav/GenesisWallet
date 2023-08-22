@@ -38,8 +38,11 @@ public class AppConfig implements WebFluxConfigurer {
     private LoggingFilter loggingFilter;
 
     private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
-            "classpath:/META-INF/resources/", "classpath:/resources/",
-            "classpath:/static/", "classpath:/public/", "classpath:/META-INF/resources/webjars/"};
+            "classpath:/META-INF/resources/",
+            "classpath:/resources/",
+            "classpath:/static/",
+            "classpath:/public/",
+            "classpath:/META-INF/resources/webjars/"};
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -48,7 +51,7 @@ public class AppConfig implements WebFluxConfigurer {
     }
 
     @Bean
-    public RouterFunction<ServerResponse> indexRouter(@Value("classpath:/static/index.html") final Resource indexHtml) {
+    public RouterFunction<ServerResponse> indexRouter(@Value("classpath:/static/login.html") final Resource indexHtml) {
         return route(GET("/"), request -> {
             var stringWriter = new StringWriter();
             try {

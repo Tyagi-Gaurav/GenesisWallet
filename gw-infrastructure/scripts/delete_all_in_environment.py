@@ -1,22 +1,7 @@
 import boto3
-
-def ec2_instance_cleanup(client):
-    response = client.describe_instances(Filters=[
-        {
-            'Name': 'instance-state-code',
-            'Values': [
-                '0','16','32' #Get instances that are pending, running or shutting-down
-                #'48' #Get instances that are pending, running or shutting-down
-            ]
-        },
-    ])
-    if response['Reservations']:
-        instances = response['Reservations'][0]['Instances']
-        for instance in instances:
-            print ("Deleting instanceID : " + instance["InstanceId"])
-            client.terminate_instances(InstanceIds=[instance["InstanceId"]])
-    else:
-        print ("No EC2 Instances found to delete.")
+import vpc
+import instance
+import ecs
 
 def detach_internet_gateway_from(client, igws, vpcid):
      # detach and delete all gateways associated with the vpc
@@ -25,27 +10,6 @@ def detach_internet_gateway_from(client, igws, vpcid):
             client.detach_internet_gateway(DryRun=False,
                                            InternetGatewayId=gw["InternetGatewayId"],
                                            VpcId=vpcid)
-
-def get_vpc_for(client, env):
-    print ("Get VPCs")
-    response = client.describe_vpcs(
-        Filters=[
-            {
-                'Name': 'tag:Environment',
-                'Values': [
-                    env,
-                ]
-            },
-        ])
-    print (response)
-    if (response["Vpcs"]):
-        return response
-    else:
-        print ("No Vpcs Found")
-        return None
-
-def vpc_id_from(vpcs):
-    return vpcs["Vpcs"][0]["VpcId"]
 
 def get_internet_gateways(client):
     print ("Get Internet Gateways")
@@ -77,52 +41,20 @@ def delete_load_balancers(client, lobs):
         print ("Deleting loadbalancer with arn " + nw["LoadBalancerArn"])
         client.delete_load_balancer(LoadBalancerArn=nw["LoadBalancerArn"])
 
-def delete_ecs_clusters(ecs_client, response):
-    for cluster in response["clusterArns"]:
-        print("Deleting Cluster: " + cluster)
-        ecs_client.delete_cluster(cluster=cluster)
-
-
-def list_ecs_clusters(ecs_client):
-    response = ecs_client.list_clusters()
-    print(response["clusterArns"])
-    return response
-
-
-def terminate_ec2_instances(client, response):
-    for reservation in response["Reservations"]:
-        for instance in reservation[0]["Instances"]:
-            print(instance["InstanceId"])
-            client.terminate_instances(InstanceIds=[instance["InstanceId"]])
-
-
-def describe_ec2_instances(client, env):
-    print ("Get ECNs")
-    response = client.describe_instances(Filters=[
-        {
-            'Name': 'tag:Environment',
-            'Values': [
-                env,
-            ]
-        },
-    ])
-    print (response)
-    return response
-
 def main(argv=None):
     env = "dev"
     ec2_client = boto3.client("ec2")
     ecs_client = boto3.client("ecs")
     elbv2_client = client = boto3.client("elbv2")
 
-    vpc = get_vpc_for(ec2_client, env)
+    vpc.get_vpc_for(ec2_client, env)
     #vpcid = vpc_id_from(vpc)
 
-    ec2_instances_list = describe_ec2_instances(ec2_client, env)
-    terminate_ec2_instances(ec2_client, ec2_instances_list)
+    ec2_instances_list = instance.describe_ec2_instances(ec2_client, env)
+    instance.terminate_ec2_instances(ec2_client, ec2_instances_list)
 
-    ecs_clusters_list = list_ecs_clusters(ecs_client)
-    delete_ecs_clusters(ecs_client, ecs_clusters_list)
+    ecs_clusters_list = ecs.list_ecs_clusters(ecs_client)
+    ecs.delete_ecs_clusters(ecs_client, ecs_clusters_list)
 
     nwif = get_network_interfaces(ec2_client)
     detach_network_interfaces(ec2_client, nwif)
