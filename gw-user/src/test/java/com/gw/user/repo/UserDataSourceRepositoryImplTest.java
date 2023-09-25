@@ -23,7 +23,7 @@ import static com.gw.user.testutils.UserBuilder.copyOf;
 
 @ActiveProfiles("UserRepositoryTest")
 @ContextConfiguration(initializers = TestContainerDatabaseInitializer.class)
-@SpringBootTest(classes = {UserRepository.class, UserRepositoryImpl.class})
+@SpringBootTest(classes = {UserRepository.class, UserDataSourceRepositoryImpl.class})
 @ExtendWith(MockitoExtension.class)
 class UserDataSourceRepositoryImplTest extends DatabaseTest {
     @Autowired
