@@ -27,3 +27,7 @@ terraform.tfstate.backup
 terraform.tfstate
 .terraform.tfstate.lock.info
 dependency-reduced-pom.xml
+
+# Node
+__pycache__/
+node_modules/
