@@ -42,7 +42,7 @@
         <protobuf-java.version>3.23.2</protobuf-java.version>
         <spring-data-r2dbc.version>3.1.0</spring-data-r2dbc.version>
         <c3p0.version>0.9.5.5</c3p0.version>
-        <r2dbc-postgresql.version>1.0.1.RELEASE</r2dbc-postgresql.version>
+        <r2dbc-postgresql.version>1.0.2.RELEASE</r2dbc-postgresql.version>
         <swagger.version>3.0.0</swagger.version>
         <spring-doc.version>1.7.0</spring-doc.version>
         <postgresql.testcontainer.version>1.19.0</postgresql.testcontainer.version>
