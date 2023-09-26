@@ -40,18 +40,13 @@
         <reactor.netty.version>1.1.7</reactor.netty.version>
         <grpc.version>1.55.1</grpc.version>
         <protobuf-java.version>3.23.2</protobuf-java.version>
-        <spring-data-r2dbc.version>3.1.0</spring-data-r2dbc.version>
-        <c3p0.version>0.9.5.5</c3p0.version>
-        <r2dbc-postgresql.version>1.0.1.RELEASE</r2dbc-postgresql.version>
+        <spring-boot-data.version>3.1.4</spring-boot-data.version>
         <swagger.version>3.0.0</swagger.version>
         <spring-doc.version>1.7.0</spring-doc.version>
-        <postgresql.testcontainer.version>1.19.0</postgresql.testcontainer.version>
         <vault.testcontainer.version>1.19.0</vault.testcontainer.version>
         <apache.httpclient.version>5.2.1</apache.httpclient.version>
         <spring-security-test.version>6.1.0</spring-security-test.version>
         <spring-cloud-contract-stub.version>4.0.3</spring-cloud-contract-stub.version>
-        <liquibase-core.version>4.22.0</liquibase-core.version>
-        <postgresql.version>42.6.0</postgresql.version>
 
         <!-- Test Version -->
         <assertj.version>3.24.2</assertj.version>
@@ -64,6 +59,8 @@
         <embedded-redis.version>0.7.3</embedded-redis.version>
         <jedis.version>5.0.0</jedis.version>
         <hamcrest.version>2.2</hamcrest.version>
+        <mongodb.testcontainer.version>1.19.0</mongodb.testcontainer.version>
+        <mongodb-driver-reactivestreams.version>4.10.2</mongodb-driver-reactivestreams.version>
     </properties>
 
     <build>
@@ -178,8 +175,14 @@
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-data-r2dbc</artifactId>
-                <version>${spring-data-r2dbc.version}</version>
+                <artifactId>spring-boot-starter-data-mongodb</artifactId>
+                <version>${spring-boot-data.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.mongodb</groupId>
+                        <artifactId>mongodb-driver-sync</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -229,19 +232,9 @@
 
             <!-- Database -->
             <dependency>
-                <groupId>com.mchange</groupId>
-                <artifactId>c3p0</artifactId>
-                <version>${c3p0.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.postgresql</groupId>
-                <artifactId>r2dbc-postgresql</artifactId>
-                <version>${r2dbc-postgresql.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.postgresql</groupId>
-                <artifactId>postgresql</artifactId>
-                <version>${postgresql.version}</version>
+                <groupId>org.mongodb</groupId>
+                <artifactId>mongodb-driver-reactivestreams</artifactId>
+                <version>${mongodb-driver-reactivestreams.version}</version>
             </dependency>
             <!-- Database : END -->
 
@@ -388,8 +381,9 @@
             </dependency>
             <dependency>
                 <groupId>org.testcontainers</groupId>
-                <artifactId>postgresql</artifactId>
-                <version>${postgresql.testcontainer.version}</version>
+                <artifactId>mongodb</artifactId>
+                <version>${mongodb.testcontainer.version}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>it.ozimov</groupId>
@@ -423,14 +417,6 @@
                 <version>${hamcrest.version}</version>
             </dependency>
             <!-- Test Dependencies : END -->
-
-            <!-- Liquibase Dependencies -->
-            <dependency>
-                <groupId>org.liquibase</groupId>
-                <artifactId>liquibase-core</artifactId>
-                <version>${liquibase-core.version}</version>
-            </dependency>
-            <!-- Liquibase Dependencies : END -->
         </dependencies>
     </dependencyManagement>
 </project>
