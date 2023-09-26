@@ -34,7 +34,7 @@ public class TestUserBuilder {
         TestUserBuilder testUserBuilder = new TestUserBuilder();
 
         testUserBuilder.id = currentUser.userId();
-        testUserBuilder.username = currentUser.name();
+        testUserBuilder.username = currentUser.userName();
         testUserBuilder.firstName = currentUser.firstName();
         testUserBuilder.lastName = currentUser.lastName();
         testUserBuilder.password = currentUser.password();
@@ -76,7 +76,7 @@ public class TestUserBuilder {
 
     public static UserCreateGrpcRequestDTO userCreateGrpcRequestDTOBuilder(User user) {
         return UserCreateGrpcRequestDTO.newBuilder()
-                .setUserName(user.name())
+                .setUserName(user.userName())
                 .setFirstName(user.firstName())
                 .setLastName(user.lastName())
                 .setDateOfBirth(user.dateOfBirth())
@@ -91,7 +91,7 @@ public class TestUserBuilder {
                 .setFirstName(externalUser.firstName())
                 .setLastName(externalUser.lastName())
                 .setGender(toGrpcGender(externalUser.gender()))
-                .setEmail(externalUser.email())
+                .setEmail(externalUser.userName())
                 .setExternalSystem(externalUser.externalSystem())
                 .build();
     }

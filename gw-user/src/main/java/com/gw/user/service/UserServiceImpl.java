@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Mono<ExternalUser> addExternalUser(ExternalUser externalUser) {
-        return userRepository.findExternalUserByUserName(externalUser.email())
+        return userRepository.findExternalUserByUserName(externalUser.userName())
                 .switchIfEmpty(Mono.defer(() ->
                         userRepository.addExternalUser(externalUser)
                                 .doOnSuccess(v -> userRegistrationCounter.increment("WEB", externalUser.externalSystem()))

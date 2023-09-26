@@ -64,7 +64,7 @@ public class ScenarioExecutor {
         return testContext -> {
             var reactiveMongoTemplate = testContext.getBeanOfType(ReactiveMongoTemplate.class);
             var databaseResponseSpec = reactiveMongoTemplate
-                    .findOne(query(where("name").is(userName)), User.class)
+                    .findOne(query(where("userName").is(userName)), User.class)
                     .map(UserDetailsResponseDTO::fromUser)
                     .map(udrdto -> new DatabaseResponseSpec<>(UserDetailsResponseDTO.class, udrdto))
                     .block();

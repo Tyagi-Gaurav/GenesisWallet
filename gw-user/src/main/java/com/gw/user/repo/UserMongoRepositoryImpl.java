@@ -32,7 +32,7 @@ public class UserMongoRepositoryImpl implements UserRepository {
 
     @Override
     public Mono<User> findUserByUserName(String username) {
-        return reactiveMongoTemplate.findOne(query(Criteria.where("name").is(username)), User.class);
+        return reactiveMongoTemplate.findOne(query(Criteria.where("userName").is(username)), User.class);
     }
 
     @Override
@@ -42,6 +42,6 @@ public class UserMongoRepositoryImpl implements UserRepository {
 
     @Override
     public Mono<ExternalUser> findExternalUserByUserName(String userName) {
-        return reactiveMongoTemplate.findOne(query(Criteria.where("email").is(userName)), ExternalUser.class);
+        return reactiveMongoTemplate.findOne(query(Criteria.where("userName").is(userName)), ExternalUser.class);
     }
 }

@@ -88,7 +88,7 @@ class UserMongoRepositoryImplTest extends DatabaseTest {
         addToDatabase(userInDatabase, reactiveMongoTemplate);
 
         //when
-        Mono<User> actualUser = userRepository.findUserByUserName(userInDatabase.name());
+        Mono<User> actualUser = userRepository.findUserByUserName(userInDatabase.userName());
 
         //then
         StepVerifier.create(actualUser)
@@ -103,7 +103,7 @@ class UserMongoRepositoryImplTest extends DatabaseTest {
         addToDatabase(userInDatabase, reactiveMongoTemplate);
 
         //when
-        Mono<ExternalUser> actualUser = userRepository.findExternalUserByUserName(userInDatabase.email());
+        Mono<ExternalUser> actualUser = userRepository.findExternalUserByUserName(userInDatabase.userName());
 
         //then
         StepVerifier.create(actualUser)

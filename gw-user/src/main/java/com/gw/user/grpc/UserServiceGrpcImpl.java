@@ -27,7 +27,7 @@ public class UserServiceGrpcImpl extends UserServiceGrpc.UserServiceImplBase {
                 .map(user -> UserDetailsGrpcResponseDTO.newBuilder()
                         .setFirstName(user.firstName())
                         .setLastName(user.lastName())
-                        .setUserName(user.name())
+                        .setUserName(user.userName())
                         .setDateOfBirth(user.dateOfBirth())
                         .setHomeCountry(user.homeCountry())
                         .setId(user.id())

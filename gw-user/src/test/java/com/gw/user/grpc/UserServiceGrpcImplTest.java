@@ -97,7 +97,7 @@ class UserServiceGrpcImplTest {
         UserDetailsGrpcResponseDTO userDetailsGrpcResponseDTO =
                 userServiceBlockingStub.fetchUsersById(fetchUserDetailsByIdGrpcRequestDTO);
 
-        assertThat(userDetailsGrpcResponseDTO.getUserName()).isEqualTo(user.name());
+        assertThat(userDetailsGrpcResponseDTO.getUserName()).isEqualTo(user.userName());
         assertThat(userDetailsGrpcResponseDTO.getDateOfBirth()).isEqualTo(user.dateOfBirth());
         assertThat(userDetailsGrpcResponseDTO.getFirstName()).isEqualTo(user.firstName());
         assertThat(userDetailsGrpcResponseDTO.getLastName()).isEqualTo(user.lastName());

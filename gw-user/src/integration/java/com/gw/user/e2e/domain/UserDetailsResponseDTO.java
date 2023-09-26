@@ -18,7 +18,7 @@ public record UserDetailsResponseDTO(@Id UUID id,
                                      String homeCountry) {
     public static UserDetailsResponseDTO fromUser(User user) {
         return new UserDetailsResponseDTO(user.userId(),
-                user.name(),
+                user.userName(),
                 user.firstName(),
                 user.lastName(),
                 user.role(),

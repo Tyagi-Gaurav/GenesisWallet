@@ -14,7 +14,7 @@ import java.util.UUID;
 public record User(UUID userId,
                    String firstName,
                    String lastName,
-                   String name,
+                   String userName,
                    String password,
                    String salt,
                    String dateOfBirth,
@@ -61,7 +61,7 @@ public record User(UUID userId,
                     .withId(user.userId())
                     .withFirstName(user.firstName())
                     .withLastName(user.lastName())
-                    .withUserName(user.name())
+                    .withUserName(user.userName())
                     .withPassword(user.password())
                     .withSalt(user.salt())
                     .withDateOfBirth(user.dateOfBirth())
