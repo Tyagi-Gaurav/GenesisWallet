@@ -5,8 +5,8 @@ services:
     build:
       context: gw-user
     depends_on:
-      - postgres
       - gw-security
+      - mongo
     ports:
       - "19090:19090"
       - "9090:9090"
@@ -62,18 +62,6 @@ services:
     ports:
       - "6060:6060"
       - "6061:6061"
-    networks:
-      - overlay
-
-  postgres:
-    image: postgres:14.1
-    container_name: local.postgres
-    ports:
-      - "5432:5432"
-    environment:
-      - "POSTGRES_USER=user"
-      - "POSTGRES_PASSWORD=password"
-      - "POSTGRES_DB=testUserDB"
     networks:
       - overlay
 

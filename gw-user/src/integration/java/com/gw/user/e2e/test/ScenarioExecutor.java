@@ -27,7 +27,7 @@ import static org.hamcrest.Matchers.*;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
-public class ScenarioExecutor2 {
+public class ScenarioExecutor {
     public static ResponseStep aUserIsCreated(UserCreateRequestDTO userCreateRequestDTO) {
         return testContext -> {
             var responseSpec = new UserCreate().apply(testContext.getWebTestClient(), userCreateRequestDTO);

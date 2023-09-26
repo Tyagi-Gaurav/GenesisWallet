@@ -15,18 +15,18 @@ public class MongoConfig extends AbstractReactiveMongoConfiguration {
 
     @Override
     protected String getDatabaseName() {
-        return databaseConfig.name();
+        return databaseConfig.database();
     }
 
     @Override
     protected void configureClientSettings(MongoClientSettings.Builder builder) {
         var url = String.format("%s://%s:%s@%s/%s?authsource=admin",
-                databaseConfig.newDb().scheme(),
-                databaseConfig.newDb().username(),
-                databaseConfig.newDb().password(),
-                databaseConfig.newDb().hostname(),
-                databaseConfig.newDb().database());
+                databaseConfig.scheme(),
+                databaseConfig.username(),
+                databaseConfig.password(),
+                databaseConfig.hostname(),
+                databaseConfig.database());
 
-        builder.applyConnectionString(new ConnectionString(url)); //TODO Rename this
+        builder.applyConnectionString(new ConnectionString(url));
     }
 }
