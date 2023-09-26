@@ -26,11 +26,6 @@ public class UserMongoRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Mono<Void> addUser(User userToAdd, String encryptedPassword, String salt) {
-        return reactiveMongoTemplate.save(userToAdd).then();
-    }
-
-    @Override
     public Mono<Void> addUser(User userToAdd) {
         return reactiveMongoTemplate.save(userToAdd).then();
     }

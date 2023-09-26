@@ -50,24 +50,6 @@ class UserMongoRepositoryImplTest extends DatabaseTest {
     }
 
     @Test
-    void shouldAddUserWithSaltAndPassword() {
-        //given
-        User userInDatabase = aUser().build();
-
-        //when
-        StepVerifier.create(userRepository.addUser(userInDatabase,
-                        userInDatabase.password(),
-                        userInDatabase.salt()))
-                .verifyComplete();
-
-        //then
-        Mono<User> userFromDB = getUser(userInDatabase.userId(), reactiveMongoTemplate);
-        StepVerifier.create(userFromDB)
-                .expectNext(userInDatabase)
-                .verifyComplete();
-    }
-
-    @Test
     void shouldAddUser() {
         //given
         User userInDatabase = aUser().build();

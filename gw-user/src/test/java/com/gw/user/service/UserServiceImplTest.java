@@ -69,7 +69,7 @@ class UserServiceImplTest {
                 .withSalt(user.lastName() + NEXT_SECURE_RANDOM + user.firstName())
                 .build();
 
-        when(userRepository.addUser(eq(userWithSaltAndPassword))).thenReturn(Mono.empty());
+        when(userRepository.addUser(userWithSaltAndPassword)).thenReturn(Mono.empty());
 
         StepVerifier.create(userService.addUser(userWithSaltAndPassword))
                 .verifyComplete();
@@ -86,7 +86,7 @@ class UserServiceImplTest {
                 .withSalt(user.lastName() + NEXT_SECURE_RANDOM + user.firstName())
                 .build();
 
-        when(userRepository.addUser(eq(userWithSaltAndPassword))).thenReturn(Mono.empty());
+        when(userRepository.addUser(userWithSaltAndPassword)).thenReturn(Mono.empty());
 
         StepVerifier.create(userService.addUser(userWithSaltAndPassword))
                 .verifyComplete();

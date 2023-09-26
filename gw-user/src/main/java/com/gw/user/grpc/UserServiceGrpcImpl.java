@@ -30,7 +30,7 @@ public class UserServiceGrpcImpl extends UserServiceGrpc.UserServiceImplBase {
                         .setUserName(user.name())
                         .setDateOfBirth(user.dateOfBirth())
                         .setHomeCountry(user.homeCountry())
-                        .setId(user.id().toString())
+                        .setId(user.id())
                         .setGender(toGrpcGender(user.gender()))
                         .build())
                 .subscribe(resp -> {

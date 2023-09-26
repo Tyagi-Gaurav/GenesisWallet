@@ -9,7 +9,6 @@ import java.util.UUID;
 public interface UserRepository {
     Mono<User> findUserById(UUID id);
 
-    Mono<Void> addUser(User userToAdd, String encryptedPassword, String salt);
     default Mono<Void> addUser(User userToAdd) {
         return Mono.empty();
     }
