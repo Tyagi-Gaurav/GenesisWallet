@@ -2,7 +2,7 @@ package com.gw.user.repo;
 
 import com.gw.common.domain.ExternalUser;
 import com.gw.common.domain.Gender;
-import com.gw.common.domain.User;
+import com.gw.user.domain.User;
 import io.r2dbc.spi.Readable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +12,7 @@ import reactor.test.StepVerifier;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static com.gw.user.domain.User.aUser;
 
 public class R2dbcDBTestUtils {
     private static final Logger LOG = LoggerFactory.getLogger(R2dbcDBTestUtils.class);
@@ -27,7 +27,7 @@ public class R2dbcDBTestUtils {
                 "values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)";
         Mono<Long> result = databaseClient.sql(query)
                 .bind(0, user.id().toString())
-                .bind(1, user.email())
+                .bind(1, user.name())
                 .bind(2, user.firstName())
                 .bind(3, user.lastName())
                 .bind(4, user.password())
@@ -95,18 +95,18 @@ public class R2dbcDBTestUtils {
     }
 
     private static User toUserModel(Readable row) {
-        return new User.UserBuilder()
-                .setId(UUID.fromString(row.get("ID", String.class)))
-                .setEmail(row.get("EMAIL", String.class))
-                .setFirstName(row.get("FIRST_NAME", String.class))
-                .setLastName(row.get("LAST_NAME", String.class))
-                .setDateOfBirth(row.get("DATE_OF_BIRTH", String.class))
-                .setPassword(row.get("PASSWORD", String.class))
-                .setSalt(row.get("SALT", String.class))
-                .setHomeCountry(row.get("HOME_COUNTRY", String.class))
-                .setGender(Gender.valueOf(row.get("GENDER", String.class)))
-                .setRole(row.get("ROLE", String.class))
-                .createUser();
+        return aUser()
+                .withId(UUID.fromString(row.get("ID", String.class)))
+                .withUserName(row.get("EMAIL", String.class))
+                .withFirstName(row.get("FIRST_NAME", String.class))
+                .withLastName(row.get("LAST_NAME", String.class))
+                .withDateOfBirth(row.get("DATE_OF_BIRTH", String.class))
+                .withPassword(row.get("PASSWORD", String.class))
+                .withSalt(row.get("SALT", String.class))
+                .withHomeCountry(row.get("HOME_COUNTRY", String.class))
+                .withGender(Gender.valueOf(row.get("GENDER", String.class)))
+                .withRole(row.get("ROLE", String.class))
+                .build();
     }
 
     private static ExternalUser toExternalUserModel(Readable row) {

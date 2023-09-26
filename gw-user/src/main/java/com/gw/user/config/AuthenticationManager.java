@@ -53,7 +53,7 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
 
                         LOG.info("Authorities Object {}", authority);
 
-                        var userprofile = new UserProfile(ud.id(), authority, token.toString());
+                        var userprofile = new UserProfile(UUID.fromString(ud.id()), authority, token.toString());
 
                         LOG.info("User {} authenticated with role: {}", userId, authority);
                         UsernamePasswordAuthenticationToken userTokenData =

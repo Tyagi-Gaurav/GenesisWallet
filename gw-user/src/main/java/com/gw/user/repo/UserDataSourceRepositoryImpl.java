@@ -2,7 +2,7 @@ package com.gw.user.repo;
 
 import com.gw.common.domain.ExternalUser;
 import com.gw.common.domain.Gender;
-import com.gw.common.domain.User;
+import com.gw.user.domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -12,6 +12,8 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
+
+import static com.gw.user.domain.User.aUser;
 
 @Component("datasource")
 public class UserDataSourceRepositoryImpl implements UserRepository {
@@ -66,8 +68,8 @@ public class UserDataSourceRepositoryImpl implements UserRepository {
             try (var connection = dataSource.getConnection();
                  var preparedStatement = connection.prepareStatement(ADD_USER)) {
 
-                preparedStatement.setString(1, user.id().toString());
-                preparedStatement.setString(2, user.email());
+                preparedStatement.setString(1, user.id());
+                preparedStatement.setString(2, user.name());
                 preparedStatement.setString(3, user.firstName());
                 preparedStatement.setString(4, user.lastName());
                 preparedStatement.setString(5, password);
@@ -86,7 +88,7 @@ public class UserDataSourceRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Mono<User> findUserByEmail(String email) {
+    public Mono<User> findUserByUserName(String email) {
         return Mono.create(sink -> {
             try (var connection = dataSource.getConnection();
                  var preparedStatement = connection.prepareStatement(FIND_USER_BY_EMAIL)) {
@@ -135,7 +137,7 @@ public class UserDataSourceRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Mono<ExternalUser> findExternalUserByEmail(String email) {
+    public Mono<ExternalUser> findExternalUserByUserName(String email) {
         return Mono.create(sink -> {
             try (var connection = dataSource.getConnection();
                  var preparedStatement = connection.prepareStatement(FIND_EXTERNAL_USER_BY_USER_NAME)) {
@@ -155,31 +157,31 @@ public class UserDataSourceRepositoryImpl implements UserRepository {
     }
 
     private User toUserModel(ResultSet row) throws SQLException {
-        return new User.UserBuilder()
-                .setId(UUID.fromString(row.getString("ID")))
-                .setEmail(row.getString(EMAIL))
-                .setFirstName(row.getString(FIRST_NAME))
-                .setLastName(row.getString(LAST_NAME))
-                .setDateOfBirth(row.getString(DATE_OF_BIRTH))
-                .setHomeCountry(row.getString(HOME_COUNTRY))
-                .setGender(Gender.from(row.getString(GENDER)))
-                .setRole(row.getString(ROLE))
-                .createUser();
+        return aUser()
+                .withId(UUID.fromString(row.getString("ID")))
+                .withUserName(row.getString(EMAIL))
+                .withFirstName(row.getString(FIRST_NAME))
+                .withLastName(row.getString(LAST_NAME))
+                .withDateOfBirth(row.getString(DATE_OF_BIRTH))
+                .withHomeCountry(row.getString(HOME_COUNTRY))
+                .withGender(Gender.from(row.getString(GENDER)))
+                .withRole(row.getString(ROLE))
+                .build();
     }
 
     private User toFullModel(ResultSet resultSet) throws SQLException {
-        return new User.UserBuilder()
-                .setId(UUID.fromString(resultSet.getString("ID")))
-                .setEmail(resultSet.getString(EMAIL))
-                .setPassword(resultSet.getString(PASSWORD))
-                .setSalt(resultSet.getString("SALT"))
-                .setFirstName(resultSet.getString(FIRST_NAME))
-                .setLastName(resultSet.getString(LAST_NAME))
-                .setDateOfBirth(resultSet.getString(DATE_OF_BIRTH))
-                .setHomeCountry(resultSet.getString(HOME_COUNTRY))
-                .setGender(Gender.from(resultSet.getString(GENDER)))
-                .setRole(resultSet.getString(ROLE))
-                .createUser();
+        return aUser()
+                .withId(UUID.fromString(resultSet.getString("ID")))
+                .withUserName(resultSet.getString(EMAIL))
+                .withPassword(resultSet.getString(PASSWORD))
+                .withSalt(resultSet.getString("SALT"))
+                .withFirstName(resultSet.getString(FIRST_NAME))
+                .withLastName(resultSet.getString(LAST_NAME))
+                .withDateOfBirth(resultSet.getString(DATE_OF_BIRTH))
+                .withHomeCountry(resultSet.getString(HOME_COUNTRY))
+                .withGender(Gender.from(resultSet.getString(GENDER)))
+                .withRole(resultSet.getString(ROLE))
+                .build();
     }
 
     private ExternalUser toExternalUserModel(ResultSet row) throws SQLException {

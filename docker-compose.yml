@@ -14,6 +14,12 @@ services:
     environment:
       - "DB_NAME=testUserDB"
       - "CACHE_HOST=local.redis"
+      - "DB_USER=root"
+      - "DB_PWD=example"
+      - "NEW_DB_NAME=testDB"
+      - "DB_HOST=local.mongo:27017"
+      - "DB_SCHEME=mongodb"
+
     networks:
       - overlay
 
@@ -68,6 +74,18 @@ services:
       - "POSTGRES_USER=user"
       - "POSTGRES_PASSWORD=password"
       - "POSTGRES_DB=testUserDB"
+    networks:
+      - overlay
+
+  mongo:
+    image: mongo:6.0
+    container_name: local.mongo
+    ports:
+      - "27017:27017"
+    environment:
+      - "MONGO_INITDB_ROOT_USERNAME=root"
+      - "MONGO_INITDB_ROOT_PASSWORD=example"
+      - "MONGO_INITDB_DATABASE=testDB"
     networks:
       - overlay
 

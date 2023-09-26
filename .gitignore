@@ -6,6 +6,7 @@
 *.dylib
 *.log
 .DS_Store
+*.rdb
 
 # Test binary, built with `go test -c`
 *.test

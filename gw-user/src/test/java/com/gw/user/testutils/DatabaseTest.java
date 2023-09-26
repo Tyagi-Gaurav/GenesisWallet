@@ -1,5 +1,7 @@
 package com.gw.user.testutils;
 
+import com.gw.user.config.DatabaseConfig;
+import com.gw.user.config.MongoConfig;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import io.r2dbc.postgresql.PostgresqlConnectionConfiguration;
 import io.r2dbc.postgresql.PostgresqlConnectionFactory;
@@ -15,8 +17,10 @@ import org.springframework.r2dbc.core.DatabaseClient;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
+import java.util.Map;
 
-@Import(DatabaseTest.TestDatabaseContextConfiguration.class)
+@Import({DatabaseTest.TestDatabaseContextConfiguration.class,
+        MongoConfig.class})
 public abstract class DatabaseTest {
 
     @TestConfiguration
@@ -46,7 +50,7 @@ public abstract class DatabaseTest {
                                                    @Value("${database.password}") String password,
                                                    @Value("${database.name}") String databaseName,
                                                    @Value("${database.schema}") String databaseSchema
-                                                   ) {
+        ) {
             return new PostgresqlConnectionFactory(PostgresqlConnectionConfiguration.builder()
                     .host(host)
                     .port(Integer.parseInt(port))
@@ -78,6 +82,24 @@ public abstract class DatabaseTest {
             }
 
             return cpds;
+        }
+
+        @Bean
+        public DatabaseConfig databaseConfig(@Value("${database.host}") String host,
+                                             @Value("${database.port}") String port,
+                                             @Value("${database.user}") String user,
+                                             @Value("${database.password}") String password,
+                                             @Value("${database.name}") String databaseName,
+                                             @Value("${database.driver}") String databaseDriver,
+                                             @Value("${database.newDB.username}") String userName,
+                                             @Value("${database.newDB.password}") String newPassword,
+                                             @Value("${database.newDB.database}") String newDBName,
+                                             @Value("${database.newDB.hostname}") String newHostName,
+                                             @Value("${database.newDB.scheme}") String newScheme) {
+            return new DatabaseConfig(databaseDriver,
+                    databaseName, "", "", new DatabaseConfig.NewDb(userName, newPassword, newDBName, newHostName, newScheme), Map.of());
+
+            //TODO: Remove old properties
         }
     }
 }

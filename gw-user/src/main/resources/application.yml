@@ -47,6 +47,12 @@ database:
   driver: "org.postgresql.Driver"
   name: ${DB_NAME:user_data}
   schema: USER_SCHEMA
+  newDB:
+    username: ${DB_USER:user_data}
+    password: ${DB_PWD:user_data}
+    database: ${NEW_DB_NAME:user_data}
+    hostname: ${DB_HOST:user_data}
+    scheme: ${DB_SCHEME:mongodb+srv}
   r2dbcPool:
     initialSize: 2
     maxSize: 8

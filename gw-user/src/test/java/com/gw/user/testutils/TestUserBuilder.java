@@ -2,7 +2,7 @@ package com.gw.user.testutils;
 
 import com.gw.common.domain.ExternalUser;
 import com.gw.common.domain.Gender;
-import com.gw.common.domain.User;
+import com.gw.user.domain.User;
 import com.gw.user.grpc.ExternalUserCreateGrpcRequestDTO;
 import com.gw.user.grpc.UserCreateGrpcRequestDTO;
 
@@ -10,7 +10,7 @@ import java.util.UUID;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
-public class UserBuilder {
+public class TestUserBuilder {
 
     private UUID id = UUID.randomUUID();
     private String password = randomAlphabetic(10);
@@ -23,59 +23,60 @@ public class UserBuilder {
     private String homeCountry = "AUS";
     private String authority = "USER";
 
-    private UserBuilder() {
+    private TestUserBuilder() {
     }
 
-    public static UserBuilder aUser() {
-        return new UserBuilder();
+    public static TestUserBuilder aUser() {
+        return new TestUserBuilder();
     }
 
-    public static UserBuilder copyOf(User currentUser) {
-        UserBuilder userBuilder = new UserBuilder();
+    public static TestUserBuilder copyOf(User currentUser) {
+        TestUserBuilder testUserBuilder = new TestUserBuilder();
 
-        userBuilder.id = currentUser.id();
-        userBuilder.username = currentUser.email();
-        userBuilder.firstName = currentUser.firstName();
-        userBuilder.lastName = currentUser.lastName();
-        userBuilder.password = currentUser.password();
-        userBuilder.authority = currentUser.role();
-        userBuilder.salt = currentUser.salt();
+        testUserBuilder.id = currentUser.userId();
+        testUserBuilder.username = currentUser.name();
+        testUserBuilder.firstName = currentUser.firstName();
+        testUserBuilder.lastName = currentUser.lastName();
+        testUserBuilder.password = currentUser.password();
+        testUserBuilder.authority = currentUser.role();
+        testUserBuilder.salt = currentUser.salt();
 
-        return userBuilder;
+        return testUserBuilder;
     }
 
-    public UserBuilder withUserName(String userName) {
+    public TestUserBuilder withUserName(String userName) {
         this.username = userName;
         return this;
     }
 
-    public UserBuilder withPassword(String password) {
+    public TestUserBuilder withPassword(String password) {
         this.password = password;
         return this;
     }
 
-    public UserBuilder withSalt(String salt) {
+    public TestUserBuilder withSalt(String salt) {
         this.salt = salt;
         return this;
     }
 
     public User build() {
-        return new User.UserBuilder().setId(this.id)
-                .setFirstName(this.firstName)
-                .setLastName(this.lastName)
-                .setEmail(this.username)
-                .setPassword(this.password)
-                .setSalt(this.salt)
-                .setDateOfBirth(this.dateOfBirth)
-                .setGender(this.gender)
-                .setHomeCountry(this.homeCountry)
-                .setRole(this.authority)
-                .createUser();
+        return User.aUser()
+                .withId(this.id)
+                .withFirstName(this.firstName)
+                .withLastName(this.lastName)
+                .withUserName(this.username)
+                .withPassword(this.password)
+                .withSalt(this.salt)
+                .withDateOfBirth(this.dateOfBirth)
+                .withGender(this.gender)
+                .withHomeCountry(this.homeCountry)
+                .withRole(this.authority)
+                .build();
     }
 
     public static UserCreateGrpcRequestDTO userCreateGrpcRequestDTOBuilder(User user) {
         return UserCreateGrpcRequestDTO.newBuilder()
-                .setUserName(user.email())
+                .setUserName(user.name())
                 .setFirstName(user.firstName())
                 .setLastName(user.lastName())
                 .setDateOfBirth(user.dateOfBirth())

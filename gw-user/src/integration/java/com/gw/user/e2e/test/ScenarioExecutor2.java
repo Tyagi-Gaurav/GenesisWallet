@@ -1,32 +1,31 @@
 package com.gw.user.e2e.test;
 
-import com.gw.common.domain.Gender;
 import com.gw.test.support.framework.DatabaseResponseSpec;
 import com.gw.test.support.framework.HttpResponseSpec;
 import com.gw.test.support.framework.ResponseStep;
 import com.gw.test.support.framework.VoidStep;
+import com.gw.user.domain.User;
 import com.gw.user.e2e.domain.UserDetailsResponseDTO;
 import com.gw.user.e2e.function.FetchUser;
 import com.gw.user.e2e.function.Login;
 import com.gw.user.e2e.function.Logout;
 import com.gw.user.e2e.function.UserCreate;
 import com.gw.user.resource.domain.*;
-import io.r2dbc.spi.Readable;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.matcher.AssertionMatcher;
 import org.awaitility.Awaitility;
 import org.hamcrest.Matcher;
-import org.springframework.r2dbc.core.DatabaseClient;
+import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import reactor.core.publisher.Mono;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 import java.time.Duration;
-import java.util.UUID;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
 
 public class ScenarioExecutor2 {
     public static ResponseStep aUserIsCreated(UserCreateRequestDTO userCreateRequestDTO) {
@@ -63,20 +62,15 @@ public class ScenarioExecutor2 {
 
     public static ResponseStep whenUserIsRetrievedFromDatabaseWith(String userName) {
         return testContext -> {
-            DatabaseClient databaseClient = testContext.getBeanOfType(DatabaseClient.class);
-            var userDetailsResponseDTO = databaseClient
-                    .sql("SELECT * FROM USER_SCHEMA.USER_TABLE WHERE EMAIL = :email")
-                    .bind("email", userName)
-                    .map(ScenarioExecutor2::toModel)
-                    .one()
-                    .switchIfEmpty(Mono.defer(Mono::empty))
+            var reactiveMongoTemplate = testContext.getBeanOfType(ReactiveMongoTemplate.class);
+            var databaseResponseSpec = reactiveMongoTemplate
+                    .findOne(query(where("name").is(userName)), User.class)
+                    .map(UserDetailsResponseDTO::fromUser)
+                    .map(udrdto -> new DatabaseResponseSpec<>(UserDetailsResponseDTO.class, udrdto))
                     .block();
 
-            if (userDetailsResponseDTO != null) {
-                return new DatabaseResponseSpec(UserDetailsResponseDTO.class, userDetailsResponseDTO);
-            }
-
-            throw new IllegalStateException("No user found in database");
+            assertThat("Expected a user to exist in database", databaseResponseSpec.responseValue(), is(notNullValue()));
+            return databaseResponseSpec;
         };
     }
 
@@ -131,19 +125,6 @@ public class ScenarioExecutor2 {
                     new FetchUser(testContext.getUserIdForCredentialKey(credentialKey), testContext.getTokenForCredentialKey(credentialKey)).apply(testContext.getWebTestClient());
             return new HttpResponseSpec(UserDetailsFetchResponseDTO.class, httpResponseSpec);
         };
-    }
-
-    private static UserDetailsResponseDTO toModel(Readable row) {
-        return new UserDetailsResponseDTO(
-                row.get("EMAIL", String.class),
-                row.get("FIRST_NAME", String.class),
-                row.get("LAST_NAME", String.class),
-                row.get("ROLE", String.class),
-                UUID.fromString(row.get("ID", String.class)),
-                row.get("DATE_OF_BIRTH", String.class),
-                Gender.valueOf(row.get("GENDER", String.class)),
-                row.get("HOME_COUNTRY", String.class)
-        );
     }
 
     public static VoidStep userLogsOut(String credentialKey) {

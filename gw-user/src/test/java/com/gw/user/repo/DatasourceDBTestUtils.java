@@ -2,7 +2,7 @@ package com.gw.user.repo;
 
 import com.gw.common.domain.ExternalUser;
 import com.gw.common.domain.Gender;
-import com.gw.common.domain.User;
+import com.gw.user.domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.r2dbc.core.DatabaseClient;
@@ -13,6 +13,8 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
+
+import static com.gw.user.domain.User.aUser;
 
 public class DatasourceDBTestUtils {
     private static final Logger LOG = LoggerFactory.getLogger(DatasourceDBTestUtils.class);
@@ -27,7 +29,7 @@ public class DatasourceDBTestUtils {
         try (var connections = dataSource.getConnection();
              var preparedStatement = connections.prepareStatement(query)) {
             preparedStatement.setString(1, user.id().toString());
-            preparedStatement.setString(2, user.email());
+            preparedStatement.setString(2, user.name());
             preparedStatement.setString(3, user.firstName());
             preparedStatement.setString(4, user.lastName());
             preparedStatement.setString(5, user.password());
@@ -51,21 +53,21 @@ public class DatasourceDBTestUtils {
 
         try (var connections = dataSource.getConnection();
              var preparedStatement = connections.prepareStatement(query)) {
-                    preparedStatement.setString(1, user.id().toString());
-                    preparedStatement.setString(2, user.email());
-                    preparedStatement.setString(3, user.firstName());
-                    preparedStatement.setString(4, user.lastName());
-                    preparedStatement.setString(5, user.locale());
-                    preparedStatement.setString(6, user.pictureUrl());
-                    preparedStatement.setString(7, user.tokenValue());
-                    preparedStatement.setString(8, user.tokenType());
-                    preparedStatement.setLong(9, user.tokenExpiryTime());
-                    preparedStatement.setString(10, user.externalSystem());
-                    preparedStatement.setString(11, user.gender().name());
-                    preparedStatement.setString(12, user.dateOfBirth());
-                    preparedStatement.setString(13, user.homeCountry());
+            preparedStatement.setString(1, user.id().toString());
+            preparedStatement.setString(2, user.email());
+            preparedStatement.setString(3, user.firstName());
+            preparedStatement.setString(4, user.lastName());
+            preparedStatement.setString(5, user.locale());
+            preparedStatement.setString(6, user.pictureUrl());
+            preparedStatement.setString(7, user.tokenValue());
+            preparedStatement.setString(8, user.tokenType());
+            preparedStatement.setLong(9, user.tokenExpiryTime());
+            preparedStatement.setString(10, user.externalSystem());
+            preparedStatement.setString(11, user.gender().name());
+            preparedStatement.setString(12, user.dateOfBirth());
+            preparedStatement.setString(13, user.homeCountry());
 
-                    preparedStatement.execute();
+            preparedStatement.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -121,18 +123,18 @@ public class DatasourceDBTestUtils {
     }
 
     private static User toUserModel(ResultSet resultSet) throws SQLException {
-        return new User.UserBuilder()
-                .setId(UUID.fromString(resultSet.getString("ID")))
-                .setEmail(resultSet.getString("EMAIL"))
-                .setFirstName(resultSet.getString("FIRST_NAME"))
-                .setLastName(resultSet.getString("LAST_NAME"))
-                .setDateOfBirth(resultSet.getString("DATE_OF_BIRTH"))
-                .setPassword(resultSet.getString("PASSWORD"))
-                .setSalt(resultSet.getString("SALT"))
-                .setHomeCountry(resultSet.getString("HOME_COUNTRY"))
-                .setGender(Gender.valueOf(resultSet.getString("GENDER")))
-                .setRole(resultSet.getString("ROLE"))
-                .createUser();
+        return aUser()
+                .withId(UUID.fromString(resultSet.getString("ID")))
+                .withUserName(resultSet.getString("EMAIL"))
+                .withFirstName(resultSet.getString("FIRST_NAME"))
+                .withLastName(resultSet.getString("LAST_NAME"))
+                .withDateOfBirth(resultSet.getString("DATE_OF_BIRTH"))
+                .withPassword(resultSet.getString("PASSWORD"))
+                .withSalt(resultSet.getString("SALT"))
+                .withHomeCountry(resultSet.getString("HOME_COUNTRY"))
+                .withGender(Gender.valueOf(resultSet.getString("GENDER")))
+                .withRole(resultSet.getString("ROLE"))
+                .build();
     }
 
     private static ExternalUser toExternalUserModel(ResultSet row) throws SQLException {

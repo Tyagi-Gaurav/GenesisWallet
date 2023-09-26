@@ -1,9 +1,10 @@
 package com.gw.user.service;
 
 import com.gw.common.domain.ExternalUser;
-import com.gw.common.domain.User;
+import com.gw.common.domain.UserIdentity;
 import com.gw.common.metrics.UserRegistrationCounter;
 import com.gw.security.util.PasswordEncryptor;
+import com.gw.user.domain.User;
 import com.gw.user.repo.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,8 @@ import reactor.core.publisher.Mono;
 import java.security.SecureRandom;
 import java.util.UUID;
 
+import static com.gw.user.domain.User.UserBuilder.copyOf;
+
 @Service
 public class UserServiceImpl implements UserService {
     private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
@@ -24,7 +27,7 @@ public class UserServiceImpl implements UserService {
     private final SecureRandom secureRandom;
     private final UserRegistrationCounter userRegistrationCounter;
 
-    public UserServiceImpl(@Qualifier("datasource") UserRepository userRepository, PasswordEncryptor passwordEncryptor, SecureRandom secureRandom, UserRegistrationCounter userRegistrationCounter) {
+    public UserServiceImpl(@Qualifier("documentDB") UserRepository userRepository, PasswordEncryptor passwordEncryptor, SecureRandom secureRandom, UserRegistrationCounter userRegistrationCounter) {
         this.userRepository = userRepository;
         this.passwordEncryptor = passwordEncryptor;
         this.secureRandom = secureRandom;
@@ -39,27 +42,32 @@ public class UserServiceImpl implements UserService {
     public Mono<Void> addUser(User user) {
         String salt = user.generateSalt(secureRandom.nextLong());
         String encryptedPassword = passwordEncryptor.encrypt(user.password(), salt);
-        return userRepository.addUser(user, encryptedPassword, salt)
+        var userWithSaltAndPassword = copyOf(user)
+                .withPassword(encryptedPassword)
+                .withSalt(salt).build();
+
+        return userRepository.addUser(userWithSaltAndPassword)
                 .doOnSuccess(v -> userRegistrationCounter.increment("WEB", "HOMEPAGE"));
     }
 
     @Override
-    public Mono<User> authenticateUser(String userName, String password) {
-        return userRepository.findUserByEmail(userName)
+    public Mono<UserIdentity> authenticateUser(String userName, String password) {
+        return userRepository.findUserByUserName(userName)
                 .filter(user -> {
                     String encryptedPassword = passwordEncryptor.encrypt(password, user.salt());
                     boolean equals = user.password().equals(encryptedPassword);
                     if (!equals) {
-                        LOG.debug("Invalid password provided by user");
+                        LOG.info("Invalid password provided by user");
                     }
                     return equals;
                 })
+                .map(UserIdentity.class::cast)
                 .switchIfEmpty(Mono.defer(Mono::empty));
     }
 
     @Override
     public Mono<ExternalUser> addExternalUser(ExternalUser externalUser) {
-        return userRepository.findExternalUserByEmail(externalUser.email())
+        return userRepository.findExternalUserByUserName(externalUser.email())
                 .switchIfEmpty(Mono.defer(() ->
                         userRepository.addExternalUser(externalUser)
                                 .doOnSuccess(v -> userRegistrationCounter.increment("WEB", externalUser.externalSystem()))
