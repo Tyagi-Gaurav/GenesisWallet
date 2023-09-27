@@ -23,7 +23,7 @@ public class ExternalUserConnectController {
     public Mono<Map<String, Object>> user(@AuthenticationPrincipal OAuth2User principal,
                                           @RegisteredOAuth2AuthorizedClient("google") OAuth2AuthorizedClient oAuth2AuthorizedClient) {
 
-        String email = principal.getAttribute("email");
+        String email = principal.getAttribute("userName");
         String locale = principal.getAttribute("locale");
         String picture = principal.getAttribute("picture");
         String givenName = principal.getAttribute("given_name");
