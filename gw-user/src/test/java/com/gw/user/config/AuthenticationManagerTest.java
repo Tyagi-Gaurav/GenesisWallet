@@ -1,11 +1,12 @@
 package com.gw.user.config;
 
 import com.gw.common.domain.Gender;
-import com.gw.common.domain.User;
 import com.gw.common.util.TokenManager;
 import com.gw.user.cache.CacheManager;
+import com.gw.user.domain.User;
 import com.gw.user.service.UserService;
 import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.xml.bind.DatatypeConverter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,7 +19,6 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
 import java.time.Duration;
 import java.util.UUID;
@@ -62,7 +62,7 @@ class AuthenticationManagerTest {
 
     @Test
     void shouldReturnEmptyWhenNoUserFound() {
-        when(userService.findUserBy(user.id())).thenReturn(Mono.empty());
+        when(userService.findUserBy(user.userId())).thenReturn(Mono.empty());
 
         //when
         Mono<Authentication> authenticate =
@@ -92,7 +92,7 @@ class AuthenticationManagerTest {
 
     @Test
     void shouldReturnEmptyWhenTokenIsValidButInvalidated() {
-        when(userService.findUserBy(user.id())).thenReturn(Mono.just(user));
+        when(userService.findUserBy(user.userId())).thenReturn(Mono.just(user));
         when(cacheManager.isValidToken(token)).thenReturn(false);
 
         //when
@@ -107,7 +107,7 @@ class AuthenticationManagerTest {
     @Test
     void shouldReturnResponseWhenUserFound() {
         when(cacheManager.isValidToken(token)).thenReturn(true);
-        when(userService.findUserBy(user.id())).thenReturn(Mono.just(user));
+        when(userService.findUserBy(user.userId())).thenReturn(Mono.just(user));
 
         //when
         Mono<Authentication> authenticate =

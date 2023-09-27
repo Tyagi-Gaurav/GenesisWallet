@@ -34,7 +34,7 @@ public class PingJourneyTest implements WithSyntacticSugar  {
         aManagementScenarioUsing(applicationContext)
                 .given(aStatusRequestIsSent())
                 .then(aHttpResponse(isReceived(withStatus(200))))
-                .then(withHttpResponseBody("{\"status\":\"UP\"}")) //TODO To be refactored
+                .then(withHttpResponseBody("{\"status\":\"UP\"}"))
                 .execute();
     }
 }

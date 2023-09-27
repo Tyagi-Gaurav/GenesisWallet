@@ -1,7 +1,5 @@
 spring:
   active: prod
-  liquibase:
-    changeLog: classpath:db.changelog/userchangelog.sql
   webflux:
     base-path: /api
 
@@ -44,18 +42,11 @@ auth:
   secret: ${SECRET:19CA249C582715657BDCAB1FB31E69F854443A4FE3CBAFFD215E3F3676}
 
 database:
-  driver: "org.postgresql.Driver"
-  name: ${DB_NAME:user_data}
-  schema: USER_SCHEMA
-  r2dbcPool:
-    initialSize: 2
-    maxSize: 8
-    maxIdleTime: 300s
-    maxCreateConnectionTime: 9s
-    maxAcquireTime: 10s
-    maxLifeTime: 600s
-    validationDepth: LOCAL
-    blocking-warmup: true
+  username: ${DB_USER:user_data}
+  password: ${DB_PWD:user_data}
+  database: ${NEW_DB_NAME:user_data}
+  hostname: ${DB_HOST:user_data}
+  scheme: ${DB_SCHEME:mongodb+srv}
 
 vault:
   token: ${VAULT_ACCESS_TOKEN:root}
