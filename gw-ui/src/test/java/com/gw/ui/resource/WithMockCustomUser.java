@@ -10,14 +10,14 @@ import java.lang.annotation.RetentionPolicy;
 @WithSecurityContext(factory = WithMockUserSecurityContextFactory.class)
 public @interface WithMockCustomUser {
     /**
-     * Convenience mechanism for specifying the email. The default is "user". If
+     * Convenience mechanism for specifying the userName. The default is "user". If
      * {@link #username()} is specified it will be used instead of {@link #value()}
      * @return
      */
     String value() default "user";
 
     /**
-     * The email to be used. Note that {@link #value()} is a synonym for
+     * The userName to be used. Note that {@link #value()} is a synonym for
      * {@link #username()}, but if {@link #username()} is specified it will take
      * precedence.
      * @return

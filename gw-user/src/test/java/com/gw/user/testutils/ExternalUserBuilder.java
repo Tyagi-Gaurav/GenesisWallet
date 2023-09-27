@@ -2,8 +2,6 @@ package com.gw.user.testutils;
 
 import com.gw.common.domain.ExternalUser;
 import com.gw.common.domain.Gender;
-import com.gw.common.domain.User;
-import com.gw.user.grpc.UserCreateGrpcRequestDTO;
 
 import java.time.Instant;
 import java.util.UUID;
