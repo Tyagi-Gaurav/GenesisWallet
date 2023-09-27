@@ -1,11 +1,11 @@
 package com.gw.user.grpc;
 
 import com.gw.common.domain.ExternalUser;
-import com.gw.common.domain.User;
 import com.gw.common.metrics.EndpointMetrics;
 import com.gw.grpc.common.CorrelationIdInterceptor;
 import com.gw.grpc.common.MetricsInterceptor;
 import com.gw.test.common.grpc.GrpcExtension;
+import com.gw.user.domain.User;
 import com.gw.user.service.UserService;
 import com.gw.user.testutils.ExternalUserBuilder;
 import io.grpc.ServerInterceptor;
@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.util.UUID;
 
-import static com.gw.user.testutils.UserBuilder.*;
+import static com.gw.user.testutils.TestUserBuilder.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
@@ -97,7 +97,7 @@ class UserServiceGrpcImplTest {
         UserDetailsGrpcResponseDTO userDetailsGrpcResponseDTO =
                 userServiceBlockingStub.fetchUsersById(fetchUserDetailsByIdGrpcRequestDTO);
 
-        assertThat(userDetailsGrpcResponseDTO.getUserName()).isEqualTo(user.email());
+        assertThat(userDetailsGrpcResponseDTO.getUserName()).isEqualTo(user.userName());
         assertThat(userDetailsGrpcResponseDTO.getDateOfBirth()).isEqualTo(user.dateOfBirth());
         assertThat(userDetailsGrpcResponseDTO.getFirstName()).isEqualTo(user.firstName());
         assertThat(userDetailsGrpcResponseDTO.getLastName()).isEqualTo(user.lastName());

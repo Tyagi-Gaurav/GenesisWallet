@@ -40,7 +40,7 @@ public class UserLoginResource {
         return userService.authenticateUser(loginRequestDTO.userName(), loginRequestDTO.password())
                 .map(user -> {
                     String token = tokenManager.generateToken(user, authConfig.tokenDuration());
-                    cacheManager.updateLoginCache(token, user.id().toString());
+                    cacheManager.updateLoginCache(token, user.id());
                     return new LoginResponseDTO(token);
                 })
                 .switchIfEmpty(Mono.error(() -> new ApplicationAuthenticationException("No user found [UserName]: " +
