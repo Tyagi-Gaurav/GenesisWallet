@@ -1,24 +1,26 @@
-package com.gw.common.domain;
+package com.gw.user.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.gw.common.domain.Gender;
+import com.gw.common.domain.UserIdentity;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.UUID;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonDeserialize
-public record User(UUID id,
+@Document
+public record User(UUID userId,
                    String firstName,
                    String lastName,
-                   String email,
+                   String userName,
                    String password,
                    String salt,
                    String dateOfBirth,
                    Gender gender,
                    String homeCountry,
-                   String role) {
-
-
+                   String role) implements UserIdentity {
     public User(UUID id,
                 String firstName,
                 String lastName,
@@ -35,6 +37,11 @@ public record User(UUID id,
         return lastName + randomVal + firstName;
     }
 
+    @Override
+    public String id() {
+        return userId.toString();
+    }
+
     public static class UserBuilder {
         private UUID id;
         private String firstName;
@@ -47,58 +54,78 @@ public record User(UUID id,
         private String homeCountry;
         private String role;
 
-        public UserBuilder setId(UUID id) {
+        private UserBuilder() {}
+
+        public static UserBuilder copyOf(User user) {
+            return User.aUser()
+                    .withId(user.userId())
+                    .withFirstName(user.firstName())
+                    .withLastName(user.lastName())
+                    .withUserName(user.userName())
+                    .withPassword(user.password())
+                    .withSalt(user.salt())
+                    .withDateOfBirth(user.dateOfBirth())
+                    .withGender(user.gender())
+                    .withHomeCountry(user.homeCountry())
+                    .withRole(user.role());
+        }
+
+        public UserBuilder withId(UUID id) {
             this.id = id;
             return this;
         }
 
-        public UserBuilder setFirstName(String firstName) {
+        public UserBuilder withFirstName(String firstName) {
             this.firstName = firstName;
             return this;
         }
 
-        public UserBuilder setLastName(String lastName) {
+        public UserBuilder withLastName(String lastName) {
             this.lastName = lastName;
             return this;
         }
 
-        public UserBuilder setEmail(String username) {
+        public UserBuilder withUserName(String username) {
             this.username = username;
             return this;
         }
 
-        public UserBuilder setPassword(String password) {
+        public UserBuilder withPassword(String password) {
             this.password = password;
             return this;
         }
 
-        public UserBuilder setDateOfBirth(String dateOfBirth) {
+        public UserBuilder withDateOfBirth(String dateOfBirth) {
             this.dateOfBirth = dateOfBirth;
             return this;
         }
 
-        public UserBuilder setGender(Gender gender) {
+        public UserBuilder withGender(Gender gender) {
             this.gender = gender;
             return this;
         }
 
-        public UserBuilder setHomeCountry(String homeCountry) {
+        public UserBuilder withHomeCountry(String homeCountry) {
             this.homeCountry = homeCountry;
             return this;
         }
 
-        public UserBuilder setRole(String role) {
+        public UserBuilder withRole(String role) {
             this.role = role;
             return this;
         }
 
-        public UserBuilder setSalt(String salt) {
+        public UserBuilder withSalt(String salt) {
             this.salt = salt;
             return this;
         }
 
-        public User createUser() {
+        public User build() {
             return new User(id, firstName, lastName, username, password, salt, dateOfBirth, gender, homeCountry, role);
         }
+    }
+
+    public static User.UserBuilder aUser() {
+        return new UserBuilder();
     }
 }
