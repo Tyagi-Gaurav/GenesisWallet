@@ -1,10 +1,10 @@
 package com.gw.user.resource;
 
-import com.gw.common.domain.User;
+import com.gw.user.domain.Role;
+import com.gw.user.domain.User;
 import com.gw.user.resource.domain.UserCreateRequestDTO;
 import com.gw.user.resource.domain.UserCreateResponseDTO;
 import com.gw.user.service.UserService;
-import com.gw.user.service.domain.Role;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
