@@ -1,31 +1,72 @@
 package com.gw.common.http.filter;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpMethod;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
+import org.springframework.web.server.ServerWebExchangeDecorator;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
 @Component
 public class LoggingFilter implements WebFilter {
-
-    private static final Logger LOG = LoggerFactory.getLogger(LoggingFilter.class);
+    private static final Logger ACCESS_LOG = LogManager.getLogger("ACCESS");
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-        ServerHttpRequest request = exchange.getRequest();
+        var method = exchange.getRequest().getMethod();
+        var path = exchange.getRequest().getURI().getPath();
+        var requestLoggingDecorator = new RequestLoggingDecorator(exchange.getRequest());
+        var responseLoggingDecorator = new ResponseLoggingDecorator(exchange.getResponse());
 
-        HttpMethod method = request.getMethod();
-        String path = request.getURI().getPath();
+        ServerWebExchangeDecorator decorator = new ServerWebExchangeDecorator(exchange) {
+            @Override
+            public ServerHttpRequest getRequest() {
+                return requestLoggingDecorator;
+            }
 
-        LOG.info("Received request for {} - {} with content Type: {}", method, path, request.getHeaders().getContentType());
+            @Override
+            public ServerHttpResponse getResponse() {
+                return responseLoggingDecorator;
+            }
+        };
 
-        return chain.filter(exchange)
-                .doOnSuccess(v ->
-                        LOG.info("Responded with status code: {}", exchange.getResponse().getStatusCode()));
+        return chain.filter(decorator)
+                .doOnSuccess(noop -> {
+                    if (ACCESS_LOG.isInfoEnabled()) {
+                        ACCESS_LOG.info("""
+                                                                    
+                                        Type: Request
+                                        Method: {}
+                                        Path: {}
+                                        Headers: {}
+                                        Body: {}
+                                        """
+                                , method, path, toString(requestLoggingDecorator.getHeaders()),
+                                requestLoggingDecorator.getFullBody());
+                        ACCESS_LOG.info("""
+
+                                        Type: Response
+                                        Method: {}
+                                        Path: {}
+                                        StatusCode: {}
+                                        Headers: {}
+                                        Body: {}
+                                        """
+                                , method, path,
+                                exchange.getResponse().getStatusCode(),
+                                toString(exchange.getResponse().getHeaders()),
+                                responseLoggingDecorator.getFullBody());
+                    }
+                });
+    }
+
+    private static String toString(HttpHeaders headers) {
+        return headers.toSingleValueMap()
+                .toString();
     }
 }

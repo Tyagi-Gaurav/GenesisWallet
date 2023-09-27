@@ -1,7 +1,7 @@
 package com.gw.user.exception;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono;
 @Order(value = -2)
 @ControllerAdvice
 public class GlobalExceptionHandler implements WebExceptionHandler {
-    private static final Logger LOG = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+    private static final Logger LOG = LogManager.getLogger("APP");
 
     @Override
     public Mono<Void> handle(ServerWebExchange exchange, Throwable ex) {
@@ -33,7 +33,7 @@ public class GlobalExceptionHandler implements WebExceptionHandler {
             exchange.getResponse()
                     .setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
         } else {
-            LOG.info("Error occurred with status code: {}", statusCode);
+            LOG.error("Error occurred with status code: {}", statusCode);
         }
 
         return exchange.getResponse().setComplete();

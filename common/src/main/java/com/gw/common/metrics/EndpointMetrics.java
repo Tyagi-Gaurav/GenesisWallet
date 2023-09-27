@@ -2,8 +2,8 @@ package com.gw.common.metrics;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 public class EndpointMetrics {
-    private static final Logger LOG = LoggerFactory.getLogger(EndpointMetrics.class);
+    private static final Logger LOG = LogManager.getLogger("APP");
     private final MeterRegistry meterRegistry;
 
     @Autowired
@@ -42,7 +42,7 @@ public class EndpointMetrics {
         public void observe() {
             Instant startTime = threadLocal.get();
             long duration = Instant.now().toEpochMilli() - startTime.toEpochMilli();
-            LOG.info("Duration of request for {} was : {} milli seconds", timer.getId(), duration);
+            LOG.debug("Duration of request for {} was : {} milli seconds", timer.getId(), duration);
             timer.record(duration, TimeUnit.MILLISECONDS);
             threadLocal.remove();
         }

@@ -8,8 +8,8 @@ import io.grpc.ClientInterceptor;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.micrometer.core.instrument.MeterRegistry;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 
 @Component
 public class UserGrpcClient {
-    private static final Logger LOG = LoggerFactory.getLogger(UserGrpcClient.class);
+    private static final Logger LOG = LogManager.getLogger("APP");
     private final UserServiceGrpc.UserServiceBlockingStub userServiceBlockingStub;
     private final UserServiceGrpc.UserServiceFutureStub userServiceFutureStub;
     private final UserGrpcClientConfig userGrpcClientConfig;

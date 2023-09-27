@@ -6,8 +6,8 @@ import com.gw.common.metrics.UserRegistrationCounter;
 import com.gw.security.util.PasswordEncryptor;
 import com.gw.user.domain.User;
 import com.gw.user.repo.UserRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ import static com.gw.user.domain.User.UserBuilder.copyOf;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
+    private static final Logger LOG = LogManager.getLogger("APP");
 
     private final UserRepository userRepository;
     private final PasswordEncryptor passwordEncryptor;

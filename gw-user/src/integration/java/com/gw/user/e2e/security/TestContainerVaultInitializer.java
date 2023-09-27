@@ -1,7 +1,7 @@
 package com.gw.user.e2e.security;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.annotation.Order;
@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 @Order(1)
 public class TestContainerVaultInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
-    private static final Logger LOG = LoggerFactory.getLogger(TestContainerVaultInitializer.class);
+    private static final Logger LOG = LogManager.getLogger("APP");
     private static final String VAULT_TOKEN = "root";
 
     @Override

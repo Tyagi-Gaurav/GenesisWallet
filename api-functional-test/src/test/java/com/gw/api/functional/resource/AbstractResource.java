@@ -2,9 +2,9 @@ package com.gw.api.functional.resource;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.platform.commons.util.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -18,7 +18,8 @@ import org.springframework.web.client.RestTemplate;
 
 @Component
 public class AbstractResource {
-    private static final Logger LOG = LoggerFactory.getLogger(AbstractResource.class);
+    private static final Logger APP_LOG = LogManager.getLogger("APP");
+    private static final Logger ACCESS_LOG = LogManager.getLogger("ACCESS");
 
     protected HttpEntity EMPTY_HTTP_ENTITY = new HttpEntity(HttpHeaders.EMPTY);
 
@@ -84,7 +85,7 @@ public class AbstractResource {
     }
 
     private ResponseEntity handleError(String fullUrl, Exception e) {
-        LOG.error("Error Occurred while invoking: " + fullUrl, e);
+        APP_LOG.error("Error Occurred while invoking: " + fullUrl, e);
         if (e instanceof RestClientResponseException) {
             RestClientResponseException exception = (RestClientResponseException) e;
             return ResponseEntity.status(exception.getRawStatusCode())
@@ -106,7 +107,7 @@ public class AbstractResource {
 
     private void log(String url, Object body) {
         try {
-            LOG.info(String.format("\n============ Payload Start ======= \n" +
+            ACCESS_LOG.info(String.format("\n============ Payload Start ======= \n" +
                             "\tFull URL: %s ,\n " +
                             "\tBody: \n\t%s \n" +
                             "============ Payload End ======= \n", url,

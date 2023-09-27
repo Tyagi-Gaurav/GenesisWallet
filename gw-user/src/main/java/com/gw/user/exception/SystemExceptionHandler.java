@@ -2,8 +2,8 @@ package com.gw.user.exception;
 
 import com.gw.common.domain.ErrorResponse;
 import com.gw.common.exception.ErrorResponseHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
 @ControllerAdvice
 @Component
 public class SystemExceptionHandler {
-    private static final Logger LOG = LoggerFactory.getLogger(SystemExceptionHandler.class);
+    private static final Logger LOG = LogManager.getLogger("APP");
 
     private final ErrorResponseHelper errorResponseHelper;
     private static final String UNEXPECTED_ERROR_OCCURRED = "Unexpected error occurred";

@@ -1,8 +1,8 @@
 package com.gw.common.http.filter;
 
 import com.gw.common.config.AccessibleEndpointConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
 @Component
 @ConditionalOnBean(value = AccessibleEndpointConfig.class)
 public class AccessibleEndpointFilter implements WebFilter {
-    private static final Logger LOG = LoggerFactory.getLogger(AccessibleEndpointFilter.class);
+    private static final Logger LOG = LogManager.getLogger("ACCESS");
 
     private final AccessibleEndpointConfig accessibleEndpointConfig;
 
