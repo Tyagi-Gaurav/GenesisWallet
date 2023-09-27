@@ -27,7 +27,7 @@ api-gateway:
 full:
 	./full_local_build.sh
 
-full_quick:
+fq:
 	./full_local_build.sh -t
 
 down:
@@ -50,7 +50,7 @@ help:
 	@echo ' gw-user				Build user image'
 	@echo ' api-gateway			Build API gateway image'
 	@echo ' full				Build full local docker-compose stack'
-	@echo ' full_quick			Build full local docker-compose stack (No tests)'
+	@echo ' fq					Build full local docker-compose stack (No tests)'
 	@echo ' ft					Run functional tests'
 	@echo ' down				Destroy local docker-compose stack'
 	@echo ''
