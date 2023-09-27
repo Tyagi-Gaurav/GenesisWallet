@@ -1,10 +1,10 @@
 package com.gw.user.resource;
 
-import com.gw.common.domain.User;
 import com.gw.common.exception.ApplicationAuthenticationException;
 import com.gw.common.util.TokenManager;
 import com.gw.user.cache.CacheManager;
 import com.gw.user.config.AuthConfig;
+import com.gw.user.domain.User;
 import com.gw.user.resource.domain.LoginRequestDTO;
 import com.gw.user.service.UserService;
 import com.gw.user.testutils.DtoBuilder;
@@ -18,7 +18,7 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 
-import static com.gw.user.testutils.UserBuilder.aUser;
+import static com.gw.user.testutils.TestUserBuilder.aUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;

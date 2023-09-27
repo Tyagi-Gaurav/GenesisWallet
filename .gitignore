@@ -6,6 +6,7 @@
 *.dylib
 *.log
 .DS_Store
+*.rdb
 
 # Test binary, built with `go test -c`
 *.test
@@ -27,3 +28,7 @@ terraform.tfstate.backup
 terraform.tfstate
 .terraform.tfstate.lock.info
 dependency-reduced-pom.xml
+
+# Node
+__pycache__/
+node_modules/
