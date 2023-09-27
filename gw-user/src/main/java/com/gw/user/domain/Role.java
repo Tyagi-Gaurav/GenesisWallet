@@ -1,4 +1,4 @@
-package com.gw.user.service.domain;
+package com.gw.user.domain;
 
 public enum Role {
     ADMIN,

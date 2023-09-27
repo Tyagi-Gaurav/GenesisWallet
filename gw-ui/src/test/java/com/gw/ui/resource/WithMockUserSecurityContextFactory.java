@@ -10,7 +10,6 @@ import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithSecurityContextFactory;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -25,7 +24,7 @@ final class WithMockUserSecurityContextFactory implements WithSecurityContextFac
 	@Override
 	public SecurityContext createSecurityContext(WithMockCustomUser withUser) {
 		String username = StringUtils.hasLength(withUser.username()) ? withUser.username() : withUser.value();
-		Assert.notNull(username, () -> withUser + " cannot have null email on both email and value properties");
+		Assert.notNull(username, () -> withUser + " cannot have null userName on both userName and value properties");
 		List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 		for (String authority : withUser.authorities()) {
 			grantedAuthorities.add(new SimpleGrantedAuthority(authority));

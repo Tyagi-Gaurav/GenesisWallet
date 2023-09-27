@@ -1,9 +1,9 @@
 package com.gw.user.resource;
 
-import com.gw.common.domain.User;
+import com.gw.user.domain.Role;
+import com.gw.user.domain.User;
 import com.gw.user.resource.domain.UserCreateRequestDTO;
 import com.gw.user.service.UserService;
-import com.gw.user.service.domain.Role;
 import com.gw.user.testutils.DtoBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,7 +46,7 @@ class UserCreateResourceTest {
                 userCreateRequestDTO.homeCountry(),
                 Role.REGISTERED_USER.name());
 
-        when(userService.addUser(refEq(user, "id")))
+        when(userService.addUser(refEq(user, "userId")))
                 .thenReturn(Mono.empty());
 
         StepVerifier.create(userCreateResource.createUser(userCreateRequestDTO))
