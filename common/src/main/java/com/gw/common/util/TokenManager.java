@@ -1,6 +1,6 @@
 package com.gw.common.util;
 
-import com.gw.common.domain.User;
+import com.gw.common.domain.UserIdentity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -43,10 +43,10 @@ public class TokenManager {
                 "userId", userId);
     }
 
-    public String generateToken(User user,
+    public String generateToken(UserIdentity user,
                                 Duration tokenDuration) {
-        Map<String, Object> claims = addClaimsV2(user.role(), user.id().toString());
-        return doGenerateToken(claims, user.email(), UUID.randomUUID(), tokenDuration);
+        Map<String, Object> claims = addClaimsV2(user.role(), user.id());
+        return doGenerateToken(claims, user.userName(), UUID.randomUUID(), tokenDuration);
     }
 
     public static class Token {
