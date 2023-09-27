@@ -8,7 +8,7 @@ import java.util.UUID;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonDeserialize
 public record ExternalUser(UUID id,
-                           String email,
+                           String userName,
                            String locale,
                            String pictureUrl,
                            String firstName,
