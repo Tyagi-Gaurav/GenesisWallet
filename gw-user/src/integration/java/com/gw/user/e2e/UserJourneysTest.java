@@ -17,7 +17,6 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.context.ApplicationContext;
-import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
@@ -28,7 +27,7 @@ import redis.embedded.RedisServer;
 import java.time.Duration;
 
 import static com.gw.test.support.ScenarioBuilder.aScenarioUsing;
-import static com.gw.user.e2e.test.ScenarioExecutor2.*;
+import static com.gw.user.e2e.test.ScenarioExecutor.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = Application.class,
@@ -45,8 +44,6 @@ import static com.gw.user.e2e.test.ScenarioExecutor2.*;
         "auth.tokenDuration=2s"
 })
 class UserJourneysTest implements WithSyntacticSugar {
-    @Autowired
-    private DatabaseClient databaseClient;
     @Autowired
     private JedisPool jedisPool;
     @Autowired

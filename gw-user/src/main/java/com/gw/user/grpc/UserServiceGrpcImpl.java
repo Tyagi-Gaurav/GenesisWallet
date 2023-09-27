@@ -3,7 +3,7 @@ package com.gw.user.grpc;
 import com.google.protobuf.Empty;
 import com.gw.common.domain.ExternalUser;
 import com.gw.common.domain.Gender;
-import com.gw.common.domain.User;
+import com.gw.user.domain.User;
 import com.gw.user.service.UserService;
 import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
@@ -27,10 +27,10 @@ public class UserServiceGrpcImpl extends UserServiceGrpc.UserServiceImplBase {
                 .map(user -> UserDetailsGrpcResponseDTO.newBuilder()
                         .setFirstName(user.firstName())
                         .setLastName(user.lastName())
-                        .setUserName(user.email())
+                        .setUserName(user.userName())
                         .setDateOfBirth(user.dateOfBirth())
                         .setHomeCountry(user.homeCountry())
-                        .setId(user.id().toString())
+                        .setId(user.id())
                         .setGender(toGrpcGender(user.gender()))
                         .build())
                 .subscribe(resp -> {
