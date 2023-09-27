@@ -18,8 +18,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static com.gw.test.support.ScenarioBuilder.aManagementScenarioUsing;
 import static com.gw.test.support.executor.BaseScenarioExecutor.aStatusRequestIsSent;
-import static com.gw.user.e2e.test.ScenarioExecutor2.aHttpResponse;
-import static com.gw.user.e2e.test.ScenarioExecutor2.withStatus;
+import static com.gw.user.e2e.test.ScenarioExecutor.aHttpResponse;
+import static com.gw.user.e2e.test.ScenarioExecutor.withStatus;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = Application.class,
