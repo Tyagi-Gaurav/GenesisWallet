@@ -41,6 +41,6 @@ class ResponseLoggingDecoratorTest {
         DefaultDataBuffer defaultDataBuffer = new DefaultDataBufferFactory().allocateBuffer(20);
         responseLoggingDecorator.writeWith(Flux.just(defaultDataBuffer));
 
-        assertThat(responseLoggingDecorator.getFullBody()).isEqualTo("");
+        assertThat(responseLoggingDecorator.getFullBody()).isEmpty();
     }
 }

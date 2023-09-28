@@ -29,7 +29,7 @@ public class ValueInstantiationExceptionHandler {
     @ExceptionHandler(value = {ValueInstantiationException.class})
     public Mono<ErrorResponse> handle(ValueInstantiationException exception) {
         if (LOG.isErrorEnabled()) {
-            LOG.error("Value Instantiation Exception: " + exception.getMessage(), exception);
+            LOG.error(String.format("Value Instantiation Exception: %s ", exception.getMessage()), exception);
         }
         return errorResponseHelper.errorResponse(400, exception.getMessage());
     }

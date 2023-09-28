@@ -23,7 +23,7 @@ public class ResponseLoggingDecorator extends ServerHttpResponseDecorator {
   }
 
   private void capture(DataBuffer buffer) {
-    this.body.append(StandardCharsets.UTF_8.decode(buffer.asByteBuffer()));
+    this.body.append(StandardCharsets.UTF_8.decode(buffer.readableByteBuffers().next()));
   }
 
   public String getFullBody() {

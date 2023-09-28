@@ -49,6 +49,6 @@ class RequestLoggingDecoratorTest {
                 .expectNext(dataBuffer)
                 .verifyComplete();
 
-        assertThat(requestLoggingDecorator.getFullBody()).isEqualTo("");
+        assertThat(requestLoggingDecorator.getFullBody()).isEmpty();
     }
 }

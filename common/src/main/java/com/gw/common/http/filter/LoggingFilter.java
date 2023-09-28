@@ -35,32 +35,34 @@ public class LoggingFilter implements WebFilter {
             }
         };
 
+        String requestMessage = """
+                                            
+                Type: Request
+                Method: %s
+                Path: %s
+                Headers: %s
+                Body: %s
+                """.formatted(method, path, toString(requestLoggingDecorator.getHeaders()),
+                requestLoggingDecorator.getFullBody());
+
+        String responseMessage = """
+
+                Type: Response
+                Method: %s
+                Path: %s
+                StatusCode: %s
+                Headers: %s
+                Body: %s
+                """.formatted(method, path,
+                exchange.getResponse().getStatusCode(),
+                toString(exchange.getResponse().getHeaders()),
+                responseLoggingDecorator.getFullBody());
+
         return chain.filter(decorator)
                 .doOnSuccess(noop -> {
                     if (ACCESS_LOG.isInfoEnabled()) {
-                        ACCESS_LOG.info("""
-                                                                    
-                                        Type: Request
-                                        Method: {}
-                                        Path: {}
-                                        Headers: {}
-                                        Body: {}
-                                        """
-                                , method, path, toString(requestLoggingDecorator.getHeaders()),
-                                requestLoggingDecorator.getFullBody());
-                        ACCESS_LOG.info("""
-
-                                        Type: Response
-                                        Method: {}
-                                        Path: {}
-                                        StatusCode: {}
-                                        Headers: {}
-                                        Body: {}
-                                        """
-                                , method, path,
-                                exchange.getResponse().getStatusCode(),
-                                toString(exchange.getResponse().getHeaders()),
-                                responseLoggingDecorator.getFullBody());
+                        ACCESS_LOG.info(requestMessage);
+                        ACCESS_LOG.info(responseMessage);
                     }
                 });
     }
