@@ -33,7 +33,7 @@ public class RequestLoggingDecorator extends ServerHttpRequestDecorator {
         try {
           baos.close();
         } catch (IOException e) {
-          e.printStackTrace();
+          LOG.error(e.getMessage(), e);
         }
       }
     });
