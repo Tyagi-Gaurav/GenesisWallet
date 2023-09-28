@@ -45,13 +45,12 @@
                             <annotationProcessorPaths>
                                 <path>
                                     <groupId>com.genesis</groupId>
-                                    <artifactId>gw-annotations</artifactId>
+                                    <artifactId>common-annotations</artifactId>
                                     <version>DEV-SNAPSHOT</version>
                                 </path>
                             </annotationProcessorPaths>
                             <annotationProcessors>
-                                <annotationProcessor>com.gw.common.annotations.GenerateBuilderAnnotationProcessor
-                                </annotationProcessor>
+                                <annotationProcessor>com.gw.common.annotations.GenerateBuilderAnnotationProcessor</annotationProcessor>
                             </annotationProcessors>
                         </configuration>
                     </execution>
@@ -186,7 +185,7 @@
         </dependency>
         <dependency>
             <groupId>com.genesis</groupId>
-            <artifactId>gw-annotations</artifactId>
+            <artifactId>common-annotations</artifactId>
             <version>${project.version}</version>
         </dependency>
         <!-- Test Dependencies -->

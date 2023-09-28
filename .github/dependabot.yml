@@ -6,7 +6,7 @@
 version: 2
 updates:
   - package-ecosystem: "maven"
-    directory: "/gw-annotations" # Location of package manifests
+    directory: "/common-annotations" # Location of package manifests
     schedule:
       interval: "weekly"
   - package-ecosystem: "maven"
