@@ -5,21 +5,29 @@
             <PatternLayout pattern="[LOG_START] [LOG_TYPE=APP] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg [LOG_END]%n" />
         </Console>
 
-        <Console name="STDOUT_ACCESS" target="SYSTEM_OUT">
-            <PatternLayout pattern="[LOG_START] [LOG_TYPE=ACCESS] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg [LOG_END]%n" />
+        <Console name="PASSED" target="SYSTEM_OUT">
+            <PatternLayout pattern="[LOG_START] [LOG_TYPE=APP] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %highlight{[ %logger{36} ]} - %highlight{%msg} [LOG_END]%n" />
+        </Console>
+
+        <Console name="FAILED" target="SYSTEM_OUT">
+            <PatternLayout pattern="[LOG_START] [LOG_TYPE=APP] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %highlight{[ %logger{36} ]} - %highlight{%msg} [LOG_END]%n" />
         </Console>
     </Appenders>
 
     <Loggers>
-        <Logger name="ACCESS" additivity="false" level="INFO">
-            <AppenderRef ref="STDOUT_ACCESS"/>
-        </Logger>
-
         <Logger name="APP" additivity="false" level="INFO">
             <AppenderRef ref="STDOUT_APP"/>
         </Logger>
 
-        <Logger name="org.springframework" additivity="false" level="ERROR">
+        <Logger name="PASSED" additivity="false" level="INFO">
+            <AppenderRef ref="PASSED"/>
+        </Logger>
+
+        <Logger name="FAILED" additivity="false" level="INFO">
+            <AppenderRef ref="FAILED"/>
+        </Logger>
+
+        <Logger name="org.springframework" additivity="false" level="FATAL">
             <AppenderRef ref="STDOUT_APP"/>
         </Logger>
 
