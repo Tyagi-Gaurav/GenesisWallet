@@ -22,6 +22,7 @@ public class GenerateBuilderAnnotationProcessor extends AbstractProcessor {
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         for (Element e : roundEnv.getElementsAnnotatedWith(GenerateBuilder.class)) {
+            GenerateBuilder generateBuilderAnnotation = e.getAnnotation(GenerateBuilder.class);
             if (e.getKind() != ElementKind.RECORD) {
                 processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING, "Annotation @GenerateBuilder can only be used on a record", e);
                 continue;
@@ -38,8 +39,8 @@ public class GenerateBuilderAnnotationProcessor extends AbstractProcessor {
                     classBuilder.append("package ").append(clazz).append(";\n")
                             .append("public class ").append(builderName).append(" {").append("\n\n");
 
-                    addNewInstanceCreationMethod(classBuilder, builderName);
-                    addFieldAndMethods(e, classBuilder);
+                    addNewInstanceCreationMethod(classBuilder, builderName, generateBuilderAnnotation.builderMethod());
+                    addFieldAndMethods(e, classBuilder, builderName);
                     addFinalBuilderMethod(e, classBuilder);
 
                     classBuilder.append("}");
@@ -54,8 +55,8 @@ public class GenerateBuilderAnnotationProcessor extends AbstractProcessor {
         return true;
     }
 
-    private void addNewInstanceCreationMethod(StringBuilder classBuilder, String builderName) {
-        classBuilder.append("public static ").append(builderName).append(" newBuilder() {\n");
+    private void addNewInstanceCreationMethod(StringBuilder classBuilder, String builderName, String builderMethod) {
+        classBuilder.append("public static ").append(builderName).append(" " + builderMethod).append("() {\n");
         classBuilder.append("return new ").append(builderName).append("();\n");
         classBuilder.append("}");
     }
@@ -78,7 +79,7 @@ public class GenerateBuilderAnnotationProcessor extends AbstractProcessor {
         classBuilder.append(");\n").append("} ").append("\n");
     }
 
-    private void addFieldAndMethods(Element e, StringBuilder classBuilder) {
+    private void addFieldAndMethods(Element e, StringBuilder classBuilder, String builderClassName) {
         for (Element childElements : e.getEnclosedElements()) {
             if (childElements.getKind() == ElementKind.FIELD) {
                 TypeMirror type = childElements.asType();
@@ -86,9 +87,10 @@ public class GenerateBuilderAnnotationProcessor extends AbstractProcessor {
                 classBuilder.append("private ").append(type).append(" ").append(name).append(";\n");
 
                 //Create setter for the fields
-                classBuilder.append("public void set").append(capitalize(name))
+                classBuilder.append("public " + builderClassName +  " with").append(capitalize(name))
                         .append("(").append(type).append(" ").append("new").append(name).append(") {\n")
                         .append("this.").append(name).append("=").append("new").append(name).append(";\n")
+                        .append("return this;\n")
                         .append("}\n");
             }
         }

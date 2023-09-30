@@ -12,8 +12,10 @@ import java.io.IOException;
 import java.nio.channels.Channels;
 import java.nio.charset.StandardCharsets;
 
+import static java.util.Optional.ofNullable;
+
 public class RequestLoggingDecorator extends ServerHttpRequestDecorator {
-  private String body;
+  private String body = "";
   private static final Logger LOG = LogManager.getLogger("APP");
 
   public RequestLoggingDecorator(ServerHttpRequest delegate) {
@@ -26,7 +28,7 @@ public class RequestLoggingDecorator extends ServerHttpRequestDecorator {
     return super.getBody().doOnNext(dataBuffer -> {
       try {
         Channels.newChannel(baos).write(dataBuffer.readableByteBuffers().next());
-        body = baos.toString(StandardCharsets.UTF_8);
+        body = ofNullable(baos.toString(StandardCharsets.UTF_8)).orElse("");
       } catch (IOException e) {
         LOG.error(e.getMessage(), e);
       } finally {

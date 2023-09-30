@@ -24,7 +24,13 @@ import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import static com.gw.common.http.filter.AccessLogging.Direction.IN;
+import static com.gw.common.http.filter.AccessLogging.Direction.OUT;
+import static com.gw.common.http.filter.AccessLogging.Type.REQUEST;
+import static com.gw.common.http.filter.AccessLogging.Type.RESPONSE;
+import static com.gw.common.http.filter.AccessLoggingBuilder.anAccessLog;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
@@ -85,23 +91,23 @@ class LoggingFilterTest {
                 .verifyComplete();
 
         verifyMessages(logs,
-                """
-                                                                            
-                        Type: Request
-                        Method: %s
-                        Path: %s
-                        Headers: %s
-                        Body: %s
-                        """.formatted(GET, "/some/uri/path", "{Content-Type=application/json}", null),
-                """
-                        
-                        Type: Response
-                        Method: %s
-                        Path: %s
-                        StatusCode: %s
-                        Headers: %s
-                        Body: %s
-                        """.formatted(GET, "/some/uri/path", "200 OK", "{}", ""));
+                anAccessLog()
+                        .withDirection(IN)
+                        .withType(REQUEST)
+                        .withMethod(GET.name())
+                        .withPath("/some/uri/path")
+                        .withHeaders(Map.of("Content-Type", "application/json"))
+                        .withBody("")
+                        .build().toString(),
+                anAccessLog()
+                        .withDirection(OUT)
+                        .withType(RESPONSE)
+                        .withMethod(GET.name())
+                        .withHeaders(Map.of())
+                        .withBody("")
+                        .withPath("/some/uri/path")
+                        .withStatusCode("200")
+                        .build().toString());
     }
 
     private void givenLogsAreCapturedFor(Appender appender, List<LogEvent> logs) {

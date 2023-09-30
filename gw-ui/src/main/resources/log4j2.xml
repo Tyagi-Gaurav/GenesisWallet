@@ -23,7 +23,7 @@
             <AppenderRef ref="STDOUT_APP"/>
         </Logger>
 
-        <Root level="INFO">
+        <Root level="ERROR">
             <AppenderRef ref="STDOUT_APP"/>
         </Root>
     </Loggers>

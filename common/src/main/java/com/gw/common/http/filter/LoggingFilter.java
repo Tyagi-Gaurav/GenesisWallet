@@ -2,7 +2,7 @@ package com.gw.common.http.filter;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
@@ -11,6 +11,14 @@ import org.springframework.web.server.ServerWebExchangeDecorator;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
+
+import java.util.Optional;
+
+import static com.gw.common.http.filter.AccessLogging.Direction.IN;
+import static com.gw.common.http.filter.AccessLogging.Direction.OUT;
+import static com.gw.common.http.filter.AccessLogging.Type.REQUEST;
+import static com.gw.common.http.filter.AccessLogging.Type.RESPONSE;
+import static com.gw.common.http.filter.AccessLoggingBuilder.anAccessLog;
 
 @Component
 public class LoggingFilter implements WebFilter {
@@ -35,40 +43,29 @@ public class LoggingFilter implements WebFilter {
             }
         };
 
-        String requestMessage = """
-                                            
-                Type: Request
-                Method: %s
-                Path: %s
-                Headers: %s
-                Body: %s
-                """.formatted(method, path, toString(requestLoggingDecorator.getHeaders()),
-                requestLoggingDecorator.getFullBody());
-
-        String responseMessage = """
-
-                Type: Response
-                Method: %s
-                Path: %s
-                StatusCode: %s
-                Headers: %s
-                Body: %s
-                """.formatted(method, path,
-                exchange.getResponse().getStatusCode(),
-                toString(exchange.getResponse().getHeaders()),
-                responseLoggingDecorator.getFullBody());
-
         return chain.filter(decorator)
                 .doOnSuccess(noop -> {
                     if (ACCESS_LOG.isInfoEnabled()) {
-                        ACCESS_LOG.info(requestMessage);
-                        ACCESS_LOG.info(responseMessage);
+                        ACCESS_LOG.info(anAccessLog()
+                                .withDirection(IN)
+                                .withType(REQUEST)
+                                .withMethod(method.name())
+                                .withPath(path)
+                                .withHeaders(requestLoggingDecorator.getHeaders().toSingleValueMap())
+                                .withBody(requestLoggingDecorator.getFullBody())
+                                .build());
+
+                        ACCESS_LOG.info(anAccessLog()
+                                .withDirection(OUT)
+                                .withType(RESPONSE)
+                                .withMethod(method.name())
+                                .withPath(path)
+                                .withStatusCode(Optional.ofNullable(exchange.getResponse().getStatusCode())
+                                        .map(HttpStatusCode::value).map(String::valueOf).orElse(null))
+                                .withHeaders(exchange.getResponse().getHeaders().toSingleValueMap())
+                                .withBody(responseLoggingDecorator.getFullBody())
+                                .build());
                     }
                 });
-    }
-
-    private static String toString(HttpHeaders headers) {
-        return headers.toSingleValueMap()
-                .toString();
     }
 }
