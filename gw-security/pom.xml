@@ -12,7 +12,7 @@
     <artifactId>gw-security</artifactId>
     <packaging>jar</packaging>
     <properties>
-        <spring-vault-core.version>3.0.2</spring-vault-core.version>
+        <spring-vault-core.version>3.0.4</spring-vault-core.version>
         <bouncy-castle.version>1.76</bouncy-castle.version>
     </properties>
 
