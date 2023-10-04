@@ -33,8 +33,8 @@ import static com.gw.common.http.filter.AccessLoggingBuilder.anAccessLog;
 public class LoggingFilter implements WebFilter {
     private static final Logger ACCESS_LOG = LogManager.getLogger("ACCESS");
 
-    private static final String SECURE_FIELD_PWD = "password";
-    private static final String SECURE_FIELD_SECRET = "secret";
+    private static final String SECURE_FIELD_PWD = "password"; //NOSONAR
+    private static final String SECURE_FIELD_SECRET = "secret"; //NOSONAR
     private static final Set<String> sensitiveFields = Set.of(SECURE_FIELD_PWD, SECURE_FIELD_SECRET);
     private static final Configuration configuration = Configuration.builder()
             .jsonProvider(new JacksonJsonNodeJsonProvider())
