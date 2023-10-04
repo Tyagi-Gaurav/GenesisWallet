@@ -17,7 +17,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.1.4</version>
                 <configuration>
                     <mainClass>com.gw.ui.Application</mainClass>
                     <addResources>true</addResources>
