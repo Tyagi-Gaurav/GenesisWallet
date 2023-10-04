@@ -59,7 +59,7 @@
         <embedded-redis.version>0.7.3</embedded-redis.version>
         <jedis.version>5.0.1</jedis.version>
         <hamcrest.version>2.2</hamcrest.version>
-        <mongodb.testcontainer.version>1.19.0</mongodb.testcontainer.version>
+        <mongodb.testcontainer.version>1.19.1</mongodb.testcontainer.version>
         <mongodb-driver-reactivestreams.version>4.10.2</mongodb-driver-reactivestreams.version>
         <json-path.version>2.8.0</json-path.version>
     </properties>
