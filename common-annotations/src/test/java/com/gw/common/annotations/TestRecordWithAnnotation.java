@@ -4,4 +4,7 @@ package com.gw.common.annotations;
 public record TestRecordWithAnnotation(
         String abc,
         int def,
-        float xyz) {}
+        float xyz) {
+
+    private static final String SOME_FIELD = "some-value";
+}

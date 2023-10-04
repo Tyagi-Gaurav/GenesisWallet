@@ -16,6 +16,8 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.Set;
 
+import static javax.lang.model.element.Modifier.STATIC;
+
 @SupportedAnnotationTypes("com.gw.common.annotations.GenerateBuilder")
 @SupportedSourceVersion(SourceVersion.RELEASE_17)
 public class GenerateBuilderAnnotationProcessor extends AbstractProcessor {
@@ -32,7 +34,7 @@ public class GenerateBuilderAnnotationProcessor extends AbstractProcessor {
                 JavaFileObject sourceFile = processingEnv.getFiler().createSourceFile(e.getSimpleName() + "Builder");
                 processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE,
                         "Creating Builder for " + e.getSimpleName());
-                String builderName = e.getSimpleName()+"Builder";
+                String builderName = e.getSimpleName() + "Builder";
                 try (var w = sourceFile.openWriter();
                      var pw = new PrintWriter(w)) {
                     var classBuilder = new StringBuilder();
@@ -67,7 +69,7 @@ public class GenerateBuilderAnnotationProcessor extends AbstractProcessor {
         List<? extends Element> enclosedElements = e.getEnclosedElements();
         var fieldCreated = false;
         for (Element childElements : enclosedElements) {
-            if (childElements.getKind() == ElementKind.FIELD) {
+            if (childElements.getKind() == ElementKind.FIELD && !childElements.getModifiers().contains(STATIC)) {
                 var name = childElements.getSimpleName().toString();
                 if (fieldCreated) {
                     classBuilder.append(",\n");
@@ -81,13 +83,14 @@ public class GenerateBuilderAnnotationProcessor extends AbstractProcessor {
 
     private void addFieldAndMethods(Element e, StringBuilder classBuilder, String builderClassName) {
         for (Element childElements : e.getEnclosedElements()) {
-            if (childElements.getKind() == ElementKind.FIELD) {
+            if (childElements.getKind() == ElementKind.FIELD &&
+                    !childElements.getModifiers().contains(STATIC)) {
                 TypeMirror type = childElements.asType();
                 var name = childElements.getSimpleName().toString();
                 classBuilder.append("private ").append(type).append(" ").append(name).append(";\n");
 
                 //Create setter for the fields
-                classBuilder.append("public " + builderClassName +  " with").append(capitalize(name))
+                classBuilder.append("public " + builderClassName + " with").append(capitalize(name))
                         .append("(").append(type).append(" ").append("new").append(name).append(") {\n")
                         .append("this.").append(name).append("=").append("new").append(name).append(";\n")
                         .append("return this;\n")
