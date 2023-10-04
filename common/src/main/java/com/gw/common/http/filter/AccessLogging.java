@@ -14,21 +14,17 @@ public record AccessLogging(
         String statusCode,
         String body
 ) {
+
+    public static AccessLogging parse(String logAsText) {
+        return AccessLoggingParser.parse(logAsText);
+    }
+
     public enum Direction {
         IN, OUT
     }
 
     public enum Type {
         REQUEST, RESPONSE
-    }
-
-    public enum Method {
-        GET,
-        POST,
-        HEAD,
-        PATCH,
-        PUT,
-        DELETE
     }
 
     @Override
