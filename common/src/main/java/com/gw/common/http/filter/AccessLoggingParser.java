@@ -60,10 +60,12 @@ public class AccessLoggingParser {
                 fieldMap.put(matchedField.toLowerCase(), initialListWith(matchedField, line));
                 previousField = matchedField;
             } else {
-                fieldMap.computeIfPresent(previousField.toLowerCase(), (s, strings) -> {
-                    strings.append(line);
-                    return strings;
-                });
+                if (previousField != null) {
+                    fieldMap.computeIfPresent(previousField.toLowerCase(), (s, strings) -> {
+                        strings.append(line);
+                        return strings;
+                    });
+                }
             }
         }
 
@@ -95,6 +97,6 @@ public class AccessLoggingParser {
     }
 
     private static String stripOffSpecialCharacters(String s) {
-        return s.replaceAll(",", "");
+        return s.replace(",", "");
     }
 }
