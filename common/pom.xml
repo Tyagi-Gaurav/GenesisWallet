@@ -14,7 +14,7 @@
 
     <properties>
         <jwt-api.version>0.11.5</jwt-api.version>
-        <resilience-4j.version>2.0.2</resilience-4j.version>
+        <resilience-4j.version>2.1.0</resilience-4j.version>
         <hibernate.validator.version>8.0.0.Final</hibernate.validator.version>
         <jakarta.el.version>5.0.1</jakarta.el.version>
         <glassfish.expressly.version>5.0.0</glassfish.expressly.version>
