@@ -43,7 +43,7 @@
         <spring-boot-data.version>3.1.4</spring-boot-data.version>
         <swagger.version>3.0.0</swagger.version>
         <spring-doc.version>1.7.0</spring-doc.version>
-        <vault.testcontainer.version>1.19.0</vault.testcontainer.version>
+        <vault.testcontainer.version>1.19.1</vault.testcontainer.version>
         <apache.httpclient.version>5.2.1</apache.httpclient.version>
         <spring-security-test.version>6.1.4</spring-security-test.version>
         <spring-cloud-contract-stub.version>4.0.4</spring-cloud-contract-stub.version>
