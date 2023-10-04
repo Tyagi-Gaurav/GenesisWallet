@@ -5,6 +5,8 @@ import com.gw.user.domain.User;
 import com.gw.user.resource.domain.UserCreateRequestDTO;
 import com.gw.user.resource.domain.UserCreateResponseDTO;
 import com.gw.user.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +19,8 @@ import java.util.UUID;
 
 @RestController
 public class UserCreateResource {
+    private static final Logger LOG = LogManager.getLogger("APP");
+
     private final UserService userService;
 
     public UserCreateResource(UserService userService) {
@@ -28,6 +32,7 @@ public class UserCreateResource {
             path = "/user/create")
     @ResponseStatus(code = HttpStatus.CREATED)
     public Mono<UserCreateResponseDTO> createUser(@Validated @RequestBody UserCreateRequestDTO userCreateRequestDTO) {
+        LOG.info("Received request");
         UUID userId = UUID.randomUUID();
         return userService.addUser(new User(
                 userId,

@@ -6,8 +6,8 @@ import com.gw.user.grpc.UserServiceGrpcImpl;
 import com.gw.user.service.UserService;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,7 +15,7 @@ import java.io.IOException;
 
 @Configuration
 public class GrpcServerFactory {
-    private static final Logger LOG = LoggerFactory.getLogger(GrpcServerFactory.class);
+    private static final Logger LOG = LogManager.getLogger("APP");
 
     @Bean(destroyMethod = "shutdown")
     public Server grpcServer(UserServiceGrpcImpl userServiceGrpcImpl,

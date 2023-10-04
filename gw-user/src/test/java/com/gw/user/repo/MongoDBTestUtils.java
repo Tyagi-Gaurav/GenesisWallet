@@ -2,8 +2,8 @@ package com.gw.user.repo;
 
 import com.gw.common.domain.ExternalUser;
 import com.gw.user.domain.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import reactor.core.publisher.Mono;
@@ -14,7 +14,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
 public class MongoDBTestUtils {
-    private static final Logger LOG = LoggerFactory.getLogger(MongoDBTestUtils.class);
+    private static final Logger LOG = LogManager.getLogger("APP");
 
     public static void addToDatabase(User user, ReactiveMongoTemplate reactiveMongoTemplate) {
         LOG.info("Adding user {}: ", user);

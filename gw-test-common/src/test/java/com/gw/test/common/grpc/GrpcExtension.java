@@ -6,10 +6,10 @@ import io.grpc.Server;
 import io.grpc.ServerInterceptor;
 import io.grpc.inprocess.InProcessChannelBuilder;
 import io.grpc.inprocess.InProcessServerBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class GrpcExtension implements AfterEachCallback {
-    private static final Logger LOG = LoggerFactory.getLogger(GrpcExtension.class);
+    private static final Logger LOG = LogManager.getLogger("APP");
     private static final int TERMINATION_TIMEOUT_MS = 100;
 
     private final List<CleanupTarget> cleanupTargets = new ArrayList<>();

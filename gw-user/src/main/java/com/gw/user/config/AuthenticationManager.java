@@ -4,8 +4,8 @@ import com.gw.common.util.TokenManager;
 import com.gw.user.cache.CacheManager;
 import com.gw.user.resource.domain.UserProfile;
 import com.gw.user.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.UUID;
 
 public class AuthenticationManager implements ReactiveAuthenticationManager {
-    private static final Logger LOG = LoggerFactory.getLogger(AuthenticationManager.class);
+    private static final Logger LOG = LogManager.getLogger("APP");
 
     private final UserService userService;
     private final TokenManager tokenManager;

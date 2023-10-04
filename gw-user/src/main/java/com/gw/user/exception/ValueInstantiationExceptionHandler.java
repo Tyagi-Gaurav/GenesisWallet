@@ -3,8 +3,8 @@ package com.gw.user.exception;
 import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
 import com.gw.common.domain.ErrorResponse;
 import com.gw.common.exception.ErrorResponseHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 @Component
 @Order(value = 1)
 public class ValueInstantiationExceptionHandler {
-    private static final Logger LOG = LoggerFactory.getLogger(ValueInstantiationExceptionHandler.class);
+    private static final Logger LOG = LogManager.getLogger("APP");
 
     private final ErrorResponseHelper errorResponseHelper;
 
@@ -29,7 +29,7 @@ public class ValueInstantiationExceptionHandler {
     @ExceptionHandler(value = {ValueInstantiationException.class})
     public Mono<ErrorResponse> handle(ValueInstantiationException exception) {
         if (LOG.isErrorEnabled()) {
-            LOG.error("Value Instantiation Exception: " + exception.getMessage(), exception);
+            LOG.error(String.format("Value Instantiation Exception: %s ", exception.getMessage()), exception);
         }
         return errorResponseHelper.errorResponse(400, exception.getMessage());
     }

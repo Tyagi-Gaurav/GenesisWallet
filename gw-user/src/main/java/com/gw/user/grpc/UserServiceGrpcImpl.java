@@ -6,14 +6,14 @@ import com.gw.common.domain.Gender;
 import com.gw.user.domain.User;
 import com.gw.user.service.UserService;
 import io.grpc.stub.StreamObserver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
 public class UserServiceGrpcImpl extends UserServiceGrpc.UserServiceImplBase {
-    private static final Logger LOG = LoggerFactory.getLogger(UserServiceGrpcImpl.class);
+    private static final Logger LOG = LogManager.getLogger("APP");
     private final UserService userService;
 
     public UserServiceGrpcImpl(UserService userService) {

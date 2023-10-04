@@ -6,13 +6,13 @@ import io.github.resilience4j.decorators.Decorators;
 import io.github.resilience4j.micrometer.tagged.TaggedCircuitBreakerMetrics;
 import io.grpc.*;
 import io.micrometer.core.instrument.MeterRegistry;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.function.Supplier;
 
 public class ResilienceInterceptor implements ClientInterceptor {
-    private static final Logger LOG = LoggerFactory.getLogger(ResilienceInterceptor.class);
+    private static final Logger LOG = LogManager.getLogger("APP");
     private final CircuitBreaker r4jCircuitBreaker;
 
     public ResilienceInterceptor(String circuitBreakerName,

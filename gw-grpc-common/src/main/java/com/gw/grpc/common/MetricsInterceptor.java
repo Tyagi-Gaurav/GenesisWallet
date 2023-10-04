@@ -1,25 +1,16 @@
 package com.gw.grpc.common;
 
 import com.gw.common.metrics.EndpointMetrics;
-import io.grpc.CallOptions;
-import io.grpc.Channel;
-import io.grpc.ClientCall;
-import io.grpc.ClientInterceptor;
-import io.grpc.ForwardingClientCall;
-import io.grpc.Metadata;
-import io.grpc.MethodDescriptor;
-import io.grpc.ServerCall;
-import io.grpc.ServerCallHandler;
-import io.grpc.ServerInterceptor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.grpc.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
 @Component
 public class MetricsInterceptor implements ClientInterceptor, ServerInterceptor {
-    private static final Logger LOG = LoggerFactory.getLogger(MetricsInterceptor.class);
+    private static final Logger LOG = LogManager.getLogger("APP");
 
     private static final String CORRELATION_ID = "X-REQUEST_ID";
     private final EndpointMetrics.Histogram serverGrpcDuration;

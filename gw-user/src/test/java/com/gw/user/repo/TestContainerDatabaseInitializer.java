@@ -20,7 +20,6 @@ public class TestContainerDatabaseInitializer implements ApplicationContextIniti
                 .withEnv("MONGO_INITDB_ROOT_PASSWORD", MONGO_DB_PASSWORD)
                 .withEnv("MONGO_INITDB_DATABASE", MONGO_DB_NAME)
                 .withExposedPorts(27017);
-        ;
     }
 
     @Override

@@ -5,10 +5,12 @@ import org.junit.jupiter.api.Test;
 
 import javax.annotation.processing.Processor;
 import javax.tools.*;
+import javax.tools.JavaCompiler.CompilationTask;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import static java.nio.file.Files.walk;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class GenerateBuilderAnnotationProcessorTest {
@@ -20,7 +22,7 @@ class GenerateBuilderAnnotationProcessorTest {
         String absolutePath = directoryPath.getAbsolutePath();
         String filePath = absolutePath + "/" + TestRecordWithAnnotation.class.getCanonicalName().replace(".", "/") + ".java";
         File pathToGeneratedBuilder = compile(new GenerateBuilderAnnotationProcessor(), new File(filePath));
-        assertThat(java.nio.file.Files.walk(pathToGeneratedBuilder.toPath())
+        assertThat(walk(pathToGeneratedBuilder.toPath())
                 .anyMatch(path -> path.endsWith(TestRecordWithAnnotation.class.getSimpleName()+"Builder.java"))).isTrue();
     }
 
@@ -31,7 +33,7 @@ class GenerateBuilderAnnotationProcessorTest {
         String absolutePath = directoryPath.getAbsolutePath();
         String filePath = absolutePath + "/" + TestRecordWithoutAnnotation.class.getCanonicalName().replace(".", "/") + ".java";
         File pathToGeneratedBuilder = compile(new GenerateBuilderAnnotationProcessor(), new File(filePath));
-        assertThat(java.nio.file.Files.walk(pathToGeneratedBuilder.toPath())
+        assertThat(walk(pathToGeneratedBuilder.toPath())
                 .anyMatch(path -> path.endsWith(TestRecordWithoutAnnotation.class.getSimpleName()+"Builder.java"))).isFalse();
     }
 
@@ -43,7 +45,7 @@ class GenerateBuilderAnnotationProcessorTest {
         String filePath = absolutePath + "/" + TestClassWithAnnotation.class.getCanonicalName().replace(".", "/") + ".java";
         compile(new GenerateBuilderAnnotationProcessor(), new File(filePath));
         File pathToGeneratedBuilder = compile(new GenerateBuilderAnnotationProcessor(), new File(filePath));
-        assertThat(java.nio.file.Files.walk(pathToGeneratedBuilder.toPath())
+        assertThat(walk(pathToGeneratedBuilder.toPath())
                 .anyMatch(path -> path.endsWith(TestRecordWithoutAnnotation.class.getSimpleName()+"Builder.java"))).isFalse();
     }
 
@@ -55,7 +57,7 @@ class GenerateBuilderAnnotationProcessorTest {
         File e1 = Files.newTemporaryFolder();
         fileManager.setLocation(StandardLocation.CLASS_OUTPUT, List.of(e1));
 
-        JavaCompiler.CompilationTask task = compiler.getTask(null, fileManager, diagnostics, null, null, javaFileObjects);
+        CompilationTask task = compiler.getTask(null, fileManager, diagnostics, null, null, javaFileObjects);
         task.setProcessors(List.of(processor));
         boolean success = task.call();
         for (Diagnostic<? extends JavaFileObject> diagnostic : diagnostics.getDiagnostics()) {
