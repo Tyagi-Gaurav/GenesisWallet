@@ -28,12 +28,12 @@ services:
     depends_on:
       - gw-user-app
       - gw-security
-      - gw-ui
+      - ui
     build:
       context: gw-api-gateway
     environment:
       - USER_HOST=local.user-app
-      - UI_HOST=local.gw-ui
+      - UI_HOST=local.ui
       - UI_ACTUATOR_PORT=8081
       - UI_APP_PORT=8080
       - USER_APP_PORT=9090
@@ -45,10 +45,10 @@ services:
     networks:
       - overlay
 
-  gw-ui:
-    container_name: local.gw-ui
+  ui:
+    container_name: local.ui
     build:
-      context: gw-ui
+      context: ui
     ports:
       - "8080:8080"
       - "8081:8081"

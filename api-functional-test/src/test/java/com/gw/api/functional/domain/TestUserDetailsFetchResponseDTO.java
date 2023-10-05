@@ -7,6 +7,4 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @JsonDeserialize
 public record TestUserDetailsFetchResponseDTO(String firstName,
                                               String lastName,
-                                              String dateOfBirth, //Format: dd/mm/yyyy
-                                              TestGender gender,
-                                              String homeCountry) {}
+                                              String dateOfBirth) {}

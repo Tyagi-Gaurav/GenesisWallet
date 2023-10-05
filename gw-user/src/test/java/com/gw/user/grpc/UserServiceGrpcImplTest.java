@@ -101,8 +101,6 @@ class UserServiceGrpcImplTest {
         assertThat(userDetailsGrpcResponseDTO.getDateOfBirth()).isEqualTo(user.dateOfBirth());
         assertThat(userDetailsGrpcResponseDTO.getFirstName()).isEqualTo(user.firstName());
         assertThat(userDetailsGrpcResponseDTO.getLastName()).isEqualTo(user.lastName());
-        assertThat(userDetailsGrpcResponseDTO.getGender()).isEqualTo(toGrpcGender(user.gender()));
-        assertThat(userDetailsGrpcResponseDTO.getHomeCountry()).isEqualTo(user.homeCountry());
         assertThat(userDetailsGrpcResponseDTO.getId()).isEqualTo(user.id().toString());
     }
 

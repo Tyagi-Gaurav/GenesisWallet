@@ -6,8 +6,8 @@ Feature: System access
 
   Scenario: When trying to login with bad media type should get 404
     Given a user attempts to create a new account with following details
-      | firstName | lastName | userName | password | dateOfBirth | gender | homeCountry |
-      | bcssdf    | defdsfdf | <random> | <random> | 19/03/1972  | MALE   | AUS         |
+      | firstName | lastName | userName | password | dateOfBirth |
+      | bcssdf    | defdsfdf | <random> | <random> | 19/03/1972  |
     Then the response should be received with HTTP status code 201
     When the user attempts to login using a bad media type
     Then the response should be received with HTTP status code 404

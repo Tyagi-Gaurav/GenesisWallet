@@ -82,8 +82,6 @@ public class ScenarioExecutor {
             assertThat(userDetailsResponseDTO.firstName(), is(equalTo(userCreateRequestDTO.firstName())));
             assertThat(userDetailsResponseDTO.lastName(), is(equalTo(userCreateRequestDTO.lastName())));
             assertThat(userDetailsResponseDTO.dateOfBirth(), is(equalTo(userCreateRequestDTO.dateOfBirth())));
-            assertThat(userDetailsResponseDTO.gender(), is(equalTo(userCreateRequestDTO.gender())));
-            assertThat(userDetailsResponseDTO.homeCountry(), is(equalTo(userCreateRequestDTO.homeCountry())));
         };
     }
 
@@ -94,8 +92,6 @@ public class ScenarioExecutor {
             assertThat(userDetailsFetchResponseDTO.firstName(), is(equalTo(userCreateRequestDTO.firstName())));
             assertThat(userDetailsFetchResponseDTO.lastName(), is(equalTo(userCreateRequestDTO.lastName())));
             assertThat(userDetailsFetchResponseDTO.dateOfBirth(), is(equalTo(userCreateRequestDTO.dateOfBirth())));
-            assertThat(userDetailsFetchResponseDTO.gender(), is(equalTo(userCreateRequestDTO.gender())));
-            assertThat(userDetailsFetchResponseDTO.homeCountry(), is(equalTo(userCreateRequestDTO.homeCountry())));
         };
     }
 

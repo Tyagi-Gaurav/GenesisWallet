@@ -42,8 +42,6 @@ class UserCreateResourceTest {
                 userCreateRequestDTO.userName(),
                 userCreateRequestDTO.password(),
                 userCreateRequestDTO.dateOfBirth(),
-                userCreateRequestDTO.gender(),
-                userCreateRequestDTO.homeCountry(),
                 Role.REGISTERED_USER.name());
 
         when(userService.addUser(refEq(user, "userId")))

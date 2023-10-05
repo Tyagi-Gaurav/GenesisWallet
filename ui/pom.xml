@@ -9,7 +9,7 @@
         <artifactId>genesis</artifactId>
     </parent>
 
-    <artifactId>gw-ui</artifactId>
+    <artifactId>ui</artifactId>
     <packaging>jar</packaging>
 
     <build>

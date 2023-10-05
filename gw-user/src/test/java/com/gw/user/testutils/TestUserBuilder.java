@@ -1,7 +1,6 @@
 package com.gw.user.testutils;
 
 import com.gw.common.domain.ExternalUser;
-import com.gw.common.domain.Gender;
 import com.gw.user.domain.User;
 import com.gw.user.grpc.ExternalUserCreateGrpcRequestDTO;
 import com.gw.user.grpc.UserCreateGrpcRequestDTO;
@@ -19,8 +18,6 @@ public class TestUserBuilder {
     private String lastName = randomAlphabetic(10);
     private String salt = randomAlphabetic(10);
     private String dateOfBirth = "10/10/2010";
-    private Gender gender = Gender.FEMALE;
-    private String homeCountry = "AUS";
     private String authority = "USER";
 
     private TestUserBuilder() {
@@ -68,8 +65,6 @@ public class TestUserBuilder {
                 .withPassword(this.password)
                 .withSalt(this.salt)
                 .withDateOfBirth(this.dateOfBirth)
-                .withGender(this.gender)
-                .withHomeCountry(this.homeCountry)
                 .withRole(this.authority)
                 .build();
     }
@@ -80,9 +75,7 @@ public class TestUserBuilder {
                 .setFirstName(user.firstName())
                 .setLastName(user.lastName())
                 .setDateOfBirth(user.dateOfBirth())
-                .setGender(toGrpcGender(user.gender()))
                 .setPassword(user.password())
-                .setHomeCountry(user.homeCountry())
                 .build();
     }
 
@@ -90,17 +83,8 @@ public class TestUserBuilder {
         return ExternalUserCreateGrpcRequestDTO.newBuilder()
                 .setFirstName(externalUser.firstName())
                 .setLastName(externalUser.lastName())
-                .setGender(toGrpcGender(externalUser.gender()))
                 .setEmail(externalUser.userName())
                 .setExternalSystem(externalUser.externalSystem())
                 .build();
-    }
-
-    public static com.gw.user.grpc.Gender toGrpcGender(Gender gender) {
-        return switch(gender) {
-            case MALE -> com.gw.user.grpc.Gender.GENDER_MALE;
-            case FEMALE -> com.gw.user.grpc.Gender.GENDER_FEMALE;
-            case UNSPECIFIED -> com.gw.user.grpc.Gender.GENDER_UNSPECIFIED;
-        };
     }
 }

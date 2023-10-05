@@ -1,6 +1,5 @@
 package com.gw.user.config;
 
-import com.gw.common.domain.Gender;
 import com.gw.common.util.TokenManager;
 import com.gw.user.cache.CacheManager;
 import com.gw.user.domain.User;
@@ -43,8 +42,6 @@ class AuthenticationManagerTest {
             "",
             "",
             "01/01/1989",
-            Gender.FEMALE,
-            "GBR",
             "ADMIN");
     private final static String KEY_256_BIT = "8A6872AD13BEC411DAC9746C7FEDB8A6872AD13BEC411DAC9746C7FEDB";
 

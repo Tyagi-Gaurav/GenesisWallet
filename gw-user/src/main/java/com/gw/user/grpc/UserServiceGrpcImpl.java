@@ -2,7 +2,6 @@ package com.gw.user.grpc;
 
 import com.google.protobuf.Empty;
 import com.gw.common.domain.ExternalUser;
-import com.gw.common.domain.Gender;
 import com.gw.user.domain.User;
 import com.gw.user.service.UserService;
 import io.grpc.stub.StreamObserver;
@@ -29,9 +28,7 @@ public class UserServiceGrpcImpl extends UserServiceGrpc.UserServiceImplBase {
                         .setLastName(user.lastName())
                         .setUserName(user.userName())
                         .setDateOfBirth(user.dateOfBirth())
-                        .setHomeCountry(user.homeCountry())
                         .setId(user.id())
-                        .setGender(toGrpcGender(user.gender()))
                         .build())
                 .subscribe(resp -> {
                     responseObserver.onNext(resp);
@@ -76,8 +73,6 @@ public class UserServiceGrpcImpl extends UserServiceGrpc.UserServiceImplBase {
                 request.getPassword(),
                 null,
                 request.getDateOfBirth(),
-                toDomainGender(request.getGender()),
-                request.getHomeCountry(),
                 "REGISTERED_USER");
     }
 
@@ -92,24 +87,6 @@ public class UserServiceGrpcImpl extends UserServiceGrpc.UserServiceImplBase {
                 request.getTokenType(),
                 request.getTokenExpiryTime(),
                 request.getExternalSystem(),
-                request.getDateOfBirth(),
-                toDomainGender(request.getGender()),
-                request.getHomeCountry());
-    }
-
-    private Gender toDomainGender(com.gw.user.grpc.Gender gender) {
-        return switch (gender) {
-            case GENDER_MALE -> Gender.MALE;
-            case GENDER_FEMALE -> Gender.FEMALE;
-            default -> Gender.UNSPECIFIED;
-        };
-    }
-
-    private com.gw.user.grpc.Gender toGrpcGender(Gender gender) {
-        return switch (gender) {
-            case MALE -> com.gw.user.grpc.Gender.GENDER_MALE;
-            case FEMALE -> com.gw.user.grpc.Gender.GENDER_FEMALE;
-            case UNSPECIFIED -> com.gw.user.grpc.Gender.GENDER_UNSPECIFIED;
-        };
+                request.getDateOfBirth());
     }
 }

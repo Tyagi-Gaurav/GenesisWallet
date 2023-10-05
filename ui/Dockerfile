@@ -1,6 +1,6 @@
 FROM chonku/java:v0.1.8
 
-ADD target/gw-ui-DEV-SNAPSHOT.jar /data/ui.jar
+ADD target/ui-DEV-SNAPSHOT.jar /data/ui.jar
 
 COPY ./startup.sh /data/startup.sh
 

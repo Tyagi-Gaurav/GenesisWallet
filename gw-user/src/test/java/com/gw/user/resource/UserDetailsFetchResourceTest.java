@@ -40,8 +40,6 @@ class UserDetailsFetchResourceTest {
                 userCreateRequestDTO.userName(),
                 userCreateRequestDTO.password(),
                 userCreateRequestDTO.dateOfBirth(),
-                userCreateRequestDTO.gender(),
-                userCreateRequestDTO.homeCountry(),
                 Role.REGISTERED_USER.name());
 
         when(userService.findUserBy(userId))
@@ -51,9 +49,7 @@ class UserDetailsFetchResourceTest {
                 .expectNext(new UserDetailsFetchResponseDTO(
                         userCreateRequestDTO.firstName(),
                         userCreateRequestDTO.lastName(),
-                        userCreateRequestDTO.dateOfBirth(),
-                        userCreateRequestDTO.gender(),
-                        userCreateRequestDTO.homeCountry()
+                        userCreateRequestDTO.dateOfBirth()
                 ))
                 .verifyComplete();
     }

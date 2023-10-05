@@ -1,7 +1,6 @@
 package com.gw.user.testutils;
 
 import com.gw.common.domain.ExternalUser;
-import com.gw.common.domain.Gender;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -15,8 +14,6 @@ public class ExternalUserBuilder {
     private String firstName = randomAlphabetic(10);
     private String lastName = randomAlphabetic(10);
     private String dateOfBirth = "10/10/2010";
-    private Gender gender = Gender.FEMALE;
-    private String homeCountry = "AUS";
     private String locale = "en";
     private String pictureUrl = randomAlphabetic(10);
     private String tokenValue = randomAlphabetic(10);
@@ -42,8 +39,6 @@ public class ExternalUserBuilder {
                 tokenType,
                 tokenExpiryTime,
                 externalSystem,
-                dateOfBirth,
-                gender,
-                homeCountry);
+                dateOfBirth);
     }
 }

@@ -43,9 +43,7 @@ public class UserSteps implements En {
                             actualOrRandom(testAccountCreateRequestDTO.password(), 6),
                             testAccountCreateRequestDTO.firstName(),
                             testAccountCreateRequestDTO.lastName(),
-                            testAccountCreateRequestDTO.dateOfBirth(),
-                            testAccountCreateRequestDTO.gender(),
-                            testAccountCreateRequestDTO.homeCountry()
+                            testAccountCreateRequestDTO.dateOfBirth()
                     );
 
                     scenarioContext.storeCredentialsRequest(testAccountCreateRequestDTO);
@@ -59,9 +57,7 @@ public class UserSteps implements En {
                             RandomStringUtils.randomAlphabetic(6),
                             RandomStringUtils.randomAlphabetic(6),
                             RandomStringUtils.randomAlphabetic(6),
-                            "12/04/1990",
-                            TestGender.MALE,
-                            "AUS");
+                            "12/04/1990");
 
                     scenarioContext.storeCredentialsRequest(testAccountCreateRequestDTO);
                     testAccountCreateResource.create(testAccountCreateRequestDTO);
@@ -77,9 +73,7 @@ public class UserSteps implements En {
                             RandomStringUtils.randomAlphabetic(6),
                             RandomStringUtils.randomAlphabetic(6),
                             RandomStringUtils.randomAlphabetic(6),
-                            "12/04/1990",
-                            TestGender.MALE,
-                            "AUS");
+                            "12/04/1990");
 
                     scenarioContext.storeCredentialsRequest(testAccountCreateRequestDTO);
                     //userManagementResource.create(testAccountCreateRequestDTO);
@@ -105,9 +99,7 @@ public class UserSteps implements En {
                     actualOrRandom(testAccountCreateRequestDTO.password(), 6),
                     testAccountCreateRequestDTO.firstName(),
                     testAccountCreateRequestDTO.lastName(),
-                    testAccountCreateRequestDTO.dateOfBirth(),
-                    testAccountCreateRequestDTO.gender(),
-                    testAccountCreateRequestDTO.homeCountry()
+                    testAccountCreateRequestDTO.dateOfBirth()
             );
 
             scenarioContext.storeCredentialsRequest(testAccountCreateRequestDTO);
