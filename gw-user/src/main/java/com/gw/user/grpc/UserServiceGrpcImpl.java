@@ -79,8 +79,6 @@ public class UserServiceGrpcImpl extends UserServiceGrpc.UserServiceImplBase {
     private ExternalUser createExternalUserFrom(ExternalUserCreateGrpcRequestDTO request) {
         return new ExternalUser(UUID.randomUUID(),
                 request.getEmail(),
-                request.getLocale(),
-                request.getPictureUrl(),
                 request.getFirstName(),
                 request.getLastName(),
                 request.getTokenValue(),

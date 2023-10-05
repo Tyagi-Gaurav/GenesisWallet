@@ -14,8 +14,6 @@ public class ExternalUserBuilder {
     private String firstName = randomAlphabetic(10);
     private String lastName = randomAlphabetic(10);
     private String dateOfBirth = "10/10/2010";
-    private String locale = "en";
-    private String pictureUrl = randomAlphabetic(10);
     private String tokenValue = randomAlphabetic(10);
     private String tokenType = randomAlphabetic(10);
     private long tokenExpiryTime = Instant.now().plusSeconds(10).toEpochMilli();
@@ -31,8 +29,6 @@ public class ExternalUserBuilder {
     public ExternalUser build() {
         return new ExternalUser(id,
                 email,
-                locale,
-                pictureUrl,
                 firstName,
                 lastName,
                 tokenValue,
