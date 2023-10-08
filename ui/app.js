@@ -20,22 +20,6 @@ console.log("Package Definition: " + packageDefinition);
 const userServiceObject = grpcLibrary.loadPackageDefinition(packageDefinition).com.gw.user.grpc;
 var userServiceClient = new userServiceObject.UserService('localhost:19090', grpcLibrary.credentials.createInsecure());
 
-console.log("Result: " + userServiceClient);
-
-userServiceClient.createUser({
-  userName : "testGrpc",
-  password : "abc",
-  firstName : "First",
-  lastName : "Last",
-  dateOfBirth : "15/10/2005"
-}, function(err, feature) {
-  if (err) {
-    console.log("Error occurred: " + err);
-  } else {
-    console.log("Feature : " + JSON.stringify(feature));
-  }
-});
-
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.listen(port, () => {
@@ -51,6 +35,18 @@ app.get("/register", (req, res) => {
 });
 
 app.post("/register", (req, res) => {
-  //const response = axios.get("https://bored-api.appbrewery.com/random");
-  res.render("secrets.ejs");
+  userServiceClient.createUser({
+    userName : req.body.username,
+    password : req.body.password,
+    firstName : req.body.firstName,
+    lastName : req.body.lastName
+  }, function(err, feature) {
+    if (err) {
+      console.log("Error occurred: " + err);
+    } else {
+      console.log("External User created result : " + JSON.stringify(feature));
+    }
+  });
+  
+  res.render("welcome.ejs");
 });
