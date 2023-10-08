@@ -48,13 +48,24 @@ class UserServiceImplTest {
     }
 
     @Test
-    void findUserBy_shouldReturnUser() {
+    void findUserById_shouldReturnUser() {
         UUID userId = UUID.randomUUID();
         User user = aUser().build();
 
         when(userRepository.findUserById(userId)).thenReturn(Mono.just(user));
 
         StepVerifier.create(userService.findUserBy(userId))
+                .expectNext(user)
+                .verifyComplete();
+    }
+
+    @Test
+    void findUserByUsername_shouldReturnUser() {
+        User user = aUser().build();
+
+        when(userRepository.findUserByUserName(user.userName())).thenReturn(Mono.just(user));
+
+        StepVerifier.create(userService.findUserBy(user.userName()))
                 .expectNext(user)
                 .verifyComplete();
     }
@@ -107,7 +118,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void incremenRegistrationCounterOnAddExternalUser() {
+    void incrementRegistrationCounterOnAddExternalUser() {
         ExternalUser externalUser = ExternalUserBuilder.aExternalUser().build();
 
         when(userRepository.findExternalUserByUserName(externalUser.userName())).thenReturn(Mono.empty());

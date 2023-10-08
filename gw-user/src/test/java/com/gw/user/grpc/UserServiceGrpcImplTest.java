@@ -21,7 +21,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.util.UUID;
 
 import static com.gw.user.testutils.TestUserBuilder.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -86,19 +85,18 @@ class UserServiceGrpcImplTest {
     }
 
     @Test
-    void fetchUsersById()  {
+    void fetchUsersByUsername()  {
         User user = aUser().build();
-        when(userService.findUserBy(any(UUID.class))).thenReturn(Mono.just(user));
+        when(userService.findUserBy(user.userName())).thenReturn(Mono.just(user));
 
-        FetchUserDetailsByIdGrpcRequestDTO fetchUserDetailsByIdGrpcRequestDTO = FetchUserDetailsByIdGrpcRequestDTO.newBuilder()
-                .setId(user.id().toString())
+        FetchUserDetailsByUserNameGrpcRequestDTO fetchUserDetailsByUserNameGrpcRequestDTO = FetchUserDetailsByUserNameGrpcRequestDTO.newBuilder()
+                .setUserName(user.userName())
                 .build();
 
         UserDetailsGrpcResponseDTO userDetailsGrpcResponseDTO =
-                userServiceBlockingStub.fetchUsersById(fetchUserDetailsByIdGrpcRequestDTO);
+                userServiceBlockingStub.fetchUsersByUserName(fetchUserDetailsByUserNameGrpcRequestDTO);
 
         assertThat(userDetailsGrpcResponseDTO.getUserName()).isEqualTo(user.userName());
-        assertThat(userDetailsGrpcResponseDTO.getDateOfBirth()).isEqualTo(user.dateOfBirth());
         assertThat(userDetailsGrpcResponseDTO.getFirstName()).isEqualTo(user.firstName());
         assertThat(userDetailsGrpcResponseDTO.getLastName()).isEqualTo(user.lastName());
         assertThat(userDetailsGrpcResponseDTO.getId()).isEqualTo(user.id().toString());

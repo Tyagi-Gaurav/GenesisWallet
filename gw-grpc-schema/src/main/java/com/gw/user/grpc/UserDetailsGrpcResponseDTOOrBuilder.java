@@ -78,16 +78,4 @@ public interface UserDetailsGrpcResponseDTOOrBuilder extends
    */
   com.google.protobuf.ByteString
       getIdBytes();
-
-  /**
-   * <code>string dateOfBirth = 7;</code>
-   * @return The dateOfBirth.
-   */
-  java.lang.String getDateOfBirth();
-  /**
-   * <code>string dateOfBirth = 7;</code>
-   * @return The bytes for dateOfBirth.
-   */
-  com.google.protobuf.ByteString
-      getDateOfBirthBytes();
 }

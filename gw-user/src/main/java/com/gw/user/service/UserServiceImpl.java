@@ -27,7 +27,10 @@ public class UserServiceImpl implements UserService {
     private final SecureRandom secureRandom;
     private final UserRegistrationCounter userRegistrationCounter;
 
-    public UserServiceImpl(@Qualifier("documentDB") UserRepository userRepository, PasswordEncryptor passwordEncryptor, SecureRandom secureRandom, UserRegistrationCounter userRegistrationCounter) {
+    public UserServiceImpl(@Qualifier("documentDB") UserRepository userRepository,
+                           PasswordEncryptor passwordEncryptor,
+                           SecureRandom secureRandom,
+                           UserRegistrationCounter userRegistrationCounter) {
         this.userRepository = userRepository;
         this.passwordEncryptor = passwordEncryptor;
         this.secureRandom = secureRandom;
@@ -36,6 +39,12 @@ public class UserServiceImpl implements UserService {
 
     public Mono<User> findUserBy(UUID userId) {
         return userRepository.findUserById(userId);
+    }
+
+    @Override
+    public Mono<User> findUserBy(String userName) {
+        return userRepository.findUserByUserName(userName)
+                .switchIfEmpty(Mono.defer(Mono::empty));
     }
 
     @Override

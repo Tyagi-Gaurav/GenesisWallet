@@ -84,16 +84,4 @@ public interface ExternalUserCreateGrpcRequestDTOOrBuilder extends
    */
   com.google.protobuf.ByteString
       getExternalSystemBytes();
-
-  /**
-   * <code>string dateOfBirth = 8;</code>
-   * @return The dateOfBirth.
-   */
-  java.lang.String getDateOfBirth();
-  /**
-   * <code>string dateOfBirth = 8;</code>
-   * @return The bytes for dateOfBirth.
-   */
-  com.google.protobuf.ByteString
-      getDateOfBirthBytes();
 }

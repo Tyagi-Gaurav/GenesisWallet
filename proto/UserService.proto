@@ -12,15 +12,14 @@ message UserCreateGrpcRequestDTO {
   string password = 2;
   string firstName = 3;
   string lastName = 4;
-  string dateOfBirth = 5;
 }
 
 message UserCreateGrpcResponseDTO {
   bool created = 1;
 }
 
-message FetchUserDetailsByIdGrpcRequestDTO {
-  string id = 1;
+message FetchUserDetailsByUserNameGrpcRequestDTO {
+  string userName = 1;
 }
 
 message UserDetailsGrpcResponseDTO {
@@ -30,7 +29,6 @@ message UserDetailsGrpcResponseDTO {
   string lastName = 4;
   string role = 5;
   string id = 6;
-  string dateOfBirth = 7;
 }
 
 message ExternalUserCreateGrpcRequestDTO {
@@ -41,7 +39,6 @@ message ExternalUserCreateGrpcRequestDTO {
   string tokenType = 5;
   int64 tokenExpiryTime = 6;
   string externalSystem = 7;
-  string dateOfBirth = 8;
 }
 
 message ExternalUserCreateGrpcResponseDTO {
@@ -49,7 +46,7 @@ message ExternalUserCreateGrpcResponseDTO {
 }
 
 service UserService {
-  rpc fetchUsersById(FetchUserDetailsByIdGrpcRequestDTO) returns (UserDetailsGrpcResponseDTO);
+  rpc fetchUsersByUserName(FetchUserDetailsByUserNameGrpcRequestDTO) returns (UserDetailsGrpcResponseDTO);
   rpc createUser(UserCreateGrpcRequestDTO) returns (UserCreateGrpcResponseDTO);
   rpc createExternalUser(ExternalUserCreateGrpcRequestDTO) returns (ExternalUserCreateGrpcResponseDTO);
 }

@@ -19,8 +19,8 @@ public class MockUserService extends UserServiceGrpc.UserServiceImplBase {
     }
 
     @Override
-    public void fetchUsersById(FetchUserDetailsByIdGrpcRequestDTO request,
-                               StreamObserver<UserDetailsGrpcResponseDTO> responseObserver) {
+    public void fetchUsersByUserName(FetchUserDetailsByUserNameGrpcRequestDTO request,
+                                     StreamObserver<UserDetailsGrpcResponseDTO> responseObserver) {
         callReceived.set(true);
         responseObserver.onNext(userDetailsGrpcResponseDTO);
         responseObserver.onCompleted();

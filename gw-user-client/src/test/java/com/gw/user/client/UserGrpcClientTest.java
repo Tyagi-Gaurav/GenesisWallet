@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -55,16 +54,15 @@ class UserGrpcClientTest {
 
     @Test
     void fetchUsersByIdSync() {
-        FetchUserDetailsByIdGrpcRequestDTO fetchUserDetailsByIdGrpcRequestDTO = FetchUserDetailsByIdGrpcRequestDTO.newBuilder()
-                .setId(UUID.randomUUID().toString())
+        FetchUserDetailsByUserNameGrpcRequestDTO fetchUserDetailsByUserNameGrpcRequestDTO = FetchUserDetailsByUserNameGrpcRequestDTO.newBuilder()
+                .setUserName("some-user-name")
                 .build();
         UserDetailsGrpcResponseDTO expectedResult = UserDetailsGrpcResponseDTO.getDefaultInstance();
         mockUserService.shouldReturnResponse(expectedResult);
         UserDetailsGrpcResponseDTO userDetailsGrpcResponseDTO =
-                userGrpcClient.fetchUsersByIdSync(fetchUserDetailsByIdGrpcRequestDTO);
+                userGrpcClient.fetchUsersByUserNameSync(fetchUserDetailsByUserNameGrpcRequestDTO);
 
         assertThat(userDetailsGrpcResponseDTO.getUserName()).isEqualTo(expectedResult.getUserName());
-        assertThat(userDetailsGrpcResponseDTO.getDateOfBirth()).isEqualTo(expectedResult.getDateOfBirth());
         assertThat(userDetailsGrpcResponseDTO.getFirstName()).isEqualTo(expectedResult.getFirstName());
         assertThat(userDetailsGrpcResponseDTO.getLastName()).isEqualTo(expectedResult.getLastName());
         assertThat(userDetailsGrpcResponseDTO.getId()).isEqualTo(expectedResult.getId());
@@ -72,31 +70,30 @@ class UserGrpcClientTest {
 
     @Test
     void fetchUsersByIdSync_shouldGenerateClientMetric() {
-        FetchUserDetailsByIdGrpcRequestDTO fetchUserDetailsByIdGrpcRequestDTO = FetchUserDetailsByIdGrpcRequestDTO.newBuilder()
-                .setId(UUID.randomUUID().toString())
+        FetchUserDetailsByUserNameGrpcRequestDTO fetchUserDetailsByUserNameGrpcRequestDTO = FetchUserDetailsByUserNameGrpcRequestDTO.newBuilder()
+                .setUserName("some-user-name")
                 .build();
         UserDetailsGrpcResponseDTO expectedResult = UserDetailsGrpcResponseDTO.getDefaultInstance();
         mockUserService.shouldReturnResponse(expectedResult);
-        userGrpcClient.fetchUsersByIdSync(fetchUserDetailsByIdGrpcRequestDTO);
-        assertThat(meterRegistry.get("grpc_client_request_duration").tag("fullMethod", "com.gw.user.grpc.UserService/fetchUsersById").meter()).isNotNull();
+        userGrpcClient.fetchUsersByUserNameSync(fetchUserDetailsByUserNameGrpcRequestDTO);
+        assertThat(meterRegistry.get("grpc_client_request_duration").tag("fullMethod", "com.gw.user.grpc.UserService/fetchUsersByUserName").meter()).isNotNull();
     }
 
     @Test
     void fetchUsersByIdAsync() {
-        FetchUserDetailsByIdGrpcRequestDTO fetchUserDetailsByIdGrpcRequestDTO = FetchUserDetailsByIdGrpcRequestDTO.newBuilder()
-                .setId(UUID.randomUUID().toString())
+        FetchUserDetailsByUserNameGrpcRequestDTO fetchUserDetailsByUserNameGrpcRequestDTO = FetchUserDetailsByUserNameGrpcRequestDTO.newBuilder()
+                .setUserName("some-user-name")
                 .build();
         UserDetailsGrpcResponseDTO expectedResult = UserDetailsGrpcResponseDTO.getDefaultInstance();
         mockUserService.shouldReturnResponse(expectedResult);
         ListenableFuture<UserDetailsGrpcResponseDTO> userDetailsGrpcResponseDTOFuture =
-                userGrpcClient.fetchUsersByIdAsync(fetchUserDetailsByIdGrpcRequestDTO);
+                userGrpcClient.fetchUsersByIdAsync(fetchUserDetailsByUserNameGrpcRequestDTO);
 
         AtomicBoolean hasGotResponse = new AtomicBoolean(false);
         Futures.addCallback(userDetailsGrpcResponseDTOFuture, new FutureCallback<>() {
             @Override
             public void onSuccess(UserDetailsGrpcResponseDTO result) {
                 assertThat(result.getUserName()).isEqualTo(expectedResult.getUserName());
-                assertThat(result.getDateOfBirth()).isEqualTo(expectedResult.getDateOfBirth());
                 assertThat(result.getFirstName()).isEqualTo(expectedResult.getFirstName());
                 assertThat(result.getLastName()).isEqualTo(expectedResult.getLastName());
                 assertThat(result.getId()).isEqualTo(expectedResult.getId());
@@ -118,7 +115,6 @@ class UserGrpcClientTest {
         UserCreateGrpcRequestDTO userCreateGrpcRequestDTO = UserCreateGrpcRequestDTO.newBuilder()
                 .setUserName("username")
                 .setPassword("password")
-                .setDateOfBirth("01/01/2000")
                 .setFirstName("firstName")
                 .setLastName("lastName")
                 .build();
@@ -133,7 +129,6 @@ class UserGrpcClientTest {
         UserCreateGrpcRequestDTO userCreateGrpcRequestDTO = UserCreateGrpcRequestDTO.newBuilder()
                 .setUserName("username")
                 .setPassword("password")
-                .setDateOfBirth("01/01/2000")
                 .setFirstName("firstName")
                 .setLastName("lastName")
                 .build();
@@ -165,7 +160,6 @@ class UserGrpcClientTest {
     void createExternalUserSync() {
         ExternalUserCreateGrpcRequestDTO externalUserCreateGrpcRequestDTO = ExternalUserCreateGrpcRequestDTO.newBuilder()
                 .setEmail("test@test.com")
-                .setDateOfBirth("01/01/2000")
                 .setFirstName("firstName")
                 .setLastName("lastName")
                 .build();
@@ -178,7 +172,6 @@ class UserGrpcClientTest {
     void createExternalUserASync() {
         ExternalUserCreateGrpcRequestDTO externalUserCreateGrpcRequestDTO = ExternalUserCreateGrpcRequestDTO.newBuilder()
                 .setEmail("test@test.com")
-                .setDateOfBirth("01/01/2000")
                 .setFirstName("firstName")
                 .setLastName("lastName")
                 .build();

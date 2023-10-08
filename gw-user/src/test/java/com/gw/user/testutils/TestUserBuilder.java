@@ -17,7 +17,6 @@ public class TestUserBuilder {
     private String firstName = randomAlphabetic(10);
     private String lastName = randomAlphabetic(10);
     private String salt = randomAlphabetic(10);
-    private String dateOfBirth = "10/10/2010";
     private String authority = "USER";
 
     private TestUserBuilder() {
@@ -64,7 +63,6 @@ public class TestUserBuilder {
                 .withUserName(this.username)
                 .withPassword(this.password)
                 .withSalt(this.salt)
-                .withDateOfBirth(this.dateOfBirth)
                 .withRole(this.authority)
                 .build();
     }
@@ -74,7 +72,6 @@ public class TestUserBuilder {
                 .setUserName(user.userName())
                 .setFirstName(user.firstName())
                 .setLastName(user.lastName())
-                .setDateOfBirth(user.dateOfBirth())
                 .setPassword(user.password())
                 .build();
     }

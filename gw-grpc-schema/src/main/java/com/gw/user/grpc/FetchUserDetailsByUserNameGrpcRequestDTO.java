@@ -4,26 +4,26 @@
 package com.gw.user.grpc;
 
 /**
- * Protobuf type {@code com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO}
+ * Protobuf type {@code com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO}
  */
-public final class FetchUserDetailsByIdGrpcRequestDTO extends
+public final class FetchUserDetailsByUserNameGrpcRequestDTO extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO)
-    FetchUserDetailsByIdGrpcRequestDTOOrBuilder {
+    // @@protoc_insertion_point(message_implements:com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO)
+    FetchUserDetailsByUserNameGrpcRequestDTOOrBuilder {
 private static final long serialVersionUID = 0L;
-  // Use FetchUserDetailsByIdGrpcRequestDTO.newBuilder() to construct.
-  private FetchUserDetailsByIdGrpcRequestDTO(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+  // Use FetchUserDetailsByUserNameGrpcRequestDTO.newBuilder() to construct.
+  private FetchUserDetailsByUserNameGrpcRequestDTO(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private FetchUserDetailsByIdGrpcRequestDTO() {
-    id_ = "";
+  private FetchUserDetailsByUserNameGrpcRequestDTO() {
+    userName_ = "";
   }
 
   @java.lang.Override
   @SuppressWarnings({"unused"})
   protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
-    return new FetchUserDetailsByIdGrpcRequestDTO();
+    return new FetchUserDetailsByUserNameGrpcRequestDTO();
   }
 
   @java.lang.Override
@@ -33,49 +33,49 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.gw.user.grpc.UserManagementGrpc.internal_static_com_gw_user_grpc_FetchUserDetailsByIdGrpcRequestDTO_descriptor;
+    return com.gw.user.grpc.UserManagementGrpc.internal_static_com_gw_user_grpc_FetchUserDetailsByUserNameGrpcRequestDTO_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.gw.user.grpc.UserManagementGrpc.internal_static_com_gw_user_grpc_FetchUserDetailsByIdGrpcRequestDTO_fieldAccessorTable
+    return com.gw.user.grpc.UserManagementGrpc.internal_static_com_gw_user_grpc_FetchUserDetailsByUserNameGrpcRequestDTO_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO.class, com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO.Builder.class);
+            com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO.class, com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO.Builder.class);
   }
 
-  public static final int ID_FIELD_NUMBER = 1;
-  private volatile java.lang.Object id_;
+  public static final int USERNAME_FIELD_NUMBER = 1;
+  private volatile java.lang.Object userName_;
   /**
-   * <code>string id = 1;</code>
-   * @return The id.
+   * <code>string userName = 1;</code>
+   * @return The userName.
    */
   @java.lang.Override
-  public java.lang.String getId() {
-    java.lang.Object ref = id_;
+  public java.lang.String getUserName() {
+    java.lang.Object ref = userName_;
     if (ref instanceof java.lang.String) {
       return (java.lang.String) ref;
     } else {
       com.google.protobuf.ByteString bs = 
           (com.google.protobuf.ByteString) ref;
       java.lang.String s = bs.toStringUtf8();
-      id_ = s;
+      userName_ = s;
       return s;
     }
   }
   /**
-   * <code>string id = 1;</code>
-   * @return The bytes for id.
+   * <code>string userName = 1;</code>
+   * @return The bytes for userName.
    */
   @java.lang.Override
   public com.google.protobuf.ByteString
-      getIdBytes() {
-    java.lang.Object ref = id_;
+      getUserNameBytes() {
+    java.lang.Object ref = userName_;
     if (ref instanceof java.lang.String) {
       com.google.protobuf.ByteString b = 
           com.google.protobuf.ByteString.copyFromUtf8(
               (java.lang.String) ref);
-      id_ = b;
+      userName_ = b;
       return b;
     } else {
       return (com.google.protobuf.ByteString) ref;
@@ -96,8 +96,8 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(id_)) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, id_);
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(userName_)) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, userName_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -108,8 +108,8 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(id_)) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, id_);
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(userName_)) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, userName_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -121,13 +121,13 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO)) {
+    if (!(obj instanceof com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO)) {
       return super.equals(obj);
     }
-    com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO other = (com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO) obj;
+    com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO other = (com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO) obj;
 
-    if (!getId()
-        .equals(other.getId())) return false;
+    if (!getUserName()
+        .equals(other.getUserName())) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -139,76 +139,76 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + ID_FIELD_NUMBER;
-    hash = (53 * hash) + getId().hashCode();
+    hash = (37 * hash) + USERNAME_FIELD_NUMBER;
+    hash = (53 * hash) + getUserName().hashCode();
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
 
-  public static com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO parseFrom(
+  public static com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO parseFrom(
+  public static com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO parseFrom(
+  public static com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO parseFrom(
+  public static com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO parseFrom(byte[] data)
+  public static com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO parseFrom(
+  public static com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO parseFrom(java.io.InputStream input)
+  public static com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO parseFrom(
+  public static com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO parseDelimitedFrom(java.io.InputStream input)
+  public static com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO parseDelimitedFrom(
+  public static com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO parseFrom(
+  public static com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO parseFrom(
+  public static com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -221,7 +221,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO prototype) {
+  public static Builder newBuilder(com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -237,26 +237,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO}
+   * Protobuf type {@code com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO)
-      com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTOOrBuilder {
+      // @@protoc_insertion_point(builder_implements:com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO)
+      com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTOOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.gw.user.grpc.UserManagementGrpc.internal_static_com_gw_user_grpc_FetchUserDetailsByIdGrpcRequestDTO_descriptor;
+      return com.gw.user.grpc.UserManagementGrpc.internal_static_com_gw_user_grpc_FetchUserDetailsByUserNameGrpcRequestDTO_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.gw.user.grpc.UserManagementGrpc.internal_static_com_gw_user_grpc_FetchUserDetailsByIdGrpcRequestDTO_fieldAccessorTable
+      return com.gw.user.grpc.UserManagementGrpc.internal_static_com_gw_user_grpc_FetchUserDetailsByUserNameGrpcRequestDTO_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO.class, com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO.Builder.class);
+              com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO.class, com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO.Builder.class);
     }
 
-    // Construct using com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO.newBuilder()
+    // Construct using com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO.newBuilder()
     private Builder() {
 
     }
@@ -269,7 +269,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      id_ = "";
+      userName_ = "";
 
       return this;
     }
@@ -277,17 +277,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.gw.user.grpc.UserManagementGrpc.internal_static_com_gw_user_grpc_FetchUserDetailsByIdGrpcRequestDTO_descriptor;
+      return com.gw.user.grpc.UserManagementGrpc.internal_static_com_gw_user_grpc_FetchUserDetailsByUserNameGrpcRequestDTO_descriptor;
     }
 
     @java.lang.Override
-    public com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO getDefaultInstanceForType() {
-      return com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO.getDefaultInstance();
+    public com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO getDefaultInstanceForType() {
+      return com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO.getDefaultInstance();
     }
 
     @java.lang.Override
-    public com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO build() {
-      com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO result = buildPartial();
+    public com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO build() {
+      com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -295,9 +295,9 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO buildPartial() {
-      com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO result = new com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO(this);
-      result.id_ = id_;
+    public com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO buildPartial() {
+      com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO result = new com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO(this);
+      result.userName_ = userName_;
       onBuilt();
       return result;
     }
@@ -336,18 +336,18 @@ private static final long serialVersionUID = 0L;
     }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO) {
-        return mergeFrom((com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO)other);
+      if (other instanceof com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO) {
+        return mergeFrom((com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO other) {
-      if (other == com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO.getDefaultInstance()) return this;
-      if (!other.getId().isEmpty()) {
-        id_ = other.id_;
+    public Builder mergeFrom(com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO other) {
+      if (other == com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO.getDefaultInstance()) return this;
+      if (!other.getUserName().isEmpty()) {
+        userName_ = other.userName_;
         onChanged();
       }
       this.mergeUnknownFields(other.getUnknownFields());
@@ -377,7 +377,7 @@ private static final long serialVersionUID = 0L;
               done = true;
               break;
             case 10: {
-              id_ = input.readStringRequireUtf8();
+              userName_ = input.readStringRequireUtf8();
 
               break;
             } // case 10
@@ -397,78 +397,78 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.lang.Object id_ = "";
+    private java.lang.Object userName_ = "";
     /**
-     * <code>string id = 1;</code>
-     * @return The id.
+     * <code>string userName = 1;</code>
+     * @return The userName.
      */
-    public java.lang.String getId() {
-      java.lang.Object ref = id_;
+    public java.lang.String getUserName() {
+      java.lang.Object ref = userName_;
       if (!(ref instanceof java.lang.String)) {
         com.google.protobuf.ByteString bs =
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        id_ = s;
+        userName_ = s;
         return s;
       } else {
         return (java.lang.String) ref;
       }
     }
     /**
-     * <code>string id = 1;</code>
-     * @return The bytes for id.
+     * <code>string userName = 1;</code>
+     * @return The bytes for userName.
      */
     public com.google.protobuf.ByteString
-        getIdBytes() {
-      java.lang.Object ref = id_;
+        getUserNameBytes() {
+      java.lang.Object ref = userName_;
       if (ref instanceof String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        id_ = b;
+        userName_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
     /**
-     * <code>string id = 1;</code>
-     * @param value The id to set.
+     * <code>string userName = 1;</code>
+     * @param value The userName to set.
      * @return This builder for chaining.
      */
-    public Builder setId(
+    public Builder setUserName(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
   }
   
-      id_ = value;
+      userName_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>string id = 1;</code>
+     * <code>string userName = 1;</code>
      * @return This builder for chaining.
      */
-    public Builder clearId() {
+    public Builder clearUserName() {
       
-      id_ = getDefaultInstance().getId();
+      userName_ = getDefaultInstance().getUserName();
       onChanged();
       return this;
     }
     /**
-     * <code>string id = 1;</code>
-     * @param value The bytes for id to set.
+     * <code>string userName = 1;</code>
+     * @param value The bytes for userName to set.
      * @return This builder for chaining.
      */
-    public Builder setIdBytes(
+    public Builder setUserNameBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
   }
   checkByteStringIsUtf8(value);
       
-      id_ = value;
+      userName_ = value;
       onChanged();
       return this;
     }
@@ -485,23 +485,23 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO)
+    // @@protoc_insertion_point(builder_scope:com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO)
   }
 
-  // @@protoc_insertion_point(class_scope:com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO)
-  private static final com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO)
+  private static final com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO();
+    DEFAULT_INSTANCE = new com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO();
   }
 
-  public static com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO getDefaultInstance() {
+  public static com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<FetchUserDetailsByIdGrpcRequestDTO>
-      PARSER = new com.google.protobuf.AbstractParser<FetchUserDetailsByIdGrpcRequestDTO>() {
+  private static final com.google.protobuf.Parser<FetchUserDetailsByUserNameGrpcRequestDTO>
+      PARSER = new com.google.protobuf.AbstractParser<FetchUserDetailsByUserNameGrpcRequestDTO>() {
     @java.lang.Override
-    public FetchUserDetailsByIdGrpcRequestDTO parsePartialFrom(
+    public FetchUserDetailsByUserNameGrpcRequestDTO parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -520,17 +520,17 @@ private static final long serialVersionUID = 0L;
     }
   };
 
-  public static com.google.protobuf.Parser<FetchUserDetailsByIdGrpcRequestDTO> parser() {
+  public static com.google.protobuf.Parser<FetchUserDetailsByUserNameGrpcRequestDTO> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<FetchUserDetailsByIdGrpcRequestDTO> getParserForType() {
+  public com.google.protobuf.Parser<FetchUserDetailsByUserNameGrpcRequestDTO> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.gw.user.grpc.FetchUserDetailsByIdGrpcRequestDTO getDefaultInstanceForType() {
+  public com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

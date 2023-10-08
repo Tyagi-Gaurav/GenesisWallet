@@ -20,14 +20,14 @@ public class UserServiceGrpcImpl extends UserServiceGrpc.UserServiceImplBase {
     }
 
     @Override
-    public void fetchUsersById(FetchUserDetailsByIdGrpcRequestDTO request, StreamObserver<UserDetailsGrpcResponseDTO> responseObserver) {
+    public void fetchUsersByUserName(FetchUserDetailsByUserNameGrpcRequestDTO request,
+                                     StreamObserver<UserDetailsGrpcResponseDTO> responseObserver) {
         LOG.info("Inside GRPC fetch Users By Id");
-        userService.findUserBy(UUID.fromString(request.getId()))
+        userService.findUserBy(request.getUserName())
                 .map(user -> UserDetailsGrpcResponseDTO.newBuilder()
                         .setFirstName(user.firstName())
                         .setLastName(user.lastName())
                         .setUserName(user.userName())
-                        .setDateOfBirth(user.dateOfBirth())
                         .setId(user.id())
                         .build())
                 .subscribe(resp -> {
@@ -72,7 +72,6 @@ public class UserServiceGrpcImpl extends UserServiceGrpc.UserServiceImplBase {
                 request.getUserName(),
                 request.getPassword(),
                 null,
-                request.getDateOfBirth(),
                 "REGISTERED_USER");
     }
 
@@ -84,7 +83,6 @@ public class UserServiceGrpcImpl extends UserServiceGrpc.UserServiceImplBase {
                 request.getTokenValue(),
                 request.getTokenType(),
                 request.getTokenExpiryTime(),
-                request.getExternalSystem(),
-                request.getDateOfBirth());
+                request.getExternalSystem());
     }
 }

@@ -22,7 +22,6 @@ private static final long serialVersionUID = 0L;
     tokenValue_ = "";
     tokenType_ = "";
     externalSystem_ = "";
-    dateOfBirth_ = "";
   }
 
   @java.lang.Override
@@ -289,44 +288,6 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int DATEOFBIRTH_FIELD_NUMBER = 8;
-  private volatile java.lang.Object dateOfBirth_;
-  /**
-   * <code>string dateOfBirth = 8;</code>
-   * @return The dateOfBirth.
-   */
-  @java.lang.Override
-  public java.lang.String getDateOfBirth() {
-    java.lang.Object ref = dateOfBirth_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      dateOfBirth_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string dateOfBirth = 8;</code>
-   * @return The bytes for dateOfBirth.
-   */
-  @java.lang.Override
-  public com.google.protobuf.ByteString
-      getDateOfBirthBytes() {
-    java.lang.Object ref = dateOfBirth_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      dateOfBirth_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
-  }
-
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -362,9 +323,6 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(externalSystem_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 7, externalSystem_);
     }
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(dateOfBirth_)) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 8, dateOfBirth_);
-    }
     getUnknownFields().writeTo(output);
   }
 
@@ -396,9 +354,6 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(externalSystem_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, externalSystem_);
     }
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(dateOfBirth_)) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, dateOfBirth_);
-    }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
@@ -428,8 +383,6 @@ private static final long serialVersionUID = 0L;
         != other.getTokenExpiryTime()) return false;
     if (!getExternalSystem()
         .equals(other.getExternalSystem())) return false;
-    if (!getDateOfBirth()
-        .equals(other.getDateOfBirth())) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -456,8 +409,6 @@ private static final long serialVersionUID = 0L;
         getTokenExpiryTime());
     hash = (37 * hash) + EXTERNALSYSTEM_FIELD_NUMBER;
     hash = (53 * hash) + getExternalSystem().hashCode();
-    hash = (37 * hash) + DATEOFBIRTH_FIELD_NUMBER;
-    hash = (53 * hash) + getDateOfBirth().hashCode();
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -600,8 +551,6 @@ private static final long serialVersionUID = 0L;
 
       externalSystem_ = "";
 
-      dateOfBirth_ = "";
-
       return this;
     }
 
@@ -635,7 +584,6 @@ private static final long serialVersionUID = 0L;
       result.tokenType_ = tokenType_;
       result.tokenExpiryTime_ = tokenExpiryTime_;
       result.externalSystem_ = externalSystem_;
-      result.dateOfBirth_ = dateOfBirth_;
       onBuilt();
       return result;
     }
@@ -711,10 +659,6 @@ private static final long serialVersionUID = 0L;
         externalSystem_ = other.externalSystem_;
         onChanged();
       }
-      if (!other.getDateOfBirth().isEmpty()) {
-        dateOfBirth_ = other.dateOfBirth_;
-        onChanged();
-      }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
@@ -776,11 +720,6 @@ private static final long serialVersionUID = 0L;
 
               break;
             } // case 58
-            case 66: {
-              dateOfBirth_ = input.readStringRequireUtf8();
-
-              break;
-            } // case 66
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -1280,82 +1219,6 @@ private static final long serialVersionUID = 0L;
   checkByteStringIsUtf8(value);
       
       externalSystem_ = value;
-      onChanged();
-      return this;
-    }
-
-    private java.lang.Object dateOfBirth_ = "";
-    /**
-     * <code>string dateOfBirth = 8;</code>
-     * @return The dateOfBirth.
-     */
-    public java.lang.String getDateOfBirth() {
-      java.lang.Object ref = dateOfBirth_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        dateOfBirth_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <code>string dateOfBirth = 8;</code>
-     * @return The bytes for dateOfBirth.
-     */
-    public com.google.protobuf.ByteString
-        getDateOfBirthBytes() {
-      java.lang.Object ref = dateOfBirth_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        dateOfBirth_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string dateOfBirth = 8;</code>
-     * @param value The dateOfBirth to set.
-     * @return This builder for chaining.
-     */
-    public Builder setDateOfBirth(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      dateOfBirth_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string dateOfBirth = 8;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearDateOfBirth() {
-      
-      dateOfBirth_ = getDefaultInstance().getDateOfBirth();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string dateOfBirth = 8;</code>
-     * @param value The bytes for dateOfBirth to set.
-     * @return This builder for chaining.
-     */
-    public Builder setDateOfBirthBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      dateOfBirth_ = value;
       onChanged();
       return this;
     }

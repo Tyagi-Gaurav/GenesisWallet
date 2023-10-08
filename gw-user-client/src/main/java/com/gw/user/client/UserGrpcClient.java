@@ -53,12 +53,12 @@ public class UserGrpcClient {
                 .withInterceptors(clientInterceptorList.toArray(new ClientInterceptor[0]));
     }
 
-    public UserDetailsGrpcResponseDTO fetchUsersByIdSync(FetchUserDetailsByIdGrpcRequestDTO request) {
-        return userServiceBlockingStub.fetchUsersById(request);
+    public UserDetailsGrpcResponseDTO fetchUsersByUserNameSync(FetchUserDetailsByUserNameGrpcRequestDTO request) {
+        return userServiceBlockingStub.fetchUsersByUserName(request);
     }
 
-    public ListenableFuture<UserDetailsGrpcResponseDTO> fetchUsersByIdAsync(FetchUserDetailsByIdGrpcRequestDTO fetchUserDetailsByIdGrpcRequestDTO) {
-        return userServiceFutureStub.fetchUsersById(fetchUserDetailsByIdGrpcRequestDTO);
+    public ListenableFuture<UserDetailsGrpcResponseDTO> fetchUsersByIdAsync(FetchUserDetailsByUserNameGrpcRequestDTO fetchUserDetailsByUserNameGrpcRequestDTO) {
+        return userServiceFutureStub.fetchUsersByUserName(fetchUserDetailsByUserNameGrpcRequestDTO);
     }
 
     public void createUserSync(UserCreateGrpcRequestDTO userCreateGrpcRequestDTO) {

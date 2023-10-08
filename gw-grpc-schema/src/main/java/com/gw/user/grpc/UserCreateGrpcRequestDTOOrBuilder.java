@@ -54,16 +54,4 @@ public interface UserCreateGrpcRequestDTOOrBuilder extends
    */
   com.google.protobuf.ByteString
       getLastNameBytes();
-
-  /**
-   * <code>string dateOfBirth = 5;</code>
-   * @return The dateOfBirth.
-   */
-  java.lang.String getDateOfBirth();
-  /**
-   * <code>string dateOfBirth = 5;</code>
-   * @return The bytes for dateOfBirth.
-   */
-  com.google.protobuf.ByteString
-      getDateOfBirthBytes();
 }
