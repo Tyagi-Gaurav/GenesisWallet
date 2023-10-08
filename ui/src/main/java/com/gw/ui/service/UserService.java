@@ -30,7 +30,6 @@ public class UserService {
                         .setEmail(externalUserConnectRequest.userName())
                         .setFirstName(externalUserConnectRequest.firstName())
                         .setLastName(externalUserConnectRequest.lastName())
-                        .setPictureUrl(externalUserConnectRequest.pictureUrl())
                         .setTokenExpiryTime(externalUserConnectRequest.expiryTime().toEpochMilli())
                         .build());
         return Mono.create(voidMonoSink -> Futures.addCallback(userAsyncFuture, new FutureCallback<>() {

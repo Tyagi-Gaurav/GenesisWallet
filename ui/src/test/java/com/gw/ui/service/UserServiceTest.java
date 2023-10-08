@@ -36,7 +36,6 @@ class UserServiceTest {
         Instant tokenExpiryTime = Instant.now().plusSeconds(10);
         ExternalUserCreateGrpcRequestDTO request = ExternalUserCreateGrpcRequestDTO.newBuilder()
                 .setEmail("userName")
-                .setPictureUrl("pictureUrl")
                 .setFirstName("firstName")
                 .setLastName("lastName")
                 .setTokenExpiryTime(tokenExpiryTime.toEpochMilli())

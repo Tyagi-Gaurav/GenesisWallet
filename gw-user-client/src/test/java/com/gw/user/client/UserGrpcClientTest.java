@@ -67,8 +67,6 @@ class UserGrpcClientTest {
         assertThat(userDetailsGrpcResponseDTO.getDateOfBirth()).isEqualTo(expectedResult.getDateOfBirth());
         assertThat(userDetailsGrpcResponseDTO.getFirstName()).isEqualTo(expectedResult.getFirstName());
         assertThat(userDetailsGrpcResponseDTO.getLastName()).isEqualTo(expectedResult.getLastName());
-        assertThat(userDetailsGrpcResponseDTO.getGender()).isEqualTo(expectedResult.getGender());
-        assertThat(userDetailsGrpcResponseDTO.getHomeCountry()).isEqualTo(expectedResult.getHomeCountry());
         assertThat(userDetailsGrpcResponseDTO.getId()).isEqualTo(expectedResult.getId());
     }
 
@@ -101,8 +99,6 @@ class UserGrpcClientTest {
                 assertThat(result.getDateOfBirth()).isEqualTo(expectedResult.getDateOfBirth());
                 assertThat(result.getFirstName()).isEqualTo(expectedResult.getFirstName());
                 assertThat(result.getLastName()).isEqualTo(expectedResult.getLastName());
-                assertThat(result.getGender()).isEqualTo(expectedResult.getGender());
-                assertThat(result.getHomeCountry()).isEqualTo(expectedResult.getHomeCountry());
                 assertThat(result.getId()).isEqualTo(expectedResult.getId());
                 hasGotResponse.set(true);
             }
@@ -125,7 +121,6 @@ class UserGrpcClientTest {
                 .setDateOfBirth("01/01/2000")
                 .setFirstName("firstName")
                 .setLastName("lastName")
-                .setHomeCountry("UK")
                 .build();
 
         mockUserService.shouldReturnResponse(UserCreateGrpcResponseDTO.getDefaultInstance());
@@ -141,7 +136,6 @@ class UserGrpcClientTest {
                 .setDateOfBirth("01/01/2000")
                 .setFirstName("firstName")
                 .setLastName("lastName")
-                .setHomeCountry("UK")
                 .build();
         mockUserService.shouldReturnResponse(UserCreateGrpcResponseDTO.newBuilder()
                 .setCreated(true).buildPartial());
@@ -174,7 +168,6 @@ class UserGrpcClientTest {
                 .setDateOfBirth("01/01/2000")
                 .setFirstName("firstName")
                 .setLastName("lastName")
-                .setHomeCountry("UK")
                 .build();
 
         userGrpcClient.createExternalUserSync(externalUserCreateGrpcRequestDTO);
@@ -188,7 +181,6 @@ class UserGrpcClientTest {
                 .setDateOfBirth("01/01/2000")
                 .setFirstName("firstName")
                 .setLastName("lastName")
-                .setHomeCountry("UK")
                 .build();
         ListenableFuture<ExternalUserCreateGrpcResponseDTO> emptyListenableFuture =
                 userGrpcClient.createExternalUserAsync(externalUserCreateGrpcRequestDTO);

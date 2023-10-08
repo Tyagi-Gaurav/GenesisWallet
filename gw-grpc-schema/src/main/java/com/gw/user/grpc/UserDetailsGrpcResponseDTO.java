@@ -23,8 +23,6 @@ private static final long serialVersionUID = 0L;
     role_ = "";
     id_ = "";
     dateOfBirth_ = "";
-    gender_ = 0;
-    homeCountry_ = "";
   }
 
   @java.lang.Override
@@ -318,63 +316,6 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int GENDER_FIELD_NUMBER = 8;
-  private int gender_;
-  /**
-   * <code>.com.gw.user.grpc.Gender gender = 8;</code>
-   * @return The enum numeric value on the wire for gender.
-   */
-  @java.lang.Override public int getGenderValue() {
-    return gender_;
-  }
-  /**
-   * <code>.com.gw.user.grpc.Gender gender = 8;</code>
-   * @return The gender.
-   */
-  @java.lang.Override public com.gw.user.grpc.Gender getGender() {
-    @SuppressWarnings("deprecation")
-    com.gw.user.grpc.Gender result = com.gw.user.grpc.Gender.valueOf(gender_);
-    return result == null ? com.gw.user.grpc.Gender.UNRECOGNIZED : result;
-  }
-
-  public static final int HOMECOUNTRY_FIELD_NUMBER = 9;
-  private volatile java.lang.Object homeCountry_;
-  /**
-   * <code>string homeCountry = 9;</code>
-   * @return The homeCountry.
-   */
-  @java.lang.Override
-  public java.lang.String getHomeCountry() {
-    java.lang.Object ref = homeCountry_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      homeCountry_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string homeCountry = 9;</code>
-   * @return The bytes for homeCountry.
-   */
-  @java.lang.Override
-  public com.google.protobuf.ByteString
-      getHomeCountryBytes() {
-    java.lang.Object ref = homeCountry_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      homeCountry_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
-  }
-
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -410,12 +351,6 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(dateOfBirth_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 7, dateOfBirth_);
     }
-    if (gender_ != com.gw.user.grpc.Gender.GENDER_UNSPECIFIED.getNumber()) {
-      output.writeEnum(8, gender_);
-    }
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(homeCountry_)) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 9, homeCountry_);
-    }
     getUnknownFields().writeTo(output);
   }
 
@@ -446,13 +381,6 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(dateOfBirth_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, dateOfBirth_);
     }
-    if (gender_ != com.gw.user.grpc.Gender.GENDER_UNSPECIFIED.getNumber()) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeEnumSize(8, gender_);
-    }
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(homeCountry_)) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, homeCountry_);
-    }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
@@ -482,9 +410,6 @@ private static final long serialVersionUID = 0L;
         .equals(other.getId())) return false;
     if (!getDateOfBirth()
         .equals(other.getDateOfBirth())) return false;
-    if (gender_ != other.gender_) return false;
-    if (!getHomeCountry()
-        .equals(other.getHomeCountry())) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -510,10 +435,6 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getId().hashCode();
     hash = (37 * hash) + DATEOFBIRTH_FIELD_NUMBER;
     hash = (53 * hash) + getDateOfBirth().hashCode();
-    hash = (37 * hash) + GENDER_FIELD_NUMBER;
-    hash = (53 * hash) + gender_;
-    hash = (37 * hash) + HOMECOUNTRY_FIELD_NUMBER;
-    hash = (53 * hash) + getHomeCountry().hashCode();
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -656,10 +577,6 @@ private static final long serialVersionUID = 0L;
 
       dateOfBirth_ = "";
 
-      gender_ = 0;
-
-      homeCountry_ = "";
-
       return this;
     }
 
@@ -693,8 +610,6 @@ private static final long serialVersionUID = 0L;
       result.role_ = role_;
       result.id_ = id_;
       result.dateOfBirth_ = dateOfBirth_;
-      result.gender_ = gender_;
-      result.homeCountry_ = homeCountry_;
       onBuilt();
       return result;
     }
@@ -771,13 +686,6 @@ private static final long serialVersionUID = 0L;
         dateOfBirth_ = other.dateOfBirth_;
         onChanged();
       }
-      if (other.gender_ != 0) {
-        setGenderValue(other.getGenderValue());
-      }
-      if (!other.getHomeCountry().isEmpty()) {
-        homeCountry_ = other.homeCountry_;
-        onChanged();
-      }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
@@ -839,16 +747,6 @@ private static final long serialVersionUID = 0L;
 
               break;
             } // case 58
-            case 64: {
-              gender_ = input.readEnum();
-
-              break;
-            } // case 64
-            case 74: {
-              homeCountry_ = input.readStringRequireUtf8();
-
-              break;
-            } // case 74
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -1393,136 +1291,6 @@ private static final long serialVersionUID = 0L;
   checkByteStringIsUtf8(value);
       
       dateOfBirth_ = value;
-      onChanged();
-      return this;
-    }
-
-    private int gender_ = 0;
-    /**
-     * <code>.com.gw.user.grpc.Gender gender = 8;</code>
-     * @return The enum numeric value on the wire for gender.
-     */
-    @java.lang.Override public int getGenderValue() {
-      return gender_;
-    }
-    /**
-     * <code>.com.gw.user.grpc.Gender gender = 8;</code>
-     * @param value The enum numeric value on the wire for gender to set.
-     * @return This builder for chaining.
-     */
-    public Builder setGenderValue(int value) {
-      
-      gender_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>.com.gw.user.grpc.Gender gender = 8;</code>
-     * @return The gender.
-     */
-    @java.lang.Override
-    public com.gw.user.grpc.Gender getGender() {
-      @SuppressWarnings("deprecation")
-      com.gw.user.grpc.Gender result = com.gw.user.grpc.Gender.valueOf(gender_);
-      return result == null ? com.gw.user.grpc.Gender.UNRECOGNIZED : result;
-    }
-    /**
-     * <code>.com.gw.user.grpc.Gender gender = 8;</code>
-     * @param value The gender to set.
-     * @return This builder for chaining.
-     */
-    public Builder setGender(com.gw.user.grpc.Gender value) {
-      if (value == null) {
-        throw new NullPointerException();
-      }
-      
-      gender_ = value.getNumber();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>.com.gw.user.grpc.Gender gender = 8;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearGender() {
-      
-      gender_ = 0;
-      onChanged();
-      return this;
-    }
-
-    private java.lang.Object homeCountry_ = "";
-    /**
-     * <code>string homeCountry = 9;</code>
-     * @return The homeCountry.
-     */
-    public java.lang.String getHomeCountry() {
-      java.lang.Object ref = homeCountry_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        homeCountry_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <code>string homeCountry = 9;</code>
-     * @return The bytes for homeCountry.
-     */
-    public com.google.protobuf.ByteString
-        getHomeCountryBytes() {
-      java.lang.Object ref = homeCountry_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        homeCountry_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string homeCountry = 9;</code>
-     * @param value The homeCountry to set.
-     * @return This builder for chaining.
-     */
-    public Builder setHomeCountry(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      homeCountry_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string homeCountry = 9;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearHomeCountry() {
-      
-      homeCountry_ = getDefaultInstance().getHomeCountry();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string homeCountry = 9;</code>
-     * @param value The bytes for homeCountry to set.
-     * @return This builder for chaining.
-     */
-    public Builder setHomeCountryBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      homeCountry_ = value;
       onChanged();
       return this;
     }

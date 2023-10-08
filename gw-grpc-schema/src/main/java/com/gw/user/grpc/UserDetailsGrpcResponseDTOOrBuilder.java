@@ -90,27 +90,4 @@ public interface UserDetailsGrpcResponseDTOOrBuilder extends
    */
   com.google.protobuf.ByteString
       getDateOfBirthBytes();
-
-  /**
-   * <code>.com.gw.user.grpc.Gender gender = 8;</code>
-   * @return The enum numeric value on the wire for gender.
-   */
-  int getGenderValue();
-  /**
-   * <code>.com.gw.user.grpc.Gender gender = 8;</code>
-   * @return The gender.
-   */
-  com.gw.user.grpc.Gender getGender();
-
-  /**
-   * <code>string homeCountry = 9;</code>
-   * @return The homeCountry.
-   */
-  java.lang.String getHomeCountry();
-  /**
-   * <code>string homeCountry = 9;</code>
-   * @return The bytes for homeCountry.
-   */
-  com.google.protobuf.ByteString
-      getHomeCountryBytes();
 }
