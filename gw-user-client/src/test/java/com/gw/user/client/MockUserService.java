@@ -9,6 +9,7 @@ public class MockUserService extends UserServiceGrpc.UserServiceImplBase {
     private UserDetailsGrpcResponseDTO userDetailsGrpcResponseDTO;
     private final AtomicBoolean callReceived = new AtomicBoolean(false);
     private UserCreateGrpcResponseDTO userCreateGrpcResponseDTO;
+    private UserAuthResponseDTO userAuthResponseDTO;
 
     @Override
     public void createExternalUser(ExternalUserCreateGrpcRequestDTO request,
@@ -33,12 +34,23 @@ public class MockUserService extends UserServiceGrpc.UserServiceImplBase {
         responseObserver.onCompleted();
     }
 
+    @Override
+    public void authenticate(UserAuthRequestDTO request, StreamObserver<UserAuthResponseDTO> responseObserver) {
+        callReceived.set(true);
+        responseObserver.onNext(userAuthResponseDTO);
+        responseObserver.onCompleted();
+    }
+
     public void shouldReturnResponse(UserDetailsGrpcResponseDTO expectedResult) {
         this.userDetailsGrpcResponseDTO = expectedResult;
     }
 
     public void shouldReturnResponse(UserCreateGrpcResponseDTO userCreateGrpcResponseDTO) {
         this.userCreateGrpcResponseDTO = userCreateGrpcResponseDTO;
+    }
+
+    public void shouldReturnResponse(UserAuthResponseDTO userAuthResponseDTO) {
+        this.userAuthResponseDTO = userAuthResponseDTO;
     }
 
     public boolean getCallReceived() {

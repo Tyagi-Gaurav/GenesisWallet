@@ -81,4 +81,14 @@ public class UserGrpcClient {
                 .withDeadlineAfter(userGrpcClientConfig.timeoutInMs(), TimeUnit.MILLISECONDS)
                 .createExternalUser(externalUserCreateGrpcRequestDTO);
     }
+
+    public UserAuthResponseDTO authenticateUserSync(UserAuthRequestDTO userAuthRequestDTO) {
+        return userServiceBlockingStub.authenticate(userAuthRequestDTO);
+    }
+
+    public ListenableFuture<UserAuthResponseDTO> authenticateUserAsync(UserAuthRequestDTO userAuthRequestDTO) {
+        return userServiceFutureStub
+                .withDeadlineAfter(userGrpcClientConfig.timeoutInMs(), TimeUnit.MILLISECONDS)
+                .authenticate(userAuthRequestDTO);
+    }
 }

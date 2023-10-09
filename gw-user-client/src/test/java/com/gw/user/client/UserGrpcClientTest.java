@@ -3,6 +3,7 @@ package com.gw.user.client;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.gw.common.grpc.Error;
 import com.gw.common.metrics.EndpointMetrics;
 import com.gw.grpc.common.CorrelationIdInterceptor;
 import com.gw.grpc.common.MetricsInterceptor;
@@ -44,7 +45,7 @@ class UserGrpcClientTest {
     void setUp() throws IOException {
         mockUserService = new MockUserService();
         GrpcExtension.ServiceDetails serviceDetails = grpcExtension.createGrpcServerFor(mockUserService, correlationIdInterceptor,
-                 metricsInterceptor);
+                metricsInterceptor);
         UserGrpcClientConfig userGrpcClientConfig = new UserGrpcClientConfig(serviceDetails.serverName(),
                 0, 300, "userCircuitBreaker");
         CircuitBreakerRegistry circuitBreakerRegistry = CircuitBreakerRegistry.of(Map.of("userCircuitBreaker", CircuitBreakerConfig.ofDefaults()));
@@ -142,7 +143,6 @@ class UserGrpcClientTest {
         Futures.addCallback(emptyListenableFuture, new FutureCallback<>() {
             @Override
             public void onSuccess(UserCreateGrpcResponseDTO result) {
-                System.out.println("Response received: " + result.getCreated());
                 hasGotResponse.set(result.getCreated());
             }
 
@@ -193,5 +193,73 @@ class UserGrpcClientTest {
 
         Awaitility.await("Receive response").atMost(Duration.ofMillis(300))
                 .until(hasGotResponse::get);
+    }
+
+    @Test
+    void authenticateUserSync() {
+        final var userAuthRequestDTO = UserAuthRequestDTO.newBuilder()
+                .setUserName("someUserName")
+                .setPassword("someencryptedPassword")
+                .build();
+
+        mockUserService.shouldReturnResponse(UserAuthResponseDTO.newBuilder().setIsAuthenticated(true).build());
+
+        final var userAuthResponseDTO = userGrpcClient.authenticateUserSync(userAuthRequestDTO);
+        assertThat(userAuthResponseDTO.getIsAuthenticated()).isTrue();
+        assertThat(mockUserService.getCallReceived()).isTrue();
+    }
+
+    @Test
+    void authenticateUserAsync() {
+        final var userAuthRequestDTO = UserAuthRequestDTO.newBuilder()
+                .setUserName("someUserName")
+                .setPassword("someencryptedPassword")
+                .build();
+
+        final var expectedResult = UserAuthResponseDTO.newBuilder().setIsAuthenticated(true).build();
+        mockUserService.shouldReturnResponse(expectedResult);
+
+        ListenableFuture<UserAuthResponseDTO> userAuthResponseDTOListenableFuture =
+                userGrpcClient.authenticateUserAsync(userAuthRequestDTO);
+
+        AtomicBoolean hasGotResponse = new AtomicBoolean(false);
+        Futures.addCallback(userAuthResponseDTOListenableFuture, new FutureCallback<>() {
+            @Override
+            public void onSuccess(UserAuthResponseDTO result) {
+                assertThat(result.getIsAuthenticated()).isTrue();
+                hasGotResponse.set(true);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                fail("Got exception", t);
+            }
+        }, Executors.newSingleThreadExecutor());
+
+        Awaitility.await("Receive response").atMost(Duration.ofMillis(300))
+                .until(hasGotResponse::get);
+    }
+
+    @Test
+    void authenticateUserSyncWithError() {
+        final var userAuthRequestDTO = UserAuthRequestDTO.newBuilder()
+                .setUserName("someUserName")
+                .setPassword("someencryptedPassword")
+                .build();
+
+        mockUserService.shouldReturnResponse(UserAuthResponseDTO.newBuilder()
+                .setError(Error.newBuilder()
+                        .setCode(Error.ErrorCode.AUTHENTICATION_ERROR)
+                        .setDescription("Invalid Credentials")
+                        .build())
+                .build());
+
+        final var userAuthResponseDTO = userGrpcClient.authenticateUserSync(userAuthRequestDTO);
+        assertThat(userAuthResponseDTO.getIsAuthenticated()).isFalse();
+        assertThat(userAuthResponseDTO.getError()).isEqualTo(Error.newBuilder()
+                .setCode(Error.ErrorCode.AUTHENTICATION_ERROR)
+                .setDescription("Invalid Credentials")
+                .build());
+        assertThat(mockUserService.getCallReceived()).isTrue();
     }
 }

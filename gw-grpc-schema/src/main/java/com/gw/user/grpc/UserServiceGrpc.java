@@ -6,7 +6,7 @@ import static io.grpc.MethodDescriptor.generateFullMethodName;
  */
 @javax.annotation.Generated(
     value = "by gRPC proto compiler (version 1.50.2)",
-    comments = "Source: UserService.proto")
+    comments = "Source: userservice.proto")
 @io.grpc.stub.annotations.GrpcGenerated
 public final class UserServiceGrpc {
 
@@ -44,6 +44,37 @@ public final class UserServiceGrpc {
       }
     }
     return getFetchUsersByUserNameMethod;
+  }
+
+  private static volatile io.grpc.MethodDescriptor<com.gw.user.grpc.UserAuthRequestDTO,
+      com.gw.user.grpc.UserAuthResponseDTO> getAuthenticateMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "authenticate",
+      requestType = com.gw.user.grpc.UserAuthRequestDTO.class,
+      responseType = com.gw.user.grpc.UserAuthResponseDTO.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<com.gw.user.grpc.UserAuthRequestDTO,
+      com.gw.user.grpc.UserAuthResponseDTO> getAuthenticateMethod() {
+    io.grpc.MethodDescriptor<com.gw.user.grpc.UserAuthRequestDTO, com.gw.user.grpc.UserAuthResponseDTO> getAuthenticateMethod;
+    if ((getAuthenticateMethod = UserServiceGrpc.getAuthenticateMethod) == null) {
+      synchronized (UserServiceGrpc.class) {
+        if ((getAuthenticateMethod = UserServiceGrpc.getAuthenticateMethod) == null) {
+          UserServiceGrpc.getAuthenticateMethod = getAuthenticateMethod =
+              io.grpc.MethodDescriptor.<com.gw.user.grpc.UserAuthRequestDTO, com.gw.user.grpc.UserAuthResponseDTO>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "authenticate"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.gw.user.grpc.UserAuthRequestDTO.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.gw.user.grpc.UserAuthResponseDTO.getDefaultInstance()))
+              .setSchemaDescriptor(new UserServiceMethodDescriptorSupplier("authenticate"))
+              .build();
+        }
+      }
+    }
+    return getAuthenticateMethod;
   }
 
   private static volatile io.grpc.MethodDescriptor<com.gw.user.grpc.UserCreateGrpcRequestDTO,
@@ -165,6 +196,13 @@ public final class UserServiceGrpc {
 
     /**
      */
+    public void authenticate(com.gw.user.grpc.UserAuthRequestDTO request,
+        io.grpc.stub.StreamObserver<com.gw.user.grpc.UserAuthResponseDTO> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getAuthenticateMethod(), responseObserver);
+    }
+
+    /**
+     */
     public void createUser(com.gw.user.grpc.UserCreateGrpcRequestDTO request,
         io.grpc.stub.StreamObserver<com.gw.user.grpc.UserCreateGrpcResponseDTO> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getCreateUserMethod(), responseObserver);
@@ -186,6 +224,13 @@ public final class UserServiceGrpc {
                 com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO,
                 com.gw.user.grpc.UserDetailsGrpcResponseDTO>(
                   this, METHODID_FETCH_USERS_BY_USER_NAME)))
+          .addMethod(
+            getAuthenticateMethod(),
+            io.grpc.stub.ServerCalls.asyncUnaryCall(
+              new MethodHandlers<
+                com.gw.user.grpc.UserAuthRequestDTO,
+                com.gw.user.grpc.UserAuthResponseDTO>(
+                  this, METHODID_AUTHENTICATE)))
           .addMethod(
             getCreateUserMethod(),
             io.grpc.stub.ServerCalls.asyncUnaryCall(
@@ -228,6 +273,14 @@ public final class UserServiceGrpc {
 
     /**
      */
+    public void authenticate(com.gw.user.grpc.UserAuthRequestDTO request,
+        io.grpc.stub.StreamObserver<com.gw.user.grpc.UserAuthResponseDTO> responseObserver) {
+      io.grpc.stub.ClientCalls.asyncUnaryCall(
+          getChannel().newCall(getAuthenticateMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
     public void createUser(com.gw.user.grpc.UserCreateGrpcRequestDTO request,
         io.grpc.stub.StreamObserver<com.gw.user.grpc.UserCreateGrpcResponseDTO> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
@@ -262,6 +315,13 @@ public final class UserServiceGrpc {
     public com.gw.user.grpc.UserDetailsGrpcResponseDTO fetchUsersByUserName(com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
           getChannel(), getFetchUsersByUserNameMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public com.gw.user.grpc.UserAuthResponseDTO authenticate(com.gw.user.grpc.UserAuthRequestDTO request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getAuthenticateMethod(), getCallOptions(), request);
     }
 
     /**
@@ -303,6 +363,14 @@ public final class UserServiceGrpc {
 
     /**
      */
+    public com.google.common.util.concurrent.ListenableFuture<com.gw.user.grpc.UserAuthResponseDTO> authenticate(
+        com.gw.user.grpc.UserAuthRequestDTO request) {
+      return io.grpc.stub.ClientCalls.futureUnaryCall(
+          getChannel().newCall(getAuthenticateMethod(), getCallOptions()), request);
+    }
+
+    /**
+     */
     public com.google.common.util.concurrent.ListenableFuture<com.gw.user.grpc.UserCreateGrpcResponseDTO> createUser(
         com.gw.user.grpc.UserCreateGrpcRequestDTO request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
@@ -319,8 +387,9 @@ public final class UserServiceGrpc {
   }
 
   private static final int METHODID_FETCH_USERS_BY_USER_NAME = 0;
-  private static final int METHODID_CREATE_USER = 1;
-  private static final int METHODID_CREATE_EXTERNAL_USER = 2;
+  private static final int METHODID_AUTHENTICATE = 1;
+  private static final int METHODID_CREATE_USER = 2;
+  private static final int METHODID_CREATE_EXTERNAL_USER = 3;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -342,6 +411,10 @@ public final class UserServiceGrpc {
         case METHODID_FETCH_USERS_BY_USER_NAME:
           serviceImpl.fetchUsersByUserName((com.gw.user.grpc.FetchUserDetailsByUserNameGrpcRequestDTO) request,
               (io.grpc.stub.StreamObserver<com.gw.user.grpc.UserDetailsGrpcResponseDTO>) responseObserver);
+          break;
+        case METHODID_AUTHENTICATE:
+          serviceImpl.authenticate((com.gw.user.grpc.UserAuthRequestDTO) request,
+              (io.grpc.stub.StreamObserver<com.gw.user.grpc.UserAuthResponseDTO>) responseObserver);
           break;
         case METHODID_CREATE_USER:
           serviceImpl.createUser((com.gw.user.grpc.UserCreateGrpcRequestDTO) request,
@@ -413,6 +486,7 @@ public final class UserServiceGrpc {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
               .setSchemaDescriptor(new UserServiceFileDescriptorSupplier())
               .addMethod(getFetchUsersByUserNameMethod())
+              .addMethod(getAuthenticateMethod())
               .addMethod(getCreateUserMethod())
               .addMethod(getCreateExternalUserMethod())
               .build();
