@@ -202,10 +202,18 @@ class UserGrpcClientTest {
                 .setPassword("someencryptedPassword")
                 .build();
 
-        mockUserService.shouldReturnResponse(UserAuthResponseDTO.newBuilder().setIsAuthenticated(true).build());
+        mockUserService.shouldReturnResponse(UserAuthResponseDTO.newBuilder()
+                .setAuthDetails(UserAuthDetailsDTO.newBuilder()
+                        .setFirstName("some-first-name")
+                        .setLastName("some-last-name")
+                        .build())
+                .build());
 
         final var userAuthResponseDTO = userGrpcClient.authenticateUserSync(userAuthRequestDTO);
-        assertThat(userAuthResponseDTO.getIsAuthenticated()).isTrue();
+
+        assertThat(userAuthResponseDTO.getEitherCase()).isEqualTo(UserAuthResponseDTO.EitherCase.AUTHDETAILS);
+        assertThat(userAuthResponseDTO.getAuthDetails().getFirstName()).isEqualTo("some-first-name");
+        assertThat(userAuthResponseDTO.getAuthDetails().getLastName()).isEqualTo("some-last-name");
         assertThat(mockUserService.getCallReceived()).isTrue();
     }
 
@@ -216,8 +224,12 @@ class UserGrpcClientTest {
                 .setPassword("someencryptedPassword")
                 .build();
 
-        final var expectedResult = UserAuthResponseDTO.newBuilder().setIsAuthenticated(true).build();
-        mockUserService.shouldReturnResponse(expectedResult);
+        mockUserService.shouldReturnResponse(UserAuthResponseDTO.newBuilder()
+                .setAuthDetails(UserAuthDetailsDTO.newBuilder()
+                        .setFirstName("some-first-name")
+                        .setLastName("some-last-name")
+                        .build())
+                .build());
 
         ListenableFuture<UserAuthResponseDTO> userAuthResponseDTOListenableFuture =
                 userGrpcClient.authenticateUserAsync(userAuthRequestDTO);
@@ -226,7 +238,8 @@ class UserGrpcClientTest {
         Futures.addCallback(userAuthResponseDTOListenableFuture, new FutureCallback<>() {
             @Override
             public void onSuccess(UserAuthResponseDTO result) {
-                assertThat(result.getIsAuthenticated()).isTrue();
+                assertThat(result.getAuthDetails().getFirstName()).isEqualTo("some-first-name");
+                assertThat(result.getAuthDetails().getLastName()).isEqualTo("some-last-name");
                 hasGotResponse.set(true);
             }
 
@@ -255,7 +268,7 @@ class UserGrpcClientTest {
                 .build());
 
         final var userAuthResponseDTO = userGrpcClient.authenticateUserSync(userAuthRequestDTO);
-        assertThat(userAuthResponseDTO.getIsAuthenticated()).isFalse();
+        assertThat(userAuthResponseDTO.getEitherCase()).isEqualTo(UserAuthResponseDTO.EitherCase.ERROR);
         assertThat(userAuthResponseDTO.getError()).isEqualTo(Error.newBuilder()
                 .setCode(Error.ErrorCode.AUTHENTICATION_ERROR)
                 .setDescription("Invalid Credentials")

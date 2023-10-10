@@ -48,7 +48,7 @@ private static final long serialVersionUID = 0L;
   public enum EitherCase
       implements com.google.protobuf.Internal.EnumLite,
           com.google.protobuf.AbstractMessage.InternalOneOfEnum {
-    ISAUTHENTICATED(1),
+    AUTHDETAILS(1),
     ERROR(2),
     EITHER_NOT_SET(0);
     private final int value;
@@ -67,7 +67,7 @@ private static final long serialVersionUID = 0L;
 
     public static EitherCase forNumber(int value) {
       switch (value) {
-        case 1: return ISAUTHENTICATED;
+        case 1: return AUTHDETAILS;
         case 2: return ERROR;
         case 0: return EITHER_NOT_SET;
         default: return null;
@@ -84,25 +84,35 @@ private static final long serialVersionUID = 0L;
         eitherCase_);
   }
 
-  public static final int ISAUTHENTICATED_FIELD_NUMBER = 1;
+  public static final int AUTHDETAILS_FIELD_NUMBER = 1;
   /**
-   * <code>bool isAuthenticated = 1;</code>
-   * @return Whether the isAuthenticated field is set.
+   * <code>.com.gw.user.grpc.UserAuthDetailsDTO authDetails = 1;</code>
+   * @return Whether the authDetails field is set.
    */
   @java.lang.Override
-  public boolean hasIsAuthenticated() {
+  public boolean hasAuthDetails() {
     return eitherCase_ == 1;
   }
   /**
-   * <code>bool isAuthenticated = 1;</code>
-   * @return The isAuthenticated.
+   * <code>.com.gw.user.grpc.UserAuthDetailsDTO authDetails = 1;</code>
+   * @return The authDetails.
    */
   @java.lang.Override
-  public boolean getIsAuthenticated() {
+  public com.gw.user.grpc.UserAuthDetailsDTO getAuthDetails() {
     if (eitherCase_ == 1) {
-      return (java.lang.Boolean) either_;
+       return (com.gw.user.grpc.UserAuthDetailsDTO) either_;
     }
-    return false;
+    return com.gw.user.grpc.UserAuthDetailsDTO.getDefaultInstance();
+  }
+  /**
+   * <code>.com.gw.user.grpc.UserAuthDetailsDTO authDetails = 1;</code>
+   */
+  @java.lang.Override
+  public com.gw.user.grpc.UserAuthDetailsDTOOrBuilder getAuthDetailsOrBuilder() {
+    if (eitherCase_ == 1) {
+       return (com.gw.user.grpc.UserAuthDetailsDTO) either_;
+    }
+    return com.gw.user.grpc.UserAuthDetailsDTO.getDefaultInstance();
   }
 
   public static final int ERROR_FIELD_NUMBER = 2;
@@ -151,8 +161,7 @@ private static final long serialVersionUID = 0L;
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
     if (eitherCase_ == 1) {
-      output.writeBool(
-          1, (boolean)((java.lang.Boolean) either_));
+      output.writeMessage(1, (com.gw.user.grpc.UserAuthDetailsDTO) either_);
     }
     if (eitherCase_ == 2) {
       output.writeMessage(2, (com.gw.common.grpc.Error) either_);
@@ -168,8 +177,7 @@ private static final long serialVersionUID = 0L;
     size = 0;
     if (eitherCase_ == 1) {
       size += com.google.protobuf.CodedOutputStream
-        .computeBoolSize(
-            1, (boolean)((java.lang.Boolean) either_));
+        .computeMessageSize(1, (com.gw.user.grpc.UserAuthDetailsDTO) either_);
     }
     if (eitherCase_ == 2) {
       size += com.google.protobuf.CodedOutputStream
@@ -193,8 +201,8 @@ private static final long serialVersionUID = 0L;
     if (!getEitherCase().equals(other.getEitherCase())) return false;
     switch (eitherCase_) {
       case 1:
-        if (getIsAuthenticated()
-            != other.getIsAuthenticated()) return false;
+        if (!getAuthDetails()
+            .equals(other.getAuthDetails())) return false;
         break;
       case 2:
         if (!getError()
@@ -216,9 +224,8 @@ private static final long serialVersionUID = 0L;
     hash = (19 * hash) + getDescriptor().hashCode();
     switch (eitherCase_) {
       case 1:
-        hash = (37 * hash) + ISAUTHENTICATED_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-            getIsAuthenticated());
+        hash = (37 * hash) + AUTHDETAILS_FIELD_NUMBER;
+        hash = (53 * hash) + getAuthDetails().hashCode();
         break;
       case 2:
         hash = (37 * hash) + ERROR_FIELD_NUMBER;
@@ -355,6 +362,9 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      if (authDetailsBuilder_ != null) {
+        authDetailsBuilder_.clear();
+      }
       if (errorBuilder_ != null) {
         errorBuilder_.clear();
       }
@@ -387,7 +397,11 @@ private static final long serialVersionUID = 0L;
     public com.gw.user.grpc.UserAuthResponseDTO buildPartial() {
       com.gw.user.grpc.UserAuthResponseDTO result = new com.gw.user.grpc.UserAuthResponseDTO(this);
       if (eitherCase_ == 1) {
-        result.either_ = either_;
+        if (authDetailsBuilder_ == null) {
+          result.either_ = either_;
+        } else {
+          result.either_ = authDetailsBuilder_.build();
+        }
       }
       if (eitherCase_ == 2) {
         if (errorBuilder_ == null) {
@@ -446,8 +460,8 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.gw.user.grpc.UserAuthResponseDTO other) {
       if (other == com.gw.user.grpc.UserAuthResponseDTO.getDefaultInstance()) return this;
       switch (other.getEitherCase()) {
-        case ISAUTHENTICATED: {
-          setIsAuthenticated(other.getIsAuthenticated());
+        case AUTHDETAILS: {
+          mergeAuthDetails(other.getAuthDetails());
           break;
         }
         case ERROR: {
@@ -484,11 +498,13 @@ private static final long serialVersionUID = 0L;
             case 0:
               done = true;
               break;
-            case 8: {
-              either_ = input.readBool();
+            case 10: {
+              input.readMessage(
+                  getAuthDetailsFieldBuilder().getBuilder(),
+                  extensionRegistry);
               eitherCase_ = 1;
               break;
-            } // case 8
+            } // case 10
             case 18: {
               input.readMessage(
                   getErrorFieldBuilder().getBuilder(),
@@ -527,45 +543,146 @@ private static final long serialVersionUID = 0L;
     }
 
 
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.gw.user.grpc.UserAuthDetailsDTO, com.gw.user.grpc.UserAuthDetailsDTO.Builder, com.gw.user.grpc.UserAuthDetailsDTOOrBuilder> authDetailsBuilder_;
     /**
-     * <code>bool isAuthenticated = 1;</code>
-     * @return Whether the isAuthenticated field is set.
+     * <code>.com.gw.user.grpc.UserAuthDetailsDTO authDetails = 1;</code>
+     * @return Whether the authDetails field is set.
      */
-    public boolean hasIsAuthenticated() {
+    @java.lang.Override
+    public boolean hasAuthDetails() {
       return eitherCase_ == 1;
     }
     /**
-     * <code>bool isAuthenticated = 1;</code>
-     * @return The isAuthenticated.
+     * <code>.com.gw.user.grpc.UserAuthDetailsDTO authDetails = 1;</code>
+     * @return The authDetails.
      */
-    public boolean getIsAuthenticated() {
-      if (eitherCase_ == 1) {
-        return (java.lang.Boolean) either_;
+    @java.lang.Override
+    public com.gw.user.grpc.UserAuthDetailsDTO getAuthDetails() {
+      if (authDetailsBuilder_ == null) {
+        if (eitherCase_ == 1) {
+          return (com.gw.user.grpc.UserAuthDetailsDTO) either_;
+        }
+        return com.gw.user.grpc.UserAuthDetailsDTO.getDefaultInstance();
+      } else {
+        if (eitherCase_ == 1) {
+          return authDetailsBuilder_.getMessage();
+        }
+        return com.gw.user.grpc.UserAuthDetailsDTO.getDefaultInstance();
       }
-      return false;
     }
     /**
-     * <code>bool isAuthenticated = 1;</code>
-     * @param value The isAuthenticated to set.
-     * @return This builder for chaining.
+     * <code>.com.gw.user.grpc.UserAuthDetailsDTO authDetails = 1;</code>
      */
-    public Builder setIsAuthenticated(boolean value) {
-      eitherCase_ = 1;
-      either_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>bool isAuthenticated = 1;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearIsAuthenticated() {
-      if (eitherCase_ == 1) {
-        eitherCase_ = 0;
-        either_ = null;
+    public Builder setAuthDetails(com.gw.user.grpc.UserAuthDetailsDTO value) {
+      if (authDetailsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        either_ = value;
         onChanged();
+      } else {
+        authDetailsBuilder_.setMessage(value);
+      }
+      eitherCase_ = 1;
+      return this;
+    }
+    /**
+     * <code>.com.gw.user.grpc.UserAuthDetailsDTO authDetails = 1;</code>
+     */
+    public Builder setAuthDetails(
+        com.gw.user.grpc.UserAuthDetailsDTO.Builder builderForValue) {
+      if (authDetailsBuilder_ == null) {
+        either_ = builderForValue.build();
+        onChanged();
+      } else {
+        authDetailsBuilder_.setMessage(builderForValue.build());
+      }
+      eitherCase_ = 1;
+      return this;
+    }
+    /**
+     * <code>.com.gw.user.grpc.UserAuthDetailsDTO authDetails = 1;</code>
+     */
+    public Builder mergeAuthDetails(com.gw.user.grpc.UserAuthDetailsDTO value) {
+      if (authDetailsBuilder_ == null) {
+        if (eitherCase_ == 1 &&
+            either_ != com.gw.user.grpc.UserAuthDetailsDTO.getDefaultInstance()) {
+          either_ = com.gw.user.grpc.UserAuthDetailsDTO.newBuilder((com.gw.user.grpc.UserAuthDetailsDTO) either_)
+              .mergeFrom(value).buildPartial();
+        } else {
+          either_ = value;
+        }
+        onChanged();
+      } else {
+        if (eitherCase_ == 1) {
+          authDetailsBuilder_.mergeFrom(value);
+        } else {
+          authDetailsBuilder_.setMessage(value);
+        }
+      }
+      eitherCase_ = 1;
+      return this;
+    }
+    /**
+     * <code>.com.gw.user.grpc.UserAuthDetailsDTO authDetails = 1;</code>
+     */
+    public Builder clearAuthDetails() {
+      if (authDetailsBuilder_ == null) {
+        if (eitherCase_ == 1) {
+          eitherCase_ = 0;
+          either_ = null;
+          onChanged();
+        }
+      } else {
+        if (eitherCase_ == 1) {
+          eitherCase_ = 0;
+          either_ = null;
+        }
+        authDetailsBuilder_.clear();
       }
       return this;
+    }
+    /**
+     * <code>.com.gw.user.grpc.UserAuthDetailsDTO authDetails = 1;</code>
+     */
+    public com.gw.user.grpc.UserAuthDetailsDTO.Builder getAuthDetailsBuilder() {
+      return getAuthDetailsFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>.com.gw.user.grpc.UserAuthDetailsDTO authDetails = 1;</code>
+     */
+    @java.lang.Override
+    public com.gw.user.grpc.UserAuthDetailsDTOOrBuilder getAuthDetailsOrBuilder() {
+      if ((eitherCase_ == 1) && (authDetailsBuilder_ != null)) {
+        return authDetailsBuilder_.getMessageOrBuilder();
+      } else {
+        if (eitherCase_ == 1) {
+          return (com.gw.user.grpc.UserAuthDetailsDTO) either_;
+        }
+        return com.gw.user.grpc.UserAuthDetailsDTO.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.com.gw.user.grpc.UserAuthDetailsDTO authDetails = 1;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.gw.user.grpc.UserAuthDetailsDTO, com.gw.user.grpc.UserAuthDetailsDTO.Builder, com.gw.user.grpc.UserAuthDetailsDTOOrBuilder> 
+        getAuthDetailsFieldBuilder() {
+      if (authDetailsBuilder_ == null) {
+        if (!(eitherCase_ == 1)) {
+          either_ = com.gw.user.grpc.UserAuthDetailsDTO.getDefaultInstance();
+        }
+        authDetailsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.gw.user.grpc.UserAuthDetailsDTO, com.gw.user.grpc.UserAuthDetailsDTO.Builder, com.gw.user.grpc.UserAuthDetailsDTOOrBuilder>(
+                (com.gw.user.grpc.UserAuthDetailsDTO) either_,
+                getParentForChildren(),
+                isClean());
+        either_ = null;
+      }
+      eitherCase_ = 1;
+      onChanged();;
+      return authDetailsBuilder_;
     }
 
     private com.google.protobuf.SingleFieldBuilderV3<

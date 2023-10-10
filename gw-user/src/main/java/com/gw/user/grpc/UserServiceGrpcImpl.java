@@ -71,7 +71,10 @@ public class UserServiceGrpcImpl extends UserServiceGrpc.UserServiceImplBase {
         LOG.info("Inside GRPC authenticate");
         userService.authenticateUser(request.getUserName(), request.getPassword())
                 .map(ui -> UserAuthResponseDTO.newBuilder()
-                        .setIsAuthenticated(true)
+                        .setAuthDetails(UserAuthDetailsDTO.newBuilder()
+                                .setFirstName(ui.firstName())
+                                .setLastName(ui.lastName())
+                                .build())
                         .build())
                 .switchIfEmpty(Mono.defer(() -> Mono.just(
                         UserAuthResponseDTO.newBuilder()

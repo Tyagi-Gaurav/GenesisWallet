@@ -30,6 +30,11 @@ public final class UserManagementGrpc {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_com_gw_user_grpc_UserAuthRequestDTO_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_gw_user_grpc_UserAuthDetailsDTO_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_com_gw_user_grpc_UserAuthDetailsDTO_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_gw_user_grpc_UserAuthResponseDTO_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -70,32 +75,34 @@ public final class UserManagementGrpc {
       "(\t\022\020\n\010lastName\030\004 \001(\t\",\n\031UserCreateGrpcRe" +
       "sponseDTO\022\017\n\007created\030\001 \001(\010\"8\n\022UserAuthRe" +
       "questDTO\022\020\n\010userName\030\001 \001(\t\022\020\n\010password\030\002" +
-      " \001(\t\"f\n\023UserAuthResponseDTO\022\031\n\017isAuthent" +
-      "icated\030\001 \001(\010H\000\022*\n\005error\030\002 \001(\0132\031.com.gw.c" +
-      "ommon.grpc.ErrorH\000B\010\n\006either\"<\n(FetchUse" +
-      "rDetailsByUserNameGrpcRequestDTO\022\020\n\010user" +
-      "Name\030\001 \001(\t\"\177\n\032UserDetailsGrpcResponseDTO" +
-      "\022\020\n\010userName\030\001 \001(\t\022\020\n\010password\030\002 \001(\t\022\021\n\t" +
-      "firstName\030\003 \001(\t\022\020\n\010lastName\030\004 \001(\t\022\014\n\004rol" +
-      "e\030\005 \001(\t\022\n\n\002id\030\006 \001(\t\"\256\001\n ExternalUserCrea" +
-      "teGrpcRequestDTO\022\r\n\005email\030\001 \001(\t\022\021\n\tfirst" +
-      "Name\030\002 \001(\t\022\020\n\010lastName\030\003 \001(\t\022\022\n\ntokenVal" +
-      "ue\030\004 \001(\t\022\021\n\ttokenType\030\005 \001(\t\022\027\n\017tokenExpi" +
-      "ryTime\030\006 \001(\003\022\026\n\016externalSystem\030\007 \001(\t\"#\n!" +
-      "ExternalUserCreateGrpcResponseDTO2\323\003\n\013Us" +
-      "erService\022\200\001\n\024fetchUsersByUserName\022:.com" +
-      ".gw.user.grpc.FetchUserDetailsByUserName" +
-      "GrpcRequestDTO\032,.com.gw.user.grpc.UserDe" +
-      "tailsGrpcResponseDTO\022[\n\014authenticate\022$.c" +
-      "om.gw.user.grpc.UserAuthRequestDTO\032%.com" +
-      ".gw.user.grpc.UserAuthResponseDTO\022e\n\ncre" +
-      "ateUser\022*.com.gw.user.grpc.UserCreateGrp" +
-      "cRequestDTO\032+.com.gw.user.grpc.UserCreat" +
-      "eGrpcResponseDTO\022}\n\022createExternalUser\0222" +
-      ".com.gw.user.grpc.ExternalUserCreateGrpc" +
-      "RequestDTO\0323.com.gw.user.grpc.ExternalUs" +
-      "erCreateGrpcResponseDTOB\026B\022UserManagemen" +
-      "tGrpcP\001b\006proto3"
+      " \001(\t\"9\n\022UserAuthDetailsDTO\022\021\n\tfirstName\030" +
+      "\001 \001(\t\022\020\n\010lastName\030\002 \001(\t\"\210\001\n\023UserAuthResp" +
+      "onseDTO\022;\n\013authDetails\030\001 \001(\0132$.com.gw.us" +
+      "er.grpc.UserAuthDetailsDTOH\000\022*\n\005error\030\002 " +
+      "\001(\0132\031.com.gw.common.grpc.ErrorH\000B\010\n\006eith" +
+      "er\"<\n(FetchUserDetailsByUserNameGrpcRequ" +
+      "estDTO\022\020\n\010userName\030\001 \001(\t\"\177\n\032UserDetailsG" +
+      "rpcResponseDTO\022\020\n\010userName\030\001 \001(\t\022\020\n\010pass" +
+      "word\030\002 \001(\t\022\021\n\tfirstName\030\003 \001(\t\022\020\n\010lastNam" +
+      "e\030\004 \001(\t\022\014\n\004role\030\005 \001(\t\022\n\n\002id\030\006 \001(\t\"\256\001\n Ex" +
+      "ternalUserCreateGrpcRequestDTO\022\r\n\005email\030" +
+      "\001 \001(\t\022\021\n\tfirstName\030\002 \001(\t\022\020\n\010lastName\030\003 \001" +
+      "(\t\022\022\n\ntokenValue\030\004 \001(\t\022\021\n\ttokenType\030\005 \001(" +
+      "\t\022\027\n\017tokenExpiryTime\030\006 \001(\003\022\026\n\016externalSy" +
+      "stem\030\007 \001(\t\"#\n!ExternalUserCreateGrpcResp" +
+      "onseDTO2\323\003\n\013UserService\022\200\001\n\024fetchUsersBy" +
+      "UserName\022:.com.gw.user.grpc.FetchUserDet" +
+      "ailsByUserNameGrpcRequestDTO\032,.com.gw.us" +
+      "er.grpc.UserDetailsGrpcResponseDTO\022[\n\014au" +
+      "thenticate\022$.com.gw.user.grpc.UserAuthRe" +
+      "questDTO\032%.com.gw.user.grpc.UserAuthResp" +
+      "onseDTO\022e\n\ncreateUser\022*.com.gw.user.grpc" +
+      ".UserCreateGrpcRequestDTO\032+.com.gw.user." +
+      "grpc.UserCreateGrpcResponseDTO\022}\n\022create" +
+      "ExternalUser\0222.com.gw.user.grpc.External" +
+      "UserCreateGrpcRequestDTO\0323.com.gw.user.g" +
+      "rpc.ExternalUserCreateGrpcResponseDTOB\026B" +
+      "\022UserManagementGrpcP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -121,32 +128,38 @@ public final class UserManagementGrpc {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_gw_user_grpc_UserAuthRequestDTO_descriptor,
         new java.lang.String[] { "UserName", "Password", });
-    internal_static_com_gw_user_grpc_UserAuthResponseDTO_descriptor =
+    internal_static_com_gw_user_grpc_UserAuthDetailsDTO_descriptor =
       getDescriptor().getMessageTypes().get(3);
+    internal_static_com_gw_user_grpc_UserAuthDetailsDTO_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_com_gw_user_grpc_UserAuthDetailsDTO_descriptor,
+        new java.lang.String[] { "FirstName", "LastName", });
+    internal_static_com_gw_user_grpc_UserAuthResponseDTO_descriptor =
+      getDescriptor().getMessageTypes().get(4);
     internal_static_com_gw_user_grpc_UserAuthResponseDTO_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_gw_user_grpc_UserAuthResponseDTO_descriptor,
-        new java.lang.String[] { "IsAuthenticated", "Error", "Either", });
+        new java.lang.String[] { "AuthDetails", "Error", "Either", });
     internal_static_com_gw_user_grpc_FetchUserDetailsByUserNameGrpcRequestDTO_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_com_gw_user_grpc_FetchUserDetailsByUserNameGrpcRequestDTO_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_gw_user_grpc_FetchUserDetailsByUserNameGrpcRequestDTO_descriptor,
         new java.lang.String[] { "UserName", });
     internal_static_com_gw_user_grpc_UserDetailsGrpcResponseDTO_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_com_gw_user_grpc_UserDetailsGrpcResponseDTO_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_gw_user_grpc_UserDetailsGrpcResponseDTO_descriptor,
         new java.lang.String[] { "UserName", "Password", "FirstName", "LastName", "Role", "Id", });
     internal_static_com_gw_user_grpc_ExternalUserCreateGrpcRequestDTO_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_com_gw_user_grpc_ExternalUserCreateGrpcRequestDTO_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_gw_user_grpc_ExternalUserCreateGrpcRequestDTO_descriptor,
         new java.lang.String[] { "Email", "FirstName", "LastName", "TokenValue", "TokenType", "TokenExpiryTime", "ExternalSystem", });
     internal_static_com_gw_user_grpc_ExternalUserCreateGrpcResponseDTO_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(8);
     internal_static_com_gw_user_grpc_ExternalUserCreateGrpcResponseDTO_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_gw_user_grpc_ExternalUserCreateGrpcResponseDTO_descriptor,

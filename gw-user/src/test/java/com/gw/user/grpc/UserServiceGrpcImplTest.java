@@ -115,7 +115,8 @@ class UserServiceGrpcImplTest {
 
         UserAuthResponseDTO userAuthResponseDTO = userServiceBlockingStub.authenticate(userAuthRequestDTO);
 
-        assertThat(userAuthResponseDTO.getIsAuthenticated()).isTrue();
+        assertThat(userAuthResponseDTO.getAuthDetails().getFirstName()).isEqualTo(user.firstName());
+        assertThat(userAuthResponseDTO.getAuthDetails().getLastName()).isEqualTo(user.lastName());
     }
 
     @Test
@@ -131,7 +132,7 @@ class UserServiceGrpcImplTest {
 
         UserAuthResponseDTO userAuthResponseDTO = userServiceBlockingStub.authenticate(userAuthRequestDTO);
 
-        assertThat(userAuthResponseDTO.getIsAuthenticated()).isFalse();
+        assertThat(userAuthResponseDTO.getEitherCase()).isEqualTo(UserAuthResponseDTO.EitherCase.ERROR);
         assertThat(userAuthResponseDTO.getError()).isEqualTo(com.gw.common.grpc.Error.newBuilder()
                 .setCode(Error.ErrorCode.AUTHENTICATION_ERROR)
                 .setDescription("Invalid Credentials")
@@ -151,7 +152,7 @@ class UserServiceGrpcImplTest {
 
         UserAuthResponseDTO userAuthResponseDTO = userServiceBlockingStub.authenticate(userAuthRequestDTO);
 
-        assertThat(userAuthResponseDTO.getIsAuthenticated()).isFalse();
+        assertThat(userAuthResponseDTO.getEitherCase()).isEqualTo(UserAuthResponseDTO.EitherCase.ERROR);
         assertThat(userAuthResponseDTO.getError()).isEqualTo(com.gw.common.grpc.Error.newBuilder()
                 .setCode(Error.ErrorCode.INTERNAL_SYSTEM_ERROR)
                 .setDescription("Internal error occurred. Please try again later.")

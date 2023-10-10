@@ -8,15 +8,19 @@ public interface UserAuthResponseDTOOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>bool isAuthenticated = 1;</code>
-   * @return Whether the isAuthenticated field is set.
+   * <code>.com.gw.user.grpc.UserAuthDetailsDTO authDetails = 1;</code>
+   * @return Whether the authDetails field is set.
    */
-  boolean hasIsAuthenticated();
+  boolean hasAuthDetails();
   /**
-   * <code>bool isAuthenticated = 1;</code>
-   * @return The isAuthenticated.
+   * <code>.com.gw.user.grpc.UserAuthDetailsDTO authDetails = 1;</code>
+   * @return The authDetails.
    */
-  boolean getIsAuthenticated();
+  com.gw.user.grpc.UserAuthDetailsDTO getAuthDetails();
+  /**
+   * <code>.com.gw.user.grpc.UserAuthDetailsDTO authDetails = 1;</code>
+   */
+  com.gw.user.grpc.UserAuthDetailsDTOOrBuilder getAuthDetailsOrBuilder();
 
   /**
    * <code>.com.gw.common.grpc.Error error = 2;</code>

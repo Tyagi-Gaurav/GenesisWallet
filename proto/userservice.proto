@@ -24,9 +24,14 @@ message UserAuthRequestDTO {
   string password = 2;
 }
 
+message UserAuthDetailsDTO {
+  string firstName = 1;
+  string lastName = 2;
+}
+
 message UserAuthResponseDTO {
   oneof either {
-    bool isAuthenticated = 1;
+    UserAuthDetailsDTO authDetails = 1;
     com.gw.common.grpc.Error error = 2;
   }
 }
