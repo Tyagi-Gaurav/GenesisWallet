@@ -1,6 +1,7 @@
 package com.gw.user.grpc;
 
 import com.gw.common.domain.ExternalUser;
+import com.gw.common.grpc.Error;
 import com.gw.common.metrics.EndpointMetrics;
 import com.gw.grpc.common.CorrelationIdInterceptor;
 import com.gw.grpc.common.MetricsInterceptor;
@@ -100,6 +101,61 @@ class UserServiceGrpcImplTest {
         assertThat(userDetailsGrpcResponseDTO.getFirstName()).isEqualTo(user.firstName());
         assertThat(userDetailsGrpcResponseDTO.getLastName()).isEqualTo(user.lastName());
         assertThat(userDetailsGrpcResponseDTO.getId()).isEqualTo(user.id().toString());
+    }
+
+    @Test
+    void authenticateUserSuccess()  {
+        User user = aUser().build();
+        when(userService.authenticateUser(user.userName(), user.password())).thenReturn(Mono.just(user));
+
+        UserAuthRequestDTO userAuthRequestDTO = UserAuthRequestDTO.newBuilder()
+                .setUserName(user.userName())
+                .setPassword(user.password())
+                .build();
+
+        UserAuthResponseDTO userAuthResponseDTO = userServiceBlockingStub.authenticate(userAuthRequestDTO);
+
+        assertThat(userAuthResponseDTO.getIsAuthenticated()).isTrue();
+    }
+
+    @Test
+    void authenticateUserInvalidCredentials()  {
+        User user = aUser().build();
+        when(userService.authenticateUser(user.userName(), user.password()))
+                .thenReturn(Mono.empty());
+
+        UserAuthRequestDTO userAuthRequestDTO = UserAuthRequestDTO.newBuilder()
+                .setUserName(user.userName())
+                .setPassword(user.password())
+                .build();
+
+        UserAuthResponseDTO userAuthResponseDTO = userServiceBlockingStub.authenticate(userAuthRequestDTO);
+
+        assertThat(userAuthResponseDTO.getIsAuthenticated()).isFalse();
+        assertThat(userAuthResponseDTO.getError()).isEqualTo(com.gw.common.grpc.Error.newBuilder()
+                .setCode(Error.ErrorCode.AUTHENTICATION_ERROR)
+                .setDescription("Invalid Credentials")
+                .build());
+    }
+
+    @Test
+    void authenticateUserError()  {
+        User user = aUser().build();
+        when(userService.authenticateUser(user.userName(), user.password()))
+                .thenReturn(Mono.error(new RuntimeException()));
+
+        UserAuthRequestDTO userAuthRequestDTO = UserAuthRequestDTO.newBuilder()
+                .setUserName(user.userName())
+                .setPassword(user.password())
+                .build();
+
+        UserAuthResponseDTO userAuthResponseDTO = userServiceBlockingStub.authenticate(userAuthRequestDTO);
+
+        assertThat(userAuthResponseDTO.getIsAuthenticated()).isFalse();
+        assertThat(userAuthResponseDTO.getError()).isEqualTo(com.gw.common.grpc.Error.newBuilder()
+                .setCode(Error.ErrorCode.INTERNAL_SYSTEM_ERROR)
+                .setDescription("Internal error occurred. Please try again later.")
+                .build());
     }
 
     @Test

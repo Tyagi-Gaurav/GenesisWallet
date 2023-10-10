@@ -2,6 +2,7 @@ package com.gw.user.grpc;
 
 import com.google.protobuf.Empty;
 import com.gw.common.domain.ExternalUser;
+import com.gw.common.grpc.Error;
 import com.gw.user.domain.User;
 import com.gw.user.service.UserService;
 import io.grpc.stub.StreamObserver;
@@ -61,6 +62,33 @@ public class UserServiceGrpcImpl extends UserServiceGrpc.UserServiceImplBase {
                 .subscribe(v -> {
                     responseObserver.onNext(ExternalUserCreateGrpcResponseDTO.newBuilder()
                             .build());
+                    responseObserver.onCompleted();
+                });
+    }
+
+    @Override
+    public void authenticate(UserAuthRequestDTO request, StreamObserver<UserAuthResponseDTO> responseObserver) {
+        LOG.info("Inside GRPC authenticate");
+        userService.authenticateUser(request.getUserName(), request.getPassword())
+                .map(ui -> UserAuthResponseDTO.newBuilder()
+                        .setIsAuthenticated(true)
+                        .build())
+                .switchIfEmpty(Mono.defer(() -> Mono.just(
+                        UserAuthResponseDTO.newBuilder()
+                                .setError(Error.newBuilder()
+                                        .setCode(Error.ErrorCode.AUTHENTICATION_ERROR)
+                                        .setDescription("Invalid Credentials")
+                                        .build())
+                                .build()
+                )))
+                .onErrorResume(throwable -> Mono.just(UserAuthResponseDTO.newBuilder()
+                        .setError(Error.newBuilder()
+                                .setCode(Error.ErrorCode.INTERNAL_SYSTEM_ERROR)
+                                .setDescription("Internal error occurred. Please try again later.")
+                                .build())
+                        .build()))
+                .subscribe(v -> {
+                    responseObserver.onNext(v);
                     responseObserver.onCompleted();
                 });
     }

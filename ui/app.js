@@ -15,12 +15,11 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
         defaults: true,
         oneofs: true});
 
-console.log("Package Definition: " + packageDefinition);
-
 const userServiceObject = grpcLibrary.loadPackageDefinition(packageDefinition).com.gw.user.grpc;
 var userServiceClient = new userServiceObject.UserService('localhost:19090', grpcLibrary.credentials.createInsecure());
 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static("public"));
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
@@ -34,6 +33,10 @@ app.get("/register", (req, res) => {
   res.render("register.ejs");
 });
 
+app.get("/login", (req, res) => {
+  res.render("login.ejs");
+});
+
 app.post("/register", (req, res) => {
   userServiceClient.createUser({
     userName : req.body.username,
@@ -43,10 +46,32 @@ app.post("/register", (req, res) => {
   }, function(err, feature) {
     if (err) {
       console.log("Error occurred: " + err);
+      //TODO Set error flag
+      res.render("register.ejs");
     } else {
       console.log("External User created result : " + JSON.stringify(feature));
+      res.render("login.ejs");
     }
   });
-  
-  res.render("welcome.ejs");
+});
+
+app.post("/login", (req, res) => {
+  userServiceClient.authenticate({
+    userName: req.body.username,
+    password: req.body.password
+  }, function(err, result) {
+    if (err) {
+      console.log(err);
+      //TODO Some error of Internal error
+    } else {
+      console.log("Result: " + JSON.stringify(result));
+      if (result.either === "error") {
+        //TODO Set error flag
+        res.render("login.ejs");
+      } else {
+        res.render("welcome.ejs");
+        //TODO Some error of Invalid Credentials?
+      }
+    }
+  });
 });
