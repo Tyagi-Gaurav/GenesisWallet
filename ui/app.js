@@ -69,7 +69,10 @@ app.post("/login", (req, res) => {
         //TODO Set error flag
         res.render("login.ejs");
       } else {
-        res.render("welcome.ejs");
+        var initials = result.authDetails.firstName.charAt(0).toUpperCase() + result.authDetails.lastName.charAt(0).toUpperCase();;
+        res.render("welcome.ejs", {
+          initials: initials
+        });
         //TODO Some error of Invalid Credentials?
       }
     }
