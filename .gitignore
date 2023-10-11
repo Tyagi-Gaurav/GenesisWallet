@@ -18,6 +18,7 @@
 vendor/
 out/
 build/
+tmp/
 .gradle/
 .idea/
 target/
