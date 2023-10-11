@@ -8,7 +8,7 @@ import grpcLibrary from "@grpc/grpc-js";
 var PROTO_PATH = process.env.PROTO_PATH;
 
 const app = express();
-const port = 3000; //TODO Read this from environment config
+const port = (process.env.PORT === undefined) ? 3000 : process.env.PORT;
 
 console.log(`PROTO_PATH: ${PROTO_PATH}`)
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
@@ -38,6 +38,10 @@ app.get("/register", (req, res) => {
 
 app.get("/login", (req, res) => {
   res.render("login.ejs");
+});
+
+app.get("/status", (req, res) => {
+  res.sendStatus(200);
 });
 
 app.post("/register", (req, res) => {
