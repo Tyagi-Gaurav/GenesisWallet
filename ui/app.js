@@ -10,7 +10,6 @@ var PROTO_PATH = process.env.PROTO_PATH;
 const app = express();
 const port = (process.env.PORT === undefined) ? 3000 : process.env.PORT;
 
-console.log(`PROTO_PATH: ${PROTO_PATH}`)
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
         keepCase: true,
         longs: String,
@@ -41,7 +40,7 @@ app.get("/login", (req, res) => {
 });
 
 app.get("/status", (req, res) => {
-  res.sendStatus(200);
+  res.send(200, {"status" : "UP"});
 });
 
 app.post("/register", (req, res) => {

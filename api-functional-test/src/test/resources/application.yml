@@ -7,7 +7,7 @@ api-gateway:
   nonSecuredPort: ${API_GATEWAY_NON_SECURED_PORT:80}
   enableSecurity: ${ENABLE_SECURITY:false}
   userContextPath: ${USER_CONTEXT_PATH:/api}
-  uiContextPath: ${UI_CONTEXT_PATH:/gw-ui}
+  uiContextPath: ${UI_CONTEXT_PATH:/ui}
 
 admin-credentials:
   userName: admin

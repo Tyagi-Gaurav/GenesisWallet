@@ -33,6 +33,10 @@ fq:
 down:
 	docker-compose down --rmi all
 
+qr:
+	./mvnw clean package -DskipTests=true
+	docker-compose up -d --build
+
 ft:
 	./mvnw test -DskipTests=false -pl api-functional-test -Dtest=CucumberTest
 	./mvnw test -DskipTests=false -pl ui-functional-test
@@ -53,6 +57,7 @@ help:
 	@echo ' fq					Build full local docker-compose stack (No tests)'
 	@echo ' ft					Run functional tests'
 	@echo ' down				Destroy local docker-compose stack'
+	@echo ' qr					Restart docker-compose stack after a small change to any app'
 	@echo ''
 	@echo "Available Microservices:"
 	@echo ''

@@ -34,8 +34,7 @@ services:
     environment:
       - USER_HOST=local.user-app
       - UI_HOST=local.ui
-      - UI_ACTUATOR_PORT=8081
-      - UI_APP_PORT=8080
+      - UI_APP_PORT=3000
       - USER_APP_PORT=9090
       - USER_ACTUATOR_PORT=9091
     command: [nginx, '-g', 'daemon off;']
@@ -50,8 +49,7 @@ services:
     build:
       context: ui
     ports:
-      - "8080:8080"
-      - "8081:8081"
+      - "3000:3000"
     networks:
       - overlay
 

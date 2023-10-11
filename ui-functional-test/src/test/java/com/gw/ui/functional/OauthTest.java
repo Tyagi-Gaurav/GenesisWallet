@@ -2,6 +2,7 @@ package com.gw.ui.functional;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -40,7 +41,7 @@ class OauthTest {
         }
     }
 
-    @Test
+    @Disabled("Enable when we write selenium tests for UI again")
     void shouldGetLogin() {
         driver.get("http://local.api-gateway/gw-ui/login.html");
         assertThat(driver.getTitle()).isEqualTo("Oauth 2 Demo");

@@ -30,7 +30,7 @@ public class ResponseSteps implements En {
 
         Then("^the response should be a success status$", () -> {
             String response = responseHolder.getResponse(String.class);
-            assertThat(response).isEqualTo("{\"status\":\"UP\"}");
+                assertThat(response).isEqualTo("{\"status\":\"UP\"}");
         });
 
         And("^the userId is received in the response$", () -> {
