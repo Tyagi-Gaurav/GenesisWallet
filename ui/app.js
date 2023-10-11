@@ -1,13 +1,16 @@
+
+import "dotenv/config";
 import express from "express";
 import bodyParser from "body-parser";
 import protoLoader from "@grpc/proto-loader";
 import grpcLibrary from "@grpc/grpc-js";
 
-var PROTO_PATH = "../proto/UserService.proto";
+var PROTO_PATH = process.env.PROTO_PATH;
 
 const app = express();
 const port = 3000; //TODO Read this from environment config
 
+console.log(`PROTO_PATH: ${PROTO_PATH}`)
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
         keepCase: true,
         longs: String,
