@@ -2,7 +2,7 @@ ARG ALPINE_VERSION=3.18.4
 
 FROM alpine:${ALPINE_VERSION}
 
-RUN apk add openjdk17
+RUN apk add openjdk17 bash
 
 WORKDIR /app
 

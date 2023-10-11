@@ -1,4 +1,4 @@
-FROM openjdk:17
+FROM chonku/java:v0.1.8
 
 ADD target/gw-ui-DEV-SNAPSHOT.jar /data/ui.jar
 
