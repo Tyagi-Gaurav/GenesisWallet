@@ -1,12 +1,17 @@
 FROM chonku/java:v0.1.8
 
-ADD target/ui-DEV-SNAPSHOT.jar /data/ui.jar
+WORKDIR /app
 
-COPY ./startup.sh /data/startup.sh
+COPY ../proto/userservice.proto userservice.proto
+COPY package.json package.json
+COPY package-lock.json package-lock.json
+RUN npm install
 
-CMD ["/bin/bash", "/data/startup.sh"]
+COPY public public
+COPY views views
+COPY app.js app.js
+COPY ./startup.sh /startup.sh
 
-#HEALTHCHECK CMD wget --quiet --tries=1 --spider http://localhost:8080/status || exit 1
+CMD [ "node", "app.js" ]
 
-EXPOSE 8080
-EXPOSE 8900
+EXPOSE 3000
