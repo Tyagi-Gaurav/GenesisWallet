@@ -38,11 +38,11 @@ qr:
 	docker-compose up -d --build
 
 ft:
-	./mvnw test -DskipTests=false -pl api-functional-test -Dtest=CucumberTest
+	./mvnw test -DskipTests=false -pl functional-test -Dtest=CucumberTest
 	./mvnw test -DskipTests=false -pl ui-functional-test
 
 smoke:
-	./mvnw test -DskipTests=false -pl api-functional-test -Dtest=SmokeTest
+	./mvnw test -DskipTests=false -pl functional-test -Dtest=SmokeTest
 
 help:
 	@echo ''

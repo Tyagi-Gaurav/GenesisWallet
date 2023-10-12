@@ -9,7 +9,7 @@
         <artifactId>genesis</artifactId>
     </parent>
 
-    <artifactId>api-functional-test</artifactId>
+    <artifactId>functional-test</artifactId>
     <packaging>jar</packaging>
 
     <properties>
