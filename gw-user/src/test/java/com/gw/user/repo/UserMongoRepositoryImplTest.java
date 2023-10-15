@@ -1,6 +1,8 @@
 package com.gw.user.repo;
 
 import com.gw.common.domain.ExternalUser;
+import com.gw.user.domain.ExternalUser2;
+import com.gw.user.domain.ExternalUser2Builder;
 import com.gw.user.domain.User;
 import com.gw.user.testutils.DatabaseTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -108,6 +110,41 @@ class UserMongoRepositoryImplTest extends DatabaseTest {
         //then
         StepVerifier.create(actualUser)
                 .expectNext(userInDatabase)
+                .verifyComplete();
+    }
+
+    @Test
+    void shouldCreateExternalUserIfDoesNotExist() {
+        //given
+        ExternalUser2 userToSave = ExternalUser2Builder.newBuilder()
+                .withExternalSystem("google")
+                .withUserName("some-email@email.com")
+                .build();
+
+        //when
+        Mono<ExternalUser2> userInDB = userRepository.findOrCreateExternalUser(userToSave);
+
+        //then
+        StepVerifier.create(userInDB)
+                .expectNext(userToSave)
+                .verifyComplete();
+    }
+
+    @Test
+    void shouldFindExternalUserIfAlreadyExist() {
+        //given
+        ExternalUser2 userToSave = ExternalUser2Builder.newBuilder()
+                .withExternalSystem("google")
+                .withUserName("some-email@email.com")
+                .build();
+        MongoDBTestUtils.addToDatabase(userToSave, reactiveMongoTemplate);
+
+        //when
+        Mono<ExternalUser2> userInDB = userRepository.findOrCreateExternalUser(userToSave);
+
+        //then
+        StepVerifier.create(userInDB)
+                .expectNext(userToSave)
                 .verifyComplete();
     }
 }

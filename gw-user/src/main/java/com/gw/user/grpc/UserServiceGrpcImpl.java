@@ -1,8 +1,8 @@
 package com.gw.user.grpc;
 
 import com.google.protobuf.Empty;
-import com.gw.common.domain.ExternalUser;
 import com.gw.common.grpc.Error;
+import com.gw.user.domain.ExternalUser2;
 import com.gw.user.domain.User;
 import com.gw.user.service.UserService;
 import io.grpc.stub.StreamObserver;
@@ -53,14 +53,14 @@ public class UserServiceGrpcImpl extends UserServiceGrpc.UserServiceImplBase {
     }
 
     @Override
-    public void createExternalUser(ExternalUserCreateGrpcRequestDTO request, StreamObserver<ExternalUserCreateGrpcResponseDTO> responseObserver) {
+    public void createOrFindUser(UserCreateOrFindGrpcRequestDTO request, StreamObserver<UserCreateOrFindGrpcResponseDTO> responseObserver) {
         LOG.info("Inside GRPC create external user");
         userService.addExternalUser(createExternalUserFrom(request))
                 .map(v -> Empty.getDefaultInstance())
                 .switchIfEmpty(Mono.defer(() -> Mono.just(Empty.getDefaultInstance())))
                 .doOnError(responseObserver::onError)
                 .subscribe(v -> {
-                    responseObserver.onNext(ExternalUserCreateGrpcResponseDTO.newBuilder()
+                    responseObserver.onNext(UserCreateOrFindGrpcResponseDTO.newBuilder()
                             .build());
                     responseObserver.onCompleted();
                 });
@@ -106,14 +106,9 @@ public class UserServiceGrpcImpl extends UserServiceGrpc.UserServiceImplBase {
                 "REGISTERED_USER");
     }
 
-    private ExternalUser createExternalUserFrom(ExternalUserCreateGrpcRequestDTO request) {
-        return new ExternalUser(UUID.randomUUID(),
-                request.getEmail(),
-                request.getFirstName(),
-                request.getLastName(),
-                request.getTokenValue(),
-                request.getTokenType(),
-                request.getTokenExpiryTime(),
-                request.getExternalSystem());
+    private ExternalUser2 createExternalUserFrom(UserCreateOrFindGrpcRequestDTO request) {
+        return new ExternalUser2(
+                request.getUserName(),
+                request.getExtsource().name());
     }
 }

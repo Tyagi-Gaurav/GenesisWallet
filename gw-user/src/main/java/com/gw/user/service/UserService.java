@@ -1,7 +1,7 @@
 package com.gw.user.service;
 
-import com.gw.common.domain.ExternalUser;
 import com.gw.common.domain.UserIdentity;
+import com.gw.user.domain.ExternalUser2;
 import com.gw.user.domain.User;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import reactor.core.publisher.Mono;
@@ -16,5 +16,5 @@ public interface UserService extends ReactiveUserDetailsService {
 
     Mono<UserIdentity> authenticateUser(String userName, String password);
 
-    Mono<ExternalUser> addExternalUser(ExternalUser externalUser);
+    Mono<ExternalUser2> addExternalUser(ExternalUser2 externalUser);
 }

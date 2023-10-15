@@ -8,11 +8,33 @@ option java_multiple_files = true;
 
 option java_outer_classname = "UserManagementGrpc";
 
+enum ExternalSystem {
+    UNKNOWN = 0;
+    GOOGLE = 1;
+    FACEBOOK = 2;
+}
+
 message UserCreateGrpcRequestDTO {
   string userName = 1;
   string password = 2;
   string firstName = 3;
   string lastName = 4;
+}
+
+message UserCreateOrFindGrpcRequestDTO {
+  string userName = 1;
+  ExternalSystem extsource = 2;
+}
+
+message OauthUser {
+  string userName = 1;
+}
+
+message UserCreateOrFindGrpcResponseDTO {
+  oneof either {
+    OauthUser user = 1;
+    com.gw.common.grpc.Error error = 2;
+  }
 }
 
 message UserCreateGrpcResponseDTO {
@@ -49,23 +71,9 @@ message UserDetailsGrpcResponseDTO {
   string id = 6;
 }
 
-message ExternalUserCreateGrpcRequestDTO {
-  string email = 1;
-  string firstName = 2;
-  string lastName = 3;
-  string tokenValue = 4;
-  string tokenType = 5;
-  int64 tokenExpiryTime = 6;
-  string externalSystem = 7;
-}
-
-message ExternalUserCreateGrpcResponseDTO {
-  //Empty
-}
-
 service UserService {
   rpc fetchUsersByUserName(FetchUserDetailsByUserNameGrpcRequestDTO) returns (UserDetailsGrpcResponseDTO);
   rpc authenticate(UserAuthRequestDTO) returns (UserAuthResponseDTO);
   rpc createUser(UserCreateGrpcRequestDTO) returns (UserCreateGrpcResponseDTO);
-  rpc createExternalUser(ExternalUserCreateGrpcRequestDTO) returns (ExternalUserCreateGrpcResponseDTO);
+  rpc createOrFindUser(UserCreateOrFindGrpcRequestDTO) returns (UserCreateOrFindGrpcResponseDTO);
 }

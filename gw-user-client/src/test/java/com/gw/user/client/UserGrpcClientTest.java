@@ -158,10 +158,9 @@ class UserGrpcClientTest {
 
     @Test
     void createExternalUserSync() {
-        ExternalUserCreateGrpcRequestDTO externalUserCreateGrpcRequestDTO = ExternalUserCreateGrpcRequestDTO.newBuilder()
-                .setEmail("test@test.com")
-                .setFirstName("firstName")
-                .setLastName("lastName")
+        UserCreateOrFindGrpcRequestDTO externalUserCreateGrpcRequestDTO = UserCreateOrFindGrpcRequestDTO.newBuilder()
+                .setUserName("test@test.com")
+                .setExtsourceValue(ExternalSystem.GOOGLE_VALUE)
                 .build();
 
         userGrpcClient.createExternalUserSync(externalUserCreateGrpcRequestDTO);
@@ -170,18 +169,18 @@ class UserGrpcClientTest {
 
     @Test
     void createExternalUserASync() {
-        ExternalUserCreateGrpcRequestDTO externalUserCreateGrpcRequestDTO = ExternalUserCreateGrpcRequestDTO.newBuilder()
-                .setEmail("test@test.com")
-                .setFirstName("firstName")
-                .setLastName("lastName")
+        UserCreateOrFindGrpcRequestDTO externalUserCreateGrpcRequestDTO = UserCreateOrFindGrpcRequestDTO.newBuilder()
+                .setUserName("test@test.com")
+                .setExtsourceValue(ExternalSystem.GOOGLE_VALUE)
                 .build();
-        ListenableFuture<ExternalUserCreateGrpcResponseDTO> emptyListenableFuture =
+
+        ListenableFuture<UserCreateOrFindGrpcResponseDTO> emptyListenableFuture =
                 userGrpcClient.createExternalUserAsync(externalUserCreateGrpcRequestDTO);
 
         AtomicBoolean hasGotResponse = new AtomicBoolean(false);
         Futures.addCallback(emptyListenableFuture, new FutureCallback<>() {
             @Override
-            public void onSuccess(ExternalUserCreateGrpcResponseDTO result) {
+            public void onSuccess(UserCreateOrFindGrpcResponseDTO result) {
                 hasGotResponse.set(true);
             }
 

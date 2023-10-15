@@ -108,35 +108,35 @@ public final class UserServiceGrpc {
     return getCreateUserMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<com.gw.user.grpc.ExternalUserCreateGrpcRequestDTO,
-      com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO> getCreateExternalUserMethod;
+  private static volatile io.grpc.MethodDescriptor<com.gw.user.grpc.UserCreateOrFindGrpcRequestDTO,
+      com.gw.user.grpc.UserCreateOrFindGrpcResponseDTO> getCreateOrFindUserMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "createExternalUser",
-      requestType = com.gw.user.grpc.ExternalUserCreateGrpcRequestDTO.class,
-      responseType = com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO.class,
+      fullMethodName = SERVICE_NAME + '/' + "createOrFindUser",
+      requestType = com.gw.user.grpc.UserCreateOrFindGrpcRequestDTO.class,
+      responseType = com.gw.user.grpc.UserCreateOrFindGrpcResponseDTO.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<com.gw.user.grpc.ExternalUserCreateGrpcRequestDTO,
-      com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO> getCreateExternalUserMethod() {
-    io.grpc.MethodDescriptor<com.gw.user.grpc.ExternalUserCreateGrpcRequestDTO, com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO> getCreateExternalUserMethod;
-    if ((getCreateExternalUserMethod = UserServiceGrpc.getCreateExternalUserMethod) == null) {
+  public static io.grpc.MethodDescriptor<com.gw.user.grpc.UserCreateOrFindGrpcRequestDTO,
+      com.gw.user.grpc.UserCreateOrFindGrpcResponseDTO> getCreateOrFindUserMethod() {
+    io.grpc.MethodDescriptor<com.gw.user.grpc.UserCreateOrFindGrpcRequestDTO, com.gw.user.grpc.UserCreateOrFindGrpcResponseDTO> getCreateOrFindUserMethod;
+    if ((getCreateOrFindUserMethod = UserServiceGrpc.getCreateOrFindUserMethod) == null) {
       synchronized (UserServiceGrpc.class) {
-        if ((getCreateExternalUserMethod = UserServiceGrpc.getCreateExternalUserMethod) == null) {
-          UserServiceGrpc.getCreateExternalUserMethod = getCreateExternalUserMethod =
-              io.grpc.MethodDescriptor.<com.gw.user.grpc.ExternalUserCreateGrpcRequestDTO, com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO>newBuilder()
+        if ((getCreateOrFindUserMethod = UserServiceGrpc.getCreateOrFindUserMethod) == null) {
+          UserServiceGrpc.getCreateOrFindUserMethod = getCreateOrFindUserMethod =
+              io.grpc.MethodDescriptor.<com.gw.user.grpc.UserCreateOrFindGrpcRequestDTO, com.gw.user.grpc.UserCreateOrFindGrpcResponseDTO>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "createExternalUser"))
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "createOrFindUser"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.gw.user.grpc.ExternalUserCreateGrpcRequestDTO.getDefaultInstance()))
+                  com.gw.user.grpc.UserCreateOrFindGrpcRequestDTO.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO.getDefaultInstance()))
-              .setSchemaDescriptor(new UserServiceMethodDescriptorSupplier("createExternalUser"))
+                  com.gw.user.grpc.UserCreateOrFindGrpcResponseDTO.getDefaultInstance()))
+              .setSchemaDescriptor(new UserServiceMethodDescriptorSupplier("createOrFindUser"))
               .build();
         }
       }
     }
-    return getCreateExternalUserMethod;
+    return getCreateOrFindUserMethod;
   }
 
   /**
@@ -210,9 +210,9 @@ public final class UserServiceGrpc {
 
     /**
      */
-    public void createExternalUser(com.gw.user.grpc.ExternalUserCreateGrpcRequestDTO request,
-        io.grpc.stub.StreamObserver<com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO> responseObserver) {
-      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getCreateExternalUserMethod(), responseObserver);
+    public void createOrFindUser(com.gw.user.grpc.UserCreateOrFindGrpcRequestDTO request,
+        io.grpc.stub.StreamObserver<com.gw.user.grpc.UserCreateOrFindGrpcResponseDTO> responseObserver) {
+      io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getCreateOrFindUserMethod(), responseObserver);
     }
 
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
@@ -239,12 +239,12 @@ public final class UserServiceGrpc {
                 com.gw.user.grpc.UserCreateGrpcResponseDTO>(
                   this, METHODID_CREATE_USER)))
           .addMethod(
-            getCreateExternalUserMethod(),
+            getCreateOrFindUserMethod(),
             io.grpc.stub.ServerCalls.asyncUnaryCall(
               new MethodHandlers<
-                com.gw.user.grpc.ExternalUserCreateGrpcRequestDTO,
-                com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO>(
-                  this, METHODID_CREATE_EXTERNAL_USER)))
+                com.gw.user.grpc.UserCreateOrFindGrpcRequestDTO,
+                com.gw.user.grpc.UserCreateOrFindGrpcResponseDTO>(
+                  this, METHODID_CREATE_OR_FIND_USER)))
           .build();
     }
   }
@@ -289,10 +289,10 @@ public final class UserServiceGrpc {
 
     /**
      */
-    public void createExternalUser(com.gw.user.grpc.ExternalUserCreateGrpcRequestDTO request,
-        io.grpc.stub.StreamObserver<com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO> responseObserver) {
+    public void createOrFindUser(com.gw.user.grpc.UserCreateOrFindGrpcRequestDTO request,
+        io.grpc.stub.StreamObserver<com.gw.user.grpc.UserCreateOrFindGrpcResponseDTO> responseObserver) {
       io.grpc.stub.ClientCalls.asyncUnaryCall(
-          getChannel().newCall(getCreateExternalUserMethod(), getCallOptions()), request, responseObserver);
+          getChannel().newCall(getCreateOrFindUserMethod(), getCallOptions()), request, responseObserver);
     }
   }
 
@@ -333,9 +333,9 @@ public final class UserServiceGrpc {
 
     /**
      */
-    public com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO createExternalUser(com.gw.user.grpc.ExternalUserCreateGrpcRequestDTO request) {
+    public com.gw.user.grpc.UserCreateOrFindGrpcResponseDTO createOrFindUser(com.gw.user.grpc.UserCreateOrFindGrpcRequestDTO request) {
       return io.grpc.stub.ClientCalls.blockingUnaryCall(
-          getChannel(), getCreateExternalUserMethod(), getCallOptions(), request);
+          getChannel(), getCreateOrFindUserMethod(), getCallOptions(), request);
     }
   }
 
@@ -379,17 +379,17 @@ public final class UserServiceGrpc {
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO> createExternalUser(
-        com.gw.user.grpc.ExternalUserCreateGrpcRequestDTO request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.gw.user.grpc.UserCreateOrFindGrpcResponseDTO> createOrFindUser(
+        com.gw.user.grpc.UserCreateOrFindGrpcRequestDTO request) {
       return io.grpc.stub.ClientCalls.futureUnaryCall(
-          getChannel().newCall(getCreateExternalUserMethod(), getCallOptions()), request);
+          getChannel().newCall(getCreateOrFindUserMethod(), getCallOptions()), request);
     }
   }
 
   private static final int METHODID_FETCH_USERS_BY_USER_NAME = 0;
   private static final int METHODID_AUTHENTICATE = 1;
   private static final int METHODID_CREATE_USER = 2;
-  private static final int METHODID_CREATE_EXTERNAL_USER = 3;
+  private static final int METHODID_CREATE_OR_FIND_USER = 3;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -420,9 +420,9 @@ public final class UserServiceGrpc {
           serviceImpl.createUser((com.gw.user.grpc.UserCreateGrpcRequestDTO) request,
               (io.grpc.stub.StreamObserver<com.gw.user.grpc.UserCreateGrpcResponseDTO>) responseObserver);
           break;
-        case METHODID_CREATE_EXTERNAL_USER:
-          serviceImpl.createExternalUser((com.gw.user.grpc.ExternalUserCreateGrpcRequestDTO) request,
-              (io.grpc.stub.StreamObserver<com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO>) responseObserver);
+        case METHODID_CREATE_OR_FIND_USER:
+          serviceImpl.createOrFindUser((com.gw.user.grpc.UserCreateOrFindGrpcRequestDTO) request,
+              (io.grpc.stub.StreamObserver<com.gw.user.grpc.UserCreateOrFindGrpcResponseDTO>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -488,7 +488,7 @@ public final class UserServiceGrpc {
               .addMethod(getFetchUsersByUserNameMethod())
               .addMethod(getAuthenticateMethod())
               .addMethod(getCreateUserMethod())
-              .addMethod(getCreateExternalUserMethod())
+              .addMethod(getCreateOrFindUserMethod())
               .build();
         }
       }

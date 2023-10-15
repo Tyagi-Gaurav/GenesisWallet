@@ -72,14 +72,14 @@ public class UserGrpcClient {
                 .createUser(userCreateGrpcRequestDTO);
     }
 
-    public void createExternalUserSync(ExternalUserCreateGrpcRequestDTO externalUserCreateGrpcRequestDTO) {
-        userServiceBlockingStub.createExternalUser(externalUserCreateGrpcRequestDTO);
+    public void createExternalUserSync(UserCreateOrFindGrpcRequestDTO userCreateOrFindGrpcRequestDTO) {
+        userServiceBlockingStub.createOrFindUser(userCreateOrFindGrpcRequestDTO);
     }
 
-    public ListenableFuture<ExternalUserCreateGrpcResponseDTO> createExternalUserAsync(ExternalUserCreateGrpcRequestDTO externalUserCreateGrpcRequestDTO) {
+    public ListenableFuture<UserCreateOrFindGrpcResponseDTO> createExternalUserAsync(UserCreateOrFindGrpcRequestDTO userCreateOrFindGrpcRequestDTO) {
         return userServiceFutureStub
                 .withDeadlineAfter(userGrpcClientConfig.timeoutInMs(), TimeUnit.MILLISECONDS)
-                .createExternalUser(externalUserCreateGrpcRequestDTO);
+                .createOrFindUser(userCreateOrFindGrpcRequestDTO);
     }
 
     public UserAuthResponseDTO authenticateUserSync(UserAuthRequestDTO userAuthRequestDTO) {

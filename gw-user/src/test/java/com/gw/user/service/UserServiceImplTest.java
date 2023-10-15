@@ -1,11 +1,11 @@
 package com.gw.user.service;
 
-import com.gw.common.domain.ExternalUser;
 import com.gw.common.metrics.UserRegistrationCounter;
 import com.gw.security.util.PasswordEncryptor;
+import com.gw.user.domain.ExternalUser2;
+import com.gw.user.domain.ExternalUser2Builder;
 import com.gw.user.domain.User;
 import com.gw.user.repo.UserRepository;
-import com.gw.user.testutils.ExternalUserBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,7 +22,8 @@ import static com.gw.user.testutils.TestUserBuilder.copyOf;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
@@ -107,10 +108,12 @@ class UserServiceImplTest {
 
     @Test
     void addExternalUser() {
-        ExternalUser externalUser = ExternalUserBuilder.aExternalUser().build();
+        ExternalUser2 externalUser = ExternalUser2Builder.newBuilder()
+                .withUserName("some-user-name")
+                .withExternalSystem("google")
+                .build();
 
-        when(userRepository.findExternalUserByUserName(externalUser.userName())).thenReturn(Mono.empty());
-        when(userRepository.addExternalUser(externalUser)).thenReturn(Mono.empty());
+        when(userRepository.findOrCreateExternalUser(externalUser)).thenReturn(Mono.just(externalUser));
 
         StepVerifier.create(userService.addExternalUser(externalUser))
                 .expectNext(externalUser)
@@ -119,29 +122,18 @@ class UserServiceImplTest {
 
     @Test
     void incrementRegistrationCounterOnAddExternalUser() {
-        ExternalUser externalUser = ExternalUserBuilder.aExternalUser().build();
+        ExternalUser2 externalUser = ExternalUser2Builder.newBuilder()
+                .withUserName("some-user-name")
+                .withExternalSystem("google")
+                .build();
 
-        when(userRepository.findExternalUserByUserName(externalUser.userName())).thenReturn(Mono.empty());
-        when(userRepository.addExternalUser(externalUser)).thenReturn(Mono.empty());
+        when(userRepository.findOrCreateExternalUser(externalUser)).thenReturn(Mono.just(externalUser));
 
         StepVerifier.create(userService.addExternalUser(externalUser))
                 .expectNext(externalUser)
                 .verifyComplete();
 
         verify(userRegistrationCounter).increment("WEB", externalUser.externalSystem());
-    }
-
-    @Test
-    void addExternalUser_whenUserPresentThenReturnExisting() {
-        ExternalUser externalUser = ExternalUserBuilder.aExternalUser().build();
-
-        when(userRepository.findExternalUserByUserName(externalUser.userName())).thenReturn(Mono.just(externalUser));
-
-        StepVerifier.create(userService.addExternalUser(externalUser))
-                .expectNext(externalUser)
-                .verifyComplete();
-
-        verify(userRepository, times(0)).addExternalUser(externalUser);
     }
 
     @Test

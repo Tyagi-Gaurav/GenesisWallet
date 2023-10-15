@@ -1,14 +1,14 @@
 package com.gw.user.grpc;
 
-import com.gw.common.domain.ExternalUser;
 import com.gw.common.grpc.Error;
 import com.gw.common.metrics.EndpointMetrics;
 import com.gw.grpc.common.CorrelationIdInterceptor;
 import com.gw.grpc.common.MetricsInterceptor;
 import com.gw.test.common.grpc.GrpcExtension;
+import com.gw.user.domain.ExternalUser2;
+import com.gw.user.domain.ExternalUser2Builder;
 import com.gw.user.domain.User;
 import com.gw.user.service.UserService;
-import com.gw.user.testutils.ExternalUserBuilder;
 import io.grpc.ServerInterceptor;
 import io.grpc.StatusRuntimeException;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -23,7 +23,8 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 
-import static com.gw.user.testutils.TestUserBuilder.*;
+import static com.gw.user.testutils.TestUserBuilder.aUser;
+import static com.gw.user.testutils.TestUserBuilder.userCreateGrpcRequestDTOBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
@@ -50,7 +51,7 @@ class UserServiceGrpcImplTest {
     }
 
     @Test
-    void createUser()  {
+    void createUser() {
         when(userService.addUser(any(User.class))).thenReturn(Mono.empty());
 
         User user = aUser().build();
@@ -62,20 +63,21 @@ class UserServiceGrpcImplTest {
     }
 
     @Test
-    void createExternalUser()  {
-        when(userService.addExternalUser(any(ExternalUser.class))).thenReturn(Mono.empty());
+    void createExternalUser() {
+        when(userService.addExternalUser(any(ExternalUser2.class))).thenReturn(Mono.empty());
 
-        ExternalUser externalUser = ExternalUserBuilder.aExternalUser().build();
-        ExternalUserCreateGrpcRequestDTO externalUserCreateGrpcRequestDTO =
-                externalUserCreateGrpcRequestDTOBuilder(externalUser);
+        ExternalUser2 externalUser = ExternalUser2Builder.newBuilder().build();
 
-        ExternalUserCreateGrpcResponseDTO externalUserCreateGrpcResponseDTO =
-                userServiceBlockingStub.createExternalUser(externalUserCreateGrpcRequestDTO);
-        assertThat(externalUserCreateGrpcResponseDTO).isNotNull();
+        UserCreateOrFindGrpcResponseDTO response = userServiceBlockingStub.createOrFindUser(UserCreateOrFindGrpcRequestDTO.newBuilder()
+                .setUserName("some-user-name")
+                .setExtsource(ExternalSystem.GOOGLE)
+                .build());
+
+        assertThat(response).isNotNull();
     }
 
     @Test
-    void createUser_handleException()  {
+    void createUser_handleException() {
         when(userService.addUser(any(User.class))).thenReturn(Mono.error(new IllegalArgumentException()));
 
         User user = aUser().build();
@@ -86,7 +88,7 @@ class UserServiceGrpcImplTest {
     }
 
     @Test
-    void fetchUsersByUsername()  {
+    void fetchUsersByUsername() {
         User user = aUser().build();
         when(userService.findUserBy(user.userName())).thenReturn(Mono.just(user));
 
@@ -104,7 +106,7 @@ class UserServiceGrpcImplTest {
     }
 
     @Test
-    void authenticateUserSuccess()  {
+    void authenticateUserSuccess() {
         User user = aUser().build();
         when(userService.authenticateUser(user.userName(), user.password())).thenReturn(Mono.just(user));
 
@@ -120,7 +122,7 @@ class UserServiceGrpcImplTest {
     }
 
     @Test
-    void authenticateUserInvalidCredentials()  {
+    void authenticateUserInvalidCredentials() {
         User user = aUser().build();
         when(userService.authenticateUser(user.userName(), user.password()))
                 .thenReturn(Mono.empty());
@@ -140,7 +142,7 @@ class UserServiceGrpcImplTest {
     }
 
     @Test
-    void authenticateUserError()  {
+    void authenticateUserError() {
         User user = aUser().build();
         when(userService.authenticateUser(user.userName(), user.password()))
                 .thenReturn(Mono.error(new RuntimeException()));
@@ -160,7 +162,7 @@ class UserServiceGrpcImplTest {
     }
 
     @Test
-    void createUser_shouldRecordMetrics()  {
+    void createUser_shouldRecordMetrics() {
         when(userService.addUser(any(User.class))).thenReturn(Mono.empty());
 
         User user = aUser().build();

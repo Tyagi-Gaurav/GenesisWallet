@@ -12,10 +12,10 @@ public class MockUserService extends UserServiceGrpc.UserServiceImplBase {
     private UserAuthResponseDTO userAuthResponseDTO;
 
     @Override
-    public void createExternalUser(ExternalUserCreateGrpcRequestDTO request,
-                                   StreamObserver<ExternalUserCreateGrpcResponseDTO> responseObserver) {
+    public void createOrFindUser(UserCreateOrFindGrpcRequestDTO request,
+                                   StreamObserver<UserCreateOrFindGrpcResponseDTO> responseObserver) {
         callReceived.set(true);
-        responseObserver.onNext(ExternalUserCreateGrpcResponseDTO.getDefaultInstance());
+        responseObserver.onNext(UserCreateOrFindGrpcResponseDTO.getDefaultInstance());
         responseObserver.onCompleted();
     }
 

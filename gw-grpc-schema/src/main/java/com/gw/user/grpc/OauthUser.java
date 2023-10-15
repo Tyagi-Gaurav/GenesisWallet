@@ -4,29 +4,26 @@
 package com.gw.user.grpc;
 
 /**
- * <pre>
- *Empty
- * </pre>
- *
- * Protobuf type {@code com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO}
+ * Protobuf type {@code com.gw.user.grpc.OauthUser}
  */
-public final class ExternalUserCreateGrpcResponseDTO extends
+public final class OauthUser extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO)
-    ExternalUserCreateGrpcResponseDTOOrBuilder {
+    // @@protoc_insertion_point(message_implements:com.gw.user.grpc.OauthUser)
+    OauthUserOrBuilder {
 private static final long serialVersionUID = 0L;
-  // Use ExternalUserCreateGrpcResponseDTO.newBuilder() to construct.
-  private ExternalUserCreateGrpcResponseDTO(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+  // Use OauthUser.newBuilder() to construct.
+  private OauthUser(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private ExternalUserCreateGrpcResponseDTO() {
+  private OauthUser() {
+    userName_ = "";
   }
 
   @java.lang.Override
   @SuppressWarnings({"unused"})
   protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
-    return new ExternalUserCreateGrpcResponseDTO();
+    return new OauthUser();
   }
 
   @java.lang.Override
@@ -36,15 +33,53 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.gw.user.grpc.UserManagementGrpc.internal_static_com_gw_user_grpc_ExternalUserCreateGrpcResponseDTO_descriptor;
+    return com.gw.user.grpc.UserManagementGrpc.internal_static_com_gw_user_grpc_OauthUser_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.gw.user.grpc.UserManagementGrpc.internal_static_com_gw_user_grpc_ExternalUserCreateGrpcResponseDTO_fieldAccessorTable
+    return com.gw.user.grpc.UserManagementGrpc.internal_static_com_gw_user_grpc_OauthUser_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO.class, com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO.Builder.class);
+            com.gw.user.grpc.OauthUser.class, com.gw.user.grpc.OauthUser.Builder.class);
+  }
+
+  public static final int USERNAME_FIELD_NUMBER = 1;
+  private volatile java.lang.Object userName_;
+  /**
+   * <code>string userName = 1;</code>
+   * @return The userName.
+   */
+  @java.lang.Override
+  public java.lang.String getUserName() {
+    java.lang.Object ref = userName_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      userName_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>string userName = 1;</code>
+   * @return The bytes for userName.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getUserNameBytes() {
+    java.lang.Object ref = userName_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      userName_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
   }
 
   private byte memoizedIsInitialized = -1;
@@ -61,6 +96,9 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(userName_)) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, userName_);
+    }
     getUnknownFields().writeTo(output);
   }
 
@@ -70,6 +108,9 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
+    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(userName_)) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, userName_);
+    }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
@@ -80,11 +121,13 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO)) {
+    if (!(obj instanceof com.gw.user.grpc.OauthUser)) {
       return super.equals(obj);
     }
-    com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO other = (com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO) obj;
+    com.gw.user.grpc.OauthUser other = (com.gw.user.grpc.OauthUser) obj;
 
+    if (!getUserName()
+        .equals(other.getUserName())) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -96,74 +139,76 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
+    hash = (37 * hash) + USERNAME_FIELD_NUMBER;
+    hash = (53 * hash) + getUserName().hashCode();
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
 
-  public static com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO parseFrom(
+  public static com.gw.user.grpc.OauthUser parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO parseFrom(
+  public static com.gw.user.grpc.OauthUser parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO parseFrom(
+  public static com.gw.user.grpc.OauthUser parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO parseFrom(
+  public static com.gw.user.grpc.OauthUser parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO parseFrom(byte[] data)
+  public static com.gw.user.grpc.OauthUser parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO parseFrom(
+  public static com.gw.user.grpc.OauthUser parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO parseFrom(java.io.InputStream input)
+  public static com.gw.user.grpc.OauthUser parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO parseFrom(
+  public static com.gw.user.grpc.OauthUser parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO parseDelimitedFrom(java.io.InputStream input)
+  public static com.gw.user.grpc.OauthUser parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO parseDelimitedFrom(
+  public static com.gw.user.grpc.OauthUser parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO parseFrom(
+  public static com.gw.user.grpc.OauthUser parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO parseFrom(
+  public static com.gw.user.grpc.OauthUser parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -176,7 +221,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO prototype) {
+  public static Builder newBuilder(com.gw.user.grpc.OauthUser prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -192,30 +237,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * <pre>
-   *Empty
-   * </pre>
-   *
-   * Protobuf type {@code com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO}
+   * Protobuf type {@code com.gw.user.grpc.OauthUser}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO)
-      com.gw.user.grpc.ExternalUserCreateGrpcResponseDTOOrBuilder {
+      // @@protoc_insertion_point(builder_implements:com.gw.user.grpc.OauthUser)
+      com.gw.user.grpc.OauthUserOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.gw.user.grpc.UserManagementGrpc.internal_static_com_gw_user_grpc_ExternalUserCreateGrpcResponseDTO_descriptor;
+      return com.gw.user.grpc.UserManagementGrpc.internal_static_com_gw_user_grpc_OauthUser_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.gw.user.grpc.UserManagementGrpc.internal_static_com_gw_user_grpc_ExternalUserCreateGrpcResponseDTO_fieldAccessorTable
+      return com.gw.user.grpc.UserManagementGrpc.internal_static_com_gw_user_grpc_OauthUser_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO.class, com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO.Builder.class);
+              com.gw.user.grpc.OauthUser.class, com.gw.user.grpc.OauthUser.Builder.class);
     }
 
-    // Construct using com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO.newBuilder()
+    // Construct using com.gw.user.grpc.OauthUser.newBuilder()
     private Builder() {
 
     }
@@ -228,23 +269,25 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      userName_ = "";
+
       return this;
     }
 
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.gw.user.grpc.UserManagementGrpc.internal_static_com_gw_user_grpc_ExternalUserCreateGrpcResponseDTO_descriptor;
+      return com.gw.user.grpc.UserManagementGrpc.internal_static_com_gw_user_grpc_OauthUser_descriptor;
     }
 
     @java.lang.Override
-    public com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO getDefaultInstanceForType() {
-      return com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO.getDefaultInstance();
+    public com.gw.user.grpc.OauthUser getDefaultInstanceForType() {
+      return com.gw.user.grpc.OauthUser.getDefaultInstance();
     }
 
     @java.lang.Override
-    public com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO build() {
-      com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO result = buildPartial();
+    public com.gw.user.grpc.OauthUser build() {
+      com.gw.user.grpc.OauthUser result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -252,8 +295,9 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO buildPartial() {
-      com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO result = new com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO(this);
+    public com.gw.user.grpc.OauthUser buildPartial() {
+      com.gw.user.grpc.OauthUser result = new com.gw.user.grpc.OauthUser(this);
+      result.userName_ = userName_;
       onBuilt();
       return result;
     }
@@ -292,16 +336,20 @@ private static final long serialVersionUID = 0L;
     }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO) {
-        return mergeFrom((com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO)other);
+      if (other instanceof com.gw.user.grpc.OauthUser) {
+        return mergeFrom((com.gw.user.grpc.OauthUser)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO other) {
-      if (other == com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO.getDefaultInstance()) return this;
+    public Builder mergeFrom(com.gw.user.grpc.OauthUser other) {
+      if (other == com.gw.user.grpc.OauthUser.getDefaultInstance()) return this;
+      if (!other.getUserName().isEmpty()) {
+        userName_ = other.userName_;
+        onChanged();
+      }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
@@ -328,6 +376,11 @@ private static final long serialVersionUID = 0L;
             case 0:
               done = true;
               break;
+            case 10: {
+              userName_ = input.readStringRequireUtf8();
+
+              break;
+            } // case 10
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -343,6 +396,82 @@ private static final long serialVersionUID = 0L;
       } // finally
       return this;
     }
+
+    private java.lang.Object userName_ = "";
+    /**
+     * <code>string userName = 1;</code>
+     * @return The userName.
+     */
+    public java.lang.String getUserName() {
+      java.lang.Object ref = userName_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        userName_ = s;
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <code>string userName = 1;</code>
+     * @return The bytes for userName.
+     */
+    public com.google.protobuf.ByteString
+        getUserNameBytes() {
+      java.lang.Object ref = userName_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        userName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>string userName = 1;</code>
+     * @param value The userName to set.
+     * @return This builder for chaining.
+     */
+    public Builder setUserName(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      userName_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string userName = 1;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearUserName() {
+      
+      userName_ = getDefaultInstance().getUserName();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string userName = 1;</code>
+     * @param value The bytes for userName to set.
+     * @return This builder for chaining.
+     */
+    public Builder setUserNameBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      userName_ = value;
+      onChanged();
+      return this;
+    }
     @java.lang.Override
     public final Builder setUnknownFields(
         final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -356,23 +485,23 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO)
+    // @@protoc_insertion_point(builder_scope:com.gw.user.grpc.OauthUser)
   }
 
-  // @@protoc_insertion_point(class_scope:com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO)
-  private static final com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:com.gw.user.grpc.OauthUser)
+  private static final com.gw.user.grpc.OauthUser DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO();
+    DEFAULT_INSTANCE = new com.gw.user.grpc.OauthUser();
   }
 
-  public static com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO getDefaultInstance() {
+  public static com.gw.user.grpc.OauthUser getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<ExternalUserCreateGrpcResponseDTO>
-      PARSER = new com.google.protobuf.AbstractParser<ExternalUserCreateGrpcResponseDTO>() {
+  private static final com.google.protobuf.Parser<OauthUser>
+      PARSER = new com.google.protobuf.AbstractParser<OauthUser>() {
     @java.lang.Override
-    public ExternalUserCreateGrpcResponseDTO parsePartialFrom(
+    public OauthUser parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -391,17 +520,17 @@ private static final long serialVersionUID = 0L;
     }
   };
 
-  public static com.google.protobuf.Parser<ExternalUserCreateGrpcResponseDTO> parser() {
+  public static com.google.protobuf.Parser<OauthUser> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<ExternalUserCreateGrpcResponseDTO> getParserForType() {
+  public com.google.protobuf.Parser<OauthUser> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.gw.user.grpc.ExternalUserCreateGrpcResponseDTO getDefaultInstanceForType() {
+  public com.gw.user.grpc.OauthUser getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

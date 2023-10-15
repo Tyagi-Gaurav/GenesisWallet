@@ -1,8 +1,6 @@
 package com.gw.user.testutils;
 
-import com.gw.common.domain.ExternalUser;
 import com.gw.user.domain.User;
-import com.gw.user.grpc.ExternalUserCreateGrpcRequestDTO;
 import com.gw.user.grpc.UserCreateGrpcRequestDTO;
 
 import java.util.UUID;
@@ -73,15 +71,6 @@ public class TestUserBuilder {
                 .setFirstName(user.firstName())
                 .setLastName(user.lastName())
                 .setPassword(user.password())
-                .build();
-    }
-
-    public static ExternalUserCreateGrpcRequestDTO externalUserCreateGrpcRequestDTOBuilder(ExternalUser externalUser) {
-        return ExternalUserCreateGrpcRequestDTO.newBuilder()
-                .setFirstName(externalUser.firstName())
-                .setLastName(externalUser.lastName())
-                .setEmail(externalUser.userName())
-                .setExternalSystem(externalUser.externalSystem())
                 .build();
     }
 }
