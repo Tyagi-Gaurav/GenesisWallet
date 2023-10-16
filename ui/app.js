@@ -40,7 +40,7 @@ app.get("/login", (req, res) => {
 });
 
 app.get("/status", (req, res) => {
-  res.send(200, {"status" : "UP"});
+  res.status(200).send({"status" : "UP"});
 });
 
 app.post("/register", (req, res) => {

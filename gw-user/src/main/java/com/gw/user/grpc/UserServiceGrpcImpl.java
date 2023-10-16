@@ -56,12 +56,14 @@ public class UserServiceGrpcImpl extends UserServiceGrpc.UserServiceImplBase {
     public void createOrFindUser(UserCreateOrFindGrpcRequestDTO request, StreamObserver<UserCreateOrFindGrpcResponseDTO> responseObserver) {
         LOG.info("Inside GRPC create external user");
         userService.addExternalUser(createExternalUserFrom(request))
-                .map(v -> Empty.getDefaultInstance())
-                .switchIfEmpty(Mono.defer(() -> Mono.just(Empty.getDefaultInstance())))
+                .map(resp -> UserCreateOrFindGrpcResponseDTO.newBuilder()
+                        .setUser(OauthUser.newBuilder()
+                                .setUserName(resp.userName())
+                                .build())
+                        .build())
                 .doOnError(responseObserver::onError)
-                .subscribe(v -> {
-                    responseObserver.onNext(UserCreateOrFindGrpcResponseDTO.newBuilder()
-                            .build());
+                .subscribe(resp -> {
+                    responseObserver.onNext(resp);
                     responseObserver.onCompleted();
                 });
     }

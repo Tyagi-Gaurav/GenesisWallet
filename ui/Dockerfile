@@ -8,9 +8,9 @@ RUN npm install
 
 COPY public public
 COPY views views
-COPY app.js app.js
+COPY app_oauth2.js app.js
 COPY ./startup.sh /startup.sh
-ENV PROTO_PATH=/app/proto/UserService.proto
+ENV PROTO_PATH=/app/proto/
 
 CMD [ "node", "app.js" ]
 

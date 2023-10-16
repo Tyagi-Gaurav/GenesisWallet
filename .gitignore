@@ -17,8 +17,9 @@
 # Python cache
 __pycache__/
 
-# Node modules
+# Node
 node_modules/
+.env
 
 # Dependency directories (remove the comment below to include it)
 vendor/
