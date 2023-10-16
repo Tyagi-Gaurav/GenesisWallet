@@ -34,7 +34,7 @@
         <apache.commons.version>3.13.0</apache.commons.version>
         <log4j.version>2.20.0</log4j.version>
         <slf4j.mock.version>2.3.0</slf4j.mock.version>
-        <micrometer-core.version>1.11.4</micrometer-core.version>
+        <micrometer-core.version>1.11.5</micrometer-core.version>
         <micrometer-registry-prometheus.version>1.11.5</micrometer-registry-prometheus.version>
         <reactor.version>3.5.11</reactor.version>
         <reactor.netty.version>1.1.11</reactor.netty.version>
