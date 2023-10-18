@@ -33,14 +33,14 @@ jobs:
     - name: Sleep
       uses: jakejarvis/wait-action@master
       with:
-        time: '30s'
+        time: '25s'
 
     - name: Check running containers
       run: docker ps
 
       #   Enable below only for DEBUG
     - name: Show single container logs
-      run: docker logs local.api-gateway
+      run: docker logs local.ui
 
     - name: Sleep
       uses: jakejarvis/wait-action@master

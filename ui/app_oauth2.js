@@ -10,7 +10,7 @@ import grpcLibrary from "@grpc/grpc-js";
 var PROTO_PATH = process.env.PROTO_PATH;
 
 const app = express();
-const port = (process.env.PORT === undefined) ? 3000 : process.env.PORT;
+const port = process.env.PORT === undefined ? 3000 : process.env.PORT;
 const GoogleStrategy = googleStrategy.Strategy;
 
 console.log("PROTO_DIR: " + PROTO_PATH);
@@ -27,14 +27,19 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
-        keepCase: true,
-        longs: String,
-        enums: String,
-        defaults: true,
-        oneofs: true});
+  keepCase: true,
+  longs: String,
+  enums: String,
+  defaults: true,
+  oneofs: true,
+});
 
-const userServiceObject = grpcLibrary.loadPackageDefinition(packageDefinition).com.gw.user.grpc;
-const userServiceClient = new userServiceObject.UserService('localhost:19090', grpcLibrary.credentials.createInsecure());
+const userServiceObject =
+  grpcLibrary.loadPackageDefinition(packageDefinition).com.gw.user.grpc;
+const userServiceClient = new userServiceObject.UserService(
+  "localhost:19090",
+  grpcLibrary.credentials.createInsecure()
+);
 
 console.log();
 
@@ -62,13 +67,16 @@ passport.use(
       callbackURL: "http://localhost:3000/auth/google/secrets",
     },
     function (accessToken, refreshToken, profile, cb) {
-      userServiceClient.createOrFindUser({
-          userName: profile.id, 
-          extsource: userServiceObject.ExternalSystem.type.value[1].name
-        }, function(err, user) {
+      userServiceClient.createOrFindUser(
+        {
+          userName: profile.id,
+          extsource: userServiceObject.ExternalSystem.type.value[1].name,
+        },
+        function (err, user) {
           console.log("Returned user: " + JSON.stringify(user));
           return cb(err, user);
-        })
+        }
+      );
     }
   )
 );
@@ -81,7 +89,8 @@ app.get("/", (req, resp) => {
   resp.render("home");
 });
 
-app.get("/auth/google",
+app.get(
+  "/auth/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
@@ -108,9 +117,13 @@ app.get("/register", (req, resp) => {
 });
 
 app.get("/secrets", (req, resp) => {
-  resp.render("welcome.ejs", {
-    initials: "GT"
-  });
+  if (req.isAuthenticated()) {
+    resp.render("welcome.ejs", {
+      initials: "GT",
+    });
+  } else {
+    resp.redirect("/login");
+  }
 });
 
 app.post("/register", (req, resp) => {
@@ -131,7 +144,7 @@ app.post("/register", (req, resp) => {
 });
 
 app.get("/status", (req, res) => {
-  res.status(200).send({"status" : "UP"});
+  res.status(200).send({ status: "UP" });
 });
 
 app.get("/submit", (req, resp) => {
@@ -148,13 +161,16 @@ app.post("/submit", (req, resp) => {
   User.findById(req.user.id).then(function (foundUser) {
     if (foundUser) {
       foundUser.secret = submittedSecret;
-      foundUser.save().then(function (result) {
-        if (result) {
-          resp.redirect("/secrets");
-        }
-      }).catch(function (err) {
-        console.log(err);
-      });
+      foundUser
+        .save()
+        .then(function (result) {
+          if (result) {
+            resp.redirect("/secrets");
+          }
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
     }
   });
 });
