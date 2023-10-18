@@ -48,6 +48,9 @@ services:
     container_name: local.ui
     build:
       context: ui
+    environment:
+      - "OAUTH_CLIENT_ID_GOOGLE=${OAUTH_CLIENT_ID_GOOGLE}"
+      - "OAUTH_CLIENT_SECRET_GOOGLE=${OAUTH_CLIENT_SECRET_GOOGLE}"
     ports:
       - "3000:3000"
     networks:

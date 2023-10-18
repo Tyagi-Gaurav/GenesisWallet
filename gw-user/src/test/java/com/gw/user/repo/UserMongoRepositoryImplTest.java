@@ -1,6 +1,5 @@
 package com.gw.user.repo;
 
-import com.gw.common.domain.ExternalUser;
 import com.gw.user.domain.ExternalUser2;
 import com.gw.user.domain.ExternalUser2Builder;
 import com.gw.user.domain.User;
@@ -18,7 +17,6 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import static com.gw.user.repo.MongoDBTestUtils.*;
-import static com.gw.user.testutils.ExternalUserBuilder.aExternalUser;
 import static com.gw.user.testutils.TestUserBuilder.aUser;
 
 @ActiveProfiles("UserMongoRepositoryTest")
@@ -70,14 +68,16 @@ class UserMongoRepositoryImplTest extends DatabaseTest {
     @Test
     void shouldAddExternalUser() {
         //given
-        ExternalUser userToAdd = aExternalUser().build();
+        ExternalUser2 userToAdd = ExternalUser2Builder.newBuilder()
+                .withUserName("some-user-name")
+                .build();
 
         //when
         StepVerifier.create(userRepository.addExternalUser(userToAdd))
                 .verifyComplete();
 
         //then
-        Mono<ExternalUser> userFromDB = getExternalUser(userToAdd.id(), reactiveMongoTemplate);
+        Mono<ExternalUser2> userFromDB = getExternalUser2("some-user-name", reactiveMongoTemplate);
         StepVerifier.create(userFromDB)
                 .expectNext(userToAdd)
                 .verifyComplete();
@@ -101,11 +101,11 @@ class UserMongoRepositoryImplTest extends DatabaseTest {
     @Test
     void shouldFindExternalUser() {
         //given
-        ExternalUser userInDatabase = aExternalUser().build();
+        ExternalUser2 userInDatabase = ExternalUser2Builder.newBuilder().build();
         addToDatabase(userInDatabase, reactiveMongoTemplate);
 
         //when
-        Mono<ExternalUser> actualUser = userRepository.findExternalUserByUserName(userInDatabase.userName());
+        Mono<ExternalUser2> actualUser = userRepository.findExternalUserByUserName(userInDatabase.userName());
 
         //then
         StepVerifier.create(actualUser)

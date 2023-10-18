@@ -1,6 +1,5 @@
 package com.gw.user.repo;
 
-import com.gw.common.domain.ExternalUser;
 import com.gw.user.domain.ExternalUser2;
 import com.gw.user.domain.User;
 import reactor.core.publisher.Mono;
@@ -16,9 +15,9 @@ public interface UserRepository {
 
     Mono<User> findUserByUserName(String username);
 
-    Mono<Void> addExternalUser(ExternalUser userToAdd);
+    Mono<Void> addExternalUser(ExternalUser2 userToAdd);
 
-    Mono<ExternalUser> findExternalUserByUserName(String email);
+    Mono<ExternalUser2> findExternalUserByUserName(String email);
 
     Mono<ExternalUser2> findOrCreateExternalUser(ExternalUser2 externalUser2);
 }

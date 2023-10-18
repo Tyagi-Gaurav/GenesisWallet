@@ -64,9 +64,10 @@ class UserServiceGrpcImplTest {
 
     @Test
     void createExternalUser() {
-        when(userService.addExternalUser(any(ExternalUser2.class))).thenReturn(Mono.empty());
-
-        ExternalUser2 externalUser = ExternalUser2Builder.newBuilder().build();
+        when(userService.addExternalUser(any(ExternalUser2.class))).thenReturn(Mono.just(ExternalUser2Builder
+                .newBuilder()
+                .withUserName("some-user-name")
+                .build()));
 
         UserCreateOrFindGrpcResponseDTO response = userServiceBlockingStub.createOrFindUser(UserCreateOrFindGrpcRequestDTO.newBuilder()
                 .setUserName("some-user-name")

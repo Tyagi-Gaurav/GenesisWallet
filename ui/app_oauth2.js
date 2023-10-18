@@ -13,6 +13,8 @@ const app = express();
 const port = (process.env.PORT === undefined) ? 3000 : process.env.PORT;
 const GoogleStrategy = googleStrategy.Strategy;
 
+console.log("PROTO_DIR: " + PROTO_PATH);
+
 app.use(
   session({
     secret: "My little secret.",
@@ -55,8 +57,8 @@ passport.deserializeUser(function (user, cb) {
 passport.use(
   new GoogleStrategy(
     {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientID: process.env.OAUTH_CLIENT_ID_GOOGLE,
+      clientSecret: process.env.OAUTH_CLIENT_SECRET_GOOGLE,
       callbackURL: "http://localhost:3000/auth/google/secrets",
     },
     function (accessToken, refreshToken, profile, cb) {
@@ -64,7 +66,6 @@ passport.use(
           userName: profile.id, 
           extsource: userServiceObject.ExternalSystem.type.value[1].name
         }, function(err, user) {
-          //TODO Returned user is null
           console.log("Returned user: " + JSON.stringify(user));
           return cb(err, user);
         })
@@ -127,6 +128,10 @@ app.post("/register", (req, resp) => {
       }
     }
   );
+});
+
+app.get("/status", (req, res) => {
+  res.status(200).send({"status" : "UP"});
 });
 
 app.get("/submit", (req, resp) => {

@@ -2,12 +2,9 @@
 #$(@F) - Returns only the file portion of the value
 #- at the beginning of a line ignores errors.
 
-.PHONY: protogen api-gateway user full
+.PHONY: protogen api-gateway user full 
 
 MICROSERVICES:= user api-gateway ui
-
-#protogen:
-#	protoc --go-grpc_out=./user --go_out=./user ./user/proto/user_service.proto
 
 mcp:
 	./mvnw clean package
@@ -33,9 +30,9 @@ fq:
 down:
 	docker-compose down --rmi all
 
-qr:
+qr: 
 	./mvnw clean package -DskipTests=true
-	docker-compose up -d --build
+	docker-compose --env-file ./ui/.env  up -d --build
 
 ft:
 	./mvnw test -DskipTests=false -pl functional-test -Dtest=CucumberTest

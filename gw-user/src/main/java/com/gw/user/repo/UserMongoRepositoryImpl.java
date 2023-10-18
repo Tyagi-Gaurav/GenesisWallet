@@ -1,6 +1,5 @@
 package com.gw.user.repo;
 
-import com.gw.common.domain.ExternalUser;
 import com.gw.user.domain.ExternalUser2;
 import com.gw.user.domain.User;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
@@ -37,13 +36,13 @@ public class UserMongoRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Mono<Void> addExternalUser(ExternalUser userToAdd) {
+    public Mono<Void> addExternalUser(ExternalUser2 userToAdd) {
         return reactiveMongoTemplate.save(userToAdd).then();
     }
 
     @Override
-    public Mono<ExternalUser> findExternalUserByUserName(String userName) {
-        return reactiveMongoTemplate.findOne(query(where("userName").is(userName)), ExternalUser.class);
+    public Mono<ExternalUser2> findExternalUserByUserName(String userName) {
+        return reactiveMongoTemplate.findOne(query(where("userName").is(userName)), ExternalUser2.class);
     }
 
     @Override
