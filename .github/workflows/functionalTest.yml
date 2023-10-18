@@ -29,9 +29,7 @@ jobs:
       env:
         OAUTH_CLIENT_ID_GITHUB: ${{ secrets.OAUTH_CLIENT_ID_GITHUB }}
         OAUTH_CLIENT_SECRET_GITHUB: ${{ secrets.OAUTH_CLIENT_SECRET_GITHUB }}
-        OAUTH_CLIENT_ID_GOOGLE: ${{ secrets.OAUTH_CLIENT_ID_GOOGLE }}
-        OAUTH_CLIENT_SECRET_GOOGLE: ${{ secrets.OAUTH_CLIENT_SECRET_GOOGLE }}
-      run: docker-compose up -d
+      run: docker-compose up -d -e OAUTH_CLIENT_ID_GOOGLE=${{ secrets.OAUTH_CLIENT_ID_GOOGLE }} -e OAUTH_CLIENT_SECRET_GOOGLE=${{ secrets.OAUTH_CLIENT_SECRET_GOOGLE }}
 
     - name: Sleep
       uses: jakejarvis/wait-action@master
