@@ -15,6 +15,9 @@ jobs:
       with:
         distribution: 'zulu'
         java-version: '17'
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18.17.1
 
     - name: Grant execute permission for mvnw
       run: chmod +x mvnw
@@ -51,4 +54,4 @@ jobs:
       run: ./mvnw test -DskipTests=false -pl functional-test
 
     - name: Run UI test suite
-      run: ./mvnw test -DskipTests=false -pl ui-functional-test
+      run: ( cd ui-functional-test && npm i && npm test )

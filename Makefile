@@ -36,7 +36,7 @@ qr:
 
 ft:
 	./mvnw test -DskipTests=false -pl functional-test -Dtest=CucumberTest
-	./mvnw test -DskipTests=false -pl ui-functional-test
+	( cd ui-functional-test && npm test )
 
 smoke:
 	./mvnw test -DskipTests=false -pl functional-test -Dtest=SmokeTest
