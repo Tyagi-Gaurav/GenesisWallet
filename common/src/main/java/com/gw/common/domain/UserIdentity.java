@@ -5,5 +5,7 @@ public interface UserIdentity {
 
     String userName();
 
+    String firstName();
+    String lastName();
     String role();
 }

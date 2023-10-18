@@ -1,20 +1,21 @@
 package com.gw.user.repo;
 
-import com.gw.common.domain.ExternalUser;
+import com.gw.user.domain.ExternalUser;
 import com.gw.user.domain.User;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
 @Component("documentDB")
 public class UserMongoRepositoryImpl implements UserRepository {
 
     private final ReactiveMongoTemplate reactiveMongoTemplate;
+    private static final String USER_NAME_FIELD = "userName";
 
     public UserMongoRepositoryImpl(ReactiveMongoTemplate reactiveMongoTemplate) {
         this.reactiveMongoTemplate = reactiveMongoTemplate;
@@ -22,7 +23,7 @@ public class UserMongoRepositoryImpl implements UserRepository {
 
     @Override
     public Mono<User> findUserById(UUID id) {
-        return reactiveMongoTemplate.findOne(query(Criteria.where("userId").is(id)), User.class);
+        return reactiveMongoTemplate.findOne(query(where("userId").is(id)), User.class);
     }
 
     @Override
@@ -32,7 +33,7 @@ public class UserMongoRepositoryImpl implements UserRepository {
 
     @Override
     public Mono<User> findUserByUserName(String username) {
-        return reactiveMongoTemplate.findOne(query(Criteria.where("userName").is(username)), User.class);
+        return reactiveMongoTemplate.findOne(query(where(USER_NAME_FIELD).is(username)), User.class);
     }
 
     @Override
@@ -42,6 +43,12 @@ public class UserMongoRepositoryImpl implements UserRepository {
 
     @Override
     public Mono<ExternalUser> findExternalUserByUserName(String userName) {
-        return reactiveMongoTemplate.findOne(query(Criteria.where("userName").is(userName)), ExternalUser.class);
+        return reactiveMongoTemplate.findOne(query(where(USER_NAME_FIELD).is(userName)), ExternalUser.class);
+    }
+
+    @Override
+    public Mono<ExternalUser> findOrCreateExternalUser(ExternalUser externalUser) {
+        return reactiveMongoTemplate.findOne(query(where(USER_NAME_FIELD).is(externalUser.userName())), ExternalUser.class)
+                .switchIfEmpty(Mono.defer(() -> reactiveMongoTemplate.save(externalUser)));
     }
 }

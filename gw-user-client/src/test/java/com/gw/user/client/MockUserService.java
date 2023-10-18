@@ -9,18 +9,19 @@ public class MockUserService extends UserServiceGrpc.UserServiceImplBase {
     private UserDetailsGrpcResponseDTO userDetailsGrpcResponseDTO;
     private final AtomicBoolean callReceived = new AtomicBoolean(false);
     private UserCreateGrpcResponseDTO userCreateGrpcResponseDTO;
+    private UserAuthResponseDTO userAuthResponseDTO;
 
     @Override
-    public void createExternalUser(ExternalUserCreateGrpcRequestDTO request,
-                                   StreamObserver<ExternalUserCreateGrpcResponseDTO> responseObserver) {
+    public void createOrFindUser(UserCreateOrFindGrpcRequestDTO request,
+                                   StreamObserver<UserCreateOrFindGrpcResponseDTO> responseObserver) {
         callReceived.set(true);
-        responseObserver.onNext(ExternalUserCreateGrpcResponseDTO.getDefaultInstance());
+        responseObserver.onNext(UserCreateOrFindGrpcResponseDTO.getDefaultInstance());
         responseObserver.onCompleted();
     }
 
     @Override
-    public void fetchUsersById(FetchUserDetailsByIdGrpcRequestDTO request,
-                               StreamObserver<UserDetailsGrpcResponseDTO> responseObserver) {
+    public void fetchUsersByUserName(FetchUserDetailsByUserNameGrpcRequestDTO request,
+                                     StreamObserver<UserDetailsGrpcResponseDTO> responseObserver) {
         callReceived.set(true);
         responseObserver.onNext(userDetailsGrpcResponseDTO);
         responseObserver.onCompleted();
@@ -33,12 +34,23 @@ public class MockUserService extends UserServiceGrpc.UserServiceImplBase {
         responseObserver.onCompleted();
     }
 
+    @Override
+    public void authenticate(UserAuthRequestDTO request, StreamObserver<UserAuthResponseDTO> responseObserver) {
+        callReceived.set(true);
+        responseObserver.onNext(userAuthResponseDTO);
+        responseObserver.onCompleted();
+    }
+
     public void shouldReturnResponse(UserDetailsGrpcResponseDTO expectedResult) {
         this.userDetailsGrpcResponseDTO = expectedResult;
     }
 
     public void shouldReturnResponse(UserCreateGrpcResponseDTO userCreateGrpcResponseDTO) {
         this.userCreateGrpcResponseDTO = userCreateGrpcResponseDTO;
+    }
+
+    public void shouldReturnResponse(UserAuthResponseDTO userAuthResponseDTO) {
+        this.userAuthResponseDTO = userAuthResponseDTO;
     }
 
     public boolean getCallReceived() {

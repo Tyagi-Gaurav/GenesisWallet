@@ -2,12 +2,9 @@
 #$(@F) - Returns only the file portion of the value
 #- at the beginning of a line ignores errors.
 
-.PHONY: protogen api-gateway user full
+.PHONY: protogen api-gateway user full 
 
 MICROSERVICES:= user api-gateway ui
-
-#protogen:
-#	protoc --go-grpc_out=./user --go_out=./user ./user/proto/user_service.proto
 
 mcp:
 	./mvnw clean package
@@ -33,12 +30,16 @@ fq:
 down:
 	docker-compose down --rmi all
 
+qr: 
+	./mvnw clean package -DskipTests=true
+	docker-compose --env-file ./ui/.env  up -d --build
+
 ft:
-	./mvnw test -DskipTests=false -pl api-functional-test -Dtest=CucumberTest
-	./mvnw test -DskipTests=false -pl ui-functional-test
+	./mvnw test -DskipTests=false -pl functional-test -Dtest=CucumberTest
+	( cd ui-functional-test && npm test )
 
 smoke:
-	./mvnw test -DskipTests=false -pl api-functional-test -Dtest=SmokeTest
+	./mvnw test -DskipTests=false -pl functional-test -Dtest=SmokeTest
 
 help:
 	@echo ''
@@ -53,6 +54,7 @@ help:
 	@echo ' fq					Build full local docker-compose stack (No tests)'
 	@echo ' ft					Run functional tests'
 	@echo ' down				Destroy local docker-compose stack'
+	@echo ' qr					Restart docker-compose stack after a small change to any app'
 	@echo ''
 	@echo "Available Microservices:"
 	@echo ''

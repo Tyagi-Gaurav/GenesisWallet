@@ -41,8 +41,6 @@ public class UserCreateResource {
                 userCreateRequestDTO.userName(),
                 userCreateRequestDTO.password(),
                 userCreateRequestDTO.dateOfBirth(),
-                userCreateRequestDTO.gender(),
-                userCreateRequestDTO.homeCountry(),
                 Role.REGISTERED_USER.name()))
                 .thenReturn(new UserCreateResponseDTO(userId.toString()));
     }

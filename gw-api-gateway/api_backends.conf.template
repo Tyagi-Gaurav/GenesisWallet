@@ -12,8 +12,3 @@ upstream ui_api {
     zone ui_api 64k;
     server ${UI_HOST}:${UI_APP_PORT};
 }
-
-upstream ui_api_actuator {
-    zone user_api 64k;
-    server ${UI_HOST}:${UI_ACTUATOR_PORT};
-}

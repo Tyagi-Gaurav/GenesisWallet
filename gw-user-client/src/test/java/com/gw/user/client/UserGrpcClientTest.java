@@ -3,6 +3,7 @@ package com.gw.user.client;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.gw.common.grpc.Error;
 import com.gw.common.metrics.EndpointMetrics;
 import com.gw.grpc.common.CorrelationIdInterceptor;
 import com.gw.grpc.common.MetricsInterceptor;
@@ -23,7 +24,6 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -45,7 +45,7 @@ class UserGrpcClientTest {
     void setUp() throws IOException {
         mockUserService = new MockUserService();
         GrpcExtension.ServiceDetails serviceDetails = grpcExtension.createGrpcServerFor(mockUserService, correlationIdInterceptor,
-                 metricsInterceptor);
+                metricsInterceptor);
         UserGrpcClientConfig userGrpcClientConfig = new UserGrpcClientConfig(serviceDetails.serverName(),
                 0, 300, "userCircuitBreaker");
         CircuitBreakerRegistry circuitBreakerRegistry = CircuitBreakerRegistry.of(Map.of("userCircuitBreaker", CircuitBreakerConfig.ofDefaults()));
@@ -55,54 +55,48 @@ class UserGrpcClientTest {
 
     @Test
     void fetchUsersByIdSync() {
-        FetchUserDetailsByIdGrpcRequestDTO fetchUserDetailsByIdGrpcRequestDTO = FetchUserDetailsByIdGrpcRequestDTO.newBuilder()
-                .setId(UUID.randomUUID().toString())
+        FetchUserDetailsByUserNameGrpcRequestDTO fetchUserDetailsByUserNameGrpcRequestDTO = FetchUserDetailsByUserNameGrpcRequestDTO.newBuilder()
+                .setUserName("some-user-name")
                 .build();
         UserDetailsGrpcResponseDTO expectedResult = UserDetailsGrpcResponseDTO.getDefaultInstance();
         mockUserService.shouldReturnResponse(expectedResult);
         UserDetailsGrpcResponseDTO userDetailsGrpcResponseDTO =
-                userGrpcClient.fetchUsersByIdSync(fetchUserDetailsByIdGrpcRequestDTO);
+                userGrpcClient.fetchUsersByUserNameSync(fetchUserDetailsByUserNameGrpcRequestDTO);
 
         assertThat(userDetailsGrpcResponseDTO.getUserName()).isEqualTo(expectedResult.getUserName());
-        assertThat(userDetailsGrpcResponseDTO.getDateOfBirth()).isEqualTo(expectedResult.getDateOfBirth());
         assertThat(userDetailsGrpcResponseDTO.getFirstName()).isEqualTo(expectedResult.getFirstName());
         assertThat(userDetailsGrpcResponseDTO.getLastName()).isEqualTo(expectedResult.getLastName());
-        assertThat(userDetailsGrpcResponseDTO.getGender()).isEqualTo(expectedResult.getGender());
-        assertThat(userDetailsGrpcResponseDTO.getHomeCountry()).isEqualTo(expectedResult.getHomeCountry());
         assertThat(userDetailsGrpcResponseDTO.getId()).isEqualTo(expectedResult.getId());
     }
 
     @Test
     void fetchUsersByIdSync_shouldGenerateClientMetric() {
-        FetchUserDetailsByIdGrpcRequestDTO fetchUserDetailsByIdGrpcRequestDTO = FetchUserDetailsByIdGrpcRequestDTO.newBuilder()
-                .setId(UUID.randomUUID().toString())
+        FetchUserDetailsByUserNameGrpcRequestDTO fetchUserDetailsByUserNameGrpcRequestDTO = FetchUserDetailsByUserNameGrpcRequestDTO.newBuilder()
+                .setUserName("some-user-name")
                 .build();
         UserDetailsGrpcResponseDTO expectedResult = UserDetailsGrpcResponseDTO.getDefaultInstance();
         mockUserService.shouldReturnResponse(expectedResult);
-        userGrpcClient.fetchUsersByIdSync(fetchUserDetailsByIdGrpcRequestDTO);
-        assertThat(meterRegistry.get("grpc_client_request_duration").tag("fullMethod", "com.gw.user.grpc.UserService/fetchUsersById").meter()).isNotNull();
+        userGrpcClient.fetchUsersByUserNameSync(fetchUserDetailsByUserNameGrpcRequestDTO);
+        assertThat(meterRegistry.get("grpc_client_request_duration").tag("fullMethod", "com.gw.user.grpc.UserService/fetchUsersByUserName").meter()).isNotNull();
     }
 
     @Test
     void fetchUsersByIdAsync() {
-        FetchUserDetailsByIdGrpcRequestDTO fetchUserDetailsByIdGrpcRequestDTO = FetchUserDetailsByIdGrpcRequestDTO.newBuilder()
-                .setId(UUID.randomUUID().toString())
+        FetchUserDetailsByUserNameGrpcRequestDTO fetchUserDetailsByUserNameGrpcRequestDTO = FetchUserDetailsByUserNameGrpcRequestDTO.newBuilder()
+                .setUserName("some-user-name")
                 .build();
         UserDetailsGrpcResponseDTO expectedResult = UserDetailsGrpcResponseDTO.getDefaultInstance();
         mockUserService.shouldReturnResponse(expectedResult);
         ListenableFuture<UserDetailsGrpcResponseDTO> userDetailsGrpcResponseDTOFuture =
-                userGrpcClient.fetchUsersByIdAsync(fetchUserDetailsByIdGrpcRequestDTO);
+                userGrpcClient.fetchUsersByIdAsync(fetchUserDetailsByUserNameGrpcRequestDTO);
 
         AtomicBoolean hasGotResponse = new AtomicBoolean(false);
         Futures.addCallback(userDetailsGrpcResponseDTOFuture, new FutureCallback<>() {
             @Override
             public void onSuccess(UserDetailsGrpcResponseDTO result) {
                 assertThat(result.getUserName()).isEqualTo(expectedResult.getUserName());
-                assertThat(result.getDateOfBirth()).isEqualTo(expectedResult.getDateOfBirth());
                 assertThat(result.getFirstName()).isEqualTo(expectedResult.getFirstName());
                 assertThat(result.getLastName()).isEqualTo(expectedResult.getLastName());
-                assertThat(result.getGender()).isEqualTo(expectedResult.getGender());
-                assertThat(result.getHomeCountry()).isEqualTo(expectedResult.getHomeCountry());
                 assertThat(result.getId()).isEqualTo(expectedResult.getId());
                 hasGotResponse.set(true);
             }
@@ -122,10 +116,8 @@ class UserGrpcClientTest {
         UserCreateGrpcRequestDTO userCreateGrpcRequestDTO = UserCreateGrpcRequestDTO.newBuilder()
                 .setUserName("username")
                 .setPassword("password")
-                .setDateOfBirth("01/01/2000")
                 .setFirstName("firstName")
                 .setLastName("lastName")
-                .setHomeCountry("UK")
                 .build();
 
         mockUserService.shouldReturnResponse(UserCreateGrpcResponseDTO.getDefaultInstance());
@@ -138,10 +130,8 @@ class UserGrpcClientTest {
         UserCreateGrpcRequestDTO userCreateGrpcRequestDTO = UserCreateGrpcRequestDTO.newBuilder()
                 .setUserName("username")
                 .setPassword("password")
-                .setDateOfBirth("01/01/2000")
                 .setFirstName("firstName")
                 .setLastName("lastName")
-                .setHomeCountry("UK")
                 .build();
         mockUserService.shouldReturnResponse(UserCreateGrpcResponseDTO.newBuilder()
                 .setCreated(true).buildPartial());
@@ -153,7 +143,6 @@ class UserGrpcClientTest {
         Futures.addCallback(emptyListenableFuture, new FutureCallback<>() {
             @Override
             public void onSuccess(UserCreateGrpcResponseDTO result) {
-                System.out.println("Response received: " + result.getCreated());
                 hasGotResponse.set(result.getCreated());
             }
 
@@ -169,12 +158,9 @@ class UserGrpcClientTest {
 
     @Test
     void createExternalUserSync() {
-        ExternalUserCreateGrpcRequestDTO externalUserCreateGrpcRequestDTO = ExternalUserCreateGrpcRequestDTO.newBuilder()
-                .setEmail("test@test.com")
-                .setDateOfBirth("01/01/2000")
-                .setFirstName("firstName")
-                .setLastName("lastName")
-                .setHomeCountry("UK")
+        UserCreateOrFindGrpcRequestDTO externalUserCreateGrpcRequestDTO = UserCreateOrFindGrpcRequestDTO.newBuilder()
+                .setUserName("test@test.com")
+                .setExtsourceValue(ExternalSystem.GOOGLE_VALUE)
                 .build();
 
         userGrpcClient.createExternalUserSync(externalUserCreateGrpcRequestDTO);
@@ -183,20 +169,18 @@ class UserGrpcClientTest {
 
     @Test
     void createExternalUserASync() {
-        ExternalUserCreateGrpcRequestDTO externalUserCreateGrpcRequestDTO = ExternalUserCreateGrpcRequestDTO.newBuilder()
-                .setEmail("test@test.com")
-                .setDateOfBirth("01/01/2000")
-                .setFirstName("firstName")
-                .setLastName("lastName")
-                .setHomeCountry("UK")
+        UserCreateOrFindGrpcRequestDTO externalUserCreateGrpcRequestDTO = UserCreateOrFindGrpcRequestDTO.newBuilder()
+                .setUserName("test@test.com")
+                .setExtsourceValue(ExternalSystem.GOOGLE_VALUE)
                 .build();
-        ListenableFuture<ExternalUserCreateGrpcResponseDTO> emptyListenableFuture =
+
+        ListenableFuture<UserCreateOrFindGrpcResponseDTO> emptyListenableFuture =
                 userGrpcClient.createExternalUserAsync(externalUserCreateGrpcRequestDTO);
 
         AtomicBoolean hasGotResponse = new AtomicBoolean(false);
         Futures.addCallback(emptyListenableFuture, new FutureCallback<>() {
             @Override
-            public void onSuccess(ExternalUserCreateGrpcResponseDTO result) {
+            public void onSuccess(UserCreateOrFindGrpcResponseDTO result) {
                 hasGotResponse.set(true);
             }
 
@@ -208,5 +192,86 @@ class UserGrpcClientTest {
 
         Awaitility.await("Receive response").atMost(Duration.ofMillis(300))
                 .until(hasGotResponse::get);
+    }
+
+    @Test
+    void authenticateUserSync() {
+        final var userAuthRequestDTO = UserAuthRequestDTO.newBuilder()
+                .setUserName("someUserName")
+                .setPassword("someencryptedPassword")
+                .build();
+
+        mockUserService.shouldReturnResponse(UserAuthResponseDTO.newBuilder()
+                .setAuthDetails(UserAuthDetailsDTO.newBuilder()
+                        .setFirstName("some-first-name")
+                        .setLastName("some-last-name")
+                        .build())
+                .build());
+
+        final var userAuthResponseDTO = userGrpcClient.authenticateUserSync(userAuthRequestDTO);
+
+        assertThat(userAuthResponseDTO.getEitherCase()).isEqualTo(UserAuthResponseDTO.EitherCase.AUTHDETAILS);
+        assertThat(userAuthResponseDTO.getAuthDetails().getFirstName()).isEqualTo("some-first-name");
+        assertThat(userAuthResponseDTO.getAuthDetails().getLastName()).isEqualTo("some-last-name");
+        assertThat(mockUserService.getCallReceived()).isTrue();
+    }
+
+    @Test
+    void authenticateUserAsync() {
+        final var userAuthRequestDTO = UserAuthRequestDTO.newBuilder()
+                .setUserName("someUserName")
+                .setPassword("someencryptedPassword")
+                .build();
+
+        mockUserService.shouldReturnResponse(UserAuthResponseDTO.newBuilder()
+                .setAuthDetails(UserAuthDetailsDTO.newBuilder()
+                        .setFirstName("some-first-name")
+                        .setLastName("some-last-name")
+                        .build())
+                .build());
+
+        ListenableFuture<UserAuthResponseDTO> userAuthResponseDTOListenableFuture =
+                userGrpcClient.authenticateUserAsync(userAuthRequestDTO);
+
+        AtomicBoolean hasGotResponse = new AtomicBoolean(false);
+        Futures.addCallback(userAuthResponseDTOListenableFuture, new FutureCallback<>() {
+            @Override
+            public void onSuccess(UserAuthResponseDTO result) {
+                assertThat(result.getAuthDetails().getFirstName()).isEqualTo("some-first-name");
+                assertThat(result.getAuthDetails().getLastName()).isEqualTo("some-last-name");
+                hasGotResponse.set(true);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                fail("Got exception", t);
+            }
+        }, Executors.newSingleThreadExecutor());
+
+        Awaitility.await("Receive response").atMost(Duration.ofMillis(300))
+                .until(hasGotResponse::get);
+    }
+
+    @Test
+    void authenticateUserSyncWithError() {
+        final var userAuthRequestDTO = UserAuthRequestDTO.newBuilder()
+                .setUserName("someUserName")
+                .setPassword("someencryptedPassword")
+                .build();
+
+        mockUserService.shouldReturnResponse(UserAuthResponseDTO.newBuilder()
+                .setError(Error.newBuilder()
+                        .setCode(Error.ErrorCode.AUTHENTICATION_ERROR)
+                        .setDescription("Invalid Credentials")
+                        .build())
+                .build());
+
+        final var userAuthResponseDTO = userGrpcClient.authenticateUserSync(userAuthRequestDTO);
+        assertThat(userAuthResponseDTO.getEitherCase()).isEqualTo(UserAuthResponseDTO.EitherCase.ERROR);
+        assertThat(userAuthResponseDTO.getError()).isEqualTo(Error.newBuilder()
+                .setCode(Error.ErrorCode.AUTHENTICATION_ERROR)
+                .setDescription("Invalid Credentials")
+                .build());
+        assertThat(mockUserService.getCallReceived()).isTrue();
     }
 }

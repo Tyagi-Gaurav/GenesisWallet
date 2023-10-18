@@ -17,8 +17,8 @@
         <module>gw-user</module>
         <module>gw-test-common</module>
         <module>gw-user-client</module>
-        <module>gw-ui</module>
-        <module>api-functional-test</module>
+        <module>ui</module>
+        <module>functional-test</module>
         <module>ui-functional-test</module>
         <module>common</module>
         <module>common-annotations</module>

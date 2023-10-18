@@ -1,0 +1,79 @@
+syntax = "proto3";
+package com.gw.user.grpc;
+
+import "google/protobuf/empty.proto";
+import "error.proto";
+
+option java_multiple_files = true;
+
+option java_outer_classname = "UserManagementGrpc";
+
+enum ExternalSystem {
+    UNKNOWN = 0;
+    GOOGLE = 1;
+    FACEBOOK = 2;
+}
+
+message UserCreateGrpcRequestDTO {
+  string userName = 1;
+  string password = 2;
+  string firstName = 3;
+  string lastName = 4;
+}
+
+message UserCreateOrFindGrpcRequestDTO {
+  string userName = 1;
+  ExternalSystem extsource = 2;
+}
+
+message OauthUser {
+  string userName = 1;
+}
+
+message UserCreateOrFindGrpcResponseDTO {
+  oneof either {
+    OauthUser user = 1;
+    com.gw.common.grpc.Error error = 2;
+  }
+}
+
+message UserCreateGrpcResponseDTO {
+  bool created = 1;
+}
+
+message UserAuthRequestDTO {
+  string userName = 1;
+  string password = 2;
+}
+
+message UserAuthDetailsDTO {
+  string firstName = 1;
+  string lastName = 2;
+}
+
+message UserAuthResponseDTO {
+  oneof either {
+    UserAuthDetailsDTO authDetails = 1;
+    com.gw.common.grpc.Error error = 2;
+  }
+}
+
+message FetchUserDetailsByUserNameGrpcRequestDTO {
+  string userName = 1;
+}
+
+message UserDetailsGrpcResponseDTO {
+  string userName = 1;
+  string password = 2;
+  string firstName = 3;
+  string lastName = 4;
+  string role = 5;
+  string id = 6;
+}
+
+service UserService {
+  rpc fetchUsersByUserName(FetchUserDetailsByUserNameGrpcRequestDTO) returns (UserDetailsGrpcResponseDTO);
+  rpc authenticate(UserAuthRequestDTO) returns (UserAuthResponseDTO);
+  rpc createUser(UserCreateGrpcRequestDTO) returns (UserCreateGrpcResponseDTO);
+  rpc createOrFindUser(UserCreateOrFindGrpcRequestDTO) returns (UserCreateOrFindGrpcResponseDTO);
+}

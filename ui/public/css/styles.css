@@ -1,0 +1,32 @@
+
+body {
+  /* background-color: #E8ECEF; */
+}
+
+.centered {
+    padding-top: 200px;
+    text-align: center;
+}
+
+.secret-text {
+  text-align: center;
+  font-size: 2rem;
+  /* color: #fff; */
+  /* background-color: #000; */
+}
+
+[data-initials]:before {
+  background: white;
+  color: #099bdd;;
+  opacity: 1; 
+  content: attr(data-initials); 
+  display: inline-block; 
+  font-weight: bold; 
+  border-radius: 50%; 
+  vertical-align: middle; 
+  margin-right: 0.5em; 
+  width: 50px; 
+  height: 50px; 
+  line-height: 50px; 
+  text-align: center; 
+  }

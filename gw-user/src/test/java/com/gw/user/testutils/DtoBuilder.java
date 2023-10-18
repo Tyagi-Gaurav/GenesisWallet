@@ -1,7 +1,6 @@
 package com.gw.user.testutils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gw.common.domain.Gender;
 import com.gw.user.resource.domain.LoginRequestDTO;
 import com.gw.user.resource.domain.UserCreateRequestDTO;
 
@@ -22,7 +21,7 @@ public class DtoBuilder {
         return new UserCreateRequestDTO(
                 randomAlphabetic(4), randomAlphabetic(6)
                 , randomAlphabetic(7), randomAlphabetic(7),
-                "10/10/2010", Gender.FEMALE, "AUS");
+                "10/10/2010");
     }
 
     public static LoginRequestDTO testLoginRequestDTO() {

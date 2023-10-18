@@ -2,7 +2,6 @@ package com.gw.user.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.gw.common.domain.Gender;
 import com.gw.common.domain.UserIdentity;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -18,19 +17,15 @@ public record User(UUID userId,
                    String password,
                    String salt,
                    String dateOfBirth,
-                   Gender gender,
-                   String homeCountry,
                    String role) implements UserIdentity {
     public User(UUID id,
                 String firstName,
                 String lastName,
                 String username,
                 String password,
-                String dateOfBirth,
-                Gender gender,
                 String homeCountry,
                 String role) {
-        this(id, firstName, lastName, username, password, null, dateOfBirth, gender, homeCountry, role);
+        this(id, firstName, lastName, username, password, null, homeCountry, role);
     }
 
     public String generateSalt(long randomVal) {
@@ -50,8 +45,6 @@ public record User(UUID userId,
         private String password;
         private String salt;
         private String dateOfBirth;
-        private Gender gender;
-        private String homeCountry;
         private String role;
 
         private UserBuilder() {}
@@ -65,8 +58,6 @@ public record User(UUID userId,
                     .withPassword(user.password())
                     .withSalt(user.salt())
                     .withDateOfBirth(user.dateOfBirth())
-                    .withGender(user.gender())
-                    .withHomeCountry(user.homeCountry())
                     .withRole(user.role());
         }
 
@@ -100,16 +91,6 @@ public record User(UUID userId,
             return this;
         }
 
-        public UserBuilder withGender(Gender gender) {
-            this.gender = gender;
-            return this;
-        }
-
-        public UserBuilder withHomeCountry(String homeCountry) {
-            this.homeCountry = homeCountry;
-            return this;
-        }
-
         public UserBuilder withRole(String role) {
             this.role = role;
             return this;
@@ -121,7 +102,7 @@ public record User(UUID userId,
         }
 
         public User build() {
-            return new User(id, firstName, lastName, username, password, salt, dateOfBirth, gender, homeCountry, role);
+            return new User(id, firstName, lastName, username, password, salt, dateOfBirth, role);
         }
     }
 

@@ -28,9 +28,7 @@ public class UserDetailsFetchResource {
                 .map(user -> new UserDetailsFetchResponseDTO(
                         user.firstName(),
                         user.lastName(),
-                        user.dateOfBirth(),
-                        user.gender(),
-                        user.homeCountry()
+                        user.dateOfBirth()
                 ));
     }
 }

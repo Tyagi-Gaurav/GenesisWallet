@@ -1,13 +1,14 @@
 package com.gw.user.grpc;
 
-import com.gw.common.domain.ExternalUser;
+import com.gw.common.grpc.Error;
 import com.gw.common.metrics.EndpointMetrics;
 import com.gw.grpc.common.CorrelationIdInterceptor;
 import com.gw.grpc.common.MetricsInterceptor;
 import com.gw.test.common.grpc.GrpcExtension;
+import com.gw.user.domain.ExternalUser;
+import com.gw.user.domain.ExternalUserBuilder;
 import com.gw.user.domain.User;
 import com.gw.user.service.UserService;
-import com.gw.user.testutils.ExternalUserBuilder;
 import io.grpc.ServerInterceptor;
 import io.grpc.StatusRuntimeException;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -21,9 +22,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.util.UUID;
 
-import static com.gw.user.testutils.TestUserBuilder.*;
+import static com.gw.user.testutils.TestUserBuilder.aUser;
+import static com.gw.user.testutils.TestUserBuilder.userCreateGrpcRequestDTOBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
@@ -50,7 +51,7 @@ class UserServiceGrpcImplTest {
     }
 
     @Test
-    void createUser()  {
+    void createUser() {
         when(userService.addUser(any(User.class))).thenReturn(Mono.empty());
 
         User user = aUser().build();
@@ -62,20 +63,22 @@ class UserServiceGrpcImplTest {
     }
 
     @Test
-    void createExternalUser()  {
-        when(userService.addExternalUser(any(ExternalUser.class))).thenReturn(Mono.empty());
+    void createExternalUser() {
+        when(userService.addExternalUser(any(ExternalUser.class))).thenReturn(Mono.just(ExternalUserBuilder
+                .newBuilder()
+                .withUserName("some-user-name")
+                .build()));
 
-        ExternalUser externalUser = ExternalUserBuilder.aExternalUser().build();
-        ExternalUserCreateGrpcRequestDTO externalUserCreateGrpcRequestDTO =
-                externalUserCreateGrpcRequestDTOBuilder(externalUser);
+        UserCreateOrFindGrpcResponseDTO response = userServiceBlockingStub.createOrFindUser(UserCreateOrFindGrpcRequestDTO.newBuilder()
+                .setUserName("some-user-name")
+                .setExtsource(ExternalSystem.GOOGLE)
+                .build());
 
-        ExternalUserCreateGrpcResponseDTO externalUserCreateGrpcResponseDTO =
-                userServiceBlockingStub.createExternalUser(externalUserCreateGrpcRequestDTO);
-        assertThat(externalUserCreateGrpcResponseDTO).isNotNull();
+        assertThat(response).isNotNull();
     }
 
     @Test
-    void createUser_handleException()  {
+    void createUser_handleException() {
         when(userService.addUser(any(User.class))).thenReturn(Mono.error(new IllegalArgumentException()));
 
         User user = aUser().build();
@@ -86,28 +89,81 @@ class UserServiceGrpcImplTest {
     }
 
     @Test
-    void fetchUsersById()  {
+    void fetchUsersByUsername() {
         User user = aUser().build();
-        when(userService.findUserBy(any(UUID.class))).thenReturn(Mono.just(user));
+        when(userService.findUserBy(user.userName())).thenReturn(Mono.just(user));
 
-        FetchUserDetailsByIdGrpcRequestDTO fetchUserDetailsByIdGrpcRequestDTO = FetchUserDetailsByIdGrpcRequestDTO.newBuilder()
-                .setId(user.id().toString())
+        FetchUserDetailsByUserNameGrpcRequestDTO fetchUserDetailsByUserNameGrpcRequestDTO = FetchUserDetailsByUserNameGrpcRequestDTO.newBuilder()
+                .setUserName(user.userName())
                 .build();
 
         UserDetailsGrpcResponseDTO userDetailsGrpcResponseDTO =
-                userServiceBlockingStub.fetchUsersById(fetchUserDetailsByIdGrpcRequestDTO);
+                userServiceBlockingStub.fetchUsersByUserName(fetchUserDetailsByUserNameGrpcRequestDTO);
 
         assertThat(userDetailsGrpcResponseDTO.getUserName()).isEqualTo(user.userName());
-        assertThat(userDetailsGrpcResponseDTO.getDateOfBirth()).isEqualTo(user.dateOfBirth());
         assertThat(userDetailsGrpcResponseDTO.getFirstName()).isEqualTo(user.firstName());
         assertThat(userDetailsGrpcResponseDTO.getLastName()).isEqualTo(user.lastName());
-        assertThat(userDetailsGrpcResponseDTO.getGender()).isEqualTo(toGrpcGender(user.gender()));
-        assertThat(userDetailsGrpcResponseDTO.getHomeCountry()).isEqualTo(user.homeCountry());
         assertThat(userDetailsGrpcResponseDTO.getId()).isEqualTo(user.id().toString());
     }
 
     @Test
-    void createUser_shouldRecordMetrics()  {
+    void authenticateUserSuccess() {
+        User user = aUser().build();
+        when(userService.authenticateUser(user.userName(), user.password())).thenReturn(Mono.just(user));
+
+        UserAuthRequestDTO userAuthRequestDTO = UserAuthRequestDTO.newBuilder()
+                .setUserName(user.userName())
+                .setPassword(user.password())
+                .build();
+
+        UserAuthResponseDTO userAuthResponseDTO = userServiceBlockingStub.authenticate(userAuthRequestDTO);
+
+        assertThat(userAuthResponseDTO.getAuthDetails().getFirstName()).isEqualTo(user.firstName());
+        assertThat(userAuthResponseDTO.getAuthDetails().getLastName()).isEqualTo(user.lastName());
+    }
+
+    @Test
+    void authenticateUserInvalidCredentials() {
+        User user = aUser().build();
+        when(userService.authenticateUser(user.userName(), user.password()))
+                .thenReturn(Mono.empty());
+
+        UserAuthRequestDTO userAuthRequestDTO = UserAuthRequestDTO.newBuilder()
+                .setUserName(user.userName())
+                .setPassword(user.password())
+                .build();
+
+        UserAuthResponseDTO userAuthResponseDTO = userServiceBlockingStub.authenticate(userAuthRequestDTO);
+
+        assertThat(userAuthResponseDTO.getEitherCase()).isEqualTo(UserAuthResponseDTO.EitherCase.ERROR);
+        assertThat(userAuthResponseDTO.getError()).isEqualTo(com.gw.common.grpc.Error.newBuilder()
+                .setCode(Error.ErrorCode.AUTHENTICATION_ERROR)
+                .setDescription("Invalid Credentials")
+                .build());
+    }
+
+    @Test
+    void authenticateUserError() {
+        User user = aUser().build();
+        when(userService.authenticateUser(user.userName(), user.password()))
+                .thenReturn(Mono.error(new RuntimeException()));
+
+        UserAuthRequestDTO userAuthRequestDTO = UserAuthRequestDTO.newBuilder()
+                .setUserName(user.userName())
+                .setPassword(user.password())
+                .build();
+
+        UserAuthResponseDTO userAuthResponseDTO = userServiceBlockingStub.authenticate(userAuthRequestDTO);
+
+        assertThat(userAuthResponseDTO.getEitherCase()).isEqualTo(UserAuthResponseDTO.EitherCase.ERROR);
+        assertThat(userAuthResponseDTO.getError()).isEqualTo(com.gw.common.grpc.Error.newBuilder()
+                .setCode(Error.ErrorCode.INTERNAL_SYSTEM_ERROR)
+                .setDescription("Internal error occurred. Please try again later.")
+                .build());
+    }
+
+    @Test
+    void createUser_shouldRecordMetrics() {
         when(userService.addUser(any(User.class))).thenReturn(Mono.empty());
 
         User user = aUser().build();

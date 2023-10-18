@@ -1,0 +1,17 @@
+syntax = "proto3";
+package com.gw.common.grpc;
+
+option java_multiple_files = true;
+
+option java_outer_classname = "ErrorGrpc";
+
+message Error {
+  enum ErrorCode {
+    UNKNOWN = 0;
+    AUTHENTICATION_ERROR = 1;
+    INTERNAL_SYSTEM_ERROR = 2;
+  }
+
+  ErrorCode code = 1;
+  string description = 2;
+}

@@ -1,8 +1,8 @@
 package com.gw.user.grpc;
 
 import com.google.protobuf.Empty;
-import com.gw.common.domain.ExternalUser;
-import com.gw.common.domain.Gender;
+import com.gw.common.grpc.Error;
+import com.gw.user.domain.ExternalUser;
 import com.gw.user.domain.User;
 import com.gw.user.service.UserService;
 import io.grpc.stub.StreamObserver;
@@ -21,17 +21,15 @@ public class UserServiceGrpcImpl extends UserServiceGrpc.UserServiceImplBase {
     }
 
     @Override
-    public void fetchUsersById(FetchUserDetailsByIdGrpcRequestDTO request, StreamObserver<UserDetailsGrpcResponseDTO> responseObserver) {
+    public void fetchUsersByUserName(FetchUserDetailsByUserNameGrpcRequestDTO request,
+                                     StreamObserver<UserDetailsGrpcResponseDTO> responseObserver) {
         LOG.info("Inside GRPC fetch Users By Id");
-        userService.findUserBy(UUID.fromString(request.getId()))
+        userService.findUserBy(request.getUserName())
                 .map(user -> UserDetailsGrpcResponseDTO.newBuilder()
                         .setFirstName(user.firstName())
                         .setLastName(user.lastName())
                         .setUserName(user.userName())
-                        .setDateOfBirth(user.dateOfBirth())
-                        .setHomeCountry(user.homeCountry())
                         .setId(user.id())
-                        .setGender(toGrpcGender(user.gender()))
                         .build())
                 .subscribe(resp -> {
                     responseObserver.onNext(resp);
@@ -55,15 +53,47 @@ public class UserServiceGrpcImpl extends UserServiceGrpc.UserServiceImplBase {
     }
 
     @Override
-    public void createExternalUser(ExternalUserCreateGrpcRequestDTO request, StreamObserver<ExternalUserCreateGrpcResponseDTO> responseObserver) {
+    public void createOrFindUser(UserCreateOrFindGrpcRequestDTO request, StreamObserver<UserCreateOrFindGrpcResponseDTO> responseObserver) {
         LOG.info("Inside GRPC create external user");
         userService.addExternalUser(createExternalUserFrom(request))
-                .map(v -> Empty.getDefaultInstance())
-                .switchIfEmpty(Mono.defer(() -> Mono.just(Empty.getDefaultInstance())))
+                .map(resp -> UserCreateOrFindGrpcResponseDTO.newBuilder()
+                        .setUser(OauthUser.newBuilder()
+                                .setUserName(resp.userName())
+                                .build())
+                        .build())
                 .doOnError(responseObserver::onError)
+                .subscribe(resp -> {
+                    responseObserver.onNext(resp);
+                    responseObserver.onCompleted();
+                });
+    }
+
+    @Override
+    public void authenticate(UserAuthRequestDTO request, StreamObserver<UserAuthResponseDTO> responseObserver) {
+        LOG.info("Inside GRPC authenticate");
+        userService.authenticateUser(request.getUserName(), request.getPassword())
+                .map(ui -> UserAuthResponseDTO.newBuilder()
+                        .setAuthDetails(UserAuthDetailsDTO.newBuilder()
+                                .setFirstName(ui.firstName())
+                                .setLastName(ui.lastName())
+                                .build())
+                        .build())
+                .switchIfEmpty(Mono.defer(() -> Mono.just(
+                        UserAuthResponseDTO.newBuilder()
+                                .setError(Error.newBuilder()
+                                        .setCode(Error.ErrorCode.AUTHENTICATION_ERROR)
+                                        .setDescription("Invalid Credentials")
+                                        .build())
+                                .build()
+                )))
+                .onErrorResume(throwable -> Mono.just(UserAuthResponseDTO.newBuilder()
+                        .setError(Error.newBuilder()
+                                .setCode(Error.ErrorCode.INTERNAL_SYSTEM_ERROR)
+                                .setDescription("Internal error occurred. Please try again later.")
+                                .build())
+                        .build()))
                 .subscribe(v -> {
-                    responseObserver.onNext(ExternalUserCreateGrpcResponseDTO.newBuilder()
-                            .build());
+                    responseObserver.onNext(v);
                     responseObserver.onCompleted();
                 });
     }
@@ -75,41 +105,12 @@ public class UserServiceGrpcImpl extends UserServiceGrpc.UserServiceImplBase {
                 request.getUserName(),
                 request.getPassword(),
                 null,
-                request.getDateOfBirth(),
-                toDomainGender(request.getGender()),
-                request.getHomeCountry(),
                 "REGISTERED_USER");
     }
 
-    private ExternalUser createExternalUserFrom(ExternalUserCreateGrpcRequestDTO request) {
-        return new ExternalUser(UUID.randomUUID(),
-                request.getEmail(),
-                request.getLocale(),
-                request.getPictureUrl(),
-                request.getFirstName(),
-                request.getLastName(),
-                request.getTokenValue(),
-                request.getTokenType(),
-                request.getTokenExpiryTime(),
-                request.getExternalSystem(),
-                request.getDateOfBirth(),
-                toDomainGender(request.getGender()),
-                request.getHomeCountry());
-    }
-
-    private Gender toDomainGender(com.gw.user.grpc.Gender gender) {
-        return switch (gender) {
-            case GENDER_MALE -> Gender.MALE;
-            case GENDER_FEMALE -> Gender.FEMALE;
-            default -> Gender.UNSPECIFIED;
-        };
-    }
-
-    private com.gw.user.grpc.Gender toGrpcGender(Gender gender) {
-        return switch (gender) {
-            case MALE -> com.gw.user.grpc.Gender.GENDER_MALE;
-            case FEMALE -> com.gw.user.grpc.Gender.GENDER_FEMALE;
-            case UNSPECIFIED -> com.gw.user.grpc.Gender.GENDER_UNSPECIFIED;
-        };
+    private ExternalUser createExternalUserFrom(UserCreateOrFindGrpcRequestDTO request) {
+        return new ExternalUser(
+                request.getUserName(),
+                request.getExtsource().name());
     }
 }
