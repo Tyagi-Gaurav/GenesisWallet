@@ -10,6 +10,9 @@ on:
 jobs:
   FunctionalTest:
     uses: ./.github/workflows/functionalTest.yml
+    secrets:
+      OAUTH_CLIENT_ID_GOOGLE: ${{ secrets.OAUTH_CLIENT_ID_GOOGLE }}
+      OAUTH_CLIENT_SECRET_GOOGLE: ${{ secrets.OAUTH_CLIENT_SECRET_GOOGLE }}
 
   Sonar:
     uses: ./.github/workflows/sonar.yml
