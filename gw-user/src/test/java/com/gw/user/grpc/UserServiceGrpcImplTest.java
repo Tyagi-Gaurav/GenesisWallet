@@ -5,8 +5,8 @@ import com.gw.common.metrics.EndpointMetrics;
 import com.gw.grpc.common.CorrelationIdInterceptor;
 import com.gw.grpc.common.MetricsInterceptor;
 import com.gw.test.common.grpc.GrpcExtension;
-import com.gw.user.domain.ExternalUser2;
-import com.gw.user.domain.ExternalUser2Builder;
+import com.gw.user.domain.ExternalUser;
+import com.gw.user.domain.ExternalUserBuilder;
 import com.gw.user.domain.User;
 import com.gw.user.service.UserService;
 import io.grpc.ServerInterceptor;
@@ -64,7 +64,7 @@ class UserServiceGrpcImplTest {
 
     @Test
     void createExternalUser() {
-        when(userService.addExternalUser(any(ExternalUser2.class))).thenReturn(Mono.just(ExternalUser2Builder
+        when(userService.addExternalUser(any(ExternalUser.class))).thenReturn(Mono.just(ExternalUserBuilder
                 .newBuilder()
                 .withUserName("some-user-name")
                 .build()));

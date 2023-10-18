@@ -1,6 +1,6 @@
 package com.gw.user.repo;
 
-import com.gw.user.domain.ExternalUser2;
+import com.gw.user.domain.ExternalUser;
 import com.gw.user.domain.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,7 +21,7 @@ public class MongoDBTestUtils {
         reactiveMongoTemplate.save(Mono.just(user)).block();
     }
 
-    public static void addToDatabase(ExternalUser2 userToSave, ReactiveMongoTemplate reactiveMongoTemplate) {
+    public static void addToDatabase(ExternalUser userToSave, ReactiveMongoTemplate reactiveMongoTemplate) {
         LOG.info("Adding user {}: ", userToSave);
         reactiveMongoTemplate.save(Mono.just(userToSave)).block();
     }
@@ -34,7 +34,7 @@ public class MongoDBTestUtils {
         reactiveMongoTemplate.findAllAndRemove(new Query(), User.class);
     }
 
-    public static Mono<ExternalUser2> getExternalUser2(String userName, ReactiveMongoTemplate reactiveMongoTemplate) {
-        return reactiveMongoTemplate.findOne(query(where("userName").is(userName)), ExternalUser2.class);
+    public static Mono<ExternalUser> getExternalUser2(String userName, ReactiveMongoTemplate reactiveMongoTemplate) {
+        return reactiveMongoTemplate.findOne(query(where("userName").is(userName)), ExternalUser.class);
     }
 }

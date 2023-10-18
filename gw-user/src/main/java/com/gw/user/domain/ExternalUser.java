@@ -9,5 +9,5 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @JsonDeserialize
 @GenerateBuilder
 @Document
-public record ExternalUser2(String userName,
-                            String externalSystem) { }
+public record ExternalUser(String userName,
+                           String externalSystem) { }

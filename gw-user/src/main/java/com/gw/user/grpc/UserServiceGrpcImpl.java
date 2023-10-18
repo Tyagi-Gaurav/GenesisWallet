@@ -2,7 +2,7 @@ package com.gw.user.grpc;
 
 import com.google.protobuf.Empty;
 import com.gw.common.grpc.Error;
-import com.gw.user.domain.ExternalUser2;
+import com.gw.user.domain.ExternalUser;
 import com.gw.user.domain.User;
 import com.gw.user.service.UserService;
 import io.grpc.stub.StreamObserver;
@@ -108,8 +108,8 @@ public class UserServiceGrpcImpl extends UserServiceGrpc.UserServiceImplBase {
                 "REGISTERED_USER");
     }
 
-    private ExternalUser2 createExternalUserFrom(UserCreateOrFindGrpcRequestDTO request) {
-        return new ExternalUser2(
+    private ExternalUser createExternalUserFrom(UserCreateOrFindGrpcRequestDTO request) {
+        return new ExternalUser(
                 request.getUserName(),
                 request.getExtsource().name());
     }

@@ -1,7 +1,7 @@
 package com.gw.user.repo;
 
-import com.gw.user.domain.ExternalUser2;
-import com.gw.user.domain.ExternalUser2Builder;
+import com.gw.user.domain.ExternalUser;
+import com.gw.user.domain.ExternalUserBuilder;
 import com.gw.user.domain.User;
 import com.gw.user.testutils.DatabaseTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -68,7 +68,7 @@ class UserMongoRepositoryImplTest extends DatabaseTest {
     @Test
     void shouldAddExternalUser() {
         //given
-        ExternalUser2 userToAdd = ExternalUser2Builder.newBuilder()
+        ExternalUser userToAdd = ExternalUserBuilder.newBuilder()
                 .withUserName("some-user-name")
                 .build();
 
@@ -77,7 +77,7 @@ class UserMongoRepositoryImplTest extends DatabaseTest {
                 .verifyComplete();
 
         //then
-        Mono<ExternalUser2> userFromDB = getExternalUser2("some-user-name", reactiveMongoTemplate);
+        Mono<ExternalUser> userFromDB = getExternalUser2("some-user-name", reactiveMongoTemplate);
         StepVerifier.create(userFromDB)
                 .expectNext(userToAdd)
                 .verifyComplete();
@@ -101,11 +101,11 @@ class UserMongoRepositoryImplTest extends DatabaseTest {
     @Test
     void shouldFindExternalUser() {
         //given
-        ExternalUser2 userInDatabase = ExternalUser2Builder.newBuilder().build();
+        ExternalUser userInDatabase = ExternalUserBuilder.newBuilder().build();
         addToDatabase(userInDatabase, reactiveMongoTemplate);
 
         //when
-        Mono<ExternalUser2> actualUser = userRepository.findExternalUserByUserName(userInDatabase.userName());
+        Mono<ExternalUser> actualUser = userRepository.findExternalUserByUserName(userInDatabase.userName());
 
         //then
         StepVerifier.create(actualUser)
@@ -116,13 +116,13 @@ class UserMongoRepositoryImplTest extends DatabaseTest {
     @Test
     void shouldCreateExternalUserIfDoesNotExist() {
         //given
-        ExternalUser2 userToSave = ExternalUser2Builder.newBuilder()
+        ExternalUser userToSave = ExternalUserBuilder.newBuilder()
                 .withExternalSystem("google")
                 .withUserName("some-email@email.com")
                 .build();
 
         //when
-        Mono<ExternalUser2> userInDB = userRepository.findOrCreateExternalUser(userToSave);
+        Mono<ExternalUser> userInDB = userRepository.findOrCreateExternalUser(userToSave);
 
         //then
         StepVerifier.create(userInDB)
@@ -133,14 +133,14 @@ class UserMongoRepositoryImplTest extends DatabaseTest {
     @Test
     void shouldFindExternalUserIfAlreadyExist() {
         //given
-        ExternalUser2 userToSave = ExternalUser2Builder.newBuilder()
+        ExternalUser userToSave = ExternalUserBuilder.newBuilder()
                 .withExternalSystem("google")
                 .withUserName("some-email@email.com")
                 .build();
         MongoDBTestUtils.addToDatabase(userToSave, reactiveMongoTemplate);
 
         //when
-        Mono<ExternalUser2> userInDB = userRepository.findOrCreateExternalUser(userToSave);
+        Mono<ExternalUser> userInDB = userRepository.findOrCreateExternalUser(userToSave);
 
         //then
         StepVerifier.create(userInDB)

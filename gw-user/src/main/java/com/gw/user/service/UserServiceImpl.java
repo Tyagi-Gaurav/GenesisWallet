@@ -3,7 +3,7 @@ package com.gw.user.service;
 import com.gw.common.domain.UserIdentity;
 import com.gw.common.metrics.UserRegistrationCounter;
 import com.gw.security.util.PasswordEncryptor;
-import com.gw.user.domain.ExternalUser2;
+import com.gw.user.domain.ExternalUser;
 import com.gw.user.domain.User;
 import com.gw.user.repo.UserRepository;
 import org.apache.logging.log4j.LogManager;
@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Mono<ExternalUser2> addExternalUser(ExternalUser2 externalUser) {
+    public Mono<ExternalUser> addExternalUser(ExternalUser externalUser) {
         return userRepository.findOrCreateExternalUser(externalUser)
                 .doOnSuccess(v -> userRegistrationCounter.increment("WEB", externalUser.externalSystem()));
     }

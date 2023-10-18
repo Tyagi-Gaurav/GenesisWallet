@@ -2,8 +2,8 @@ package com.gw.user.service;
 
 import com.gw.common.metrics.UserRegistrationCounter;
 import com.gw.security.util.PasswordEncryptor;
-import com.gw.user.domain.ExternalUser2;
-import com.gw.user.domain.ExternalUser2Builder;
+import com.gw.user.domain.ExternalUser;
+import com.gw.user.domain.ExternalUserBuilder;
 import com.gw.user.domain.User;
 import com.gw.user.repo.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -108,7 +108,7 @@ class UserServiceImplTest {
 
     @Test
     void addExternalUser() {
-        ExternalUser2 externalUser = ExternalUser2Builder.newBuilder()
+        ExternalUser externalUser = ExternalUserBuilder.newBuilder()
                 .withUserName("some-user-name")
                 .withExternalSystem("google")
                 .build();
@@ -122,7 +122,7 @@ class UserServiceImplTest {
 
     @Test
     void incrementRegistrationCounterOnAddExternalUser() {
-        ExternalUser2 externalUser = ExternalUser2Builder.newBuilder()
+        ExternalUser externalUser = ExternalUserBuilder.newBuilder()
                 .withUserName("some-user-name")
                 .withExternalSystem("google")
                 .build();
