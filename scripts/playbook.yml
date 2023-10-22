@@ -1,0 +1,31 @@
+---
+
+- name: Local setup
+  hosts: localhost
+  connection: local
+  tasks:
+
+    - name: "Stop minikube if already running"
+      shell: "minikube stop"
+
+    - name: "Start minikube" 
+      shell: "minikube start"
+
+    - name: "Create Ping app image"
+      shell: |
+        eval $(minikube docker-env)
+        docker build . -t local-ping-app:DEV-SNAPSHOT
+      args:
+        chdir: ../ping-app
+
+    - name: "Create deployment for ping app"
+      shell: "kubectl apply -f deployment.yml"
+      args:
+        chdir: ../ping-app
+
+    - name: "Create service for ping app"
+      shell: "kubectl apply -f service.yml"
+      args:
+        chdir: ../ping-app
+
+  

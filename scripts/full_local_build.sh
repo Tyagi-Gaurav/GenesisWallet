@@ -57,12 +57,16 @@ done
 FULL_BUILD_COMMAND="$BUILD $SKIP_TEST"
 
 set -e #Fail on error
-docker-compose down $REMOVE_IMAGES
-eval "$FULL_BUILD_COMMAND"
+#docker-compose down $REMOVE_IMAGES
+# eval "$FULL_BUILD_COMMAND"
 
-docker-compose --env-file ~/.secret/env.file --env-file ./ui/.env up -d --build $REMOVE_ORPHANS
-WAIT_TIME=15
+export DISPLAY_ARGS_TO_STDOUT=true
+ansible-playbook ./playbook.yml
+
+#docker-compose --env-file ~/.secret/env.file --env-file ./ui/.env up -d --build $REMOVE_ORPHANS
+# kubectl create deployment local.user-app --image=kicbase/echo-server:1.0
+WAIT_TIME=1
 echo "Waiting for ${WAIT_TIME} seconds for container to come up"
 sleep ${WAIT_TIME}
 
-make ft
+# make ft

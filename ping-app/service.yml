@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ping-app-service
+spec:
+  type: LoadBalancer
+  selector:
+    app.kubernetes.io/name: pingApp
+  ports:
+    - protocol: TCP
+      port: 6060
+      targetPort: 6060
