@@ -1,4 +1,4 @@
-name: Manual Publish latest test images
+name: Manual Create release tags
 
 on:
   workflow_dispatch:
