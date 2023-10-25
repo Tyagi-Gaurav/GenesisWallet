@@ -32,7 +32,7 @@
         <spring.version>6.0.13</spring.version>
         <spring.vault.version>3.0.4</spring.vault.version>
         <apache.commons.version>3.13.0</apache.commons.version>
-        <log4j.version>2.20.0</log4j.version>
+        <log4j.version>2.21.1</log4j.version>
         <slf4j.mock.version>2.3.0</slf4j.mock.version>
         <micrometer-core.version>1.11.5</micrometer-core.version>
         <micrometer-registry-prometheus.version>1.11.5</micrometer-registry-prometheus.version>
