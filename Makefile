@@ -22,10 +22,10 @@ api-gateway:
 	docker build -f api-gateway/Dockerfile ./api-gateway
 
 full:
-	./full_local_build.sh
+	./scripts/full_local_build.sh
 
 fq:
-	./full_local_build.sh -t
+	./scripts/full_local_build.sh -t
 
 down:
 	docker-compose down --rmi all

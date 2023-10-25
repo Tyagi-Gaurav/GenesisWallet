@@ -36,7 +36,6 @@
             </plugin>
         </plugins>
     </build>
-
     <dependencies>
         <!-- Spring Dependencies -->
         <dependency>

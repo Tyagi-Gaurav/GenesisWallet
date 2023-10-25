@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ping-app
+  name: ping-app-deployment
 spec:
   replicas: 1
   selector:
@@ -15,7 +15,7 @@ spec:
       containers:
       - name: ping-app
         image: local-ping-app:DEV-SNAPSHOT
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 6060
         - containerPort: 6061

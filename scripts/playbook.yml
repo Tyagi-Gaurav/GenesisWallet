@@ -5,11 +5,13 @@
   connection: local
   tasks:
 
-    - name: "Stop minikube if already running"
-      shell: "minikube stop"
+#Parameters: AppName, Version, Directory to use
 
-    - name: "Start minikube" 
-      shell: "minikube start"
+    # - name: "Stop minikube if already running"
+    #   shell: "minikube stop"
+
+    # - name: "Start minikube" 
+    #   shell: "minikube start"
 
     - name: "Create Ping app image"
       shell: |
@@ -28,4 +30,7 @@
       args:
         chdir: ../ping-app
 
-  
+    # - name: "Create ingress for ping app"
+    #   shell: "kubectl apply -f ingress.yml -n default"
+
+#MINIKUBE denied docker login
