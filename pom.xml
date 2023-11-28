@@ -28,7 +28,7 @@
 
     <properties>
         <!-- Production Version -->
-        <spring.boot.version>3.1.4</spring.boot.version>
+        <spring.boot.version>3.1.6</spring.boot.version>
         <spring.version>6.0.13</spring.version>
         <spring.vault.version>3.0.4</spring.vault.version>
         <apache.commons.version>3.13.0</apache.commons.version>
