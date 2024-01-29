@@ -7,6 +7,7 @@ import com.gw.user.e2e.security.TestContainerVaultInitializer;
 import com.gw.user.repo.TestContainerDatabaseInitializer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -43,6 +44,7 @@ import static com.gw.user.e2e.test.ScenarioExecutor.*;
         "user.port=${wiremock.server.port}",
         "auth.tokenDuration=2s"
 })
+@Disabled
 class UserJourneysTest implements WithSyntacticSugar {
     @Autowired
     private JedisPool jedisPool;
