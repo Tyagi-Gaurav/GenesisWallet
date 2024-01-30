@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>gw-api-gateway</module>
+        <module>api-gateway</module>
         <module>gw-security</module>
         <module>gw-grpc-common</module>
         <module>gw-infrastructure</module>

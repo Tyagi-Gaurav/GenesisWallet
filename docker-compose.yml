@@ -30,7 +30,7 @@ services:
       - gw-security
       - ui
     build:
-      context: gw-api-gateway
+      context: api-gateway
     environment:
       - USER_HOST=local.user-app
       - UI_HOST=local.ui
