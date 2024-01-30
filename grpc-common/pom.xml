@@ -9,7 +9,7 @@
         <artifactId>genesis</artifactId>
     </parent>
 
-    <artifactId>gw-grpc-common</artifactId>
+    <artifactId>grpc-common</artifactId>
     <packaging>jar</packaging>
 
     <build>
