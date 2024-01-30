@@ -15,7 +15,6 @@
         <module>infrastructure</module>
         <module>grpc-schema</module>
         <module>user</module>
-        <module>test-common</module>
         <module>user-client</module>
         <module>ui</module>
         <module>functional-test</module>
