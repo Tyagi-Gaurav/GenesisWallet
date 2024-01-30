@@ -22,7 +22,7 @@
         <module>ui-functional-test</module>
         <module>common</module>
         <module>common-annotations</module>
-        <module>integration-test-support</module>
+        <module>test-support</module>
         <module>ping-app</module>
     </modules>
 

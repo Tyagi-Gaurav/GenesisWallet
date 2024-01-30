@@ -113,7 +113,7 @@
         </dependency>
         <dependency>
             <groupId>com.genesis</groupId>
-            <artifactId>integration-test-support</artifactId>
+            <artifactId>test-support</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
