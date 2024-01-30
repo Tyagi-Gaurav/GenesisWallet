@@ -50,7 +50,7 @@
         </dependency>
         <dependency>
             <groupId>com.genesis</groupId>
-            <artifactId>gw-grpc-schema</artifactId>
+            <artifactId>grpc-schema</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

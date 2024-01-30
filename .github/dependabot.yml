@@ -18,11 +18,11 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "maven"
-    directory: "/gw-grpc-common" # Location of package manifests
+    directory: "/grpc-common" # Location of package manifests
     schedule:
       interval: "weekly"
   - package-ecosystem: "maven"
-    directory: "/gw-grpc-schema" # Location of package manifests
+    directory: "/grpc-schema" # Location of package manifests
     schedule:
       interval: "weekly"
   - package-ecosystem: "maven"

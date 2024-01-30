@@ -13,7 +13,7 @@
         <module>gw-security</module>
         <module>grpc-common</module>
         <module>gw-infrastructure</module>
-        <module>gw-grpc-schema</module>
+        <module>grpc-schema</module>
         <module>gw-user</module>
         <module>gw-test-common</module>
         <module>gw-user-client</module>
