@@ -77,7 +77,7 @@
         </dependency>
         <dependency>
             <groupId>com.genesis</groupId>
-            <artifactId>gw-test-common</artifactId>
+            <artifactId>test-common</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
             <type>test-jar</type>

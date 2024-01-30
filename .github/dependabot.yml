@@ -26,11 +26,11 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "maven"
-    directory: "/gw-security" # Location of package manifests
+    directory: "/security" # Location of package manifests
     schedule:
       interval: "weekly"
   - package-ecosystem: "maven"
-    directory: "/gw-test-common" # Location of package manifests
+    directory: "/test-common" # Location of package manifests
     schedule:
       interval: "weekly"
   - package-ecosystem: "npm"
@@ -38,10 +38,10 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "maven"
-    directory: "/gw-user" # Location of package manifests
+    directory: "/user" # Location of package manifests
     schedule:
       interval: "weekly"
   - package-ecosystem: "maven"
-    directory: "/gw-user-client" # Location of package manifests
+    directory: "/user-client" # Location of package manifests
     schedule:
       interval: "weekly"

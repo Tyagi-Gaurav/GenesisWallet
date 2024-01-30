@@ -61,7 +61,7 @@ module "ui-ecs-service" {
   source           = "../modules/ecs-service"
   ENV              = var.ENV
   VPC_ID           = module.main-vpc.vpc_id
-  APPLICATION_NAME = "gw-ui"
+  APPLICATION_NAME = "ui"
   APPLICATION_PORT = 8080
   PORT_MAPPINGS    = {
     #Goes directly into task definition
@@ -92,7 +92,7 @@ module "ui-ecs-service" {
 }
 
 data "aws_ecr_repository" "test_genesis_ui_ecr" {
-  name = "test_genesis/gw-ui"
+  name = "test_genesis/ui"
 }
 
 resource "aws_ecr_repository_policy" "test_genesis_ui_ecr_policy" {

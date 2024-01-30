@@ -61,7 +61,7 @@
         </dependency>
         <dependency>
             <groupId>com.genesis</groupId>
-            <artifactId>gw-user-client</artifactId>
+            <artifactId>user-client</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
         </dependency>

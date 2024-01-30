@@ -106,8 +106,8 @@ https://swimlanes.io/u/mcghmm30h
 # Sample curl commands
 * User Service healthcheck: `curl -i -vvv localhost/api/user/private/health`
 * User Service Status check: `curl -i -vvv localhost/api/user/private/health/status`
-* UI Service Status check: `curl -i -vvv localhost/gw-ui/private/health/status`
-* UI Service Health check: `curl -i -vvv localhost/gw-ui/private/health`
+* UI Service Status check: `curl -i -vvv localhost/ui/private/health/status`
+* UI Service Health check: `curl -i -vvv localhost/ui/private/health`
 * API Gateway Status check: `curl -i -q localhost/index.html`
 
 # Notes

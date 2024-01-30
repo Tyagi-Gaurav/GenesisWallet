@@ -24,9 +24,9 @@ def untagged_image(imageId):
     return {"imageDigest" : imageId["imageDigest"]}
 
 def main():
-    list_untagged_images("<accountId>", "test_genesis/gw-user")
-    list_untagged_images("<accountId>", "test_genesis/gw-ui")
-    list_untagged_images("<accountId>", "test_genesis/gw-api-gateway")
+    list_untagged_images("<accountId>", "test_genesis/user")
+    list_untagged_images("<accountId>", "test_genesis/ui")
+    list_untagged_images("<accountId>", "test_genesis/api-gateway")
 
 if __name__ == "__main__":
     main()

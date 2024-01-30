@@ -9,12 +9,11 @@
         <artifactId>genesis</artifactId>
     </parent>
 
-    <artifactId>gw-user-client</artifactId>
+    <artifactId>security</artifactId>
     <packaging>jar</packaging>
-
     <properties>
-        <protoc.version>3.21.9</protoc.version>
-        <protobuf-maven-plugin.pluginArtifact.version>1.50.2</protobuf-maven-plugin.pluginArtifact.version>
+        <spring-vault-core.version>3.0.4</spring-vault-core.version>
+        <bouncy-castle.version>1.76</bouncy-castle.version>
     </properties>
 
     <build>
@@ -42,42 +41,38 @@
     </build>
 
     <dependencies>
-        <!-- Module Dependencies -->
+        <!-- Spring Dependencies -->
         <dependency>
-            <groupId>com.genesis</groupId>
-            <artifactId>common</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.springframework.vault</groupId>
+            <artifactId>spring-vault-core</artifactId>
+            <version>${spring-vault-core.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.genesis</groupId>
-            <artifactId>grpc-schema</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.genesis</groupId>
-            <artifactId>grpc-common</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-        <!-- Module Dependencies : END -->
+        <!-- Spring Dependencies : END -->
 
-        <!-- GRPC Dependencies -->
+        <!-- Project Reactor Dependencies -->
         <dependency>
-            <groupId>io.grpc</groupId>
-            <artifactId>grpc-stub</artifactId>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-core</artifactId>
+        </dependency>
+        <!-- Project Reactor Dependencies : END -->
+
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk18on</artifactId>
+            <version>${bouncy-castle.version}</version>
         </dependency>
         <dependency>
-            <groupId>io.grpc</groupId>
-            <artifactId>grpc-protobuf</artifactId>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
         </dependency>
-        <dependency>
-            <groupId>io.grpc</groupId>
-            <artifactId>grpc-netty-shaded</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.protobuf</groupId>
-            <artifactId>protobuf-java</artifactId>
-        </dependency>
-        <!-- GRPC Dependencies : END -->
 
         <!-- Test Dependencies -->
         <dependency>
@@ -96,13 +91,13 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -115,18 +110,8 @@
             <artifactId>reactor-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.awaitility</groupId>
-            <artifactId>awaitility</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.genesis</groupId>
-            <artifactId>gw-test-common</artifactId>
-            <version>${project.version}</version>
-            <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
-        <!-- Test Dependencies : END -->
+        <!-- Test Dependencies : End -->
     </dependencies>
+
+
 </project>

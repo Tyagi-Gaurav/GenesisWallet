@@ -9,7 +9,7 @@
         <artifactId>genesis</artifactId>
     </parent>
 
-    <artifactId>gw-user</artifactId>
+    <artifactId>user</artifactId>
     <packaging>jar</packaging>
 
     <properties>
@@ -96,7 +96,7 @@
         </dependency>
         <dependency>
             <groupId>com.genesis</groupId>
-            <artifactId>gw-security</artifactId>
+            <artifactId>security</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -106,7 +106,7 @@
         </dependency>
         <dependency>
             <groupId>com.genesis</groupId>
-            <artifactId>gw-test-common</artifactId>
+            <artifactId>test-common</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
             <type>test-jar</type>

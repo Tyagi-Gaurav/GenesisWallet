@@ -67,7 +67,7 @@ module "user-ecs-service" {
   source           = "../modules/ecs-service"
   ENV              = var.ENV
   VPC_ID           = module.main-vpc.vpc_id
-  APPLICATION_NAME = "gw-user"
+  APPLICATION_NAME = "user"
   APPLICATION_PORT = 9090
   PORT_MAPPINGS    = {
     #Goes directly into task definition
@@ -103,7 +103,7 @@ module "user-ecs-service" {
 }
 
 data "aws_ecr_repository" "test_genesis_user_ecr" {
-  name = "test_genesis/gw-user"
+  name = "test_genesis/user"
 }
 
 resource "aws_ecr_repository_policy" "test_genesis_user_ecr_policy" {

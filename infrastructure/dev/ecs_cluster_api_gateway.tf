@@ -53,7 +53,7 @@ module "api-gateway-ecs-service" {
   source           = "../modules/ecs-service"
   ENV              = var.ENV
   VPC_ID           = module.main-vpc.vpc_id
-  APPLICATION_NAME = "gw-api-gateway"
+  APPLICATION_NAME = "api-gateway"
   APPLICATION_PORT = 80
   PORT_MAPPINGS    = {
     #Goes directly into task definition
@@ -85,7 +85,7 @@ module "api-gateway-ecs-service" {
 
 
 data "aws_ecr_repository" "test_genesis_api_gateway_ecr" {
-  name = "test_genesis/gw-api-gateway"
+  name = "test_genesis/api-gateway"
 }
 
 resource "aws_ecr_repository_policy" "test_genesis_api_gateway_ecr_policy" {

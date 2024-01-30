@@ -15,8 +15,8 @@ mci:
 mcpst:
 	./mvnw clean package -DskipTests=true
 
-gw-user:
-	docker build -f gw-user/Dockerfile .
+user:
+	docker build -f user/Dockerfile .
 
 api-gateway:
 	docker build -f api-gateway/Dockerfile ./api-gateway
@@ -57,7 +57,7 @@ help:
 	@echo ' mcp					mcn clean package'
 	@echo ' mci					mvn clean install'
 	@echo ' mcpst				mcp and skip test'
-	@echo ' gw-user				Build user image'
+	@echo ' user				Build user image'
 	@echo ' api-gateway			Build API gateway image'
 	@echo ' full				Build full local docker-compose stack'
 	@echo ' fq					Build full local docker-compose stack (No tests)'

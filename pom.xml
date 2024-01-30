@@ -10,13 +10,13 @@
 
     <modules>
         <module>api-gateway</module>
-        <module>gw-security</module>
+        <module>security</module>
         <module>grpc-common</module>
-        <module>gw-infrastructure</module>
+        <module>infrastructure</module>
         <module>grpc-schema</module>
-        <module>gw-user</module>
-        <module>gw-test-common</module>
-        <module>gw-user-client</module>
+        <module>user</module>
+        <module>test-common</module>
+        <module>user-client</module>
         <module>ui</module>
         <module>functional-test</module>
         <module>ui-functional-test</module>

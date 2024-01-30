@@ -1,5 +1,5 @@
 {
-  "name": "gw-ui",
+  "name": "ui",
   "version": "1.0.0",
   "description": "",
   "main": "app_oauth2.js",
@@ -19,6 +19,7 @@
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "passport": "^0.6.0",
-    "passport-google-oauth20": "^2.0.0"
+    "passport-google-oauth20": "^2.0.0",
+    "upgrade": "^1.1.0"
   }
 }
