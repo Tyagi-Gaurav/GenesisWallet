@@ -80,37 +80,37 @@ public final class UserManagementGrpc {
       "(\t\022\020\n\010lastName\030\004 \001(\t\"g\n\036UserCreateOrFind" +
       "GrpcRequestDTO\022\020\n\010userName\030\001 \001(\t\0223\n\texts" +
       "ource\030\002 \001(\0162 .com.gw.user.grpc.ExternalS" +
-      "ystem\"\035\n\tOauthUser\022\020\n\010userName\030\001 \001(\t\"\204\001\n" +
+      "ystem\"\035\n\tOauthUser\022\020\n\010userName\030\001 \001(\t\"\213\001\n" +
       "\037UserCreateOrFindGrpcResponseDTO\022+\n\004user" +
-      "\030\001 \001(\0132\033.com.gw.user.grpc.OauthUserH\000\022*\n" +
-      "\005error\030\002 \001(\0132\031.com.gw.common.grpc.ErrorH" +
-      "\000B\010\n\006either\",\n\031UserCreateGrpcResponseDTO" +
-      "\022\017\n\007created\030\001 \001(\010\"8\n\022UserAuthRequestDTO\022" +
-      "\020\n\010userName\030\001 \001(\t\022\020\n\010password\030\002 \001(\t\"9\n\022U" +
-      "serAuthDetailsDTO\022\021\n\tfirstName\030\001 \001(\t\022\020\n\010" +
-      "lastName\030\002 \001(\t\"\210\001\n\023UserAuthResponseDTO\022;" +
-      "\n\013authDetails\030\001 \001(\0132$.com.gw.user.grpc.U" +
-      "serAuthDetailsDTOH\000\022*\n\005error\030\002 \001(\0132\031.com" +
-      ".gw.common.grpc.ErrorH\000B\010\n\006either\"<\n(Fet" +
-      "chUserDetailsByUserNameGrpcRequestDTO\022\020\n" +
-      "\010userName\030\001 \001(\t\"\177\n\032UserDetailsGrpcRespon" +
-      "seDTO\022\020\n\010userName\030\001 \001(\t\022\020\n\010password\030\002 \001(" +
-      "\t\022\021\n\tfirstName\030\003 \001(\t\022\020\n\010lastName\030\004 \001(\t\022\014" +
-      "\n\004role\030\005 \001(\t\022\n\n\002id\030\006 \001(\t*7\n\016ExternalSyst" +
-      "em\022\013\n\007UNKNOWN\020\000\022\n\n\006GOOGLE\020\001\022\014\n\010FACEBOOK\020" +
-      "\0022\315\003\n\013UserService\022\200\001\n\024fetchUsersByUserNa" +
-      "me\022:.com.gw.user.grpc.FetchUserDetailsBy" +
-      "UserNameGrpcRequestDTO\032,.com.gw.user.grp" +
-      "c.UserDetailsGrpcResponseDTO\022[\n\014authenti" +
-      "cate\022$.com.gw.user.grpc.UserAuthRequestD" +
-      "TO\032%.com.gw.user.grpc.UserAuthResponseDT" +
-      "O\022e\n\ncreateUser\022*.com.gw.user.grpc.UserC" +
-      "reateGrpcRequestDTO\032+.com.gw.user.grpc.U" +
-      "serCreateGrpcResponseDTO\022w\n\020createOrFind" +
-      "User\0220.com.gw.user.grpc.UserCreateOrFind" +
-      "GrpcRequestDTO\0321.com.gw.user.grpc.UserCr" +
-      "eateOrFindGrpcResponseDTOB\026B\022UserManagem" +
-      "entGrpcP\001b\006proto3"
+      "\030\001 \001(\0132\033.com.gw.user.grpc.OauthUserH\000\0221\n" +
+      "\005error\030\002 \001(\0132 .com.gw.common.grpc.Genesi" +
+      "sErrorH\000B\010\n\006either\",\n\031UserCreateGrpcResp" +
+      "onseDTO\022\017\n\007created\030\001 \001(\010\"8\n\022UserAuthRequ" +
+      "estDTO\022\020\n\010userName\030\001 \001(\t\022\020\n\010password\030\002 \001" +
+      "(\t\"9\n\022UserAuthDetailsDTO\022\021\n\tfirstName\030\001 " +
+      "\001(\t\022\020\n\010lastName\030\002 \001(\t\"\217\001\n\023UserAuthRespon" +
+      "seDTO\022;\n\013authDetails\030\001 \001(\0132$.com.gw.user" +
+      ".grpc.UserAuthDetailsDTOH\000\0221\n\005error\030\002 \001(" +
+      "\0132 .com.gw.common.grpc.GenesisErrorH\000B\010\n" +
+      "\006either\"<\n(FetchUserDetailsByUserNameGrp" +
+      "cRequestDTO\022\020\n\010userName\030\001 \001(\t\"\177\n\032UserDet" +
+      "ailsGrpcResponseDTO\022\020\n\010userName\030\001 \001(\t\022\020\n" +
+      "\010password\030\002 \001(\t\022\021\n\tfirstName\030\003 \001(\t\022\020\n\010la" +
+      "stName\030\004 \001(\t\022\014\n\004role\030\005 \001(\t\022\n\n\002id\030\006 \001(\t*7" +
+      "\n\016ExternalSystem\022\013\n\007UNKNOWN\020\000\022\n\n\006GOOGLE\020" +
+      "\001\022\014\n\010FACEBOOK\020\0022\315\003\n\013UserService\022\200\001\n\024fetc" +
+      "hUsersByUserName\022:.com.gw.user.grpc.Fetc" +
+      "hUserDetailsByUserNameGrpcRequestDTO\032,.c" +
+      "om.gw.user.grpc.UserDetailsGrpcResponseD" +
+      "TO\022[\n\014authenticate\022$.com.gw.user.grpc.Us" +
+      "erAuthRequestDTO\032%.com.gw.user.grpc.User" +
+      "AuthResponseDTO\022e\n\ncreateUser\022*.com.gw.u" +
+      "ser.grpc.UserCreateGrpcRequestDTO\032+.com." +
+      "gw.user.grpc.UserCreateGrpcResponseDTO\022w" +
+      "\n\020createOrFindUser\0220.com.gw.user.grpc.Us" +
+      "erCreateOrFindGrpcRequestDTO\0321.com.gw.us" +
+      "er.grpc.UserCreateOrFindGrpcResponseDTOB" +
+      "\026B\022UserManagementGrpcP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

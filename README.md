@@ -9,7 +9,7 @@
 # GenesisWallet
 
 ## Spin up stack locally
-`docker-compose up -d --build --remove-orphans`
+`make full`
 
 ## Connecting to database locally on docker
 ```
@@ -21,6 +21,10 @@ To List tables: `\dt USER_SCHEMA.*`
 ## How to create keypair using ssh-keygen?
 ```
 ssh-keygen -t ed25519 -q -N "" -f ./ssh_key
+```
+## Help on commands
+```
+make help
 ```
 
 ## Local Redis commands

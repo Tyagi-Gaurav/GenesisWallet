@@ -3,7 +3,7 @@ package com.gw.user.client;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
-import com.gw.common.grpc.Error;
+import com.gw.common.grpc.GenesisError;
 import com.gw.common.metrics.EndpointMetrics;
 import com.gw.grpc.common.CorrelationIdInterceptor;
 import com.gw.grpc.common.MetricsInterceptor;
@@ -260,16 +260,16 @@ class UserGrpcClientTest {
                 .build();
 
         mockUserService.shouldReturnResponse(UserAuthResponseDTO.newBuilder()
-                .setError(Error.newBuilder()
-                        .setCode(Error.ErrorCode.AUTHENTICATION_ERROR)
+                .setError(GenesisError.newBuilder()
+                        .setCode(GenesisError.ErrorCode.AUTHENTICATION_ERROR)
                         .setDescription("Invalid Credentials")
                         .build())
                 .build());
 
         final var userAuthResponseDTO = userGrpcClient.authenticateUserSync(userAuthRequestDTO);
         assertThat(userAuthResponseDTO.getEitherCase()).isEqualTo(UserAuthResponseDTO.EitherCase.ERROR);
-        assertThat(userAuthResponseDTO.getError()).isEqualTo(Error.newBuilder()
-                .setCode(Error.ErrorCode.AUTHENTICATION_ERROR)
+        assertThat(userAuthResponseDTO.getError()).isEqualTo(GenesisError.newBuilder()
+                .setCode(GenesisError.ErrorCode.AUTHENTICATION_ERROR)
                 .setDescription("Invalid Credentials")
                 .build());
         assertThat(mockUserService.getCallReceived()).isTrue();

@@ -23,19 +23,19 @@ public interface UserAuthResponseDTOOrBuilder extends
   com.gw.user.grpc.UserAuthDetailsDTOOrBuilder getAuthDetailsOrBuilder();
 
   /**
-   * <code>.com.gw.common.grpc.Error error = 2;</code>
+   * <code>.com.gw.common.grpc.GenesisError error = 2;</code>
    * @return Whether the error field is set.
    */
   boolean hasError();
   /**
-   * <code>.com.gw.common.grpc.Error error = 2;</code>
+   * <code>.com.gw.common.grpc.GenesisError error = 2;</code>
    * @return The error.
    */
-  com.gw.common.grpc.Error getError();
+  com.gw.common.grpc.GenesisError getError();
   /**
-   * <code>.com.gw.common.grpc.Error error = 2;</code>
+   * <code>.com.gw.common.grpc.GenesisError error = 2;</code>
    */
-  com.gw.common.grpc.ErrorOrBuilder getErrorOrBuilder();
+  com.gw.common.grpc.GenesisErrorOrBuilder getErrorOrBuilder();
 
   public com.gw.user.grpc.UserAuthResponseDTO.EitherCase getEitherCase();
 }

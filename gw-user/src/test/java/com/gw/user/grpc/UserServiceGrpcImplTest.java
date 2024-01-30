@@ -1,6 +1,5 @@
 package com.gw.user.grpc;
 
-import com.gw.common.grpc.Error;
 import com.gw.common.metrics.EndpointMetrics;
 import com.gw.grpc.common.CorrelationIdInterceptor;
 import com.gw.grpc.common.MetricsInterceptor;
@@ -136,8 +135,8 @@ class UserServiceGrpcImplTest {
         UserAuthResponseDTO userAuthResponseDTO = userServiceBlockingStub.authenticate(userAuthRequestDTO);
 
         assertThat(userAuthResponseDTO.getEitherCase()).isEqualTo(UserAuthResponseDTO.EitherCase.ERROR);
-        assertThat(userAuthResponseDTO.getError()).isEqualTo(com.gw.common.grpc.Error.newBuilder()
-                .setCode(Error.ErrorCode.AUTHENTICATION_ERROR)
+        assertThat(userAuthResponseDTO.getError()).isEqualTo(com.gw.common.grpc.GenesisError.newBuilder()
+                .setCode(com.gw.common.grpc.GenesisError.ErrorCode.AUTHENTICATION_ERROR)
                 .setDescription("Invalid Credentials")
                 .build());
     }
@@ -156,8 +155,8 @@ class UserServiceGrpcImplTest {
         UserAuthResponseDTO userAuthResponseDTO = userServiceBlockingStub.authenticate(userAuthRequestDTO);
 
         assertThat(userAuthResponseDTO.getEitherCase()).isEqualTo(UserAuthResponseDTO.EitherCase.ERROR);
-        assertThat(userAuthResponseDTO.getError()).isEqualTo(com.gw.common.grpc.Error.newBuilder()
-                .setCode(Error.ErrorCode.INTERNAL_SYSTEM_ERROR)
+        assertThat(userAuthResponseDTO.getError()).isEqualTo(com.gw.common.grpc.GenesisError.newBuilder()
+                .setCode(com.gw.common.grpc.GenesisError.ErrorCode.INTERNAL_SYSTEM_ERROR)
                 .setDescription("Internal error occurred. Please try again later.")
                 .build());
     }

@@ -34,14 +34,11 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   oneofs: true,
 });
 
-const userServiceObject =
-  grpcLibrary.loadPackageDefinition(packageDefinition).com.gw.user.grpc;
+const userServiceObject = grpcLibrary.loadPackageDefinition(packageDefinition).com.gw.user.grpc;
 const userServiceClient = new userServiceObject.UserService(
-  "localhost:19090",
+  "local.user-app:19090",
   grpcLibrary.credentials.createInsecure()
 );
-
-console.log();
 
 passport.serializeUser(function (user, cb) {
   process.nextTick(function () {
@@ -59,6 +56,8 @@ passport.deserializeUser(function (user, cb) {
   });
 });
 
+console.log(userServiceObject.ExternalSystem.GOOGLE);
+
 passport.use(
   new GoogleStrategy(
     {
@@ -70,7 +69,7 @@ passport.use(
       userServiceClient.createOrFindUser(
         {
           userName: profile.id,
-          extsource: userServiceObject.ExternalSystem.type.value[1].name,
+          extsource: userServiceObject.ExternalSystem.GOOGLE,
         },
         function (err, user) {
           console.log("Returned user: " + JSON.stringify(user));

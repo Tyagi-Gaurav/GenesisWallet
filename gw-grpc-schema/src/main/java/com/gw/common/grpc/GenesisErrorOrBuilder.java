@@ -3,20 +3,20 @@
 
 package com.gw.common.grpc;
 
-public interface ErrorOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:com.gw.common.grpc.Error)
+public interface GenesisErrorOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:com.gw.common.grpc.GenesisError)
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>.com.gw.common.grpc.Error.ErrorCode code = 1;</code>
+   * <code>.com.gw.common.grpc.GenesisError.ErrorCode code = 1;</code>
    * @return The enum numeric value on the wire for code.
    */
   int getCodeValue();
   /**
-   * <code>.com.gw.common.grpc.Error.ErrorCode code = 1;</code>
+   * <code>.com.gw.common.grpc.GenesisError.ErrorCode code = 1;</code>
    * @return The code.
    */
-  com.gw.common.grpc.Error.ErrorCode getCode();
+  com.gw.common.grpc.GenesisError.ErrorCode getCode();
 
   /**
    * <code>string description = 2;</code>

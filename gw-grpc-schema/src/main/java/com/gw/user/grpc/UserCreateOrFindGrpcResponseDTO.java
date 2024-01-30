@@ -117,7 +117,7 @@ private static final long serialVersionUID = 0L;
 
   public static final int ERROR_FIELD_NUMBER = 2;
   /**
-   * <code>.com.gw.common.grpc.Error error = 2;</code>
+   * <code>.com.gw.common.grpc.GenesisError error = 2;</code>
    * @return Whether the error field is set.
    */
   @java.lang.Override
@@ -125,25 +125,25 @@ private static final long serialVersionUID = 0L;
     return eitherCase_ == 2;
   }
   /**
-   * <code>.com.gw.common.grpc.Error error = 2;</code>
+   * <code>.com.gw.common.grpc.GenesisError error = 2;</code>
    * @return The error.
    */
   @java.lang.Override
-  public com.gw.common.grpc.Error getError() {
+  public com.gw.common.grpc.GenesisError getError() {
     if (eitherCase_ == 2) {
-       return (com.gw.common.grpc.Error) either_;
+       return (com.gw.common.grpc.GenesisError) either_;
     }
-    return com.gw.common.grpc.Error.getDefaultInstance();
+    return com.gw.common.grpc.GenesisError.getDefaultInstance();
   }
   /**
-   * <code>.com.gw.common.grpc.Error error = 2;</code>
+   * <code>.com.gw.common.grpc.GenesisError error = 2;</code>
    */
   @java.lang.Override
-  public com.gw.common.grpc.ErrorOrBuilder getErrorOrBuilder() {
+  public com.gw.common.grpc.GenesisErrorOrBuilder getErrorOrBuilder() {
     if (eitherCase_ == 2) {
-       return (com.gw.common.grpc.Error) either_;
+       return (com.gw.common.grpc.GenesisError) either_;
     }
-    return com.gw.common.grpc.Error.getDefaultInstance();
+    return com.gw.common.grpc.GenesisError.getDefaultInstance();
   }
 
   private byte memoizedIsInitialized = -1;
@@ -164,7 +164,7 @@ private static final long serialVersionUID = 0L;
       output.writeMessage(1, (com.gw.user.grpc.OauthUser) either_);
     }
     if (eitherCase_ == 2) {
-      output.writeMessage(2, (com.gw.common.grpc.Error) either_);
+      output.writeMessage(2, (com.gw.common.grpc.GenesisError) either_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -181,7 +181,7 @@ private static final long serialVersionUID = 0L;
     }
     if (eitherCase_ == 2) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(2, (com.gw.common.grpc.Error) either_);
+        .computeMessageSize(2, (com.gw.common.grpc.GenesisError) either_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -686,9 +686,9 @@ private static final long serialVersionUID = 0L;
     }
 
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.gw.common.grpc.Error, com.gw.common.grpc.Error.Builder, com.gw.common.grpc.ErrorOrBuilder> errorBuilder_;
+        com.gw.common.grpc.GenesisError, com.gw.common.grpc.GenesisError.Builder, com.gw.common.grpc.GenesisErrorOrBuilder> errorBuilder_;
     /**
-     * <code>.com.gw.common.grpc.Error error = 2;</code>
+     * <code>.com.gw.common.grpc.GenesisError error = 2;</code>
      * @return Whether the error field is set.
      */
     @java.lang.Override
@@ -696,27 +696,27 @@ private static final long serialVersionUID = 0L;
       return eitherCase_ == 2;
     }
     /**
-     * <code>.com.gw.common.grpc.Error error = 2;</code>
+     * <code>.com.gw.common.grpc.GenesisError error = 2;</code>
      * @return The error.
      */
     @java.lang.Override
-    public com.gw.common.grpc.Error getError() {
+    public com.gw.common.grpc.GenesisError getError() {
       if (errorBuilder_ == null) {
         if (eitherCase_ == 2) {
-          return (com.gw.common.grpc.Error) either_;
+          return (com.gw.common.grpc.GenesisError) either_;
         }
-        return com.gw.common.grpc.Error.getDefaultInstance();
+        return com.gw.common.grpc.GenesisError.getDefaultInstance();
       } else {
         if (eitherCase_ == 2) {
           return errorBuilder_.getMessage();
         }
-        return com.gw.common.grpc.Error.getDefaultInstance();
+        return com.gw.common.grpc.GenesisError.getDefaultInstance();
       }
     }
     /**
-     * <code>.com.gw.common.grpc.Error error = 2;</code>
+     * <code>.com.gw.common.grpc.GenesisError error = 2;</code>
      */
-    public Builder setError(com.gw.common.grpc.Error value) {
+    public Builder setError(com.gw.common.grpc.GenesisError value) {
       if (errorBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -730,10 +730,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.com.gw.common.grpc.Error error = 2;</code>
+     * <code>.com.gw.common.grpc.GenesisError error = 2;</code>
      */
     public Builder setError(
-        com.gw.common.grpc.Error.Builder builderForValue) {
+        com.gw.common.grpc.GenesisError.Builder builderForValue) {
       if (errorBuilder_ == null) {
         either_ = builderForValue.build();
         onChanged();
@@ -744,13 +744,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.com.gw.common.grpc.Error error = 2;</code>
+     * <code>.com.gw.common.grpc.GenesisError error = 2;</code>
      */
-    public Builder mergeError(com.gw.common.grpc.Error value) {
+    public Builder mergeError(com.gw.common.grpc.GenesisError value) {
       if (errorBuilder_ == null) {
         if (eitherCase_ == 2 &&
-            either_ != com.gw.common.grpc.Error.getDefaultInstance()) {
-          either_ = com.gw.common.grpc.Error.newBuilder((com.gw.common.grpc.Error) either_)
+            either_ != com.gw.common.grpc.GenesisError.getDefaultInstance()) {
+          either_ = com.gw.common.grpc.GenesisError.newBuilder((com.gw.common.grpc.GenesisError) either_)
               .mergeFrom(value).buildPartial();
         } else {
           either_ = value;
@@ -767,7 +767,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.com.gw.common.grpc.Error error = 2;</code>
+     * <code>.com.gw.common.grpc.GenesisError error = 2;</code>
      */
     public Builder clearError() {
       if (errorBuilder_ == null) {
@@ -786,38 +786,38 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.com.gw.common.grpc.Error error = 2;</code>
+     * <code>.com.gw.common.grpc.GenesisError error = 2;</code>
      */
-    public com.gw.common.grpc.Error.Builder getErrorBuilder() {
+    public com.gw.common.grpc.GenesisError.Builder getErrorBuilder() {
       return getErrorFieldBuilder().getBuilder();
     }
     /**
-     * <code>.com.gw.common.grpc.Error error = 2;</code>
+     * <code>.com.gw.common.grpc.GenesisError error = 2;</code>
      */
     @java.lang.Override
-    public com.gw.common.grpc.ErrorOrBuilder getErrorOrBuilder() {
+    public com.gw.common.grpc.GenesisErrorOrBuilder getErrorOrBuilder() {
       if ((eitherCase_ == 2) && (errorBuilder_ != null)) {
         return errorBuilder_.getMessageOrBuilder();
       } else {
         if (eitherCase_ == 2) {
-          return (com.gw.common.grpc.Error) either_;
+          return (com.gw.common.grpc.GenesisError) either_;
         }
-        return com.gw.common.grpc.Error.getDefaultInstance();
+        return com.gw.common.grpc.GenesisError.getDefaultInstance();
       }
     }
     /**
-     * <code>.com.gw.common.grpc.Error error = 2;</code>
+     * <code>.com.gw.common.grpc.GenesisError error = 2;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.gw.common.grpc.Error, com.gw.common.grpc.Error.Builder, com.gw.common.grpc.ErrorOrBuilder> 
+        com.gw.common.grpc.GenesisError, com.gw.common.grpc.GenesisError.Builder, com.gw.common.grpc.GenesisErrorOrBuilder> 
         getErrorFieldBuilder() {
       if (errorBuilder_ == null) {
         if (!(eitherCase_ == 2)) {
-          either_ = com.gw.common.grpc.Error.getDefaultInstance();
+          either_ = com.gw.common.grpc.GenesisError.getDefaultInstance();
         }
         errorBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            com.gw.common.grpc.Error, com.gw.common.grpc.Error.Builder, com.gw.common.grpc.ErrorOrBuilder>(
-                (com.gw.common.grpc.Error) either_,
+            com.gw.common.grpc.GenesisError, com.gw.common.grpc.GenesisError.Builder, com.gw.common.grpc.GenesisErrorOrBuilder>(
+                (com.gw.common.grpc.GenesisError) either_,
                 getParentForChildren(),
                 isClean());
         either_ = null;

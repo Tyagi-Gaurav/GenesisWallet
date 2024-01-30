@@ -15,10 +15,10 @@ public final class ErrorGrpc {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_gw_common_grpc_Error_descriptor;
+    internal_static_com_gw_common_grpc_GenesisError_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_com_gw_common_grpc_Error_fieldAccessorTable;
+      internal_static_com_gw_common_grpc_GenesisError_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -28,22 +28,22 @@ public final class ErrorGrpc {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\013error.proto\022\022com.gw.common.grpc\"\236\001\n\005Er" +
-      "ror\0221\n\004code\030\001 \001(\0162#.com.gw.common.grpc.E" +
-      "rror.ErrorCode\022\023\n\013description\030\002 \001(\t\"M\n\tE" +
-      "rrorCode\022\013\n\007UNKNOWN\020\000\022\030\n\024AUTHENTICATION_" +
-      "ERROR\020\001\022\031\n\025INTERNAL_SYSTEM_ERROR\020\002B\rB\tEr" +
-      "rorGrpcP\001b\006proto3"
+      "\n\013error.proto\022\022com.gw.common.grpc\"\254\001\n\014Ge" +
+      "nesisError\0228\n\004code\030\001 \001(\0162*.com.gw.common" +
+      ".grpc.GenesisError.ErrorCode\022\023\n\013descript" +
+      "ion\030\002 \001(\t\"M\n\tErrorCode\022\013\n\007UNKNOWN\020\000\022\030\n\024A" +
+      "UTHENTICATION_ERROR\020\001\022\031\n\025INTERNAL_SYSTEM" +
+      "_ERROR\020\002B\rB\tErrorGrpcP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         });
-    internal_static_com_gw_common_grpc_Error_descriptor =
+    internal_static_com_gw_common_grpc_GenesisError_descriptor =
       getDescriptor().getMessageTypes().get(0);
-    internal_static_com_gw_common_grpc_Error_fieldAccessorTable = new
+    internal_static_com_gw_common_grpc_GenesisError_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_com_gw_common_grpc_Error_descriptor,
+        internal_static_com_gw_common_grpc_GenesisError_descriptor,
         new java.lang.String[] { "Code", "Description", });
   }
 

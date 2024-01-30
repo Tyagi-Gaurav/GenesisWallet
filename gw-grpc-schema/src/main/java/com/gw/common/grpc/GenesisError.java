@@ -4,18 +4,18 @@
 package com.gw.common.grpc;
 
 /**
- * Protobuf type {@code com.gw.common.grpc.Error}
+ * Protobuf type {@code com.gw.common.grpc.GenesisError}
  */
-public final class Error extends
+public final class GenesisError extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:com.gw.common.grpc.Error)
-    ErrorOrBuilder {
+    // @@protoc_insertion_point(message_implements:com.gw.common.grpc.GenesisError)
+    GenesisErrorOrBuilder {
 private static final long serialVersionUID = 0L;
-  // Use Error.newBuilder() to construct.
-  private Error(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+  // Use GenesisError.newBuilder() to construct.
+  private GenesisError(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private Error() {
+  private GenesisError() {
     code_ = 0;
     description_ = "";
   }
@@ -24,7 +24,7 @@ private static final long serialVersionUID = 0L;
   @SuppressWarnings({"unused"})
   protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
-    return new Error();
+    return new GenesisError();
   }
 
   @java.lang.Override
@@ -34,19 +34,19 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.gw.common.grpc.ErrorGrpc.internal_static_com_gw_common_grpc_Error_descriptor;
+    return com.gw.common.grpc.ErrorGrpc.internal_static_com_gw_common_grpc_GenesisError_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.gw.common.grpc.ErrorGrpc.internal_static_com_gw_common_grpc_Error_fieldAccessorTable
+    return com.gw.common.grpc.ErrorGrpc.internal_static_com_gw_common_grpc_GenesisError_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            com.gw.common.grpc.Error.class, com.gw.common.grpc.Error.Builder.class);
+            com.gw.common.grpc.GenesisError.class, com.gw.common.grpc.GenesisError.Builder.class);
   }
 
   /**
-   * Protobuf enum {@code com.gw.common.grpc.Error.ErrorCode}
+   * Protobuf enum {@code com.gw.common.grpc.GenesisError.ErrorCode}
    */
   public enum ErrorCode
       implements com.google.protobuf.ProtocolMessageEnum {
@@ -136,7 +136,7 @@ private static final long serialVersionUID = 0L;
     }
     public static final com.google.protobuf.Descriptors.EnumDescriptor
         getDescriptor() {
-      return com.gw.common.grpc.Error.getDescriptor().getEnumTypes().get(0);
+      return com.gw.common.grpc.GenesisError.getDescriptor().getEnumTypes().get(0);
     }
 
     private static final ErrorCode[] VALUES = values();
@@ -159,26 +159,26 @@ private static final long serialVersionUID = 0L;
       this.value = value;
     }
 
-    // @@protoc_insertion_point(enum_scope:com.gw.common.grpc.Error.ErrorCode)
+    // @@protoc_insertion_point(enum_scope:com.gw.common.grpc.GenesisError.ErrorCode)
   }
 
   public static final int CODE_FIELD_NUMBER = 1;
   private int code_;
   /**
-   * <code>.com.gw.common.grpc.Error.ErrorCode code = 1;</code>
+   * <code>.com.gw.common.grpc.GenesisError.ErrorCode code = 1;</code>
    * @return The enum numeric value on the wire for code.
    */
   @java.lang.Override public int getCodeValue() {
     return code_;
   }
   /**
-   * <code>.com.gw.common.grpc.Error.ErrorCode code = 1;</code>
+   * <code>.com.gw.common.grpc.GenesisError.ErrorCode code = 1;</code>
    * @return The code.
    */
-  @java.lang.Override public com.gw.common.grpc.Error.ErrorCode getCode() {
+  @java.lang.Override public com.gw.common.grpc.GenesisError.ErrorCode getCode() {
     @SuppressWarnings("deprecation")
-    com.gw.common.grpc.Error.ErrorCode result = com.gw.common.grpc.Error.ErrorCode.valueOf(code_);
-    return result == null ? com.gw.common.grpc.Error.ErrorCode.UNRECOGNIZED : result;
+    com.gw.common.grpc.GenesisError.ErrorCode result = com.gw.common.grpc.GenesisError.ErrorCode.valueOf(code_);
+    return result == null ? com.gw.common.grpc.GenesisError.ErrorCode.UNRECOGNIZED : result;
   }
 
   public static final int DESCRIPTION_FIELD_NUMBER = 2;
@@ -233,7 +233,7 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (code_ != com.gw.common.grpc.Error.ErrorCode.UNKNOWN.getNumber()) {
+    if (code_ != com.gw.common.grpc.GenesisError.ErrorCode.UNKNOWN.getNumber()) {
       output.writeEnum(1, code_);
     }
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(description_)) {
@@ -248,7 +248,7 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (code_ != com.gw.common.grpc.Error.ErrorCode.UNKNOWN.getNumber()) {
+    if (code_ != com.gw.common.grpc.GenesisError.ErrorCode.UNKNOWN.getNumber()) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(1, code_);
     }
@@ -265,10 +265,10 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof com.gw.common.grpc.Error)) {
+    if (!(obj instanceof com.gw.common.grpc.GenesisError)) {
       return super.equals(obj);
     }
-    com.gw.common.grpc.Error other = (com.gw.common.grpc.Error) obj;
+    com.gw.common.grpc.GenesisError other = (com.gw.common.grpc.GenesisError) obj;
 
     if (code_ != other.code_) return false;
     if (!getDescription()
@@ -293,69 +293,69 @@ private static final long serialVersionUID = 0L;
     return hash;
   }
 
-  public static com.gw.common.grpc.Error parseFrom(
+  public static com.gw.common.grpc.GenesisError parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.gw.common.grpc.Error parseFrom(
+  public static com.gw.common.grpc.GenesisError parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.gw.common.grpc.Error parseFrom(
+  public static com.gw.common.grpc.GenesisError parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.gw.common.grpc.Error parseFrom(
+  public static com.gw.common.grpc.GenesisError parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.gw.common.grpc.Error parseFrom(byte[] data)
+  public static com.gw.common.grpc.GenesisError parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.gw.common.grpc.Error parseFrom(
+  public static com.gw.common.grpc.GenesisError parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.gw.common.grpc.Error parseFrom(java.io.InputStream input)
+  public static com.gw.common.grpc.GenesisError parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.gw.common.grpc.Error parseFrom(
+  public static com.gw.common.grpc.GenesisError parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.gw.common.grpc.Error parseDelimitedFrom(java.io.InputStream input)
+  public static com.gw.common.grpc.GenesisError parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static com.gw.common.grpc.Error parseDelimitedFrom(
+  public static com.gw.common.grpc.GenesisError parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.gw.common.grpc.Error parseFrom(
+  public static com.gw.common.grpc.GenesisError parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static com.gw.common.grpc.Error parseFrom(
+  public static com.gw.common.grpc.GenesisError parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -368,7 +368,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(com.gw.common.grpc.Error prototype) {
+  public static Builder newBuilder(com.gw.common.grpc.GenesisError prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -384,26 +384,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code com.gw.common.grpc.Error}
+   * Protobuf type {@code com.gw.common.grpc.GenesisError}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:com.gw.common.grpc.Error)
-      com.gw.common.grpc.ErrorOrBuilder {
+      // @@protoc_insertion_point(builder_implements:com.gw.common.grpc.GenesisError)
+      com.gw.common.grpc.GenesisErrorOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.gw.common.grpc.ErrorGrpc.internal_static_com_gw_common_grpc_Error_descriptor;
+      return com.gw.common.grpc.ErrorGrpc.internal_static_com_gw_common_grpc_GenesisError_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.gw.common.grpc.ErrorGrpc.internal_static_com_gw_common_grpc_Error_fieldAccessorTable
+      return com.gw.common.grpc.ErrorGrpc.internal_static_com_gw_common_grpc_GenesisError_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.gw.common.grpc.Error.class, com.gw.common.grpc.Error.Builder.class);
+              com.gw.common.grpc.GenesisError.class, com.gw.common.grpc.GenesisError.Builder.class);
     }
 
-    // Construct using com.gw.common.grpc.Error.newBuilder()
+    // Construct using com.gw.common.grpc.GenesisError.newBuilder()
     private Builder() {
 
     }
@@ -426,17 +426,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.gw.common.grpc.ErrorGrpc.internal_static_com_gw_common_grpc_Error_descriptor;
+      return com.gw.common.grpc.ErrorGrpc.internal_static_com_gw_common_grpc_GenesisError_descriptor;
     }
 
     @java.lang.Override
-    public com.gw.common.grpc.Error getDefaultInstanceForType() {
-      return com.gw.common.grpc.Error.getDefaultInstance();
+    public com.gw.common.grpc.GenesisError getDefaultInstanceForType() {
+      return com.gw.common.grpc.GenesisError.getDefaultInstance();
     }
 
     @java.lang.Override
-    public com.gw.common.grpc.Error build() {
-      com.gw.common.grpc.Error result = buildPartial();
+    public com.gw.common.grpc.GenesisError build() {
+      com.gw.common.grpc.GenesisError result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -444,8 +444,8 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public com.gw.common.grpc.Error buildPartial() {
-      com.gw.common.grpc.Error result = new com.gw.common.grpc.Error(this);
+    public com.gw.common.grpc.GenesisError buildPartial() {
+      com.gw.common.grpc.GenesisError result = new com.gw.common.grpc.GenesisError(this);
       result.code_ = code_;
       result.description_ = description_;
       onBuilt();
@@ -486,16 +486,16 @@ private static final long serialVersionUID = 0L;
     }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof com.gw.common.grpc.Error) {
-        return mergeFrom((com.gw.common.grpc.Error)other);
+      if (other instanceof com.gw.common.grpc.GenesisError) {
+        return mergeFrom((com.gw.common.grpc.GenesisError)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(com.gw.common.grpc.Error other) {
-      if (other == com.gw.common.grpc.Error.getDefaultInstance()) return this;
+    public Builder mergeFrom(com.gw.common.grpc.GenesisError other) {
+      if (other == com.gw.common.grpc.GenesisError.getDefaultInstance()) return this;
       if (other.code_ != 0) {
         setCodeValue(other.getCodeValue());
       }
@@ -557,14 +557,14 @@ private static final long serialVersionUID = 0L;
 
     private int code_ = 0;
     /**
-     * <code>.com.gw.common.grpc.Error.ErrorCode code = 1;</code>
+     * <code>.com.gw.common.grpc.GenesisError.ErrorCode code = 1;</code>
      * @return The enum numeric value on the wire for code.
      */
     @java.lang.Override public int getCodeValue() {
       return code_;
     }
     /**
-     * <code>.com.gw.common.grpc.Error.ErrorCode code = 1;</code>
+     * <code>.com.gw.common.grpc.GenesisError.ErrorCode code = 1;</code>
      * @param value The enum numeric value on the wire for code to set.
      * @return This builder for chaining.
      */
@@ -575,21 +575,21 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.com.gw.common.grpc.Error.ErrorCode code = 1;</code>
+     * <code>.com.gw.common.grpc.GenesisError.ErrorCode code = 1;</code>
      * @return The code.
      */
     @java.lang.Override
-    public com.gw.common.grpc.Error.ErrorCode getCode() {
+    public com.gw.common.grpc.GenesisError.ErrorCode getCode() {
       @SuppressWarnings("deprecation")
-      com.gw.common.grpc.Error.ErrorCode result = com.gw.common.grpc.Error.ErrorCode.valueOf(code_);
-      return result == null ? com.gw.common.grpc.Error.ErrorCode.UNRECOGNIZED : result;
+      com.gw.common.grpc.GenesisError.ErrorCode result = com.gw.common.grpc.GenesisError.ErrorCode.valueOf(code_);
+      return result == null ? com.gw.common.grpc.GenesisError.ErrorCode.UNRECOGNIZED : result;
     }
     /**
-     * <code>.com.gw.common.grpc.Error.ErrorCode code = 1;</code>
+     * <code>.com.gw.common.grpc.GenesisError.ErrorCode code = 1;</code>
      * @param value The code to set.
      * @return This builder for chaining.
      */
-    public Builder setCode(com.gw.common.grpc.Error.ErrorCode value) {
+    public Builder setCode(com.gw.common.grpc.GenesisError.ErrorCode value) {
       if (value == null) {
         throw new NullPointerException();
       }
@@ -599,7 +599,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.com.gw.common.grpc.Error.ErrorCode code = 1;</code>
+     * <code>.com.gw.common.grpc.GenesisError.ErrorCode code = 1;</code>
      * @return This builder for chaining.
      */
     public Builder clearCode() {
@@ -697,23 +697,23 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:com.gw.common.grpc.Error)
+    // @@protoc_insertion_point(builder_scope:com.gw.common.grpc.GenesisError)
   }
 
-  // @@protoc_insertion_point(class_scope:com.gw.common.grpc.Error)
-  private static final com.gw.common.grpc.Error DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:com.gw.common.grpc.GenesisError)
+  private static final com.gw.common.grpc.GenesisError DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new com.gw.common.grpc.Error();
+    DEFAULT_INSTANCE = new com.gw.common.grpc.GenesisError();
   }
 
-  public static com.gw.common.grpc.Error getDefaultInstance() {
+  public static com.gw.common.grpc.GenesisError getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<Error>
-      PARSER = new com.google.protobuf.AbstractParser<Error>() {
+  private static final com.google.protobuf.Parser<GenesisError>
+      PARSER = new com.google.protobuf.AbstractParser<GenesisError>() {
     @java.lang.Override
-    public Error parsePartialFrom(
+    public GenesisError parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -732,17 +732,17 @@ private static final long serialVersionUID = 0L;
     }
   };
 
-  public static com.google.protobuf.Parser<Error> parser() {
+  public static com.google.protobuf.Parser<GenesisError> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<Error> getParserForType() {
+  public com.google.protobuf.Parser<GenesisError> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.gw.common.grpc.Error getDefaultInstanceForType() {
+  public com.gw.common.grpc.GenesisError getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

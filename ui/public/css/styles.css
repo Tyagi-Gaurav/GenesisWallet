@@ -30,3 +30,5 @@ body {
   line-height: 50px; 
   text-align: center; 
   }
+
+ font-src 'self' data:;

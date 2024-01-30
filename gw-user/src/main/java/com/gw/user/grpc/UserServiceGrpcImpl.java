@@ -1,7 +1,6 @@
 package com.gw.user.grpc;
 
 import com.google.protobuf.Empty;
-import com.gw.common.grpc.Error;
 import com.gw.user.domain.ExternalUser;
 import com.gw.user.domain.User;
 import com.gw.user.service.UserService;
@@ -80,15 +79,15 @@ public class UserServiceGrpcImpl extends UserServiceGrpc.UserServiceImplBase {
                         .build())
                 .switchIfEmpty(Mono.defer(() -> Mono.just(
                         UserAuthResponseDTO.newBuilder()
-                                .setError(Error.newBuilder()
-                                        .setCode(Error.ErrorCode.AUTHENTICATION_ERROR)
+                                .setError(com.gw.common.grpc.GenesisError.newBuilder()
+                                        .setCode(com.gw.common.grpc.GenesisError.ErrorCode.AUTHENTICATION_ERROR)
                                         .setDescription("Invalid Credentials")
                                         .build())
                                 .build()
                 )))
                 .onErrorResume(throwable -> Mono.just(UserAuthResponseDTO.newBuilder()
-                        .setError(Error.newBuilder()
-                                .setCode(Error.ErrorCode.INTERNAL_SYSTEM_ERROR)
+                        .setError(com.gw.common.grpc.GenesisError.newBuilder()
+                                .setCode(com.gw.common.grpc.GenesisError.ErrorCode.INTERNAL_SYSTEM_ERROR)
                                 .setDescription("Internal error occurred. Please try again later.")
                                 .build())
                         .build()))
