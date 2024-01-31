@@ -55,7 +55,7 @@ jobs:
 
       - name: Run API test suite
         id: api_testing
-        run: ./mvnw test -DskipTests=false -pl integration-test
+        run: ./mvnw test -DskipTests=false -pl integration-test -Dtest=CucumberTest
         continue-on-error: true
 
       - name: If tests failed - show logs of user app
@@ -69,7 +69,7 @@ jobs:
 
       - name: Run UI test suite
         id: ui_testing
-        run: ( cd ui-integration-test && npm i && npm test )
+        run: ./mvnw test -DskipTests=false -pl ui-integration-test
         continue-on-error: true
 
       - name: If tests failed - show logs of UI
