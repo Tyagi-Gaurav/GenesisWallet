@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ui-functional-test</artifactId>
+    <artifactId>ui-integration-test</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

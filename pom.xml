@@ -18,7 +18,7 @@
         <module>user-client</module>
         <module>ui</module>
         <module>integration-test</module>
-        <module>ui-functional-test</module>
+        <module>ui-integration-test</module>
         <module>common</module>
         <module>common-annotations</module>
         <module>test-support</module>
