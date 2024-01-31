@@ -62,6 +62,16 @@ jobs:
         if: steps.api_testing.outcome != 'success'
         run: docker logs local.user-app
 
+      - name: If tests failed - show logs of api gateway
+        if: steps.api_testing.outcome != 'success'
+        run: docker logs local.api-gateway
+        continue-on-error: true
+
       - name: Run UI test suite
+        id: ui_testing
         run: ( cd ui-integration-test && npm i && npm test )
         continue-on-error: true
+
+      - name: If tests failed - show logs of UI
+        if: steps.api_testing.outcome != 'success' || steps.ui_testing.outcome != 'success'
+        run: docker logs local.ui && exit -1
