@@ -1,5 +1,4 @@
-@Disabled
-@Smoke
+@Disabled @Smoke
 Feature: Users should be able to Login & Logout
 
   Scenario: User should be able to create a new account and login

@@ -51,4 +51,52 @@
             </plugin>
         </plugins>
     </build>
+
+    <dependencies>
+        <!-- Playwright Dependencies -->
+        <dependency>
+            <groupId>com.microsoft.playwright</groupId>
+            <artifactId>playwright</artifactId>
+            <version>1.41.0</version>
+        </dependency>
+        <!-- Playwright Dependencies : END -->
+
+        <!-- Test Dependencies -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- Test Dependencies : END -->
+
+        <!-- Project Dependencies -->
+        <dependency>
+            <groupId>com.genesis</groupId>
+            <artifactId>test-support</artifactId>
+            <scope>test</scope>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- Project Dependencies : END -->
+
+    </dependencies>
 </project>
