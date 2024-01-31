@@ -1,6 +1,5 @@
 package com.gw.user.service;
 
-import com.gw.common.domain.UserIdentity;
 import com.gw.common.metrics.UserRegistrationCounter;
 import com.gw.security.util.PasswordEncryptor;
 import com.gw.user.domain.ExternalUser;
@@ -14,9 +13,6 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.security.SecureRandom;
-import java.util.UUID;
-
-import static com.gw.user.domain.User.UserBuilder.copyOf;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -44,7 +40,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public Mono<ExternalUser> addExternalUser(ExternalUser externalUser) {
-        return userRepository.findOrCreateExternalUser(externalUser)
+        return userRepository.findOrCreateUser(externalUser)
                 .doOnSuccess(v -> userRegistrationCounter.increment("WEB", externalUser.externalSystem()));
     }
 

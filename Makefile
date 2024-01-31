@@ -34,12 +34,12 @@ qr:
 	./mvnw clean package -DskipTests=true
 	docker-compose --env-file ./ui/.env  up -d --build
 
-ft:
-	./mvnw test -DskipTests=false -pl functional-test -Dtest=CucumberTest
+it:
+	./mvnw test -DskipTests=false -pl integration-test -Dtest=CucumberTest
 	( cd ui-functional-test && npm test )
 
 smoke:
-	./mvnw test -DskipTests=false -pl functional-test -Dtest=SmokeTest
+	./mvnw test -DskipTests=false -pl integration-test -Dtest=SmokeTest
 
 open_ui:
 	open http://localhost:3000
@@ -61,7 +61,7 @@ help:
 	@echo ' api-gateway			Build API gateway image'
 	@echo ' full				Build full local docker-compose stack'
 	@echo ' fq					Build full local docker-compose stack (No tests)'
-	@echo ' ft					Run functional tests'
+	@echo ' it					Run integration tests'
 	@echo ' down				Destroy local docker-compose stack'
 	@echo ' qr					Restart docker-compose stack after a small change to any app'
 	@echo ' open_ui				Open UI'

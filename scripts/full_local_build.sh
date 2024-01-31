@@ -65,4 +65,4 @@ WAIT_TIME=1
 echo "Waiting for ${WAIT_TIME} seconds for container to come up"
 sleep ${WAIT_TIME}
 
-make ft
+make it

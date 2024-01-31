@@ -54,7 +54,7 @@ jobs:
           time: "10s"
 
       - name: Run API test suite
-        run: ./mvnw test -DskipTests=false -pl functional-test
+        run: ./mvnw test -DskipTests=false -pl integration-test
 
       - name: Run UI test suite
         run: ( cd ui-functional-test && npm i && npm test )

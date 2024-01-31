@@ -27,7 +27,7 @@ public class UserMongoRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Mono<ExternalUser> findOrCreateExternalUser(ExternalUser externalUser) {
+    public Mono<ExternalUser> findOrCreateUser(ExternalUser externalUser) {
         return reactiveMongoTemplate.findOne(query(where(USER_NAME_FIELD).is(externalUser.userName())), ExternalUser.class)
                 .switchIfEmpty(Mono.defer(() -> reactiveMongoTemplate.save(externalUser)));
     }

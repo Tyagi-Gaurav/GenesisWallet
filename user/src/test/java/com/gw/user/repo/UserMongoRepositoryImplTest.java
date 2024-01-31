@@ -60,7 +60,7 @@ class UserMongoRepositoryImplTest extends DatabaseTest {
                 .build();
 
         //when
-        Mono<ExternalUser> userInDB = userRepository.findOrCreateExternalUser(userToSave);
+        Mono<ExternalUser> userInDB = userRepository.findOrCreateUser(userToSave);
 
         //then
         StepVerifier.create(userInDB)
@@ -78,7 +78,7 @@ class UserMongoRepositoryImplTest extends DatabaseTest {
         MongoDBTestUtils.addToDatabase(userToSave, reactiveMongoTemplate);
 
         //when
-        Mono<ExternalUser> userInDB = userRepository.findOrCreateExternalUser(userToSave);
+        Mono<ExternalUser> userInDB = userRepository.findOrCreateUser(userToSave);
 
         //then
         StepVerifier.create(userInDB)

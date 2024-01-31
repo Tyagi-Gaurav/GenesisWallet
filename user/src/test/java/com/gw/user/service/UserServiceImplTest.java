@@ -61,7 +61,7 @@ class UserServiceImplTest {
                 .withExternalSystem("google")
                 .build();
 
-        when(userRepository.findOrCreateExternalUser(externalUser)).thenReturn(Mono.just(externalUser));
+        when(userRepository.findOrCreateUser(externalUser)).thenReturn(Mono.just(externalUser));
 
         StepVerifier.create(userService.addExternalUser(externalUser))
                 .expectNext(externalUser)
@@ -75,7 +75,7 @@ class UserServiceImplTest {
                 .withExternalSystem("google")
                 .build();
 
-        when(userRepository.findOrCreateExternalUser(externalUser)).thenReturn(Mono.just(externalUser));
+        when(userRepository.findOrCreateUser(externalUser)).thenReturn(Mono.just(externalUser));
 
         StepVerifier.create(userService.addExternalUser(externalUser))
                 .expectNext(externalUser)
