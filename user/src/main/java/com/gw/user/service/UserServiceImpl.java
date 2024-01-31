@@ -37,44 +37,12 @@ public class UserServiceImpl implements UserService {
         this.userRegistrationCounter = userRegistrationCounter;
     }
 
-    public Mono<User> findUserBy(UUID userId) {
-        return userRepository.findUserById(userId);
-    }
-
     @Override
     public Mono<User> findUserBy(String userName) {
         return userRepository.findUserByUserName(userName)
                 .switchIfEmpty(Mono.defer(Mono::empty));
     }
 
-    @Override
-    public Mono<Void> addUser(User user) {
-        String salt = user.generateSalt(secureRandom.nextLong());
-        String encryptedPassword = passwordEncryptor.encrypt(user.password(), salt);
-        var userWithSaltAndPassword = copyOf(user)
-                .withPassword(encryptedPassword)
-                .withSalt(salt).build();
-
-        return userRepository.addUser(userWithSaltAndPassword)
-                .doOnSuccess(v -> userRegistrationCounter.increment("WEB", "HOMEPAGE"));
-    }
-
-    @Override
-    public Mono<UserIdentity> authenticateUser(String userName, String password) {
-        return userRepository.findUserByUserName(userName)
-                .filter(user -> {
-                    String encryptedPassword = passwordEncryptor.encrypt(password, user.salt());
-                    boolean equals = user.password().equals(encryptedPassword);
-                    if (!equals) {
-                        LOG.info("Invalid password provided by user");
-                    }
-                    return equals;
-                })
-                .map(UserIdentity.class::cast)
-                .switchIfEmpty(Mono.defer(Mono::empty));
-    }
-
-    @Override
     public Mono<ExternalUser> addExternalUser(ExternalUser externalUser) {
         return userRepository.findOrCreateExternalUser(externalUser)
                 .doOnSuccess(v -> userRegistrationCounter.increment("WEB", externalUser.externalSystem()));

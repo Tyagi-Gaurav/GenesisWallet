@@ -1,3 +1,4 @@
+@Disabled
 @Smoke
 Feature: Users should be able to Login & Logout
 

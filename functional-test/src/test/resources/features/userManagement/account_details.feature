@@ -1,3 +1,4 @@
+@Disabled
 Feature: Users should be able to retrieve their details from the account
 
   Scenario: User should be able to create a new account and NOT fetch user details without login

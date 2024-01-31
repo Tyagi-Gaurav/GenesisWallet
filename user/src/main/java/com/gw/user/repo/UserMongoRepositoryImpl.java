@@ -22,28 +22,8 @@ public class UserMongoRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Mono<User> findUserById(UUID id) {
-        return reactiveMongoTemplate.findOne(query(where("userId").is(id)), User.class);
-    }
-
-    @Override
-    public Mono<Void> addUser(User userToAdd) {
-        return reactiveMongoTemplate.save(userToAdd).then();
-    }
-
-    @Override
     public Mono<User> findUserByUserName(String username) {
         return reactiveMongoTemplate.findOne(query(where(USER_NAME_FIELD).is(username)), User.class);
-    }
-
-    @Override
-    public Mono<Void> addExternalUser(ExternalUser userToAdd) {
-        return reactiveMongoTemplate.save(userToAdd).then();
-    }
-
-    @Override
-    public Mono<ExternalUser> findExternalUserByUserName(String userName) {
-        return reactiveMongoTemplate.findOne(query(where(USER_NAME_FIELD).is(userName)), ExternalUser.class);
     }
 
     @Override

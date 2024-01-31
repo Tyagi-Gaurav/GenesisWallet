@@ -37,21 +37,6 @@ public class UserServiceGrpcImpl extends UserServiceGrpc.UserServiceImplBase {
     }
 
     @Override
-    public void createUser(UserCreateGrpcRequestDTO request, StreamObserver<UserCreateGrpcResponseDTO> responseObserver) {
-        LOG.info("Inside GRPC create user");
-        userService.addUser(createUserFrom(request))
-                .map(v -> Empty.getDefaultInstance())
-                .switchIfEmpty(Mono.defer(() -> Mono.just(Empty.getDefaultInstance())))
-                .doOnError(responseObserver::onError)
-                .subscribe(v -> {
-                    responseObserver.onNext(UserCreateGrpcResponseDTO.newBuilder()
-                            .setCreated(true)
-                            .build());
-                    responseObserver.onCompleted();
-                });
-    }
-
-    @Override
     public void createOrFindUser(UserCreateOrFindGrpcRequestDTO request, StreamObserver<UserCreateOrFindGrpcResponseDTO> responseObserver) {
         LOG.info("Inside GRPC create external user");
         userService.addExternalUser(createExternalUserFrom(request))
@@ -65,46 +50,6 @@ public class UserServiceGrpcImpl extends UserServiceGrpc.UserServiceImplBase {
                     responseObserver.onNext(resp);
                     responseObserver.onCompleted();
                 });
-    }
-
-    @Override
-    public void authenticate(UserAuthRequestDTO request, StreamObserver<UserAuthResponseDTO> responseObserver) {
-        LOG.info("Inside GRPC authenticate");
-        userService.authenticateUser(request.getUserName(), request.getPassword())
-                .map(ui -> UserAuthResponseDTO.newBuilder()
-                        .setAuthDetails(UserAuthDetailsDTO.newBuilder()
-                                .setFirstName(ui.firstName())
-                                .setLastName(ui.lastName())
-                                .build())
-                        .build())
-                .switchIfEmpty(Mono.defer(() -> Mono.just(
-                        UserAuthResponseDTO.newBuilder()
-                                .setError(com.gw.common.grpc.GenesisError.newBuilder()
-                                        .setCode(com.gw.common.grpc.GenesisError.ErrorCode.AUTHENTICATION_ERROR)
-                                        .setDescription("Invalid Credentials")
-                                        .build())
-                                .build()
-                )))
-                .onErrorResume(throwable -> Mono.just(UserAuthResponseDTO.newBuilder()
-                        .setError(com.gw.common.grpc.GenesisError.newBuilder()
-                                .setCode(com.gw.common.grpc.GenesisError.ErrorCode.INTERNAL_SYSTEM_ERROR)
-                                .setDescription("Internal error occurred. Please try again later.")
-                                .build())
-                        .build()))
-                .subscribe(v -> {
-                    responseObserver.onNext(v);
-                    responseObserver.onCompleted();
-                });
-    }
-
-    private User createUserFrom(UserCreateGrpcRequestDTO request) {
-        return new User(UUID.randomUUID(),
-                request.getFirstName(),
-                request.getLastName(),
-                request.getUserName(),
-                request.getPassword(),
-                null,
-                "REGISTERED_USER");
     }
 
     private ExternalUser createExternalUserFrom(UserCreateOrFindGrpcRequestDTO request) {

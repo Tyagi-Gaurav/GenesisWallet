@@ -9,12 +9,7 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 public interface UserService extends ReactiveUserDetailsService {
-    Mono<User> findUserBy(UUID userId);
     Mono<User> findUserBy(String userName);
-
-    Mono<Void> addUser(User user);
-
-    Mono<UserIdentity> authenticateUser(String userName, String password);
 
     Mono<ExternalUser> addExternalUser(ExternalUser externalUser);
 }

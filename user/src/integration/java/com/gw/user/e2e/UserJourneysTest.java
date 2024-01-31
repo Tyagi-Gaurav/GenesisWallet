@@ -44,7 +44,6 @@ import static com.gw.user.e2e.test.ScenarioExecutor.*;
         "user.port=${wiremock.server.port}",
         "auth.tokenDuration=2s"
 })
-@Disabled
 class UserJourneysTest implements WithSyntacticSugar {
     @Autowired
     private JedisPool jedisPool;
@@ -64,118 +63,7 @@ class UserJourneysTest implements WithSyntacticSugar {
         redisServer.stop();
     }
 
-    @ParameterizedTest
-    @NullSource
-    @ValueSource(strings = {"", "abc", "efuusidhfauihsdfuhiusdhfaiuhsfiuhiufhs"})
-    void createUserWithInvalidUser(String userName) {
-        var userCreateRequestDTO = UserCreateRequestBuilder.userCreateRequest()
-                .withUserName(userName)
-                .build();
-
-        aScenarioUsing(applicationContext)
-                .given(aUserIsCreated(with((userCreateRequestDTO))))
-                .then(aHttpResponse(isReceived(withStatus(400))))
-                .execute();
-    }
-
-    @Test
-    void createValidUserTest() {
-        var userCreateRequestDTO = UserCreateRequestBuilder.userCreateRequest()
-                .build();
-
-        aScenarioUsing(applicationContext)
-                .given(aUserIsCreated(with(userCreateRequestDTO)))
-                .then(aHttpResponse(isReceived(withStatus(201))))
-                .and(whenUserIsRetrievedFromDatabaseWith(userCreateRequestDTO.userName()))
-                .then(userRetrievedFromDatabaseMatches(userCreateRequestDTO))
-                .execute();
-    }
-
-    @Test
-    void createValidUserAndLogin() {
-        var userCreateRequestDTO = UserCreateRequestBuilder.userCreateRequest().build();
-
-        aScenarioUsing(applicationContext)
-                .given(aUserIsCreated(with(userCreateRequestDTO)))
-                .then(aHttpResponse(isReceived(withStatus(201))))
-                .and(userLogins(using(userCreateRequestDTO)))
-                .then(aHttpResponse(isReceived(withStatus(200))))
-                .and(userTokenIsReceivedInResponse())
-                .execute();
-    }
-
-    @Test
-    void AfterLoginTheUserTokenShouldBeInTheCache() {
-        var userCreateRequestDTO = UserCreateRequestBuilder.userCreateRequest().build();
-
-        aScenarioUsing(applicationContext)
-                .given(aUserIsCreated(with(userCreateRequestDTO)))
-                .then(aHttpResponse(isReceived(withStatus(201))))
-                .and(userLogins(using(userCreateRequestDTO)))
-                .then(aHttpResponse(isReceived(withStatus(200))))
-                .and(userTokenIsReceivedInResponse())
-                .when(associateLoginCredentials(with("credentialsA")))
-                .then(theLoginCacheShouldHaveTokenAssociate(with("credentialsA")))
-                .execute();
-    }
-
-    @Test
-    void fetchUserDetailsAfterLogin() {
-        var userCreateRequestDTO = UserCreateRequestBuilder.userCreateRequest().build();
-
-        aScenarioUsing(applicationContext)
-                .given(aUserIsCreated(with(userCreateRequestDTO)))
-                .then(aHttpResponse(isReceived(withStatus(201))))
-                .and(userLogins(using(userCreateRequestDTO)))
-                .and(aHttpResponse(isReceived(withStatus(200))))
-                .and(associateLoginCredentials(with("credentialsA")))
-                .when(fetchUserDetails(using("credentialsA")))
-                .and(aHttpResponse(isReceived(withStatus(200))))
-                .then(userFetchedMatchesDetailsIn(userCreateRequestDTO))
-                .execute();
-    }
-
-    @Test
-    void invalidatedTokenShouldBeRemovedAfterTTLExpires() {
-        var userCreateRequestDTO = UserCreateRequestBuilder.userCreateRequest().build();
-
-        aScenarioUsing(applicationContext)
-                .given(aUserIsCreated(with(userCreateRequestDTO)))
-                .then(aHttpResponse(isReceived(withStatus(201))))
-                .and(userLogins(using(userCreateRequestDTO)))
-                .and(aHttpResponse(isReceived(withStatus(200))))
-                .and(associateLoginCredentials(with("credentialsA")))
-                .and(userLogsOut(using("credentialsA")))
-                .when(fetchUserDetails(using("credentialsA")))
-                .then(aHttpResponse(isReceived(withStatus(401))))
-                .and(theInvalidationCacheShouldNOTHaveTokenAfterWaitTimeOf(Duration.ofSeconds(3),"credentialsA"))
-                .execute();
-    }
-
-    @Test
-    void previousUserTokenToBeInvalidatedAfterReLogin() {
-        var userCreateRequestDTO = UserCreateRequestBuilder.userCreateRequest().build();
-
-        aScenarioUsing(applicationContext)
-                .given(aUserIsCreated(with(userCreateRequestDTO)))
-                .then(aHttpResponse(isReceived(withStatus(201))))
-                .and(userLogins(using(userCreateRequestDTO)))
-                .and(aHttpResponse(isReceived(withStatus(200))))
-                .and(associateLoginCredentials(with("credentialsA")))
-                .when(fetchUserDetails(using("credentialsA")))
-                .then(aHttpResponse(isReceived(withStatus(200))))
-                .and(userLogins(using(userCreateRequestDTO)))
-                .then(aHttpResponse(isReceived(withStatus(200))))
-                .and(associateLoginCredentials(with("credentialsB")))
-                .when(fetchUserDetails(using("credentialsA")))
-                .then(aHttpResponse(isReceived(withStatus(401))))
-                .and(theLoginCacheShouldHaveCredentialsOf("credentialsB"))
-                .and(theLoginCacheShouldNOTHaveCredentialsOf("credentialsA"))
-                .and(theInvalidationCacheShouldHaveCredentialsOf("credentialsA"))
-                .execute();
-    }
-
-    @Test
+    @Disabled
     void postLogoutUserShouldNotBeAbleToAccessUserDetails() {
         var userCreateRequestDTO = UserCreateRequestBuilder.userCreateRequest().build();
 

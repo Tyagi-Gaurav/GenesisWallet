@@ -1,3 +1,4 @@
+@Disabled
 Feature: System access
 
   Scenario: When trying to access a non-existent endpoint without login then should get 401

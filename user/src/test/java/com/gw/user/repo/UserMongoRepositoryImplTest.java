@@ -16,7 +16,8 @@ import org.springframework.test.context.ContextConfiguration;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import static com.gw.user.repo.MongoDBTestUtils.*;
+import static com.gw.user.repo.MongoDBTestUtils.addToDatabase;
+import static com.gw.user.repo.MongoDBTestUtils.clearDatabase;
 import static com.gw.user.testutils.TestUserBuilder.aUser;
 
 @ActiveProfiles("UserMongoRepositoryTest")
@@ -36,54 +37,6 @@ class UserMongoRepositoryImplTest extends DatabaseTest {
     }
 
     @Test
-    void shouldFindUserById() {
-        //given
-        User userInDatabase = aUser().build();
-        addToDatabase(userInDatabase, reactiveMongoTemplate);
-        //when
-        Mono<User> actualUser = userRepository.findUserById(userInDatabase.userId());
-
-        //then
-        StepVerifier.create(actualUser)
-                .expectNext(userInDatabase)
-                .verifyComplete();
-    }
-
-    @Test
-    void shouldAddUser() {
-        //given
-        User userInDatabase = aUser().build();
-
-        //when
-        StepVerifier.create(userRepository.addUser(userInDatabase))
-                .verifyComplete();
-
-        //then
-        Mono<User> userFromDB = getUser(userInDatabase.userId(), reactiveMongoTemplate);
-        StepVerifier.create(userFromDB)
-                .expectNext(userInDatabase)
-                .verifyComplete();
-    }
-
-    @Test
-    void shouldAddExternalUser() {
-        //given
-        ExternalUser userToAdd = ExternalUserBuilder.newBuilder()
-                .withUserName("some-user-name")
-                .build();
-
-        //when
-        StepVerifier.create(userRepository.addExternalUser(userToAdd))
-                .verifyComplete();
-
-        //then
-        Mono<ExternalUser> userFromDB = getExternalUser2("some-user-name", reactiveMongoTemplate);
-        StepVerifier.create(userFromDB)
-                .expectNext(userToAdd)
-                .verifyComplete();
-    }
-
-    @Test
     void shouldFindUserByName() {
         //given
         User userInDatabase = aUser().build();
@@ -91,21 +44,6 @@ class UserMongoRepositoryImplTest extends DatabaseTest {
 
         //when
         Mono<User> actualUser = userRepository.findUserByUserName(userInDatabase.userName());
-
-        //then
-        StepVerifier.create(actualUser)
-                .expectNext(userInDatabase)
-                .verifyComplete();
-    }
-
-    @Test
-    void shouldFindExternalUser() {
-        //given
-        ExternalUser userInDatabase = ExternalUserBuilder.newBuilder().build();
-        addToDatabase(userInDatabase, reactiveMongoTemplate);
-
-        //when
-        Mono<ExternalUser> actualUser = userRepository.findExternalUserByUserName(userInDatabase.userName());
 
         //then
         StepVerifier.create(actualUser)
