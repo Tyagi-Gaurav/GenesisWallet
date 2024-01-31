@@ -1,4 +1,4 @@
-name: Functional Test
+name: Integration Test
 
 on:
   workflow_call:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    name: functionalTest
+    name: integrationTest
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

@@ -8,8 +8,8 @@ on:
     types: [ opened, synchronize, reopened ]
 
 jobs:
-  FunctionalTest:
-    uses: ./.github/workflows/functionalTest.yml
+  IntegrationTest:
+    uses: ./.github/workflows/integrationTest.yml
     secrets:
       OAUTH_CLIENT_ID_GOOGLE: ${{ secrets.OAUTH_CLIENT_ID_GOOGLE }}
       OAUTH_CLIENT_SECRET_GOOGLE: ${{ secrets.OAUTH_CLIENT_SECRET_GOOGLE }}
@@ -21,7 +21,7 @@ jobs:
 
   tag_release:
     if: github.ref == 'refs/heads/master' && contains(github.event.head_commit.message, '#release')
-    needs: [ FunctionalTest, Sonar ]
+    needs: [ IntegrationTest, Sonar ]
     permissions:
       id-token: write # need this for OIDC
       contents: read
