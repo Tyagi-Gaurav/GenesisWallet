@@ -45,8 +45,8 @@ jobs:
         run: docker ps
 
         #   Enable below only for DEBUG
-      - name: Show single container logs
-        run: docker logs local.ui
+#      - name: Show single container logs
+#        run: docker logs local.ui
 
       - name: Sleep
         uses: jakejarvis/wait-action@master
@@ -55,6 +55,9 @@ jobs:
 
       - name: Run API test suite
         run: ./mvnw test -DskipTests=false -pl integration-test
+
+      - name: Show logs of user app
+        run: docker logs local.user-app
 
       - name: Run UI test suite
         run: ( cd ui-integration-test && npm i && npm test )
