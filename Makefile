@@ -12,6 +12,9 @@ mcp:
 mci:
 	./mvnw clean install
 
+mcist:
+	./mvnw clean install -DskipTests=true
+
 mcpst:
 	./mvnw clean package -DskipTests=true
 
@@ -35,8 +38,8 @@ qr:
 	docker-compose --env-file ./ui/.env  up -d --build
 
 it:
-	./mvnw test -DskipTests=false -pl integration-test -Dtest=CucumberTest
-	( cd ui-integration-test && npm test )
+	./mvnw test -DskipTests=false -pl integration-test -Dtest=CucumberTest && \
+	./mvnw test -DskipTests=false -pl ui-integration-test
 
 smoke:
 	./mvnw test -DskipTests=false -pl integration-test -Dtest=SmokeTest
@@ -56,6 +59,7 @@ help:
 	@echo ''
 	@echo ' mcp					mcn clean package'
 	@echo ' mci					mvn clean install'
+	@echo ' mcist				mci and skip test'
 	@echo ' mcpst				mcp and skip test'
 	@echo ' user				Build user image'
 	@echo ' api-gateway			Build API gateway image'

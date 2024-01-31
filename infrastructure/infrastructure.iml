@@ -5,4 +5,7 @@
       <configuration sdkName="Python 3.9 (sysadmin)" />
     </facet>
   </component>
+  <component name="SonarLintModuleSettings">
+    <option name="uniqueId" value="c10a40b3-9db4-4cbc-acd4-986d8e8e8b0a" />
+  </component>
 </module>

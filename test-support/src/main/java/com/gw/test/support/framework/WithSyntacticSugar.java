@@ -10,4 +10,10 @@ public interface WithSyntacticSugar {
     default <T> T using(T t) {
         return t;
     }
+    default <T> T when (T t) {
+        return t;
+    }
+    default <T> T user (T t) {
+        return t;
+    }
 }

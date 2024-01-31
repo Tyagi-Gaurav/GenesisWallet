@@ -1,17 +1,17 @@
 package com.gw.ui;
 
+import com.gw.test.support.framework.Action;
+import com.gw.test.support.framework.GenericTestState;
+import com.gw.test.support.framework.WithSyntacticSugar;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.options.AriaRole;
-import org.hamcrest.Matcher;
 import org.junit.jupiter.api.BeforeAll;
 
 import java.util.function.Supplier;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-
-public abstract class SharedEndToEndTest {
+public abstract class SharedEndToEndTest extends GenericTestState implements WithSyntacticSugar {
     protected static Page page;
 
     @BeforeAll
@@ -46,21 +46,5 @@ public abstract class SharedEndToEndTest {
     Action<Void> clicks(Supplier<Locator> locatorSupplier) {
         locatorSupplier.get().click();
         return new Action(Void.TYPE);
-    }
-
-    protected static class Action<T> {
-        private final T t;
-
-        public Action(T t) {
-            this.t = t;
-        }
-
-        public void then(Supplier<String> input, Matcher<String> matcher) {
-            assertThat(input.get(), matcher);
-        }
-
-        public T andNavigatedTo(String s) {
-            return null;
-        }
     }
 }
