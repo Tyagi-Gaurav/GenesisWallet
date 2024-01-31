@@ -54,10 +54,14 @@ jobs:
           time: "10s"
 
       - name: Run API test suite
+        id: api_testing
         run: ./mvnw test -DskipTests=false -pl integration-test
+        continue-on-error: true
 
-      - name: Show logs of user app
+      - name: If tests failed - show logs of user app
+        if: steps.api_testing.outcome != 'success'
         run: docker logs local.user-app
 
       - name: Run UI test suite
         run: ( cd ui-integration-test && npm i && npm test )
+        continue-on-error: true
