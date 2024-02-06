@@ -27,9 +27,17 @@ public abstract class SharedEndToEndTest extends GenericTestState implements Wit
         return new Action(page);
     }
 
-    protected Supplier<Locator> loginButton() {
-        return () -> page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("login"));
+    protected Supplier<Locator> loginButtonForGoogle() {
+        return () -> page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Sign In with Google"));
     }
+
+    protected Supplier<Locator> googleUserName() {
+        return () -> page.getByTestId("identifierId");
+    }
+
+//    protected Supplier<Locator> googlePassword() {
+//        return () -> page.getByRole(AriaRole.TEXTBOX, Page.GetByRoleOptions);
+//    }
 
     protected Supplier<Locator> headingWithTitle(String title) {
         return () -> page.getByRole(AriaRole.HEADING, new Page.GetByRoleOptions().setName(title));
@@ -45,6 +53,11 @@ public abstract class SharedEndToEndTest extends GenericTestState implements Wit
 
     Action<Void> clicks(Supplier<Locator> locatorSupplier) {
         locatorSupplier.get().click();
+        return new Action(Void.TYPE);
+    }
+
+    Action<Void> fills(Supplier<Locator> locatorSupplier, String text) {
+        locatorSupplier.get().fill(text);
         return new Action(Void.TYPE);
     }
 }

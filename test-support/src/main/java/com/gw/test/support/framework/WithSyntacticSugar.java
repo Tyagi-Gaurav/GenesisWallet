@@ -13,6 +13,13 @@ public interface WithSyntacticSugar {
     default <T> T when (T t) {
         return t;
     }
+    default <T> T and (T t) {
+        return t;
+    }
+
+    default <T> T as (T t) {
+        return t;
+    }
     default <T> T user (T t) {
         return t;
     }

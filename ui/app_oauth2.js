@@ -111,10 +111,6 @@ app.get("/logout", (req, resp) => {
   });
 });
 
-app.get("/register", (req, resp) => {
-  resp.render("register");
-});
-
 app.get("/secrets", (req, resp) => {
   if (req.isAuthenticated()) {
     resp.render("welcome.ejs", {
@@ -123,23 +119,6 @@ app.get("/secrets", (req, resp) => {
   } else {
     resp.redirect("/login");
   }
-});
-
-app.post("/register", (req, resp) => {
-  User.register(
-    { username: req.body.username },
-    req.body.password,
-    function (err, user) {
-      if (err) {
-        console.log(err);
-        resp.redirect("/register");
-      } else {
-        passport.authenticate("local")(req, resp, function () {
-          resp.redirect("/secrets");
-        });
-      }
-    }
-  );
 });
 
 app.get("/status", (req, res) => {
