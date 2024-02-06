@@ -12,7 +12,7 @@
 * Create S3 bucket in the EU region (To be automated)
     * Enable Encryption
     * Enable bucket versioning
-* From gw-infrastructure, execute
+* From infrastructure, execute
     * `terraform init`
     * `terraform plan`
     * `terraform apply`

@@ -5,7 +5,7 @@ option java_multiple_files = true;
 
 option java_outer_classname = "ErrorGrpc";
 
-message Error {
+message GenesisError {
   enum ErrorCode {
     UNKNOWN = 0;
     AUTHENTICATION_ERROR = 1;

@@ -33,7 +33,7 @@ message OauthUser {
 message UserCreateOrFindGrpcResponseDTO {
   oneof either {
     OauthUser user = 1;
-    com.gw.common.grpc.Error error = 2;
+    com.gw.common.grpc.GenesisError error = 2;
   }
 }
 
@@ -54,7 +54,7 @@ message UserAuthDetailsDTO {
 message UserAuthResponseDTO {
   oneof either {
     UserAuthDetailsDTO authDetails = 1;
-    com.gw.common.grpc.Error error = 2;
+    com.gw.common.grpc.GenesisError error = 2;
   }
 }
 

@@ -9,20 +9,19 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>gw-api-gateway</module>
-        <module>gw-security</module>
-        <module>gw-grpc-common</module>
-        <module>gw-infrastructure</module>
-        <module>gw-grpc-schema</module>
-        <module>gw-user</module>
-        <module>gw-test-common</module>
-        <module>gw-user-client</module>
+        <module>api-gateway</module>
+        <module>security</module>
+        <module>grpc-common</module>
+        <module>infrastructure</module>
+        <module>grpc-schema</module>
+        <module>user</module>
+        <module>user-client</module>
         <module>ui</module>
-        <module>functional-test</module>
-        <module>ui-functional-test</module>
+        <module>integration-test</module>
+        <module>ui-integration-test</module>
         <module>common</module>
         <module>common-annotations</module>
-        <module>integration-test-support</module>
+        <module>test-support</module>
         <module>ping-app</module>
     </modules>
 

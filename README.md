@@ -9,7 +9,7 @@
 # GenesisWallet
 
 ## Spin up stack locally
-`docker-compose up -d --build --remove-orphans`
+`make full`
 
 ## Connecting to database locally on docker
 ```
@@ -21,6 +21,10 @@ To List tables: `\dt USER_SCHEMA.*`
 ## How to create keypair using ssh-keygen?
 ```
 ssh-keygen -t ed25519 -q -N "" -f ./ssh_key
+```
+## Help on commands
+```
+make help
 ```
 
 ## Local Redis commands
@@ -102,8 +106,8 @@ https://swimlanes.io/u/mcghmm30h
 # Sample curl commands
 * User Service healthcheck: `curl -i -vvv localhost/api/user/private/health`
 * User Service Status check: `curl -i -vvv localhost/api/user/private/health/status`
-* UI Service Status check: `curl -i -vvv localhost/gw-ui/private/health/status`
-* UI Service Health check: `curl -i -vvv localhost/gw-ui/private/health`
+* UI Service Status check: `curl -i -vvv localhost/ui/private/health/status`
+* UI Service Health check: `curl -i -vvv localhost/ui/private/health`
 * API Gateway Status check: `curl -i -q localhost/index.html`
 
 # Notes

@@ -1,11 +1,11 @@
 version: '3.7'
 services:
-  gw-user-app:
+  user-app:
     container_name: local.user-app
     build:
-      context: gw-user
+      context: user
     depends_on:
-      - gw-security
+      - security
       - mongo
     ports:
       - "19090:19090"
@@ -23,14 +23,14 @@ services:
     networks:
       - overlay
 
-  gw-api-gateway:
+  api-gateway:
     container_name: local.api-gateway
     depends_on:
-      - gw-user-app
-      - gw-security
+      - user-app
+      - security
       - ui
     build:
-      context: gw-api-gateway
+      context: api-gateway
     environment:
       - USER_HOST=local.user-app
       - UI_HOST=local.ui
@@ -86,10 +86,10 @@ services:
     networks:
       - overlay
 
-  gw-security:
+  security:
     container_name: local.vault
     build:
-      context: gw-security
+      context: security
     environment:
       - "VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8200"
     ports:

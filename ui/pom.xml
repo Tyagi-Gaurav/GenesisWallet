@@ -61,18 +61,18 @@
         </dependency>
         <dependency>
             <groupId>com.genesis</groupId>
-            <artifactId>gw-user-client</artifactId>
+            <artifactId>user-client</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
         </dependency>
         <dependency>
             <groupId>com.genesis</groupId>
-            <artifactId>gw-grpc-schema</artifactId>
+            <artifactId>grpc-schema</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.genesis</groupId>
-            <artifactId>gw-grpc-common</artifactId>
+            <artifactId>grpc-common</artifactId>
             <version>${project.version}</version>
         </dependency>
         <!-- Module Dependencies : END -->

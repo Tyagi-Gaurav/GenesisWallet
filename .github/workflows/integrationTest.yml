@@ -1,0 +1,77 @@
+name: Integration Test
+
+on:
+  workflow_call:
+    secrets:
+      OAUTH_CLIENT_ID_GOOGLE:
+        required: true
+      OAUTH_CLIENT_SECRET_GOOGLE:
+        required: true
+
+jobs:
+  build:
+    name: integrationTest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+      - uses: actions/setup-java@v3
+        with:
+          distribution: "zulu"
+          java-version: "17"
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.17.1
+
+      - name: Grant execute permission for mvnw
+        run: chmod +x mvnw
+
+      - name: Build
+        run: ./mvnw clean package install
+
+      - name: Build the docker-compose stack
+        env:
+          OAUTH_CLIENT_ID_GOOGLE: ${{ secrets.OAUTH_CLIENT_ID_GOOGLE }} 
+          OAUTH_CLIENT_SECRET_GOOGLE: ${{ secrets.OAUTH_CLIENT_SECRET_GOOGLE }}
+        run: docker-compose up -d
+
+      - name: Sleep
+        uses: jakejarvis/wait-action@master
+        with:
+          time: "25s"
+
+      - name: Check running containers
+        run: docker ps
+
+        #   Enable below only for DEBUG
+#      - name: Show single container logs
+#        run: docker logs local.ui
+
+      - name: Sleep
+        uses: jakejarvis/wait-action@master
+        with:
+          time: "10s"
+
+      - name: Run API test suite
+        id: api_testing
+        run: ./mvnw test -DskipTests=false -pl integration-test -Dtest=CucumberTest
+        continue-on-error: true
+
+      - name: If tests failed - show logs of user app
+        if: steps.api_testing.outcome != 'success'
+        run: docker logs local.user-app
+
+      - name: If tests failed - show logs of api gateway
+        if: steps.api_testing.outcome != 'success'
+        run: docker logs local.api-gateway
+        continue-on-error: true
+
+      - name: Run UI test suite
+        id: ui_testing
+        run: ./mvnw test -DskipTests=false -pl ui-integration-test
+        continue-on-error: true
+
+      - name: If tests failed - show logs of UI
+        if: steps.api_testing.outcome != 'success' || steps.ui_testing.outcome != 'success'
+        run: docker logs local.ui && exit -1

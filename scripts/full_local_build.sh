@@ -60,12 +60,9 @@ set -e #Fail on error
 docker-compose down $REMOVE_IMAGES
 eval "$FULL_BUILD_COMMAND"
 
-export DISPLAY_ARGS_TO_STDOUT=true
-ansible-playbook ./playbook.yml
-
 docker-compose --env-file ~/.secret/env.file --env-file ./ui/.env up -d --build $REMOVE_ORPHANS
 WAIT_TIME=1
 echo "Waiting for ${WAIT_TIME} seconds for container to come up"
 sleep ${WAIT_TIME}
 
-make ft
+make it

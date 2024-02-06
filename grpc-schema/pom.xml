@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.genesis</groupId>
+        <version>DEV-SNAPSHOT</version>
+        <artifactId>genesis</artifactId>
+    </parent>
+
+    <artifactId>grpc-schema</artifactId>
+    <packaging>jar</packaging>
+
+    <properties>
+        <protoc.version>3.21.9</protoc.version>
+        <sonar.skip>true</sonar.skip>
+        <protobuf-maven-plugin.pluginArtifact.version>1.50.2</protobuf-maven-plugin.pluginArtifact.version>
+        <javax.annotation-api.version>1.3.2</javax.annotation-api.version>
+    </properties>
+
+    <dependencies>
+        <!-- Module Dependencies -->
+        <dependency>
+            <groupId>com.genesis</groupId>
+            <artifactId>common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- Module Dependencies : END -->
+
+        <!-- GRPC Dependencies -->
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-stub</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-protobuf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-netty-shaded</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+        </dependency>
+        <!-- GRPC Dependencies : END -->
+
+        <!-- javax Annotation Dependencies -->
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>${javax.annotation-api.version}</version>
+        </dependency>
+        <!-- javax Annotation Dependencies : END -->
+
+        <!-- Test Dependencies -->
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-testing</artifactId>
+        </dependency>
+        <!-- Test Dependencies : END -->
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <!-- Needed to determing os specific variables as listed below -->
+                <groupId>kr.motd.maven</groupId>
+                <artifactId>os-maven-plugin</artifactId>
+                <version>1.7.1</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>detect</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.xolstice.maven.plugins</groupId>
+                <artifactId>protobuf-maven-plugin</artifactId>
+                <version>0.6.1</version>
+                <configuration>
+                    <goal>compile</goal>
+                    <protocArtifact>com.google.protobuf:protoc:${protoc.version}:exe:${os.detected.classifier}</protocArtifact>
+                    <pluginId>grpc-java</pluginId>
+                    <protoSourceRoot>${project.basedir}/../proto</protoSourceRoot>
+                    <pluginArtifact>io.grpc:protoc-gen-grpc-java:${protobuf-maven-plugin.pluginArtifact.version}:exe:${os.detected.classifier}</pluginArtifact>
+                    <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
+                    <clearOutputDirectory>false</clearOutputDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>compile-custom</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

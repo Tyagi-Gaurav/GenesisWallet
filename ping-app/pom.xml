@@ -77,14 +77,13 @@
         </dependency>
         <dependency>
             <groupId>com.genesis</groupId>
-            <artifactId>gw-test-common</artifactId>
+            <artifactId>test-support</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
-            <type>test-jar</type>
         </dependency>
         <dependency>
             <groupId>com.genesis</groupId>
-            <artifactId>integration-test-support</artifactId>
+            <artifactId>test-support</artifactId>
             <version>${project.version}</version>
             <exclusions>
                 <exclusion>
