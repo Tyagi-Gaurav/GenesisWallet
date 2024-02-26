@@ -57,7 +57,7 @@
         <wiremock.version>2.35.1</wiremock.version>
         <junit-platform-suite.version>1.9.3</junit-platform-suite.version>
         <embedded-redis.version>0.7.3</embedded-redis.version>
-        <jedis.version>5.0.1</jedis.version>
+        <jedis.version>5.1.1</jedis.version>
         <hamcrest.version>2.2</hamcrest.version>
         <mongodb.testcontainer.version>1.19.1</mongodb.testcontainer.version>
         <mongodb-driver-reactivestreams.version>4.11.0</mongodb-driver-reactivestreams.version>
